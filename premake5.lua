@@ -1,13 +1,19 @@
 -- premake5.lua
+
+include("conanbuildinfo.premake.lua")
+
 workspace "HelloWorld"
    configurations { "Debug", "Release", "RelWithDebInfo" }
    location "build"
+   conan_basic_setup()
 
 project "HelloWorld"
    kind "ConsoleApp"
    language "C++"
    targetdir "bin/%{cfg.buildcfg}"
    location "build"
+
+   linkoptions { conan_exelinkflags }
 
    files { "**.h", "**.cc" }
 
