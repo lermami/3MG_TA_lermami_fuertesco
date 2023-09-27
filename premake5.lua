@@ -2,24 +2,24 @@
 
 conan = {}
 configs = {'Debug','Release','RelWithDebInfo'}
-for i = 1,3 do
 
-include("build/deps/"..configs[i].."/conanbuildinfo.premake.lua")
-  conan[configs[i]] = {}
-  local cfg = conan[configs[i]]
-  cfg["build_type"] = conan_build_type
-  cfg["arch"] = conan_arch
-  cfg["includedirs"] = conan_includedirs
-  cfg["libdirs"] = conan_libdirs
-  cfg["bindirs"] = conan_bindirs
-  cfg["libs"] = conan_libs
-  cfg["system_libs"] = conan_system_libs
-  cfg["defines"] = conan_defines
-  cfg["cxxflags"] = conan_cxxflags
-  cfg["cflags"] = conan_cflags
-  cfg["sharedlinkflags"] = conan_sharedlinkflags
-  cfg["exelinkflags"] = conan_exelinkflags
-  cfg["frameworks"] = conan_frameworks
+for i = 1,3 do
+    include("build/deps/"..configs[i].."/conanbuildinfo.premake.lua")
+      conan[configs[i]] = {}
+      local cfg = conan[configs[i]]
+      cfg["build_type"] = conan_build_type
+      cfg["arch"] = conan_arch
+      cfg["includedirs"] = conan_includedirs
+      cfg["libdirs"] = conan_libdirs
+      cfg["bindirs"] = conan_bindirs
+      cfg["libs"] = conan_libs
+      cfg["system_libs"] = conan_system_libs
+      cfg["defines"] = conan_defines
+      cfg["cxxflags"] = conan_cxxflags
+      cfg["cflags"] = conan_cflags
+      cfg["sharedlinkflags"] = conan_sharedlinkflags
+      cfg["exelinkflags"] = conan_exelinkflags
+      cfg["frameworks"] = conan_frameworks
 
 end
 
@@ -58,7 +58,7 @@ workspace "Motor"
   configurations { "Debug", "Release", "RelWithDebInfo" }
   architecture "x64"
   location "build"
-  cppdialect "c++20"
+  cppdialect "c++17"
   startproject "Window"
 
   filter "configurations:Debug"
@@ -90,9 +90,8 @@ project "Motor"
   files {
     "premake5.lua",
     "src/build/conanfile.txt",
-    "src/build/conan.lua",
+    "src/Window.cpp", "include/Window.hpp",
     "src/stdafx.cpp", "src/stdafx.hpp",
-    "src/Window.cpp", "include/tija/Window.hpp",
   }
 
 project"Window"
@@ -100,7 +99,6 @@ project"Window"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs "include"
-  links "Tija"
   conan_config_exec("Debug")
   conan_config_exec("Release")
   conan_config_exec("RelWithDebInfo")
