@@ -12,6 +12,6 @@ public:
   Window(const Window&) = delete;
 
 private:
-  Window();
+  Window(int w, int h);
   GLFWwindow* handle_;
 };
