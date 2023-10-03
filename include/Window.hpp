@@ -9,6 +9,7 @@ public:
   static std::optional<Window> create(int w, int h, const char* title = "Window");
   bool is_done() const;
   void render();
+  void init(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
   ~Window();
   Window(Window& w);

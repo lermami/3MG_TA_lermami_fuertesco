@@ -10,7 +10,8 @@ int WinMain(int, char**) {
   if (!maybe_w.has_value()) return -1;
 
   auto& w = maybe_w.value();
-  
+  w.init(1, 0, 1, 1);
+
   while (!w.is_done()) {
     w.render();
   }

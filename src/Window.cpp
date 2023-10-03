@@ -13,17 +13,21 @@ std::optional<Window> Window::create(int w, int h, const char* title) {
 
 bool Window::is_done() const {
   if (NULL == handle_) return true;
+  if (glfwWindowShouldClose(handle_)) return true;
 
   return false;
 }
 
 void Window::render() {
-  glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
   glfwSwapBuffers(handle_);
   glfwPollEvents();
 }
 
+void Window::init(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+  glfwMakeContextCurrent(handle_);
+  glClearColor(r, g, b, a);
+}
 
 Window::~Window() {
 
@@ -39,5 +43,4 @@ Window::Window(Window&& w) noexcept : handle_{w.handle_ } {
 
 Window::Window(int w, int h, const char* title) {
   handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
-  glfwMakeContextCurrent(handle_);
 }
