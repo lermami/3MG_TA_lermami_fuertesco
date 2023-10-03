@@ -4,20 +4,18 @@
 #include "Engine.hpp"
 
 int main(int, char**) {
-
-  Engine::init();
+  Engine e;
   
-  auto maybe_w = Window::create(1024, 768, "Test Window");
-  if (!maybe_w.has_value()) return -1;
+  auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+  if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
   w.init(1, 0, 1, 1);
 
   while (!w.is_done()) {
-    w.render();
-  }
 
-  Engine::terminate();
+    w.swap();
+  }
 
   return 0;
 }

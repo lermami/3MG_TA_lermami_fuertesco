@@ -2,11 +2,11 @@
 #include "GLFW/glfw3.h"
 
 
-void Engine::init(){
+Engine::Engine(){
   glfwInit();
 }
 
-void Engine::terminate(){
+Engine::~Engine(){
   glfwTerminate();
 }
 

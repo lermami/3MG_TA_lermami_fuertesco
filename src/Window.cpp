@@ -1,6 +1,6 @@
 #include "Window.hpp"
 
-std::optional<Window> Window::create(int w, int h, const char* title) {
+std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title) {
   Window window(w, h, title);
 
   if (!window.is_done()) {
@@ -18,14 +18,13 @@ bool Window::is_done() const {
   return false;
 }
 
-void Window::render() const{
+void Window::swap() const{
   glClear(GL_COLOR_BUFFER_BIT);
   glfwSwapBuffers(handle_);
   glfwPollEvents();
 }
 
 void Window::init(float r, float g, float b, float a) const {
-  glfwMakeContextCurrent(handle_);
   glClearColor(r, g, b, a);
 }
 
@@ -43,4 +42,5 @@ Window::Window(Window&& w) : handle_{w.handle_ } {
 
 Window::Window(int w, int h, const char* title) {
   handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
+  glfwMakeContextCurrent(handle_);
 }
