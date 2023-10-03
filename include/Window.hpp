@@ -13,7 +13,7 @@ public:
 
   ~Window();
   Window(Window& w);
-  Window(Window&& w) noexcept;
+  Window(Window&& w);
   Window(const Window&) = delete;
 
 private:

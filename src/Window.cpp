@@ -30,14 +30,14 @@ void Window::init(unsigned char r, unsigned char g, unsigned char b, unsigned ch
 }
 
 Window::~Window() {
-
+  handle_ = NULL;
 }
 
 Window::Window(Window& w) : handle_{ w.handle_ }{
   w.handle_ = NULL;
 }
 
-Window::Window(Window&& w) noexcept : handle_{w.handle_ } {
+Window::Window(Window&& w) : handle_{w.handle_ } {
   w.handle_ = NULL;
 }
 
