@@ -18,13 +18,13 @@ bool Window::is_done() const {
   return false;
 }
 
-void Window::render() {
+void Window::render() const{
   glClear(GL_COLOR_BUFFER_BIT);
   glfwSwapBuffers(handle_);
   glfwPollEvents();
 }
 
-void Window::init(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+void Window::init(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const {
   glfwMakeContextCurrent(handle_);
   glClearColor(r, g, b, a);
 }

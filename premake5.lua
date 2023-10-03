@@ -89,9 +89,7 @@ project "Motor"
 
   files {
     "premake5.lua",
-    "src/build/conanfile.txt",
-    "src/Window.cpp", "include/Window.hpp",
-    "src/stdafx.cpp", "src/stdafx.hpp",
+    "src/*", "include/*",
   }
 
 project"Window"
