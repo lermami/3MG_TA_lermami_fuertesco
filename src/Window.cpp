@@ -23,8 +23,12 @@ Window::~Window() {
 
 }
 
-Window::Window(Window&) {
+Window::Window(Window& w) : handle_{ w.handle_ }{
+  w.handle_ = NULL;
+}
 
+Window::Window(Window&& w) noexcept : handle_{w.handle_ } {
+  w.handle_ = NULL;
 }
 
 Window::Window(int w, int h) {
