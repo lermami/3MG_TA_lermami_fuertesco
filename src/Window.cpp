@@ -1,7 +1,7 @@
 #include "Window.hpp"
 
-std::optional<Window> Window::create(int w, int h) {
-  Window window(w, h);
+std::optional<Window> Window::create(int w, int h, const char* title) {
+  Window window(w, h, title);
 
   if (!window.is_done()) {
     return window;
@@ -37,7 +37,7 @@ Window::Window(Window&& w) noexcept : handle_{w.handle_ } {
   w.handle_ = NULL;
 }
 
-Window::Window(int w, int h) {
-  handle_ = glfwCreateWindow(w, h, "My Title", NULL, NULL);
+Window::Window(int w, int h, const char* title) {
+  handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
   glfwMakeContextCurrent(handle_);
 }

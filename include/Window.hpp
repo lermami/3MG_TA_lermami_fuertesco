@@ -6,7 +6,7 @@
 
 class Window {
 public:
-  static std::optional<Window> create(int w, int h);
+  static std::optional<Window> create(int w, int h, const char* title = "Window");
   bool is_done() const;
   void render();
 
@@ -16,7 +16,7 @@ public:
   Window(const Window&) = delete;
 
 private:
-  Window(int w, int h);
+  Window(int w, int h, const char* title);
   GLFWwindow* handle_;
 };
 
