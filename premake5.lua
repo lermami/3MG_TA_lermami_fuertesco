@@ -93,7 +93,7 @@ project "Motor"
   }
 
 project"Window"
-  kind "WindowedApp"
+  kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs "include"

@@ -24,7 +24,7 @@ void Window::render() const{
   glfwPollEvents();
 }
 
-void Window::init(unsigned char r, unsigned char g, unsigned char b, unsigned char a) const {
+void Window::init(float r, float g, float b, float a) const {
   glfwMakeContextCurrent(handle_);
   glClearColor(r, g, b, a);
 }

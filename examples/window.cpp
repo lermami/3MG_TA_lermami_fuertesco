@@ -3,7 +3,7 @@
 #include "Window.hpp"
 #include "Engine.hpp"
 
-int WinMain(int, char**) {
+int main(int, char**) {
 
   Engine::init();
   
