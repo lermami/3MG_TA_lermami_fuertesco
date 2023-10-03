@@ -103,4 +103,7 @@ project"Window"
   conan_config_exec("Release")
   conan_config_exec("RelWithDebInfo")
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
-  files "examples/window.cpp"
+  
+  files {
+    "examples/window.cpp","src/*", "include/*"
+  }
