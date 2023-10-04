@@ -19,9 +19,8 @@ bool Window::is_done() const {
 }
 
 void Window::swap() const{
-  glClear(GL_COLOR_BUFFER_BIT);
-  glfwSwapBuffers(handle_);
   glfwPollEvents();
+  glfwSwapBuffers(handle_);
 }
 
 void Window::init(float r, float g, float b, float a) const {
@@ -43,4 +42,8 @@ Window::Window(Window&& w) : handle_{w.handle_ } {
 Window::Window(int w, int h, const char* title) {
   handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
   glfwMakeContextCurrent(handle_);
+}
+
+Window::Input::Input(int key) {
+  key_ = key;
 }
