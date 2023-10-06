@@ -3,6 +3,7 @@
 #include <optional>
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "Input.hpp"
 
 unsigned int CreateShader(int type) {
   unsigned int shader = 0;
@@ -144,17 +145,22 @@ int main(int, char**) {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
-  /*
-  struct KeyMap {
-    Window::Input up(KEY_W);
-    Window::Input down(KEY_S);
-    Window::Input left(KEY_A);
-    Window::Input right(KEY_D);
-  };
-  */
+  InputMap input;
+
+  Input up('w');
+  Input left('a');
+  Input down('s');
+  Input rigth('d');
+
+  input.addInput(up);
+  input.addInput(left);
+  input.addInput(down);
+  input.addInput(rigth);
 
   while (!w.is_done()) {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    input.updateInputs(w);
 
     // Draw triangle
     glUseProgram(shaderProgram);
