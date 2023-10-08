@@ -1,54 +1,71 @@
-#include "Input.hpp"
 #include <GLFW/glfw3.h>
+#include "Input.hpp"
+#include "Window.hpp"
 
-Input::Input(char key) {
-  key_ = int(key);
-}
-
-void Input::update(Window& w) {
-
-  if (state_ == 1)  state_ = 2;
-  if (state_ == 3)  state_ = 0;
-
-  if (glfwGetKey(nullptr, key_) == GLFW_PRESS) {
-    state_ = 1;
-  }
-  if (glfwGetKey(nullptr, key_) == GLFW_RELEASE) {
-    state_ = 3;
-  }
+Input::Input(int key) {
+  key_ = key;
+  state_ = 0;
 }
 
 bool Input::IsKeyDown() {
-  if (state_ == 1) return true;
-  return false;
+  return state_ == InputState::kDown;
 }
 
 bool Input::IsKeyPressed() {
-  if (state_ == 2) return true;
-  return false;
+  return state_ == InputState::kPressed;
 }
 
 bool Input::IsKeyUp() {
-  if (state_ == 3) return true;
-  return false;
+  return state_ == InputState::kUp;
 }
 
+void Input::setState(unsigned int state) {
+  state_ = state;
+}
 
-InputMap::InputMap() {
-  
+unsigned int Input::getState() const {
+  return state_;
+}
+
+int Input::getKey() const {
+  return key_;
+}
+
+InputMap::InputMap(Window& w) {
+  windowHandle_ = w.handle_;
 }
 
 InputMap::~InputMap() {
   inputmap_.clear();
 }
 
-
-void InputMap::addInput(Input new_key) {
+void InputMap::addInput(Input* new_key) {
   inputmap_.push_back(new_key);
 }
 
-void InputMap::updateInputs(Window& w) {
+void InputMap::updateInputs() {
   for (int i = 0; i < inputmap_.size(); i++) {
-    inputmap_[i].update(w);
+    //Get input's state of last frame
+    int last_state = inputmap_[i]->getState();
+    //Get if input is pressed or not on this frame
+    int current_state = glfwGetKey(windowHandle_, inputmap_[i]->getKey());
+
+    //Check key up
+    if ((last_state == InputState::kPressed || last_state == InputState::kDown) && current_state == GLFW_RELEASE) {
+      inputmap_[i]->setState(InputState::kUp);
+    } else
+    //Check key inactive
+    if (last_state == InputState::kUp && current_state == GLFW_RELEASE) {
+      inputmap_[i]->setState(InputState::kInactive);
+    } else
+    //Check key down
+    if (last_state == InputState::kInactive && current_state == GLFW_PRESS) {
+      inputmap_[i]->setState(InputState::kDown);
+    } else
+    //Check key pressed
+    if (last_state == InputState::kDown && current_state == GLFW_PRESS) {
+      inputmap_[i]->setState(InputState::kPressed);
+    }
   }
 }
+

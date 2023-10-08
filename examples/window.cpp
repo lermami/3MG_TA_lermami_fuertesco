@@ -145,22 +145,32 @@ int main(int, char**) {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
-  InputMap input;
+  InputMap inputMap(w);
 
-  Input up('w');
-  Input left('a');
-  Input down('s');
-  Input rigth('d');
+  Input up(KEY_W);
+  Input left(KEY_A);
+  Input down(KEY_S);
+  Input right(KEY_D);
 
-  input.addInput(up);
-  input.addInput(left);
-  input.addInput(down);
-  input.addInput(rigth);
+  inputMap.addInput(&up);
+  inputMap.addInput(&left);
+  inputMap.addInput(&down);
+  inputMap.addInput(&right);
 
   while (!w.is_done()) {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    input.updateInputs(w);
+    inputMap.updateInputs();
+
+    if (up.IsKeyDown()) {
+      printf("down\n");
+    }
+    if (up.IsKeyPressed()) {
+      printf("pressed\n");
+    }
+    if (up.IsKeyUp()) {
+      printf("up\n");
+    }
 
     // Draw triangle
     glUseProgram(shaderProgram);

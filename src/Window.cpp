@@ -44,6 +44,3 @@ Window::Window(int w, int h, const char* title) {
   glfwMakeContextCurrent(handle_);
 }
 
-Window::Input::Input(int key) {
-  key_ = key;
-}

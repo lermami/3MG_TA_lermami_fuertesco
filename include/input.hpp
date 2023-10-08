@@ -9,16 +9,28 @@
 
 class Window;
 
+enum InputState {
+  kInactive,
+  kDown,
+  kPressed,
+  kUp,
+};
+
 class Input {
 public:
 
-  Input(char key);
+  Input(int key);
   ~Input() = default;
-  void update(Window& w);
+  void update();
 
   bool IsKeyDown();
   bool IsKeyPressed();
   bool IsKeyUp();
+
+  void setState(unsigned int state);
+  unsigned int getState() const;
+
+  int getKey() const;
 private:
   /*
   0 -> Inactive
@@ -32,12 +44,13 @@ private:
 
 class InputMap {
 public:
-  InputMap();
+  InputMap(Window& w);
   ~InputMap();
 
-  void addInput(Input new_input);
-  void updateInputs(Window& w);
+  void addInput(Input* new_input);
+  void updateInputs();
 
 private:
-  std::vector<Input> inputmap_;
+  std::vector<Input*> inputmap_;
+  GLFWwindow* windowHandle_;
 };
