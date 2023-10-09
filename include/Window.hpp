@@ -2,6 +2,7 @@
 #include "GLFW/glfw3.h"
 #include <optional>
 #include <vector>
+#include <ctime>
 
 class Engine;
 
@@ -16,8 +17,12 @@ public:
 
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;
-  void swap() const;
+  void swap();
   void init(float r, float g, float b, float a) const;
+
+  float getDeltaTime();
+  void calculateCurrentTime();
+  void calculateLastTime();
 
   ~Window();
   Window(Window& w);
@@ -27,5 +32,9 @@ public:
 private:
   Window(int w, int h, const char* title);
   GLFWwindow* handle_;
+
+  clock_t  currentTime_;
+  clock_t  lastTime_;
+  float deltaTime_;
 };
 
