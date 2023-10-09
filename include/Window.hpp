@@ -1,6 +1,8 @@
 #pragma once
 #include "GLFW/glfw3.h"
 #include <optional>
+#include <vector>
+#include <ctime>
 
 class Engine;
 
@@ -9,33 +11,18 @@ class Engine;
 #define 	KEY_S   83
 #define 	KEY_D   68
 
-
 class Window {
 public:
-  class Input {
-  public:
+  friend class InputMap;
 
-    Input(int key);
-    ~Input() = default;
-    void update(Window& w);
-
-    bool IsKeyDown();
-    bool IsKeyPressed();
-    bool IsKeyUp();
-  private:
-    /*
-    0 -> Inactive
-    1 -> Key down
-    2 -> Key pressed
-    3 -> Key up
-    */
-    unsigned int state_;
-    int key_;
-  };
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;
-  void swap() const;
+  void swap();
   void init(float r, float g, float b, float a) const;
+
+  float getDeltaTime();
+  void calculateCurrentTime();
+  void calculateLastTime();
 
   ~Window();
   Window(Window& w);
@@ -45,5 +32,9 @@ public:
 private:
   Window(int w, int h, const char* title);
   GLFWwindow* handle_;
+
+  clock_t  currentTime_;
+  clock_t  lastTime_;
+  float deltaTime_;
 };
 
