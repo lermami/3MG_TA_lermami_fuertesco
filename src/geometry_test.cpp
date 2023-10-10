@@ -24,6 +24,7 @@ Triangle::Triangle() {
   vertex_[0].colors_.translate(1, 0, 0);
   vertex_[1].colors_.translate(0, 1, 0);
   vertex_[2].colors_.translate(0, 0, 1);
+
 }
 
 void Triangle::move(float x, float y, float z) {
