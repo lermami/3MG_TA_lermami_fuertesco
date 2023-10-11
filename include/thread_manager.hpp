@@ -9,9 +9,8 @@ class ThreadManager {
 public:
 
 	ThreadManager();
+	~ThreadManager();
 	void add(std::function<void()> task);
-
-	void worker();
 
 private:
 	std::vector<std::thread> workers_;
