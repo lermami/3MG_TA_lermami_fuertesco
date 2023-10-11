@@ -105,3 +105,17 @@ project"Window"
   files {
     "examples/window.cpp","src/*", "include/*"
   }
+
+project"Threads"
+  kind "ConsoleApp"
+  language "C++"
+  targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+  includedirs "include"
+  conan_config_exec("Debug")
+  conan_config_exec("Release")
+  conan_config_exec("RelWithDebInfo")
+  debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
+  
+  files {
+    "examples/threads.cpp","src/*", "include/*"
+  }
