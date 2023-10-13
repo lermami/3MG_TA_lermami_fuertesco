@@ -45,10 +45,10 @@ int main(int, char**) {
 
   InputMap inputMap(w);
 
-  Input up(KEY_W);
-  Input left(KEY_A);
-  Input down(KEY_S);
-  Input right(KEY_D);
+  Input up(Key::kKey_Degree);
+  Input left(Key::kKey_A);
+  Input down(Key::kKey_S);
+  Input right(Key::kKey_D);
 
   inputMap.addInput(&up);
   inputMap.addInput(&left);
