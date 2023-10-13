@@ -13,25 +13,25 @@
 #include "shader_management.hpp"
 #include "thread_manager.hpp"
 
-int retnum(int num) {
-  printf("%d\n",num);
-  return num;
+std::string print_string(std::string s) {
+  printf("%s\n", s.c_str());
+
+  return s;
 }
 
 int main(int, char**) {
   ThreadManager thread_manager;
 
-  std::vector<std::future<int>> resultado;
+  std::vector<std::string> comida{ "patata.jpg", "melon.jpg", "zanahoria.jpg", "pimiento.jpg" };
+  std::vector<std::future<std::string>> resultado;
 
-  for (int i = 0; i < 3; i++) {
-    auto mycall = [i]() { return retnum(i); };
-
-    std::shared_ptr<std::packaged_task<int()>> task = std::make_shared<std::packaged_task<int()>>(std::move(mycall));
-    std::future<int> future = task->get_future();
-    thread_manager.add([task]() {(*task); });
+  for (auto& ente : comida) {
+    auto mycall = [ente]() { return print_string(ente); };
+    std::shared_ptr<std::packaged_task<std::string()>> task = std::make_shared<std::packaged_task<std::string()>>(std::move(mycall));
+    std::future<std::string> future = task->get_future();
+    thread_manager.add([task]() {(*task)(); });
     resultado.push_back(std::move(future));
   }
-  
-  system("pause");
+
   return 0;
 }
