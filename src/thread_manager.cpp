@@ -25,6 +25,7 @@ ThreadManager::ThreadManager() {
 }
 
 ThreadManager::~ThreadManager() {
+	condition_.notify_all();
 	for (auto& w : workers_) {
 		if (w.joinable()) 
 			w.join();
@@ -34,4 +35,5 @@ ThreadManager::~ThreadManager() {
 void ThreadManager::add(std::function<void()> task) {
 	std::lock_guard<std::mutex> lock(queue_mutex_);
 	jobs_.push(std::move(task));
+	condition_.notify_one();
 }
