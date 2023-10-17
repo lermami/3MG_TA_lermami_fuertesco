@@ -45,7 +45,7 @@ int main(int, char**) {
 
   InputMap inputMap(w);
 
-  Input up(Key::kKey_Degree);
+  Input up(Key::kKey_Aphostrophe);
   Input left(Key::kKey_A);
   Input down(Key::kKey_S);
   Input right(Key::kKey_D);
@@ -60,6 +60,7 @@ int main(int, char**) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     inputMap.updateInputs();
+    //printf("\n%d", getchar());
 
     if (up.IsKeyPressed()) {
       t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
