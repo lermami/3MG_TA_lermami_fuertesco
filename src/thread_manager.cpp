@@ -1,7 +1,6 @@
 #include "thread_manager.hpp"
 
 ThreadManager::ThreadManager() {
-
 	stop_ = true;
 
 	auto worker_count = std::thread::hardware_concurrency();
@@ -32,7 +31,7 @@ ThreadManager::~ThreadManager() {
 	}
 }
 
-void ThreadManager::add(std::function<void()> task) {
+void ThreadManager::addToQueue(std::function<void()> task) {
 	std::lock_guard<std::mutex> lock(queue_mutex_);
 	jobs_.push(std::move(task));
 	condition_.notify_one();

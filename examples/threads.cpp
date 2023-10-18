@@ -17,12 +17,12 @@ using namespace std::chrono_literals;
 #include "shader_management.hpp"
 #include "thread_manager.hpp"
 
-void heavyFunction(int id, int iterations) {
+double heavyFunction(int id, int iterations) {
   double result = 0.0;
   for (int i = 0; i < iterations; ++i) {
     result += sin(i) * tan(i);
   }
-  std::cout << "Thread " << id << " finished with result: " << result << std::endl;
+  return result;
 }
 
 int* CreateTexture(int w, int h) {
@@ -31,31 +31,24 @@ int* CreateTexture(int w, int h) {
   for (int i = 0; i < w * h; ++i) {
     t[i] = i;
   }
-
   return t;
 }
 
 int main(int, char**) {
   ThreadManager thread_manager;
 
-  std::vector<std::future<int*>> resultado;
+  std::vector<std::future<double>> resultado;
 
-  for (int i = 0; i < 4; i++) {
-    auto mycall = []() { return CreateTexture(100000, 100000); };
-    std::shared_ptr<std::packaged_task<int*()>> task = std::make_shared<std::packaged_task<int*()>>(std::move(mycall));
-    std::future<int*> future = task->get_future();
-    thread_manager.add([task]() {(*task)(); });
+  for (int i = 0; i < 32; i++) {
+    std::function<double()> mycall_double = [i]() { return heavyFunction(i, 100000000); };
+    std::future<double> future = thread_manager.add(mycall_double);
+
     resultado.push_back(std::move(future));
   }
-  
-  std::future_status status;
-  do {
-    switch (status = resultado[0].wait_for(1s); status) {
-    case std::future_status::deferred: std::cout << " deferred\n"; break;
-    case std::future_status::timeout: std::cout << " timeout\n"; break;
-    case std::future_status::ready: std::cout << " ready!\n"; break;
-    }
-  } while (status != std::future_status::ready);
 
+  thread_manager.waitFuture(resultado[0]);
+  double num = resultado[0].get();
+  std::cout << "Resultado: " << num << std::endl;
+  
   return 0;
 }
