@@ -38,9 +38,10 @@ int main(int, char**) {
   ThreadManager thread_manager;
 
   std::vector<std::future<double>> resultado;
+  int n_reps = 10000;
 
-  for (int i = 0; i < 32; i++) {
-    std::function<double()> mycall_double = [i]() { return heavyFunction(i, 100000000); };
+  for (int i = 0; i < n_reps; i++) {
+    std::function<double()> mycall_double = [i]() { return heavyFunction(i, 1000000); };
     std::future<double> future = thread_manager.add(mycall_double);
 
     resultado.push_back(std::move(future));
@@ -49,6 +50,7 @@ int main(int, char**) {
   thread_manager.waitFuture(resultado[0]);
   double num = resultado[0].get();
   std::cout << "Resultado: " << num << std::endl;
+
   
   return 0;
 }

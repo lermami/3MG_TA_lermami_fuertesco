@@ -31,8 +31,6 @@ ThreadManager::~ThreadManager() {
 	}
 }
 
-void ThreadManager::addToQueue(std::function<void()> task) {
-	std::lock_guard<std::mutex> lock(queue_mutex_);
-	jobs_.push(std::move(task));
-	condition_.notify_one();
+void ThreadManager::setStop(bool stop) {
+	stop_ = stop;
 }
