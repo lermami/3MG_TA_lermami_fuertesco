@@ -45,7 +45,7 @@ int main(int, char**) {
 
   InputMap inputMap(w);
 
-  Input up(Key::kKey_Aphostrophe);
+  Input up(Key::kKey_W);
   Input left(Key::kKey_A);
   Input down(Key::kKey_S);
   Input right(Key::kKey_D);
