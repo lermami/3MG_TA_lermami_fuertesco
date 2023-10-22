@@ -45,15 +45,10 @@ int main(int, char**) {
 
   InputMap inputMap(w);
 
-  Input up(Key::kKey_W);
-  Input left(Key::kKey_A);
-  Input down(Key::kKey_S);
-  Input right(Key::kKey_D);
-
-  inputMap.addInput(&up);
-  inputMap.addInput(&left);
-  inputMap.addInput(&down);
-  inputMap.addInput(&right);
+  Input up(Key::kKey_W, inputMap);
+  Input left(Key::kKey_A, inputMap);
+  Input down(Key::kKey_S, inputMap);
+  Input right(Key::kKey_D, inputMap);
 
   while (!w.is_done()) {
     w.calculateLastTime();

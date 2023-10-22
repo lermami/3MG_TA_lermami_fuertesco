@@ -2,9 +2,11 @@
 #include "Input.hpp"
 #include "Window.hpp"
 
-Input::Input(int key) {
+Input::Input(int key, InputMap& inputmap) {
   key_ = key;
   state_ = 0;
+
+  inputmap.inputmap_.push_back(this);
 }
 
 bool Input::IsKeyDown() {
@@ -77,5 +79,16 @@ void InputMap::updateInputs() {
               inputmap_[i]->setState(InputState::kPressed);
             }
   }
+
+  glfwSetScrollCallback(windowHandle_, scroll_callback);
+}
+
+void InputMap::setScroll(InputMap* inputmap, double scroll_x, double scroll_y) {
+  inputmap->scroll_x_ = scroll_x;
+  inputmap->scroll_y_ = scroll_y;
+}
+
+void InputMap::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+ // setScroll( ,xoffset, yoffset);
 }
 

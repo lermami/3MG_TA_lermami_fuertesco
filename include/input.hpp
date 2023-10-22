@@ -95,6 +95,7 @@ enum Key {
 };
 
 class Window;
+class InputMap;
 
 enum InputState {
   kInactive,
@@ -106,7 +107,7 @@ enum InputState {
 class Input {
 public:
 
-  Input(int key);
+  Input(int key, InputMap& inputmap);
   ~Input() = default;
 
   bool IsKeyDown();
@@ -129,6 +130,7 @@ private:
 };
 
 class InputMap {
+  friend class Input;
 public:
   InputMap(Window& w);
   ~InputMap();
@@ -136,7 +138,12 @@ public:
   void addInput(Input* new_input);
   void updateInputs();
 
+  static void setScroll(InputMap* inputmap, double scroll_x, double scroll_y);
+
 private:
   std::vector<Input*> inputmap_;
   GLFWwindow* windowHandle_;
+  static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+  double scroll_x_;
+  double scroll_y_;
 };
