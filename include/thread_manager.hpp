@@ -7,7 +7,6 @@
 #include <future>
 #include <tuple>
 
-
 class ThreadManager {
 public:
 
@@ -21,15 +20,26 @@ public:
 		std::shared_ptr<std::packaged_task<T()>> task = std::make_shared<std::packaged_task<T()>>(std::move(f));
 		std::future<T> future = task->get_future();
 
-		//seguir
-		for (auto& t : not_done_jobs_) {
-			if (get<0>(t) == key) {
+		bool new_chain = true;
 
+		for (auto i = 0; i < not_done_jobs_.size(); i++) {
+			std::tuple j = not_done_jobs_[i];
+			if (std::get<0>(j) == key) {
+				new_chain = false;
 			}
 		}
 
-		tuple tl = make_tuple(key, [task]() {(*task)(); })
-		not_done_jobs_.push(tl);
+		if (new_chain) {
+			{
+				std::lock_guard<std::mutex> lock(queue_mutex_);
+				jobs_.push([task]() {(*task)(); });
+			}
+			condition_.notify_one();
+		}else{
+			std::tuple tl = std::make_tuple(key, [task]() {(*task)(); });
+			not_done_jobs_.push_back(tl);
+		}
+
 
 		return future;
 	}
@@ -70,7 +80,7 @@ public:
 private:
 	std::vector<std::thread> workers_;
 	std::queue<std::function<void()>> jobs_;
-	std::queue < std::tuple < std::string,std::function<void() >>> not_done_jobs_;
+	std::vector < std::tuple < std::string,std::function<void() >>> not_done_jobs_;
 	std::mutex queue_mutex_;
 	std::condition_variable condition_;
 	bool stop_;
