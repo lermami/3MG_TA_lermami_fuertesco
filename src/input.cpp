@@ -2,7 +2,7 @@
 #include "Input.hpp"
 #include "Window.hpp"
 
-Input::Input(int key, InputMap& inputmap) {
+Input::Input(InputMap& inputmap, int key) {
   key_ = key;
   state_ = 0;
 
@@ -64,20 +64,20 @@ void InputMap::updateInputs() {
         inputmap_[i]->setState(InputState::kUp);
       }
       else
-        //Check key inactive
-        if (last_state == InputState::kUp && current_state == GLFW_RELEASE) {
-          inputmap_[i]->setState(InputState::kInactive);
-        }
-        else
-          //Check key down
-          if (last_state == InputState::kInactive && current_state == GLFW_PRESS) {
-            inputmap_[i]->setState(InputState::kDown);
-          }
-          else
-            //Check key pressed
-            if (last_state == InputState::kDown && current_state == GLFW_PRESS) {
-              inputmap_[i]->setState(InputState::kPressed);
-            }
+      //Check key inactive
+      if (last_state == InputState::kUp && current_state == GLFW_RELEASE) {
+        inputmap_[i]->setState(InputState::kInactive);
+      }
+      else
+      //Check key down
+      if (last_state == InputState::kInactive && current_state == GLFW_PRESS) {
+        inputmap_[i]->setState(InputState::kDown);
+      }
+      else
+      //Check key pressed
+      if (last_state == InputState::kDown && current_state == GLFW_PRESS) {
+        inputmap_[i]->setState(InputState::kPressed);
+      }
   }
 
   glfwSetScrollCallback(windowHandle_, scroll_callback);

@@ -107,7 +107,7 @@ enum InputState {
 class Input {
 public:
 
-  Input(int key, InputMap& inputmap);
+  Input(InputMap& inputmap, int key);
   ~Input() = default;
 
   bool IsKeyDown();

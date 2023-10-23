@@ -45,17 +45,16 @@ int main(int, char**) {
 
   InputMap inputMap(w);
 
-  Input up(Key::kKey_W, inputMap);
-  Input left(Key::kKey_A, inputMap);
-  Input down(Key::kKey_S, inputMap);
-  Input right(Key::kKey_D, inputMap);
+  Input up(inputMap, Key::kKey_W);
+  Input left(inputMap, Key::kKey_A);
+  Input down(inputMap, Key::kKey_S);
+  Input right(inputMap, Key::kKey_D);
 
   while (!w.is_done()) {
     w.calculateLastTime();
     glClear(GL_COLOR_BUFFER_BIT);
 
     inputMap.updateInputs();
-    //printf("\n%d", getchar());
 
     if (up.IsKeyPressed()) {
       t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
