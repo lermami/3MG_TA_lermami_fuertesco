@@ -9,6 +9,7 @@
 #include "Input.hpp"
 #include "geometry_test.hpp"
 #include "shader_management.hpp"
+#include "buffer.hpp"
 
 int main(int, char**) {
   Engine e;
@@ -21,27 +22,7 @@ int main(int, char**) {
 
   if(glewInit() != GLEW_OK) return -1;
 
-  Triangle t;
-
-  std::string vertex_shader = ReadFiles("../include/test.vs");
-  std::string fragment_shader = ReadFiles("../include/test.fs");
-
-  // Shaders
-  unsigned int vertexShader = CreateShader(0);
-  CompileShader(vertexShader, vertex_shader.c_str());
-  unsigned int fragmentShader = CreateShader(1);
-  CompileShader(fragmentShader, fragment_shader.c_str());
-  
-  // Program
-  unsigned int shaderProgram = CreateProgram(vertexShader, fragmentShader);
-
-  // Buffers
-  unsigned int VBO, VAO;
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  Triangle t("../include/test.vs", "../include/test.fs");
 
   InputMap inputMap(w);
 
@@ -54,6 +35,7 @@ int main(int, char**) {
     w.calculateLastTime();
     glClear(GL_COLOR_BUFFER_BIT);
 
+    //Inputs
     inputMap.updateInputs();
 
     if (up.IsKeyPressed()) {
@@ -73,16 +55,7 @@ int main(int, char**) {
     }
 
     // Draw triangle
-    glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(t), &t, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    t.render();
 
     w.swap();
 
