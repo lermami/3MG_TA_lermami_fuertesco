@@ -71,5 +71,6 @@ Window::Window(int w, int h, const char* title) {
   currentTime_ = 0;
   lastTime_ = 0;
   deltaTime_ = 0;
+
 }
 

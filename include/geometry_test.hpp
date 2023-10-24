@@ -1,3 +1,5 @@
+#include "buffer.hpp"
+
 class Vec3 {
 public:
   Vec3();
@@ -17,9 +19,14 @@ struct Vertex {
 class Triangle {
 public:
   Triangle();
+  Triangle(char* vpath, char* fpath);
   ~Triangle();
   void move(float x, float y, float z);
+  void render();
 
 private:
   Vertex vertex_[3];
+
+  Buffer b_;
+  unsigned int vertexShader_, fragmentShader_, programShader_;
 };
