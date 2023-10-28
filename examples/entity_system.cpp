@@ -1,103 +1,13 @@
 #include<vector>
 #include<optional>
 #include<cassert>
-#include<memory>
 #include<tuple>
-#include<unordered_map>
 #include<typeinfo>
 #include<stdexcept>
 
-struct Position {
-	int x, y;
-};
+#include "component_manager.hpp"
 
-struct Physics {
-	float acceleration;
-};
-
-struct Material {};
-
-struct component_base {
-	virtual void add_component() = 0;
-	virtual void delete_component(size_t id) = 0;
-	virtual size_t size() = 0;
-};
-
-template<typename T>
-struct component_list : component_base {
-	std::vector < std::optional<T>> components_;
-
-	virtual void add_component() override {
-		components_.emplace_back();
-	}
-
-	virtual size_t size() override {
-		return components_.size();
-	}
-
-	virtual void remove_component(size_t id) override {
-		components_[id].reset();
-	}
-};
-
-struct ComponentManager {
-
-	std::unordered_map<std::size_t, std::unique_ptr<component_base>> component_classes_;
-	std::vector <size_t> deleted_components_;
-
-	ComponentManager() {
-		add_component_class<Position>();
-		add_component_class<Physics>();
-		add_component_class<Material>();
-	}
-
-	template<typename T> void add_component_class() {
-		component_classes_.emplace(typeid(T).hash_code(), std::make_unique<component_list<T>>());
-	}
-
-	template<typename T> T* get_component(size_t e);
-
-	size_t add_entity() {
-		if (deleted_components_.size() > 0) {
-			size_t id = deleted_components_.back();
-			deleted_components_.pop_back();
-			return id;
-		}
-
-		size_t size = 0;
-
-		for (auto& [key, value] : component_classes_) {
-			value->add_component();
-			size = value->size();
-		}
-
-		return size;
-	}
-
-	void remove_entity(size_t id) {
-		deleted_components_.push_back(id);
-
-		for (auto& [key, value] : component_classes_) {
-			value->delete_component(id);
-		}
-	}
-
-
-
-};
-
-template<typename T> 
-T* ComponentManager::get_component(size_t e) {
-	assert(component_classes_.size());
-	assert(component_classes_.contains(typeid(T).hash_code()));
-	assert(e != 0);
-	auto& component_list = *static_cast<component_list<T>*>(component_classes_.find(typeid(T).hash_code())->second.get());
-	assert(e < component_list.size());
-	auto& component_opt = component_list.components_.at(e);
-
-	if (!component_opt.has_value()) return nullptr;
-	return &component_opt.get()
-}
+struct ComponentLife {};
 
 void physics_system(std::vector<std::optional<Position>>& positions, std::vector<std::optional<Physics>>& physics) {
 
@@ -114,15 +24,65 @@ void physics_system(std::vector<std::optional<Position>>& positions, std::vector
 	assert(ph == physics.end());
 }
 
-struct ComponentLife {};
+void initialize_position_system(Position& pos) {
+	pos.x = rand() % 100;
+	pos.y = rand() % 100;
+}
+
+void print_position_system(size_t n, Position& pos) {
+	printf("Entity %d: %d %d\n", n, pos.x, pos.y);
+	pos.x = rand() % 100;
+	pos.y = rand() % 100;
+}
 
 int main(int, char**) {
 	ComponentManager component_manager;
 
 	component_manager.add_component_class<ComponentLife>();
 
-	auto player = component_manager.add_entity();
-	auto player_physics = component_manager.get_component<Physics>(player);
+	std::vector<size_t> entities;
+	int n_entities = 10;
+
+	for (int i = 0; i < n_entities; i++) {
+		entities.push_back(component_manager.add_entity());
+		auto entity_pos = component_manager.get_component<Position>(entities[i]);
+		initialize_position_system(*entity_pos);
+	}
+
+	printf("Entities created: %d\n", n_entities);
+	for (int i = 0; i < entities.size(); i++) {
+		auto entity_pos = component_manager.get_component<Position>(entities[i]);
+		print_position_system(entities[i], *entity_pos);
+	}
+	printf("\n\n");
+
+	component_manager.remove_entity(entities[0]);
+	entities.erase(entities.begin());
+	component_manager.remove_entity(entities[0]);
+	entities.erase(entities.begin());
+
+	printf("Removed entities 1 and 2\n");
+	for (int i = 0; i < entities.size(); i++) {
+		auto entity_pos = component_manager.get_component<Position>(entities[i]);
+		print_position_system(entities[i], *entity_pos);
+	}
+	printf("\n\n");
+
+	size_t new_1 = component_manager.add_entity();
+	size_t new_2 = component_manager.add_entity();
+	entities.push_back(new_1);
+	entities.push_back(new_2);
+	auto entity_pos1 = component_manager.get_component<Position>(new_1);
+	auto entity_pos2 = component_manager.get_component<Position>(new_2);
+	initialize_position_system(*entity_pos1);
+	initialize_position_system(*entity_pos2);
+
+	printf("Added enities 1 and 2\n");
+	for (int i = 0; i < entities.size(); i++) {
+		auto entity_pos = component_manager.get_component<Position>(entities[i]);
+		print_position_system(entities[i], *entity_pos);
+	}
+	printf("\n\n");
 
 	while (true) {
 		//if (input.acceleration) {
@@ -130,8 +90,8 @@ int main(int, char**) {
 			//auto [_, ph, ___] = component_manager.get_entity(player);
 			//ph->acceleration += 1;
 		//}
-		// Previous code
-//		physics_system(component_manager.position, component_manager.physics);
+		//Previous code
+    //physics_system(component_manager.position, component_manager.physics);
 
 	}
 	return 0;
