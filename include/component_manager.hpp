@@ -2,9 +2,10 @@
 #include<memory>
 #include<optional>
 #include<cassert>
+#include "buffer.hpp"
 
 struct Position {
-	int x, y;
+	int x, y, z;
 };
 
 struct Physics {
@@ -12,6 +13,20 @@ struct Physics {
 };
 
 struct Material {
+};
+
+struct Vertex {
+	float x_, y_, z_;
+	float r_, g_, b_, a_;
+	float nx_, ny_, nz_;
+	float u_, v_;
+};
+
+struct RenderComponent {
+	Position pos_;
+	std::vector<Vertex> vertex_;
+	Buffer buffer_;
+	unsigned int program_;
 };
 
 struct component_base {
@@ -32,7 +47,7 @@ struct component_list : component_base {
 
 	virtual void add_component(int position) override {
 		T a;
-		//Minus 1 because position refers to an entity that starts in 1
+		//-1 because position refers to an entity that starts in 1
 		components_[position-1] = a;
 	}
 
@@ -53,9 +68,7 @@ struct ComponentManager {
 	std::vector <size_t> deleted_components_;
 
 	ComponentManager() {
-		add_component_class<Position>();
-		add_component_class<Physics>();
-		add_component_class<Material>();
+		add_component_class<RenderComponent>();
 	}
 
 	template<typename T> void add_component_class() {

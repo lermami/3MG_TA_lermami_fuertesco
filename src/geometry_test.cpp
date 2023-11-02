@@ -69,7 +69,6 @@ Triangle::Triangle(char* vpath, char* fpath) {
   programShader_ = CreateProgram(vertexShader_, fragmentShader_);
 }
 
-
 void Triangle::move(float x, float y, float z) {
   vertex_[0].position_.translate(x,y,z);
   vertex_[1].position_.translate(x,y,z);
