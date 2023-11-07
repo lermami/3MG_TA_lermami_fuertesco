@@ -5,7 +5,7 @@
 #include "buffer.hpp"
 
 struct Position {
-	int x, y, z;
+	float x, y, z;
 };
 
 struct Physics {

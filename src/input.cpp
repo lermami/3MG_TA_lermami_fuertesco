@@ -35,6 +35,11 @@ int Input::getKey() const {
 
 InputMap::InputMap(Window& w) {
   windowHandle_ = w.handle_;
+
+  scroll_x_ = 0;
+  scroll_y_ = 0;
+  mouse_x_ = 0;
+  mouse_y_ = 0;
 }
 
 InputMap::~InputMap() {
@@ -80,7 +85,16 @@ void InputMap::updateInputs() {
       }
   }
 
+  //Scroll
   glfwSetScrollCallback(windowHandle_, scroll_callback);
+
+  //Mouse Pos
+  glfwGetCursorPos(windowHandle_, &mouse_x_, &mouse_y_);
+}
+
+void InputMap::getMousePos(double& x, double& y) {
+  x = mouse_x_;
+  y = mouse_y_;
 }
 
 void InputMap::setScroll(InputMap* inputmap, double scroll_x, double scroll_y) {

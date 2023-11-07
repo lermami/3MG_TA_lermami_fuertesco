@@ -58,7 +58,31 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Positio
 	render.program_ = program;
 }
 
+void move_system(RenderComponent& render, float x, float y) {
+
+	for (auto& v : render.vertex_) {
+		v.x_ += x;
+		v.y_ += y;
+	}
+}
+
+void set_position_system(RenderComponent& render, float x, float y) {
+
+	x = (x / 1024 * 2) - 1;
+	y = ((y / 768 * 2) - 1) * -1;
+
+	render.vertex_[0].x_ = x - 0.05f;
+	render.vertex_[0].y_ = y - 0.05f;
+
+	render.vertex_[1].x_ = x + 0.05f;
+	render.vertex_[1].y_ = y - 0.05f;
+
+	render.vertex_[2].x_ = x;
+	render.vertex_[2].y_ = y + 0.05f;
+}
+
 void render_system(RenderComponent& render) {
+
 	glUseProgram(render.program_);
 	render.buffer_.uploadData(&render.vertex_[0], sizeof(render.vertex_[0]) * render.vertex_.size());
 	render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
@@ -81,7 +105,7 @@ int main(int, char**) {
 	ComponentManager component_manager;
 
 	std::vector<size_t> entities;
-	int n_entities = 100;
+	int n_entities = 5000;
 
 	std::string v = ReadFiles("../include/test.vs");
 	std::string f = ReadFiles("../include/test.fs");
@@ -94,8 +118,9 @@ int main(int, char**) {
 
 	for (int i = 0; i < n_entities; i++) {
 		Position tr_pos;
-		tr_pos.x = (rand() % 3) - 1;
-		tr_pos.y = (rand() % 3) - 1;
+
+		tr_pos.x = (float)((rand() % 300) - 100) / 100.0f;
+		tr_pos.y = (float)((rand() % 300) - 100) / 100.0f;
 		tr_pos.z = 0;
 
 		std::vector<Vertex> triangle = {
@@ -109,12 +134,55 @@ int main(int, char**) {
 		init_vertex_system(*tr_render, triangle, tr_pos, simpleProgram);
 	}
 
+
+	//Input Declaration
+	InputMap input_map(w);
+	float input_velocity = 0.05f;
+
+	Input up(input_map, kKey_W);
+	Input down(input_map, kKey_S);
+	Input left(input_map, kKey_A);
+	Input right(input_map, kKey_D);
+
+	double mouse_x, mouse_y;
+
 	while (!w.is_done()) {
 		w.calculateLastTime();
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		for(int i=0;i<n_entities;i++)
-			render_system(*component_manager.get_component<RenderComponent>(entities[i]));
+		input_map.updateInputs();
+		
+
+		float input_x = 0, input_y = 0;
+		double mouse_x = 0, mouse_y = 0;
+
+		input_map.getMousePos(mouse_x, mouse_y);
+
+		if (up.IsKeyPressed()) {
+			input_y = input_velocity;
+		}
+
+		if (down.IsKeyPressed()) {
+			input_y = -input_velocity;
+		}
+
+		if (left.IsKeyPressed()) {
+			input_x = -input_velocity;
+		}
+
+		if (right.IsKeyPressed()) {
+			input_x = input_velocity;
+		}
+
+
+		set_position_system(*component_manager.get_component<RenderComponent>(entities[33]), (float) mouse_x, (float) mouse_y);
+
+		for (int i = 0; i < n_entities; i++) {
+			RenderComponent *aux_render = component_manager.get_component<RenderComponent>(entities[i]);
+			move_system(*aux_render, input_x, input_y);
+
+			render_system(*aux_render);
+		}
 
 		w.swap();
 

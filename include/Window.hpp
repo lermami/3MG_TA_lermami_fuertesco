@@ -31,8 +31,8 @@ public:
 
 private:
   Window(int w, int h, const char* title);
-  GLFWwindow* handle_;
 
+  GLFWwindow* handle_;
   clock_t  currentTime_;
   clock_t  lastTime_;
   float deltaTime_;
