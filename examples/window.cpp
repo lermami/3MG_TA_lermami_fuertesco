@@ -18,7 +18,7 @@ int main(int, char**) {
   if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
-  w.init(0.4, 0.4, 0.4, 1);
+  w.clearColor(0.4, 0.4, 0.4, 1);
 
   if(glewInit() != GLEW_OK) return -1;
 

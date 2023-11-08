@@ -53,7 +53,7 @@ void Buffer::uploadFloatAttribute(unsigned int id, int size, int stride, void* o
 void Buffer::release() {
   if (id_ != -1) {
     glDeleteBuffers(1, &id_);
-    id_ = 0;
+    id_ = -1;
     size_ = 0;
   }
 }

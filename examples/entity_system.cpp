@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <tiny_obj_loader.h>
 
 #include<vector>
 #include<optional>
@@ -7,6 +8,8 @@
 #include<tuple>
 #include<typeinfo>
 #include<stdexcept>
+#include<fstream>
+#include<iostream>
 
 #include "component_manager.hpp"
 #include "Window.hpp"
@@ -16,6 +19,57 @@
 #include "buffer.hpp"
 
 struct ComponentLife {};
+
+std::vector<Vertex> LoadObj(const char* path) {
+	std::vector<Vertex> ret;
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string warning, error;
+
+	bool err = tinyobj::LoadObj(&attrib, &shapes, &materials, &warning, &error, path);
+
+	if (!err) {
+		if (!error.empty()) {
+			std::cout << "Error loading obj: " << error.c_str();
+		}
+	}
+
+	if (!warning.empty()) {
+		std::cout << "Warning loading obj: " << warning.c_str();
+	}
+
+	for (size_t s = 0; s < shapes.size(); s++) {
+		// Loop over faces(polygon)
+		size_t index_offset = 0;
+		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+			int fv = shapes[s].mesh.num_face_vertices[f];
+
+			// Loop over vertices in the face.
+			for (size_t v = 0; v < fv; v++) {
+				Vertex vertex;
+				// access to vertex
+				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+				vertex.x_ = attrib.vertices[3 * idx.vertex_index + 0];
+				vertex.y_ = attrib.vertices[3 * idx.vertex_index + 1];
+				vertex.z_ = attrib.vertices[3 * idx.vertex_index + 2];
+				vertex.nx_ = attrib.normals[3 * idx.normal_index + 0];
+				vertex.ny_ = attrib.normals[3 * idx.normal_index + 1];
+				vertex.nz_ = attrib.normals[3 * idx.normal_index + 2];
+				vertex.u_ = attrib.texcoords[2 * idx.texcoord_index + 0];
+				vertex.v_ = attrib.texcoords[2 * idx.texcoord_index + 1];
+
+				ret.push_back(vertex);
+			}
+			index_offset += fv;
+
+			// per-face material
+			//shapes[s].mesh.material_ids[f];
+		}
+	}
+
+	return ret;
+}
 
 void physics_system(std::vector<std::optional<Position>>& positions, std::vector<std::optional<Physics>>& physics) {
 
@@ -70,7 +124,7 @@ size_t on_click_system(std::vector<std::optional<RenderComponent>>& renders, flo
 	mouse_y = ((mouse_y / 768 * 2) - 1) * -1;
 
 	auto r = renders.begin();
-	size_t e = 1;
+	size_t e = 0;
 
 	for (; r != renders.end(); r++, e++) {
 		if (!r->has_value()) continue;
@@ -117,14 +171,16 @@ int main(int, char**) {
 	if (!maybe_w) return -1;
 
 	auto& w = maybe_w.value();
-	w.init(0.4f, 0.4f, 0.4f, 1.0f);
+	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
 	if (glewInit() != GLEW_OK) return -1;
 
 	ComponentManager component_manager;
 
 	std::vector<size_t> entities;
-	int n_entities = 5000;
+	int n_entities = 2000000;
+
+	std::vector<Vertex> obj_test = LoadObj("../include/obj_test.obj");
 
 	std::string v = ReadFiles("../include/test.vs");
 	std::string f = ReadFiles("../include/test.fs");
@@ -135,6 +191,17 @@ int main(int, char**) {
 	CompileShader(simpleFragment, f.c_str());
 	auto simpleProgram = CreateProgram(simpleVertex, simpleFragment);
 
+	//Create obj entity
+	/*
+	Position tr_pos;
+	tr_pos.x = 0;
+	tr_pos.x = 0;
+	entities.push_back(component_manager.add_entity());
+	auto tr_render = component_manager.get_component<RenderComponent>(entities[0]);
+	init_vertex_system(*tr_render, obj_test, tr_pos, simpleProgram);
+	*/
+
+	//Create n triangles in random position
 	for (int i = 0; i < n_entities; i++) {
 		Position tr_pos;
 
@@ -166,14 +233,13 @@ int main(int, char**) {
 	Input mouse_right_click(input_map, kKey_RightClick);
 
 	double mouse_x = 0, mouse_y = 0;
-		size_t clicked_e = 0;
+	size_t clicked_e = 0;
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		input_map.updateInputs();
-
 
 		float input_x = 0, input_y = 0;
 		double mouse_x = 0, mouse_y = 0;

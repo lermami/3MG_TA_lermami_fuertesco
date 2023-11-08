@@ -35,7 +35,7 @@ void Window::calculateLastTime() {
   lastTime_ = clock();
 }
 
-void Window::init(float r, float g, float b, float a) const {
+void Window::clearColor(float r, float g, float b, float a) const {
   glClearColor(r, g, b, a);
 }
 
