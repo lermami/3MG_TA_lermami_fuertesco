@@ -20,7 +20,7 @@ bool Window::is_done() const {
 }
 
 void Window::swap() {
-  deltaTime_ = currentTime_ - lastTime_;
+  deltaTime_ = (float)(currentTime_ - lastTime_);
 
   glfwPollEvents();
   glfwSwapBuffers(handle_);

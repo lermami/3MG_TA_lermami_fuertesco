@@ -19,7 +19,7 @@ struct Vertex {
 class Triangle {
 public:
   Triangle();
-  Triangle(char* vpath, char* fpath);
+  Triangle(const char* vpath, const char* fpath);
   ~Triangle();
   void move(float x, float y, float z);
   void render();

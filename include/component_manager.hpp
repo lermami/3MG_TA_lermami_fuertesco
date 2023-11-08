@@ -89,6 +89,16 @@ struct ComponentManager {
 		if (!component_opt.has_value()) return nullptr;
 		return &component_opt.value();
 	}
+	
+	template<typename T>
+	std::vector < std::optional<T>>* get_component_list() {
+		assert(component_classes_.size());
+		auto& component_l = *static_cast<component_list<T>*>(component_classes_.find(typeid(T).hash_code())->second.get());
+		auto& component_opt = component_l.components_;
+
+		return &component_opt;
+	}
+	
 
 	size_t add_entity();
 

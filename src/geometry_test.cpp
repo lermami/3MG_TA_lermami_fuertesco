@@ -39,7 +39,7 @@ Triangle::Triangle() {
 
 }
 
-Triangle::Triangle(char* vpath, char* fpath) {
+Triangle::Triangle(const char* vpath, const char* fpath) {
   vertex_[0].position_.translate(-0.5, -0.5, 0);
   vertex_[1].position_.translate(0.5, -0.5, 0);
   vertex_[2].position_.translate(0, 0.5, 0);
