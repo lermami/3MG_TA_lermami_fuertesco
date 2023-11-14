@@ -50,14 +50,14 @@ std::vector<Vertex> LoadObj(const char* path) {
 				Vertex vertex;
 				// access to vertex
 				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-				vertex.x_ = attrib.vertices[3 * idx.vertex_index + 0];
-				vertex.y_ = attrib.vertices[3 * idx.vertex_index + 1];
-				vertex.z_ = attrib.vertices[3 * idx.vertex_index + 2];
-				vertex.nx_ = attrib.normals[3 * idx.normal_index + 0];
-				vertex.ny_ = attrib.normals[3 * idx.normal_index + 1];
-				vertex.nz_ = attrib.normals[3 * idx.normal_index + 2];
-				vertex.u_ = attrib.texcoords[2 * idx.texcoord_index + 0];
-				vertex.v_ = attrib.texcoords[2 * idx.texcoord_index + 1];
+				vertex.x_ = attrib.vertices[3 * (size_t)idx.vertex_index + 0];
+				vertex.y_ = attrib.vertices[3 * (size_t)idx.vertex_index + 1];
+				vertex.z_ = attrib.vertices[3 * (size_t)idx.vertex_index + 2];
+				vertex.nx_ = attrib.normals[3 * (size_t)idx.normal_index + 0];
+				vertex.ny_ = attrib.normals[3 * (size_t)idx.normal_index + 1];
+				vertex.nz_ = attrib.normals[3 * (size_t)idx.normal_index + 2];
+				vertex.u_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 0];
+				vertex.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
 
 				ret.push_back(vertex);
 			}
@@ -178,7 +178,7 @@ int main(int, char**) {
 	ComponentManager component_manager;
 
 	std::vector<size_t> entities;
-	int n_entities = 2000000;
+	int n_entities = 200;
 
 	std::vector<Vertex> obj_test = LoadObj("../include/obj_test.obj");
 
@@ -263,7 +263,7 @@ int main(int, char**) {
 		}
 
 		if (mouse_left_click.IsKeyDown()) {
-			clicked_e = on_click_system(*component_manager.get_component_list<RenderComponent>(), mouse_x, mouse_y);
+			clicked_e = on_click_system(*component_manager.get_component_list<RenderComponent>(), (float)mouse_x, (float)mouse_y);
 		}
 
 		if (mouse_right_click.IsKeyDown()) {
