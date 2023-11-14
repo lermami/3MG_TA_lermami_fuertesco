@@ -4,13 +4,13 @@
 #include <string>
 
 #include "shader_management.hpp"
-
+/*
 Vec3::Vec3() {
   x_ = 0;
   y_ = 0;
   z_ = 0;
 }
-
+  
 void Vec3::translate(float x, float y, float z) {
   x_ += x;
   y_ += y;
@@ -20,15 +20,16 @@ void Vec3::translate(float x, float y, float z) {
 Vec3::~Vec3(){
 
 }
+*/
 
 Triangle::Triangle() {
-  vertex_[0].position_.translate(-0.5, -0.5, 0);
-  vertex_[1].position_.translate(0.5, -0.5, 0);
-  vertex_[2].position_.translate(0, 0.5, 0);
+  vertex_[0].position_ += Vec3(-0.5, -0.5, 0);
+  vertex_[1].position_ += Vec3( 0.5, -0.5, 0 );
+  vertex_[2].position_ += Vec3( 0, 0.5, 0 );
 
-  vertex_[0].colors_.translate(1, 0, 0);
-  vertex_[1].colors_.translate(0, 1, 0);
-  vertex_[2].colors_.translate(0, 0, 1);
+  vertex_[0].colors_ += Vec3( 1, 0, 0);
+  vertex_[1].colors_ += Vec3( 0, 1, 0);
+  vertex_[2].colors_ += Vec3(0, 0, 1);
 
   vertexShader_ = -1;
   fragmentShader_ = -1;
@@ -40,13 +41,13 @@ Triangle::Triangle() {
 }
 
 Triangle::Triangle(const char* vpath, const char* fpath) {
-  vertex_[0].position_.translate(-0.5, -0.5, 0);
-  vertex_[1].position_.translate(0.5, -0.5, 0);
-  vertex_[2].position_.translate(0, 0.5, 0);
+  vertex_[0].position_ += Vec3(-0.5, -0.5, 0);
+  vertex_[1].position_ += Vec3(0.5, -0.5, 0);
+  vertex_[2].position_ += Vec3(0, 0.5, 0);
 
-  vertex_[0].colors_.translate(1, 0, 0);
-  vertex_[1].colors_.translate(0, 1, 0);
-  vertex_[2].colors_.translate(0, 0, 1);
+  vertex_[0].colors_ += Vec3(1, 0, 0);
+  vertex_[1].colors_ += Vec3(0, 1, 0);
+  vertex_[2].colors_ += Vec3(0, 0, 1);
 
   vertexShader_ = -1;
   fragmentShader_ = -1;
@@ -70,9 +71,9 @@ Triangle::Triangle(const char* vpath, const char* fpath) {
 }
 
 void Triangle::move(float x, float y, float z) {
-  vertex_[0].position_.translate(x,y,z);
-  vertex_[1].position_.translate(x,y,z);
-  vertex_[2].position_.translate(x,y,z);
+  vertex_[0].position_ += Vec3(x,y,z);
+  vertex_[1].position_ += Vec3(x,y,z);
+  vertex_[2].position_ += Vec3(x,y,z);
 }
 
 void Triangle::render() {

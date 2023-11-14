@@ -1,4 +1,4 @@
-#include "matrix_3.h"
+#include "matrix_3.hpp"
 
 Mat3::Mat3() {
   m[0] = 0.0f; m[1] = 0.0f; m[2] = 0.0f;

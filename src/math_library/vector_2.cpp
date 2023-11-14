@@ -1,4 +1,4 @@
-#include "vector_2.h"
+#include "vector_2.hpp"
 
 const Vec2 Vec2::down = Vec2(0.0f, -1.0f);
 const Vec2 Vec2::left = Vec2(-1.0f, 0.0f);

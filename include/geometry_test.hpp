@@ -1,5 +1,6 @@
 #include "buffer.hpp"
-
+#include "vector_3.hpp"
+/*
 class Vec3 {
 public:
   Vec3();
@@ -8,7 +9,7 @@ public:
 
 private:
   float x_, y_, z_;
-};
+};*/
 
 struct Vertex {
   Vec3 position_;

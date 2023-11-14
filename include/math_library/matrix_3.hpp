@@ -1,3 +1,4 @@
+#pragma once
 //--------------------------------------------------------------//
 //  Math Library
 //  Matrix 3 Class Definition.
@@ -8,10 +9,9 @@
 //   m6 m7 m8
 //
 //--------------------------------------------------------------//
-#pragma once
 
-#include "vector_2.h"
-#include "vector_3.h"
+#include "vector_2.hpp"
+#include "vector_3.hpp"
 
 class Mat3 {
 public:
