@@ -39,19 +39,23 @@ int main(int, char**) {
     inputMap.updateInputs();
 
     if (up.IsKeyPressed()) {
-      t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
+      //t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
+      t.addSize(0.01f, 0.01f);
     }
 
     if (left.IsKeyPressed()) {
-      t.move(-1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      //t.move(-1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      t.roll(-0.01f);
     }
 
     if (down.IsKeyPressed()) {
-      t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
+      //t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
+      t.addSize(-0.01f, -0.01f);
     }
 
     if (right.IsKeyPressed()) {
-      t.move(1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      //t.move(1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      t.roll(0.01f);
     }
 
     // Draw triangle
