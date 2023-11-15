@@ -3,6 +3,7 @@
 #include<optional>
 #include<cassert>
 #include "buffer.hpp"
+#include "vector_3.hpp"
 
 struct Position {
 	float x, y, z;
@@ -23,8 +24,11 @@ struct Vertex {
 };
 
 struct RenderComponent {
-	Position pos_;
+	Vec3 pos_;
+	Vec3 rot_;
+	Vec3 size_;
 	std::vector<Vertex> vertex_;
+	std::vector<Vertex> transformed_vertex_;
 	Buffer buffer_;
 	unsigned int program_;
 };

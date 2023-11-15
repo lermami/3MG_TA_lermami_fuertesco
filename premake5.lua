@@ -122,5 +122,5 @@ project"EntitySystem"
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
 
 files {
-    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+    "examples/entity_system.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
   }

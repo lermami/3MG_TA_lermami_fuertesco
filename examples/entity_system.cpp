@@ -18,6 +18,8 @@
 #include "shader_management.hpp"
 #include "buffer.hpp"
 
+#include "matrix_4.hpp"
+
 struct ComponentLife {};
 
 std::vector<Vertex> LoadObj(const char* path) {
@@ -99,23 +101,45 @@ void init_render_system(RenderComponent& render) {
 
 }
 
-void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Position& pos, unsigned int program) {
+void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Vec3& pos, Vec3& rot, Vec3& size, unsigned int program) {
 	for (int i = 0; i < v.size(); i++) {
 		render.vertex_.push_back(v[i]);
+		render.transformed_vertex_.push_back(v[i]);
 	}
 
 	render.pos_ = pos;
-	render.buffer_.init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.size_ = size;
+	render.rot_ = rot;
+
+	render.buffer_.init((unsigned)(sizeof(render.transformed_vertex_[0]) * render.transformed_vertex_.size()));
 	render.buffer_.bind(Target::kTarget_Elements);
 	render.program_ = program;
 }
 
-void move_system(RenderComponent& render, float x, float y) {
+void move_system(RenderComponent& render, Vec3 mov) {
 
-	for (auto& v : render.vertex_) {
-		v.x_ += x;
-		v.y_ += y;
+	render.pos_ += mov;
+
+	if (render.pos_.x > 1) {
+		render.pos_.x = -1;
 	}
+
+	if (render.pos_.x < -1) {
+		render.pos_.x = 1;
+	}
+
+	if (render.pos_.y > 1) {
+		render.pos_.y = -1;
+	}
+
+	if (render.pos_.y < -1) {
+		render.pos_.y = 1;
+	}
+
+}
+
+void rotate_system(RenderComponent& render, Vec3 rot) {
+	render.rot_ += rot;
 }
 
 size_t on_click_system(std::vector<std::optional<RenderComponent>>& renders, float mouse_x, float mouse_y) {
@@ -128,10 +152,15 @@ size_t on_click_system(std::vector<std::optional<RenderComponent>>& renders, flo
 
 	for (; r != renders.end(); r++, e++) {
 		if (!r->has_value()) continue;
-		auto& v = r->value().vertex_;
 
-		if (mouse_x > v[0].x_ && mouse_x < v[1].x_ &&
-			mouse_y < v[2].y_ && mouse_y > v[0].y_)
+		//TODO: Add size
+		float x1 = r->value().pos_.x;
+		float x2 = r->value().pos_.x;
+		float y1 = r->value().pos_.y;
+		float y2 = r->value().pos_.y;
+
+		if (mouse_x > x1 && mouse_x < x2 &&
+			mouse_y < y1 && mouse_y > y2)
 			return e;
 
 	}
@@ -139,27 +168,34 @@ size_t on_click_system(std::vector<std::optional<RenderComponent>>& renders, flo
 	return 0;
 }
 
-void set_position_system(RenderComponent& render, float x, float y) {
+void set_position_system(RenderComponent& render, Vec3 pos) {
 
-	x = (x / 1024 * 2) - 1;
-	y = ((y / 768 * 2) - 1) * -1;
-
-	render.vertex_[0].x_ = x - 0.05f;
-	render.vertex_[0].y_ = y - 0.05f;
-
-	render.vertex_[1].x_ = x + 0.05f;
-	render.vertex_[1].y_ = y - 0.05f;
-
-	render.vertex_[2].x_ = x;
-	render.vertex_[2].y_ = y + 0.05f;
+	render.pos_ = pos;
 }
 
 void render_system(RenderComponent& render) {
 
 	glUseProgram(render.program_);
-	render.buffer_.uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
-	render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
-	render.buffer_.uploadFloatAttribute(1, 3, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
+
+	Mat4 m = m.Identity();
+	m = m.Multiply(m.Translate(render.pos_));
+	m = m.Multiply(m.RotateX(render.rot_.x).Multiply(m.RotateY(render.rot_.y).Multiply(m.RotateZ(render.rot_.z))));
+	m = m.Multiply(m.Scale(render.size_));
+
+	for (auto i = 0; i < render.transformed_vertex_.size(); i++) {
+		Vec3 transformed_pos(render.transformed_vertex_[i].x_, render.transformed_vertex_[i].y_, render.transformed_vertex_[i].z_);
+		Vec3 pos(render.vertex_[i].x_, render.vertex_[i].y_, render.vertex_[i].z_);
+		
+		transformed_pos = m.Transform_Mat4_Vec3(m, pos);
+
+		render.transformed_vertex_[i].x_ = transformed_pos.x;
+		render.transformed_vertex_[i].y_ = transformed_pos.y;
+		render.transformed_vertex_[i].z_ = transformed_pos.z;
+	}
+
+	render.buffer_.uploadData(&render.transformed_vertex_[0], (unsigned)(sizeof(render.transformed_vertex_[0]) * render.transformed_vertex_.size()));
+	render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
+	render.buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
@@ -178,7 +214,7 @@ int main(int, char**) {
 	ComponentManager component_manager;
 
 	std::vector<size_t> entities;
-	int n_entities = 200;
+	int n_entities = 100;
 
 	std::vector<Vertex> obj_test = LoadObj("../include/obj_test.obj");
 
@@ -201,25 +237,27 @@ int main(int, char**) {
 	init_vertex_system(*tr_render, obj_test, tr_pos, simpleProgram);
 	*/
 
+	std::vector<Vertex> triangle = {
+		{-0.05f, -0.05f, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0.05f, -0.05f, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+		{0.0f, 0.05f, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+	};
+
 	//Create n triangles in random position
 	for (int i = 0; i < n_entities; i++) {
-		Position tr_pos;
+		Vec3 tr_pos;
 
-		tr_pos.x = (float)((rand() % 300) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 300) - 100) / 100.0f;
+		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
 		tr_pos.z = 0;
 
-		std::vector<Vertex> triangle = {
-			{tr_pos.x - 0.05f, tr_pos.y - 0.05f, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-			{tr_pos.x + 0.05f, tr_pos.y - 0.05f, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-			{tr_pos.x + 0.0f, tr_pos.y + 0.05f, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-		};
+		Vec3 tr_size(2.0f, 2.0f, 2.0f);
+		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
 		entities.push_back(component_manager.add_entity());
 		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
-		init_vertex_system(*tr_render, triangle, tr_pos, simpleProgram);
+		init_vertex_system(*tr_render, triangle, tr_pos, tr_rot, tr_size, simpleProgram);
 	}
-
 
 	//Input Declaration
 	InputMap input_map(w);
@@ -229,6 +267,8 @@ int main(int, char**) {
 	Input down(input_map, kKey_S);
 	Input left(input_map, kKey_A);
 	Input right(input_map, kKey_D);
+	Input rotate_r(input_map, kKey_Q);
+	Input rotate_l(input_map, kKey_E);
 	Input mouse_left_click(input_map, kKey_LeftClick);
 	Input mouse_right_click(input_map, kKey_RightClick);
 
@@ -242,6 +282,7 @@ int main(int, char**) {
 		input_map.updateInputs();
 
 		float input_x = 0, input_y = 0;
+		float rotate = 0;
 		double mouse_x = 0, mouse_y = 0;
 
 		input_map.getMousePos(mouse_x, mouse_y);
@@ -262,6 +303,14 @@ int main(int, char**) {
 			input_x = input_velocity;
 		}
 
+		if (rotate_l.IsKeyPressed()) {
+			rotate = -input_velocity;
+		}
+
+		if (rotate_r.IsKeyPressed()) {
+			rotate = input_velocity;
+		}
+
 		if (mouse_left_click.IsKeyDown()) {
 			clicked_e = on_click_system(*component_manager.get_component_list<RenderComponent>(), (float)mouse_x, (float)mouse_y);
 		}
@@ -271,11 +320,12 @@ int main(int, char**) {
 		}
 
 		if (clicked_e != 0)
-			set_position_system(*component_manager.get_component<RenderComponent>(entities[clicked_e]), (float)mouse_x, (float)mouse_y);
+			set_position_system(*component_manager.get_component<RenderComponent>(entities[clicked_e]), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 
 		for (int i = 0; i < n_entities; i++) {
 			RenderComponent* aux_render = component_manager.get_component<RenderComponent>(entities[i]);
-			move_system(*aux_render, input_x, input_y);
+			move_system(*aux_render, Vec3(input_x, input_y, 0));
+			rotate_system(*aux_render, Vec3(0.0f, 0.0f, rotate));
 
 			render_system(*aux_render);
 		}
