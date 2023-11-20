@@ -116,30 +116,42 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Vec3& p
 	render.program_ = program;
 }
 
-void move_system(RenderComponent& render, Vec3 mov) {
+void move_system(std::vector<std::optional<RenderComponent>>& renders, Vec3 mov) {
 
-	render.pos_ += mov;
+	auto r = renders.begin();
 
-	if (render.pos_.x > 1) {
-		render.pos_.x = -1;
-	}
+	for (; r != renders.end(); r++) {
+		if (!r->has_value()) continue;
+		auto& render = r->value();
+		render.pos_ += mov;
 
-	if (render.pos_.x < -1) {
-		render.pos_.x = 1;
-	}
+		if (render.pos_.x > 1) {
+			render.pos_.x = -1;
+		}
 
-	if (render.pos_.y > 1) {
-		render.pos_.y = -1;
-	}
+		if (render.pos_.x < -1) {
+			render.pos_.x = 1;
+		}
 
-	if (render.pos_.y < -1) {
-		render.pos_.y = 1;
+		if (render.pos_.y > 1) {
+			render.pos_.y = -1;
+		}
+
+		if (render.pos_.y < -1) {
+			render.pos_.y = 1;
+		}
 	}
 
 }
 
-void rotate_system(RenderComponent& render, Vec3 rot) {
-	render.rot_ += rot;
+void rotate_system(std::vector<std::optional<RenderComponent>>& renders, Vec3 rot) {
+	auto r = renders.begin();
+
+	for (; r != renders.end(); r++) {
+		if (!r->has_value()) continue;
+		auto& render = r->value();
+		render.rot_ += rot;
+	}
 }
 
 size_t on_click_system(std::vector<std::optional<RenderComponent>>& renders, float mouse_x, float mouse_y) {
@@ -173,31 +185,38 @@ void set_position_system(RenderComponent& render, Vec3 pos) {
 	render.pos_ = pos;
 }
 
-void render_system(RenderComponent& render) {
+void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 
-	glUseProgram(render.program_);
+	auto r = renders.begin();
 
-	Mat4 m = m.Identity();
-	m = m.Multiply(m.Translate(render.pos_));
-	m = m.Multiply(m.RotateX(render.rot_.x).Multiply(m.RotateY(render.rot_.y).Multiply(m.RotateZ(render.rot_.z))));
-	m = m.Multiply(m.Scale(render.size_));
+	for (; r != renders.end(); r++) {
+		if (!r->has_value()) continue;
+		auto& render = r->value();
 
-	for (auto i = 0; i < render.transformed_vertex_.size(); i++) {
-		Vec3 transformed_pos(render.transformed_vertex_[i].x_, render.transformed_vertex_[i].y_, render.transformed_vertex_[i].z_);
-		Vec3 pos(render.vertex_[i].x_, render.vertex_[i].y_, render.vertex_[i].z_);
-		
-		transformed_pos = m.Transform_Mat4_Vec3(m, pos);
+		glUseProgram(render.program_);
 
-		render.transformed_vertex_[i].x_ = transformed_pos.x;
-		render.transformed_vertex_[i].y_ = transformed_pos.y;
-		render.transformed_vertex_[i].z_ = transformed_pos.z;
+		Mat4 m = m.Identity();
+		m = m.Multiply(m.Translate(render.pos_));
+		m = m.Multiply(m.RotateX(render.rot_.x).Multiply(m.RotateY(render.rot_.y).Multiply(m.RotateZ(render.rot_.z))));
+		m = m.Multiply(m.Scale(render.size_));
+
+		for (auto i = 0; i < render.transformed_vertex_.size(); i++) {
+			Vec3 transformed_pos(render.transformed_vertex_[i].x_, render.transformed_vertex_[i].y_, render.transformed_vertex_[i].z_);
+			Vec3 pos(render.vertex_[i].x_, render.vertex_[i].y_, render.vertex_[i].z_);
+
+			transformed_pos = m.Transform_Mat4_Vec3(m, pos);
+
+			render.transformed_vertex_[i].x_ = transformed_pos.x;
+			render.transformed_vertex_[i].y_ = transformed_pos.y;
+			render.transformed_vertex_[i].z_ = transformed_pos.z;
+		}
+
+		render.buffer_.uploadData(&render.transformed_vertex_[0], (unsigned)(sizeof(render.transformed_vertex_[0]) * render.transformed_vertex_.size()));
+		render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
+		render.buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
-
-	render.buffer_.uploadData(&render.transformed_vertex_[0], (unsigned)(sizeof(render.transformed_vertex_[0]) * render.transformed_vertex_.size()));
-	render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
-	render.buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
-
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 int main(int, char**) {
@@ -321,14 +340,9 @@ int main(int, char**) {
 
 		if (clicked_e != 0)
 			set_position_system(*component_manager.get_component<RenderComponent>(entities[clicked_e]), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
-
-		for (int i = 0; i < n_entities; i++) {
-			RenderComponent* aux_render = component_manager.get_component<RenderComponent>(entities[i]);
-			move_system(*aux_render, Vec3(input_x, input_y, 0));
-			rotate_system(*aux_render, Vec3(0.0f, 0.0f, rotate));
-
-			render_system(*aux_render);
-		}
+		move_system(*component_manager.get_component_list<RenderComponent>(), Vec3(input_x, input_y, 0));
+		rotate_system(*component_manager.get_component_list<RenderComponent>(), Vec3(0.0f, 0.0f, rotate));
+		render_system(*component_manager.get_component_list<RenderComponent>());
 
 		w.swap();
 
