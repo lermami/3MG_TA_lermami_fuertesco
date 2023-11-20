@@ -26,10 +26,9 @@ std::vector<Vertex> LoadObj(const char* path) {
 	std::vector<Vertex> ret;
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials;
 	std::string warning, error;
 
-	bool err = tinyobj::LoadObj(&attrib, &shapes, &materials, &warning, &error, path);
+	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
 
 	if (!err) {
 		if (!error.empty()) {
@@ -111,8 +110,8 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Vec3& p
 	render.size_ = size;
 	render.rot_ = rot;
 
-	render.buffer_.init((unsigned)(sizeof(render.transformed_vertex_[0]) * render.transformed_vertex_.size()));
-	render.buffer_.bind(Target::kTarget_Elements);
+	render.buffer_.init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.buffer_.uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
 	render.program_ = program;
 }
 
@@ -189,11 +188,13 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 
 	auto r = renders.begin();
 
+	glUseProgram(r->value().program_);
+	GLint modelMatrixLoc = glGetUniformLocation(r->value().program_, "u_m_matrix");
+
 	for (; r != renders.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& render = r->value();
 
-		glUseProgram(render.program_);
 
 		Mat4 m = m.Identity();
 		m = m.Multiply(m.Translate(render.pos_));
@@ -211,11 +212,13 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 			render.transformed_vertex_[i].z_ = transformed_pos.z;
 		}
 
-		render.buffer_.uploadData(&render.transformed_vertex_[0], (unsigned)(sizeof(render.transformed_vertex_[0]) * render.transformed_vertex_.size()));
+		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
 		render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
 		render.buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//TODO: acabar el draw y crear el buffer de indices
+		//gldrawElements
 	}
 }
 
@@ -247,15 +250,15 @@ int main(int, char**) {
 	auto simpleProgram = CreateProgram(simpleVertex, simpleFragment);
 
 	//Create obj entity
-	/*
-	Position tr_pos;
-	tr_pos.x = 0;
-	tr_pos.x = 0;
+#if 0
+	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
+	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 	entities.push_back(component_manager.add_entity());
 	auto tr_render = component_manager.get_component<RenderComponent>(entities[0]);
-	init_vertex_system(*tr_render, obj_test, tr_pos, simpleProgram);
-	*/
-
+	init_vertex_system(*tr_render, obj_test, obj_pos, obj_rot, obj_size, simpleProgram);
+#else
+	
 	std::vector<Vertex> triangle = {
 		{-0.05f, -0.05f, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0.05f, -0.05f, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
@@ -277,7 +280,8 @@ int main(int, char**) {
 		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
 		init_vertex_system(*tr_render, triangle, tr_pos, tr_rot, tr_size, simpleProgram);
 	}
-
+	
+#endif
 	//Input Declaration
 	InputMap input_map(w);
 	float input_velocity = 0.05f;

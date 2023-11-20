@@ -47,6 +47,7 @@ void Buffer::uploadData(const void* data, unsigned int size) {
 
 void Buffer::uploadFloatAttribute(unsigned int id, int size, int stride, void* offset) {
   glVertexAttribPointer(id, size, GL_FLOAT, GL_FALSE, stride, offset);
+  glBindBuffer(GL_ARRAY_BUFFER, id_);
   glEnableVertexAttribArray(id);
 }
 
