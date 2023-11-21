@@ -30,6 +30,6 @@ public:
 protected:
   unsigned int size_;
   unsigned int id_;
-  std::shared_ptr<const void*> data_;
+  const void* data_;
 
 }; 

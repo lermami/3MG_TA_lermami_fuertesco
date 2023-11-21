@@ -41,13 +41,13 @@ unsigned int Buffer::size() const {
 }
 
 const void* Buffer::get() {
-  return data_.get();
+  return data_;
 }
 
 void Buffer::uploadData(const void* data, unsigned int size) {
   bind(Target::kTarget_VertexData);
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
-  data_ = std::make_shared<const void*>(std::move(data));
+  data_ = data;
 }
 
 void Buffer::uploadFloatAttribute(unsigned int id, int size, int stride, void* offset) {

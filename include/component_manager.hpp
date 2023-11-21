@@ -30,8 +30,8 @@ struct RenderComponent {
 	std::vector<Vertex> vertex_;
 	std::vector<Vertex> transformed_vertex_;
 	std::vector<unsigned> indices_;
-	Buffer elements_buffer_;
-	Buffer order_buffer_;
+	std::shared_ptr<Buffer> elements_buffer_;
+	std::shared_ptr<Buffer> order_buffer_;
 	unsigned int program_;
 };
 

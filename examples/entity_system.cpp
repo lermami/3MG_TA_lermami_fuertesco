@@ -22,8 +22,7 @@
 
 struct ComponentLife {};
 
-std::vector<Vertex> LoadObj(const char* path) {
-	std::vector<Vertex> ret;
+void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::string warning, error;
@@ -48,28 +47,35 @@ std::vector<Vertex> LoadObj(const char* path) {
 
 			// Loop over vertices in the face.
 			for (size_t v = 0; v < fv; v++) {
-				Vertex vertex;
+				Vertex vx;
 				// access to vertex
 				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-				vertex.x_ = attrib.vertices[3 * (size_t)idx.vertex_index + 0];
-				vertex.y_ = attrib.vertices[3 * (size_t)idx.vertex_index + 1];
-				vertex.z_ = attrib.vertices[3 * (size_t)idx.vertex_index + 2];
-				vertex.nx_ = attrib.normals[3 * (size_t)idx.normal_index + 0];
-				vertex.ny_ = attrib.normals[3 * (size_t)idx.normal_index + 1];
-				vertex.nz_ = attrib.normals[3 * (size_t)idx.normal_index + 2];
-				vertex.u_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 0];
-				vertex.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
+				vx.x_ = attrib.vertices[3 * (size_t)idx.vertex_index + 0];
+				vx.y_ = attrib.vertices[3 * (size_t)idx.vertex_index + 1];
+				vx.z_ = attrib.vertices[3 * (size_t)idx.vertex_index + 2];
+				vx.nx_ = attrib.normals[3 * (size_t)idx.normal_index + 0];
+				vx.ny_ = attrib.normals[3 * (size_t)idx.normal_index + 1];
+				vx.nz_ = attrib.normals[3 * (size_t)idx.normal_index + 2];
+				vx.u_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 0];
+				vx.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
 
-				ret.push_back(vertex);
+				vertex.push_back(vx);
 			}
 			index_offset += fv;
 
 			// per-face material
-			//shapes[s].mesh.material_ids[f];
+			shapes[s].mesh.material_ids[f];
+			/*
+			indices.push_back(shapes[s].mesh.indices[f]);
+			indices.push_back(shapes[s].mesh.indices[f]);
+			indices.push_back(shapes[s].mesh.indices[f]);
+			*/
 		}
+
 	}
 
-	return ret;
+	
+
 }
 
 void physics_system(std::vector<std::optional<Position>>& positions, std::vector<std::optional<Physics>>& physics) {
@@ -112,11 +118,13 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::ve
 	render.size_ = size;
 	render.rot_ = rot;
 
-	render.elements_buffer_.init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
-	render.elements_buffer_.uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.elements_buffer_ = std::make_shared<Buffer>();
+	render.elements_buffer_.get()->init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.elements_buffer_.get()->uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
 
-	render.order_buffer_.init(indices_.size());
-	render.order_buffer_.uploadData(&indices_[0], (unsigned)(indices_.size()));
+	render.order_buffer_ = std::make_shared<Buffer>();
+	render.order_buffer_.get()->init(indices_.size());
+	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size()));
 
 	render.program_ = program;
 }
@@ -129,7 +137,7 @@ void move_system(std::vector<std::optional<RenderComponent>>& renders, Vec3 mov)
 		if (!r->has_value()) continue;
 		auto& render = r->value();
 		render.pos_ += mov;
-
+		
 		if (render.pos_.x > 1) {
 			render.pos_.x = -1;
 		}
@@ -145,6 +153,7 @@ void move_system(std::vector<std::optional<RenderComponent>>& renders, Vec3 mov)
 		if (render.pos_.y < -1) {
 			render.pos_.y = 1;
 		}
+		
 	}
 
 }
@@ -194,39 +203,25 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 
 	auto r = renders.begin();
 
-	glUseProgram(r->value().program_);
-	GLint modelMatrixLoc = glGetUniformLocation(r->value().program_, "u_m_matrix");
-
 	for (; r != renders.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& render = r->value();
-
 
 		Mat4 m = m.Identity();
 		m = m.Multiply(m.Translate(render.pos_));
 		m = m.Multiply(m.RotateX(render.rot_.x).Multiply(m.RotateY(render.rot_.y).Multiply(m.RotateZ(render.rot_.z))));
 		m = m.Multiply(m.Scale(render.size_));
+		m = m.Transpose();
 
-		for (auto i = 0; i < render.transformed_vertex_.size(); i++) {
-			Vec3 transformed_pos(render.transformed_vertex_[i].x_, render.transformed_vertex_[i].y_, render.transformed_vertex_[i].z_);
-			Vec3 pos(render.vertex_[i].x_, render.vertex_[i].y_, render.vertex_[i].z_);
-
-			transformed_pos = m.Transform_Mat4_Vec3(m, pos);
-
-			render.transformed_vertex_[i].x_ = transformed_pos.x;
-			render.transformed_vertex_[i].y_ = transformed_pos.y;
-			render.transformed_vertex_[i].z_ = transformed_pos.z;
-		}
-
+		glUseProgram(render.program_);
+		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-		render.elements_buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
-		render.elements_buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 3, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
 
-		//render.order_buffer_.get();
-		//render.order_buffer_.size();
-		std::vector<unsigned> tr_indices = { 0, 1, 2 };
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &tr_indices[0]);
+		auto order_buffer = render.order_buffer_.get();
+		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, order_buffer->get());
 	}
 }
 
@@ -246,7 +241,9 @@ int main(int, char**) {
 	std::vector<size_t> entities;
 	int n_entities = 100;
 
-	std::vector<Vertex> obj_test = LoadObj("../include/obj_test.obj");
+	std::vector<Vertex> obj_test;
+	std::vector<unsigned> obj_indices_test;
+	LoadObj("../include/obj_test.obj", obj_test, obj_indices_test);
 
 	std::string v = ReadFiles("../include/test.vs");
 	std::string f = ReadFiles("../include/test.fs");
@@ -258,13 +255,13 @@ int main(int, char**) {
 	auto simpleProgram = CreateProgram(simpleVertex, simpleFragment);
 
 	//Create obj entity
-#if 0
+#if 1
 	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 	entities.push_back(component_manager.add_entity());
 	auto tr_render = component_manager.get_component<RenderComponent>(entities[0]);
-	init_vertex_system(*tr_render, obj_test, obj_pos, obj_rot, obj_size, simpleProgram);
+	init_vertex_system(*tr_render, obj_test, obj_indices_test, obj_pos, obj_rot, obj_size, simpleProgram);
 #else
 	
 	std::vector<Vertex> triangle = {
