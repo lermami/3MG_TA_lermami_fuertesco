@@ -138,17 +138,20 @@ public:
   void addInput(Input* new_input);
   void updateInputs();
 
-  static void setScroll(InputMap* inputmap, double scroll_x, double scroll_y);
+  void setScroll(double scroll_x, double scroll_y);
+  void getScroll(double& scroll_x, double& scroll_y);
 
   void getMousePos(double &x, double &y);
 
 private:
   std::vector<Input*> inputmap_;
   GLFWwindow* windowHandle_;
+
   static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-  double scroll_x_;
-  double scroll_y_;
+  inline static double scroll_x_;
+  inline static double scroll_y_;
 
   double mouse_x_;
   double mouse_y_;
 };
+

@@ -86,6 +86,20 @@ void InputMap::updateInputs() {
   }
 
   //Scroll
+  if (scroll_x_ > 0) {
+    scroll_x_ -= 0.5;
+  }
+  if (scroll_x_ < 0) {
+    scroll_x_ += 0.5;
+  }
+
+  if (scroll_y_ > 0) {
+    scroll_y_ -= 0.5;
+  }
+  if(scroll_y_ < 0){
+    scroll_y_ += 0.5;
+  }
+
   glfwSetScrollCallback(windowHandle_, scroll_callback);
 
   //Mouse Pos
@@ -97,12 +111,30 @@ void InputMap::getMousePos(double& x, double& y) {
   y = mouse_y_;
 }
 
-void InputMap::setScroll(InputMap* inputmap, double scroll_x, double scroll_y) {
-  inputmap->scroll_x_ = scroll_x;
-  inputmap->scroll_y_ = scroll_y;
+void InputMap::setScroll(double scroll_x, double scroll_y) {
+  scroll_x_ = scroll_x;
+  scroll_y_ = scroll_y;
 }
 
+void InputMap::getScroll(double& scroll_x, double& scroll_y) {
+  scroll_x = scroll_x_;
+  scroll_y = scroll_y_;
+}
+
+
 void InputMap::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
- // setScroll( ,xoffset, yoffset);
+  if ((xoffset > 0 && scroll_x_ > 0) || (xoffset < 0 && scroll_x_ < 0)) {
+    scroll_x_ += xoffset;
+  }
+  else {
+    scroll_x_ = 0 + xoffset;
+  }
+
+  if ((yoffset > 0 && scroll_y_ > 0) || (yoffset < 0 && scroll_y_ < 0)) {
+    scroll_y_ += yoffset;
+  }
+  else {
+    scroll_y_ = 0 + yoffset;
+  }
 }
 

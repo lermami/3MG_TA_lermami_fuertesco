@@ -58,6 +58,15 @@ int main(int, char**) {
       t.roll(0.01f);
     }
 
+    double scroll_x = 0, scroll_y = 0;
+    inputMap.getScroll(scroll_x, scroll_y);
+    if (scroll_y > 0) {
+      t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
+    }
+    if (scroll_y < 0) {
+      t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
+    }
+
     // Draw triangle
     t.render();
 
