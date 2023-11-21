@@ -100,7 +100,9 @@ void init_render_system(RenderComponent& render) {
 
 }
 
-void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Vec3& pos, Vec3& rot, Vec3& size, unsigned int program) {
+//TODO: position, rotation and size move to init_transform_component
+void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::vector<unsigned>& indices_, 
+	Vec3& pos, Vec3& rot, Vec3& size, unsigned int program) {
 	for (int i = 0; i < v.size(); i++) {
 		render.vertex_.push_back(v[i]);
 		render.transformed_vertex_.push_back(v[i]);
@@ -110,8 +112,12 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, Vec3& p
 	render.size_ = size;
 	render.rot_ = rot;
 
-	render.buffer_.init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
-	render.buffer_.uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.elements_buffer_.init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.elements_buffer_.uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+
+	render.order_buffer_.init(indices_.size());
+	render.order_buffer_.uploadData(&indices_[0], (unsigned)(indices_.size()));
+
 	render.program_ = program;
 }
 
@@ -214,11 +220,13 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-		render.buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
-		render.buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
+		render.elements_buffer_.uploadFloatAttribute(0, 3, sizeof(render.transformed_vertex_[0]), (void*)0);
+		render.elements_buffer_.uploadFloatAttribute(1, 3, sizeof(render.transformed_vertex_[0]), (void*)(3 * sizeof(float)));
 
-		//TODO: acabar el draw y crear el buffer de indices
-		//gldrawElements
+		//render.order_buffer_.get();
+		//render.order_buffer_.size();
+		std::vector<unsigned> tr_indices = { 0, 1, 2 };
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, &tr_indices[0]);
 	}
 }
 
@@ -265,6 +273,8 @@ int main(int, char**) {
 		{0.0f, 0.05f, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
 	};
 
+	std::vector<unsigned> tr_indices = { 0, 1, 2 };
+
 	//Create n triangles in random position
 	for (int i = 0; i < n_entities; i++) {
 		Vec3 tr_pos;
@@ -278,7 +288,7 @@ int main(int, char**) {
 
 		entities.push_back(component_manager.add_entity());
 		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
-		init_vertex_system(*tr_render, triangle, tr_pos, tr_rot, tr_size, simpleProgram);
+		init_vertex_system(*tr_render, triangle, tr_indices, tr_pos, tr_rot, tr_size, simpleProgram);
 	}
 	
 #endif

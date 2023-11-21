@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 enum Target {
   kTarget_VertexData,
@@ -18,6 +19,8 @@ public:
 
   unsigned int size() const;
   
+  const void* get();
+
   void uploadData(const void* data, unsigned int size);
 
   void uploadFloatAttribute(unsigned int id, int size, int stride, void* offset);
@@ -27,6 +30,6 @@ public:
 protected:
   unsigned int size_;
   unsigned int id_;
-  
+  std::shared_ptr<const void*> data_;
 
 }; 

@@ -29,7 +29,9 @@ struct RenderComponent {
 	Vec3 size_;
 	std::vector<Vertex> vertex_;
 	std::vector<Vertex> transformed_vertex_;
-	Buffer buffer_;
+	std::vector<unsigned> indices_;
+	Buffer elements_buffer_;
+	Buffer order_buffer_;
 	unsigned int program_;
 };
 
