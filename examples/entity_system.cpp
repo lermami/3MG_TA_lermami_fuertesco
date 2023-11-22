@@ -60,21 +60,17 @@ void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 				vx.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
 
 				vertex.push_back(vx);
+				indices.push_back(static_cast<unsigned int>(indices.size()));
 			}
 			index_offset += fv;
 
 			// per-face material
 			shapes[s].mesh.material_ids[f];
-			/*
-			indices.push_back(shapes[s].mesh.indices[f]);
-			indices.push_back(shapes[s].mesh.indices[f]);
-			indices.push_back(shapes[s].mesh.indices[f]);
-			*/
 		}
 
 	}
 
-	
+
 
 }
 
@@ -107,7 +103,7 @@ void init_render_system(RenderComponent& render) {
 }
 
 //TODO: position, rotation and size move to init_transform_component
-void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::vector<unsigned>& indices_, 
+void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::vector<unsigned>& indices_,
 	Vec3& pos, Vec3& rot, Vec3& size, unsigned int program) {
 	for (int i = 0; i < v.size(); i++) {
 		render.vertex_.push_back(v[i]);
@@ -121,10 +117,12 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::ve
 	render.elements_buffer_ = std::make_shared<Buffer>();
 	render.elements_buffer_.get()->init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
 	render.elements_buffer_.get()->uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
-
-	render.order_buffer_ = std::make_shared<Buffer>();
-	render.order_buffer_.get()->init(indices_.size());
-	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size()));
+	
+	if (indices_.size() > 0) {
+		render.order_buffer_ = std::make_shared<Buffer>();
+		render.order_buffer_.get()->init(indices_.size());
+		render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size()));
+	}
 
 	render.program_ = program;
 }
@@ -137,23 +135,6 @@ void move_system(std::vector<std::optional<RenderComponent>>& renders, Vec3 mov)
 		if (!r->has_value()) continue;
 		auto& render = r->value();
 		render.pos_ += mov;
-		
-		if (render.pos_.x > 1) {
-			render.pos_.x = -1;
-		}
-
-		if (render.pos_.x < -1) {
-			render.pos_.x = 1;
-		}
-
-		if (render.pos_.y > 1) {
-			render.pos_.y = -1;
-		}
-
-		if (render.pos_.y < -1) {
-			render.pos_.y = 1;
-		}
-		
 	}
 
 }
@@ -243,7 +224,7 @@ int main(int, char**) {
 
 	std::vector<Vertex> obj_test;
 	std::vector<unsigned> obj_indices_test;
-	LoadObj("../include/obj_test.obj", obj_test, obj_indices_test);
+	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
 
 	std::string v = ReadFiles("../include/test.vs");
 	std::string f = ReadFiles("../include/test.fs");
@@ -258,12 +239,12 @@ int main(int, char**) {
 #if 1
 	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-	Vec3 obj_size(1.0f, 1.0f, 1.0f);
+	Vec3 obj_size(0.5f, 0.5f, 0.5f);
 	entities.push_back(component_manager.add_entity());
 	auto tr_render = component_manager.get_component<RenderComponent>(entities[0]);
 	init_vertex_system(*tr_render, obj_test, obj_indices_test, obj_pos, obj_rot, obj_size, simpleProgram);
 #else
-	
+
 	std::vector<Vertex> triangle = {
 		{-0.05f, -0.05f, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0.05f, -0.05f, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
@@ -287,7 +268,7 @@ int main(int, char**) {
 		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
 		init_vertex_system(*tr_render, triangle, tr_indices, tr_pos, tr_rot, tr_size, simpleProgram);
 	}
-	
+
 #endif
 	//Input Declaration
 	InputMap input_map(w);
@@ -352,7 +333,7 @@ int main(int, char**) {
 		if (clicked_e != 0)
 			set_position_system(*component_manager.get_component<RenderComponent>(entities[clicked_e]), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		move_system(*component_manager.get_component_list<RenderComponent>(), Vec3(input_x, input_y, 0));
-		rotate_system(*component_manager.get_component_list<RenderComponent>(), Vec3(0.0f, 0.0f, rotate));
+		rotate_system(*component_manager.get_component_list<RenderComponent>(), Vec3(0.0f, rotate, 0.0f));
 		render_system(*component_manager.get_component_list<RenderComponent>());
 
 		w.swap();
