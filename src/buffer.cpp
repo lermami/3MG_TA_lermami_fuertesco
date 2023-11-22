@@ -40,7 +40,7 @@ unsigned int Buffer::size() const {
   return size_;
 }
 
-const void* Buffer::get() {
+const void* Buffer::data() {
   return data_;
 }
 

@@ -69,9 +69,6 @@ void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 		}
 
 	}
-
-
-
 }
 
 void physics_system(std::vector<std::optional<Position>>& positions, std::vector<std::optional<Physics>>& physics) {
@@ -107,7 +104,6 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::ve
 	Vec3& pos, Vec3& rot, Vec3& size, unsigned int program) {
 	for (int i = 0; i < v.size(); i++) {
 		render.vertex_.push_back(v[i]);
-		render.transformed_vertex_.push_back(v[i]);
 	}
 
 	render.pos_ = pos;
@@ -118,13 +114,30 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, std::ve
 	render.elements_buffer_.get()->init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
 	render.elements_buffer_.get()->uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
 	
-	if (indices_.size() > 0) {
-		render.order_buffer_ = std::make_shared<Buffer>();
-		render.order_buffer_.get()->init(indices_.size());
-		render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size()));
-	}
+	render.order_buffer_ = std::make_shared<Buffer>();
+	render.order_buffer_.get()->init(indices_.size());
+	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size()));
+
+	/*
+	glGenVertexArrays(1, &render.VAO_);
+	glBindVertexArray(render.VAO_);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(render.vertex_[0]), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	*/
 
 	render.program_ = program;
+}
+
+void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
+	for (auto& v : render.vertex_) {
+		v.r_ = r;
+		v.g_ = g;
+		v.b_ = b;
+		v.a_ = a;
+	}
+
 }
 
 void move_system(std::vector<std::optional<RenderComponent>>& renders, Vec3 mov) {
@@ -198,11 +211,15 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
+		render.elements_buffer_.get()->bind(kTarget_VertexData);
 		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 3, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 4, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
 
 		auto order_buffer = render.order_buffer_.get();
-		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, order_buffer->get());
+		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, order_buffer->data());
+
+		//order_buffer->bind(kTarget_Elements);
+		//glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, (void*)0);
 	}
 }
 
@@ -222,33 +239,12 @@ int main(int, char**) {
 	std::vector<size_t> entities;
 	int n_entities = 100;
 
-	std::vector<Vertex> obj_test;
-	std::vector<unsigned> obj_indices_test;
-	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
-
-	std::string v = ReadFiles("../include/test.vs");
-	std::string f = ReadFiles("../include/test.fs");
-
-	auto simpleVertex = CreateShader(0);
-	CompileShader(simpleVertex, v.c_str());
-	auto simpleFragment = CreateShader(1);
-	CompileShader(simpleFragment, f.c_str());
-	auto simpleProgram = CreateProgram(simpleVertex, simpleFragment);
-
-	//Create obj entity
-#if 1
-	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
-	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-	Vec3 obj_size(0.5f, 0.5f, 0.5f);
-	entities.push_back(component_manager.add_entity());
-	auto tr_render = component_manager.get_component<RenderComponent>(entities[0]);
-	init_vertex_system(*tr_render, obj_test, obj_indices_test, obj_pos, obj_rot, obj_size, simpleProgram);
-#else
+	auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
 
 	std::vector<Vertex> triangle = {
-		{-0.05f, -0.05f, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0.05f, -0.05f, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-		{0.0f, 0.05f, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+		{-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
+		{0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
 	};
 
 	std::vector<unsigned> tr_indices = { 0, 1, 2 };
@@ -256,10 +252,9 @@ int main(int, char**) {
 	//Create n triangles in random position
 	for (int i = 0; i < n_entities; i++) {
 		Vec3 tr_pos;
-
 		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
 		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0;
+		tr_pos.z = 0.0f;
 
 		Vec3 tr_size(2.0f, 2.0f, 2.0f);
 		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
@@ -269,7 +264,18 @@ int main(int, char**) {
 		init_vertex_system(*tr_render, triangle, tr_indices, tr_pos, tr_rot, tr_size, simpleProgram);
 	}
 
-#endif
+	//Create obj entity
+	std::vector<Vertex> obj_test;
+	std::vector<unsigned> obj_indices_test;
+	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
+	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
+	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+	Vec3 obj_size(0.5f, 0.5f, 0.5f);
+	entities.push_back(component_manager.add_entity());
+	auto tr_render = component_manager.get_component<RenderComponent>(entities.back());
+	init_vertex_system(*tr_render, obj_test, obj_indices_test, obj_pos, obj_rot, obj_size, simpleProgram);
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
 	//Input Declaration
 	InputMap input_map(w);
 	float input_velocity = 0.05f;

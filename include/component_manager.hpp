@@ -28,7 +28,6 @@ struct RenderComponent {
 	Vec3 rot_;
 	Vec3 size_;
 	std::vector<Vertex> vertex_;
-	std::vector<Vertex> transformed_vertex_;
 	std::vector<unsigned> indices_;
 	std::shared_ptr<Buffer> elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;

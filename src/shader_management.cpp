@@ -31,13 +31,24 @@ void CompileShader(unsigned int id, const char* src) {
   }
 }
 
-unsigned int CreateProgram(unsigned int vs, unsigned int fs) {
+unsigned int CreateProgram(const char* v, const char* f) {
+  //Read shaders
+  std::string vs = ReadFiles(v);
+  std::string fs = ReadFiles(f);
+
+  //Create opengl shaders
+  auto vertexShader = CreateShader(0);
+  CompileShader(vertexShader, vs.c_str());
+  auto fragmentShader = CreateShader(1);
+  CompileShader(fragmentShader, fs.c_str());
+
+  //Attach and link shaders to program
   unsigned int shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vs);
-  glAttachShader(shaderProgram, fs);
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
   glLinkProgram(shaderProgram);
 
-  // check for linking errors
+  //Check for linking errors
   int success;
   char infoLog[512];
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -46,8 +57,10 @@ unsigned int CreateProgram(unsigned int vs, unsigned int fs) {
     printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n");
     return 0;
   }
-  glDeleteShader(vs);
-  glDeleteShader(fs);
+
+  //Clean shaders
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
 
   return shaderProgram;
 }

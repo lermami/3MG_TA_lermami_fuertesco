@@ -19,7 +19,7 @@ public:
 
   unsigned int size() const;
   
-  const void* get();
+  const void* data();
 
   void uploadData(const void* data, unsigned int size);
 
