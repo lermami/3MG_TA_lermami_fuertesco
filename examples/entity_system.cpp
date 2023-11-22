@@ -42,25 +42,32 @@ void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
 		size_t index_offset = 0;
+
+		for (int i = 0; i < attrib.vertices.size()/3; i++) {
+			Vertex vx;
+			vx.x_ = attrib.vertices[3 * i + 0];
+			vx.y_ = attrib.vertices[3 * i + 1];
+			vx.z_ = attrib.vertices[3 * i + 2];
+			vertex.push_back(vx);
+			/*
+			vx.nx_ = attrib.normals[3 * (size_t)idx.normal_index + 0];
+			vx.ny_ = attrib.normals[3 * (size_t)idx.normal_index + 1];
+			vx.nz_ = attrib.normals[3 * (size_t)idx.normal_index + 2];
+			vx.u_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 0];
+			vx.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
+			*/
+
+		}
+
 		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
 			int fv = shapes[s].mesh.num_face_vertices[f];
 
 			// Loop over vertices in the face.
 			for (size_t v = 0; v < fv; v++) {
-				Vertex vx;
 				// access to vertex
 				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-				vx.x_ = attrib.vertices[3 * (size_t)idx.vertex_index + 0];
-				vx.y_ = attrib.vertices[3 * (size_t)idx.vertex_index + 1];
-				vx.z_ = attrib.vertices[3 * (size_t)idx.vertex_index + 2];
-				vx.nx_ = attrib.normals[3 * (size_t)idx.normal_index + 0];
-				vx.ny_ = attrib.normals[3 * (size_t)idx.normal_index + 1];
-				vx.nz_ = attrib.normals[3 * (size_t)idx.normal_index + 2];
-				vx.u_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 0];
-				vx.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
-
-				vertex.push_back(vx);
-				indices.push_back(static_cast<unsigned int>(indices.size()));
+				
+				indices.push_back(static_cast<unsigned int>(idx.vertex_index));
 			}
 			index_offset += fv;
 
@@ -217,9 +224,6 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders) {
 
 		auto order_buffer = render.order_buffer_.get();
 		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, order_buffer->data());
-
-		//order_buffer->bind(kTarget_Elements);
-		//glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, (void*)0);
 	}
 }
 
