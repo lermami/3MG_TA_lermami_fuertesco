@@ -4,6 +4,7 @@
 #include<cassert>
 #include "buffer.hpp"
 #include "vector_3.hpp"
+#include "matrix_4.hpp"
 
 struct Position {
 	float x, y, z;
@@ -23,10 +24,15 @@ struct Vertex {
 	float u_, v_;
 };
 
-struct RenderComponent {
+struct TransformComponent {
+	Mat4 model_matrix_;
+
 	Vec3 pos_;
 	Vec3 rot_;
 	Vec3 size_;
+};
+
+struct RenderComponent {
 	std::vector<Vertex> vertex_;
 	std::vector<unsigned> indices_;
 	std::shared_ptr<Buffer> elements_buffer_;
@@ -74,6 +80,7 @@ struct ComponentManager {
 
 	ComponentManager() {
 		add_component_class<RenderComponent>();
+		add_component_class<TransformComponent>();
 	}
 
 	template<typename T> void add_component_class() {
