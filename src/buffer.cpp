@@ -40,13 +40,19 @@ unsigned int Buffer::size() const {
   return size_;
 }
 
+const void* Buffer::data() {
+  return data_;
+}
+
 void Buffer::uploadData(const void* data, unsigned int size) {
   bind(Target::kTarget_VertexData);
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+  data_ = data;
 }
 
 void Buffer::uploadFloatAttribute(unsigned int id, int size, int stride, void* offset) {
   glVertexAttribPointer(id, size, GL_FLOAT, GL_FALSE, stride, offset);
+  glBindBuffer(GL_ARRAY_BUFFER, id_);
   glEnableVertexAttribArray(id);
 }
 

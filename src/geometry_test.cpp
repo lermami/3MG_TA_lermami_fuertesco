@@ -64,17 +64,8 @@ Triangle::Triangle(const char* vpath, const char* fpath) {
   b_.init(sizeof(vertex_));
   b_.bind(Target::kTarget_Elements);
 
-  // Shaders
-  std::string v = ReadFiles(vpath);
-  std::string f = ReadFiles(fpath);
-
-  vertexShader_ = CreateShader(0);
-  CompileShader(vertexShader_, v.c_str());
-  fragmentShader_ = CreateShader(1);
-  CompileShader(fragmentShader_, f.c_str());
-
   // Program
-  programShader_ = CreateProgram(vertexShader_, fragmentShader_);
+  programShader_ = CreateProgram(vpath, fpath);
 }
 
 void Triangle::move(float x, float y, float z) {
