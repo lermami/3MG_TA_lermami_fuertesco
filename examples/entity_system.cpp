@@ -120,7 +120,7 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
 	
 	render.order_buffer_ = std::make_shared<Buffer>();
 	render.order_buffer_.get()->init(indices_.size());
-	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size()));
+	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size() * sizeof(unsigned)));
 
 	/*
 	glGenVertexArrays(1, &render.VAO_);
@@ -230,7 +230,9 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		render.elements_buffer_.get()->uploadFloatAttribute(1, 4, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
 
 		auto order_buffer = render.order_buffer_.get();
-		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, order_buffer->data());
+
+		order_buffer->bind(kTarget_Elements);
+		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
 	}
 }
 
