@@ -24,7 +24,7 @@ using namespace std::chrono_literals;
 
 struct ComponentLife {};
 
-void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
+bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::string warning, error;
@@ -51,14 +51,6 @@ void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 			vx.y_ = attrib.vertices[3 * i + 1];
 			vx.z_ = attrib.vertices[3 * i + 2];
 			vertex.push_back(vx);
-			/*
-			vx.nx_ = attrib.normals[3 * (size_t)idx.normal_index + 0];
-			vx.ny_ = attrib.normals[3 * (size_t)idx.normal_index + 1];
-			vx.nz_ = attrib.normals[3 * (size_t)idx.normal_index + 2];
-			vx.u_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 0];
-			vx.v_ = attrib.texcoords[2 * (size_t)idx.texcoord_index + 1];
-			*/
-
 		}
 
 		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
@@ -78,6 +70,8 @@ void LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 		}
 
 	}
+
+	return true;
 }
 
 void physics_system(std::vector<std::optional<Position>>& positions, std::vector<std::optional<Physics>>& physics) {
@@ -240,6 +234,8 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 
 int main(int, char**) {
 	Engine e;
+	ThreadManager thread_manager;
+	ComponentManager component_manager;
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
@@ -249,8 +245,6 @@ int main(int, char**) {
 
 	if (glewInit() != GLEW_OK) return -1;
 
-	ComponentManager component_manager;
-	ThreadManager thread_manager;
 
 	std::vector<size_t> entities;
 	int n_entities = 100;
@@ -283,21 +277,20 @@ int main(int, char**) {
 	}
 
 	//Create obj entity
-	std::vector<std::future<double>> resultado;
+	std::future<bool> obj_ready;
 	std::vector<Vertex> obj_test;
 	std::vector<unsigned> obj_indices_test;
+	
+	/*
+	std::function<bool()> loadobj = [&]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
+	std::future<bool> future = thread_manager.add(loadobj);
+
+	obj_ready = std::move(future);
+	thread_manager.waitFuture(obj_ready);
+	*/
+	
 	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
 
-	//std::function<void()> mycall_double = [obj_test, obj_indices_test]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
-	//std::future<double> future = thread_manager.add(mycall_double);
-
-	//resultado.push_back(std::move(future));
-
-	//thread_manager.waitFuture(resultado[0]);
-	//double num = resultado[0].get();
-	//std::cout << "Resultado: " << num << std::endl;
-
-	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
 	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
 	Vec3 obj_size(0.5f, 0.5f, 0.5f);
@@ -324,6 +317,7 @@ int main(int, char**) {
 
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
+
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
