@@ -27,11 +27,6 @@ int main(int, char**) {
 
   Input inputMap(w);
 
-  Key up(inputMap, Key::kKey_W);
-  Key left(inputMap, Key::kKey_A);
-  Key down(inputMap, Key::kKey_S);
-  Key right(inputMap, Key::kKey_D);
-
   while (!w.is_done()) {
     w.calculateLastTime();
     glClear(GL_COLOR_BUFFER_BIT);
@@ -39,22 +34,22 @@ int main(int, char**) {
     //Inputs
     inputMap.updateInputs();
 
-    if (up.IsKeyPressed()) {
+    if (inputMap.IsKeyPressed('W')) {
       //t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
       t.addSize(0.01f, 0.01f);
     }
 
-    if (left.IsKeyPressed()) {
+    if (inputMap.IsKeyPressed('A')) {
       //t.move(-1.0f * w.getDeltaTime(), 0.0f, 0.0f);
       t.roll(-0.01f);
     }
 
-    if (down.IsKeyPressed()) {
+    if (inputMap.IsKeyPressed('S')) {
       //t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
       t.addSize(-0.01f, -0.01f);
     }
 
-    if (right.IsKeyPressed()) {
+    if (inputMap.IsKeyPressed('D')) {
       //t.move(1.0f * w.getDeltaTime(), 0.0f, 0.0f);
       t.roll(0.01f);
     }
