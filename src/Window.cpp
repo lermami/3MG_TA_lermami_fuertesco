@@ -20,7 +20,7 @@ bool Window::is_done() const {
 }
 
 void Window::swap() {
-  deltaTime_ = currentTime_ - lastTime_;
+  deltaTime_ = (float)(currentTime_ - lastTime_);
 
   glfwPollEvents();
   glfwSwapBuffers(handle_);
@@ -35,7 +35,7 @@ void Window::calculateLastTime() {
   lastTime_ = clock();
 }
 
-void Window::init(float r, float g, float b, float a) const {
+void Window::clearColor(float r, float g, float b, float a) const {
   glClearColor(r, g, b, a);
 }
 
@@ -71,5 +71,6 @@ Window::Window(int w, int h, const char* title) {
   currentTime_ = 0;
   lastTime_ = 0;
   deltaTime_ = 0;
+
 }
 

@@ -18,7 +18,7 @@ public:
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;
   void swap();
-  void init(float r, float g, float b, float a) const;
+  void clearColor(float r, float g, float b, float a) const;
 
   float getDeltaTime();
   void calculateCurrentTime();
@@ -31,8 +31,8 @@ public:
 
 private:
   Window(int w, int h, const char* title);
-  GLFWwindow* handle_;
 
+  GLFWwindow* handle_;
   clock_t  currentTime_;
   clock_t  lastTime_;
   float deltaTime_;

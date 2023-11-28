@@ -10,6 +10,7 @@
 #include "geometry_test.hpp"
 #include "shader_management.hpp"
 #include "thread_manager.hpp"
+#include "buffer.hpp"
 
 int main(int, char**) {
   Engine e;
@@ -18,77 +19,57 @@ int main(int, char**) {
   if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
-  w.init(0.4, 0.4, 0.4, 1);
+  w.clearColor(0.4, 0.4, 0.4, 1);
 
   if(glewInit() != GLEW_OK) return -1;
 
-  Triangle t;
-
-  std::string vertex_shader = ReadFiles("../include/test.vs");
-  std::string fragment_shader = ReadFiles("../include/test.fs");
-
-  // Shaders
-  unsigned int vertexShader = CreateShader(0);
-  CompileShader(vertexShader, vertex_shader.c_str());
-  unsigned int fragmentShader = CreateShader(1);
-  CompileShader(fragmentShader, fragment_shader.c_str());
-  
-  // Program
-  unsigned int shaderProgram = CreateProgram(vertexShader, fragmentShader);
-
-  // Buffers
-  unsigned int VBO, VAO;
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  Triangle t("../include/test.vs", "../include/test.fs");
 
   InputMap inputMap(w);
 
-  Input up(KEY_W);
-  Input left(KEY_A);
-  Input down(KEY_S);
-  Input right(KEY_D);
-
-  inputMap.addInput(&up);
-  inputMap.addInput(&left);
-  inputMap.addInput(&down);
-  inputMap.addInput(&right);
+  Input up(inputMap, Key::kKey_W);
+  Input left(inputMap, Key::kKey_A);
+  Input down(inputMap, Key::kKey_S);
+  Input right(inputMap, Key::kKey_D);
 
   while (!w.is_done()) {
     w.calculateLastTime();
     glClear(GL_COLOR_BUFFER_BIT);
 
+    //Inputs
     inputMap.updateInputs();
 
     if (up.IsKeyPressed()) {
-      t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
+      //t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
+      t.addSize(0.01f, 0.01f);
     }
 
     if (left.IsKeyPressed()) {
-      t.move(-1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      //t.move(-1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      t.roll(-0.01f);
     }
 
     if (down.IsKeyPressed()) {
-      t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
+      //t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
+      t.addSize(-0.01f, -0.01f);
     }
 
     if (right.IsKeyPressed()) {
-      t.move(1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      //t.move(1.0f * w.getDeltaTime(), 0.0f, 0.0f);
+      t.roll(0.01f);
+    }
+
+    double scroll_x = 0, scroll_y = 0;
+    inputMap.getScroll(scroll_x, scroll_y);
+    if (scroll_y > 0) {
+      t.move(0.0f, 1.0f * w.getDeltaTime(), 0.0f);
+    }
+    if (scroll_y < 0) {
+      t.move(0.0f, -1.0f * w.getDeltaTime(), 0.0f);
     }
 
     // Draw triangle
-    glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(t), &t, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    t.render();
 
     w.swap();
 

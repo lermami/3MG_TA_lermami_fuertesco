@@ -58,7 +58,7 @@ workspace "Motor"
   configurations { "Debug", "Release", "RelWithDebInfo" }
   architecture "x64"
   location "build"
-  cppdialect "c++17"
+  cppdialect "c++20"
   startproject "Window"
 
   filter "configurations:Debug"
@@ -81,41 +81,48 @@ workspace "Motor"
 project "Motor"
   kind "StaticLib"
   targetdir "build/%{cfg.buildcfg}"
-  includedirs "include"
+  includedirs {
+		"include", "include/math_library"
+		}
   conan_config_lib()
   pchheader "stdafx.hpp"
   pchsource "src/stdafx.cpp"
   forceincludes { "stdafx.hpp" }
 
   files {
-    "premake5.lua",
-    "src/*", "include/*",
+    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
   }
 
 project"Window"
   kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
-  includedirs "include"
+  includedirs {
+		"include", "include/math_library"
+		}
   conan_config_exec("Debug")
   conan_config_exec("Release")
   conan_config_exec("RelWithDebInfo")
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
   
   files {
-    "examples/window.cpp","src/*", "include/*"
+    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
   }
 
-project"Threads"
+project"EntitySystem"
   kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
-  includedirs "include"
+  includedirs {
+	"include", "include/math_library"
+	}
+
   conan_config_exec("Debug")
   conan_config_exec("Release")
   conan_config_exec("RelWithDebInfo")
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
-  
-  files {
-    "examples/threads.cpp","src/*", "include/*"
+
+files {
+    "examples/entity_system.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+
   }
