@@ -9,6 +9,7 @@
 #include "Input.hpp"
 #include "geometry_test.hpp"
 #include "shader_management.hpp"
+#include "thread_manager.hpp"
 #include "buffer.hpp"
 
 int main(int, char**) {

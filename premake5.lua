@@ -116,6 +116,7 @@ project"EntitySystem"
   includedirs {
 	"include", "include/math_library"
 	}
+
   conan_config_exec("Debug")
   conan_config_exec("Release")
   conan_config_exec("RelWithDebInfo")
@@ -123,4 +124,5 @@ project"EntitySystem"
 
 files {
     "examples/entity_system.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+
   }

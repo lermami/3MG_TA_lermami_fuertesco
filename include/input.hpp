@@ -119,12 +119,7 @@ public:
 
   int getKey() const;
 private:
-  /*
-  0 -> Inactive
-  1 -> Key down
-  2 -> Key pressed
-  3 -> Key up
-  */
+
   unsigned int state_;
   int key_;
 };
