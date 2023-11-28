@@ -313,15 +313,6 @@ int main(int, char**) {
 	InputMap input_map(w);
 	float input_velocity = 0.05f;
 
-	Input up(input_map, kKey_W);
-	Input down(input_map, kKey_S);
-	Input left(input_map, kKey_A);
-	Input right(input_map, kKey_D);
-	Input rotate_r(input_map, kKey_Q);
-	Input rotate_l(input_map, kKey_E);
-	Input mouse_left_click(input_map, kKey_LeftClick);
-	Input mouse_right_click(input_map, kKey_RightClick);
-
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
@@ -337,35 +328,34 @@ int main(int, char**) {
 
 		input_map.getMousePos(mouse_x, mouse_y);
 
-		if (up.IsKeyPressed()) {
+		if (input_map.IsKeyPressed('W')) {
 			input_y = input_velocity;
 		}
-
-		if (down.IsKeyPressed()) {
+		
+		if (input_map.IsKeyPressed('S')) {
 			input_y = -input_velocity;
 		}
-
-		if (left.IsKeyPressed()) {
+		if (input_map.IsKeyPressed('A')) {
 			input_x = -input_velocity;
 		}
 
-		if (right.IsKeyPressed()) {
+		if (input_map.IsKeyPressed('D')) {
 			input_x = input_velocity;
 		}
 
-		if (rotate_l.IsKeyPressed()) {
+		if (input_map.IsKeyPressed('E')) {
 			rotate = -input_velocity;
 		}
 
-		if (rotate_r.IsKeyPressed()) {
+		if (input_map.IsKeyPressed('Q')) {
 			rotate = input_velocity;
 		}
-
-		if (mouse_left_click.IsKeyDown()) {
+		
+		if (input_map.IsKeyDown(kKey_LeftClick)) {
 			clicked_e = on_click_system(*component_manager.get_component_list<TransformComponent>(), (float)mouse_x, (float)mouse_y);
 		}
 
-		if (mouse_right_click.IsKeyDown()) {
+		if (input_map.IsKeyDown(kKey_RightClick)) {
 			clicked_e = 0;
 		}
 

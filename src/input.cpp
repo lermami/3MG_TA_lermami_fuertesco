@@ -2,23 +2,9 @@
 #include "Input.hpp"
 #include "Window.hpp"
 
-Input::Input(InputMap& inputmap, int key) {
-  key_ = key;
-  state_ = 0;
-
-  inputmap.inputmap_.push_back(this);
-}
-
-bool Input::IsKeyDown() {
-  return state_ == InputState::kDown;
-}
-
-bool Input::IsKeyPressed() {
-  return state_ == InputState::kPressed;
-}
-
-bool Input::IsKeyUp() {
-  return state_ == InputState::kUp;
+Input::Input() {
+  key_ = 0;
+  state_ = InputState::kInactive;
 }
 
 void Input::setState(unsigned int state) {
@@ -27,6 +13,10 @@ void Input::setState(unsigned int state) {
 
 unsigned int Input::getState() const {
   return state_;
+}
+
+void Input::setKey(int key) {
+  key_ = key;
 }
 
 int Input::getKey() const {
@@ -40,48 +30,215 @@ InputMap::InputMap(Window& w) {
   scroll_y_ = 0;
   mouse_x_ = 0;
   mouse_y_ = 0;
+
+  //Mouse
+  for (int i = 0; i < 7; i++) {
+    input_[i].setKey(i);
+  }
+
+  //Individuals
+  input_[7].setKey(32);
+  input_[8].setKey(39);
+  input_[9].setKey(44);
+  input_[10].setKey(45);
+  input_[11].setKey(47);
+  input_[47].setKey(91);
+  input_[48].setKey(93);
+  input_[63].setKey(280);
+  input_[64].setKey(281);
+  input_[65].setKey(282);
+  input_[66].setKey(284);
+
+  //Numbers
+  for (int i = 12; i < 22; i++) {
+    input_[i].setKey( 48+(i-12));
+  }
+
+  //Letters
+  for (int i = 22; i < 47; i++) {
+    input_[i].setKey( 65 + (i - 22));
+  }
+
+  //Special keys
+  for (int i = 49; i < 63; i++) {
+    input_[i].setKey( 256 + (i - 49));
+  }
+
+  //F*
+  for (int i = 67; i < 79; i++) {
+    input_[i].setKey( 290 + (i - 67));
+  }
+
+  //Auxiliar keys
+  for (int i = 79; i < 88; i++) {
+    input_[i].setKey( 340 + (i - 79));
+  }
+
 }
 
 InputMap::~InputMap() {
-  inputmap_.clear();
+  
 }
 
-void InputMap::addInput(Input* new_key) {
-  inputmap_.push_back(new_key);
+bool InputMap::IsKeyDown(char key) {
+  int current_state = 0;
+
+  //Get Key
+  if (key >= 32) {
+    current_state = glfwGetKey(windowHandle_, key);
+  }
+  else {
+    current_state = glfwGetMouseButton(windowHandle_, key);
+  }
+
+  //Check Key
+  for(Input i : input_){
+    if (i.getKey() == key) {
+      return i.getState() == InputState::kDown;
+    }
+  }
+
+  return false;
+}
+
+bool InputMap::IsKeyPressed(char key) {
+  int current_state = 0;
+
+  //Get Key
+  if (key >= 32) {
+    current_state = glfwGetKey(windowHandle_, key);
+  }
+  else {
+    current_state = glfwGetMouseButton(windowHandle_, key);
+  }
+
+  //Check Key
+  for (Input i : input_) {
+    if (i.getKey() == key) {
+      return i.getState() == InputState::kPressed;
+    }
+  }
+
+  return false;
+}
+
+bool InputMap::IsKeyUp(char key) {
+  int current_state = 0;
+
+  //Get Key
+  if (key >= 32) {
+    current_state = glfwGetKey(windowHandle_, key);
+  }
+  else {
+    current_state = glfwGetMouseButton(windowHandle_, key);
+  }
+
+  //Check Key
+  for (Input i : input_) {
+    if (i.getKey() == key) {
+      return i.getState() == InputState::kUp;
+    }
+  }
+
+  return false;
+}
+
+
+bool InputMap::IsKeyDown(int key) {
+  int current_state = 0;
+
+  //Get Key
+  if (key >= 32) {
+    current_state = glfwGetKey(windowHandle_, key);
+  }
+  else {
+    current_state = glfwGetMouseButton(windowHandle_, key);
+  }
+
+  //Check Key
+  for (Input i : input_) {
+    if (i.getKey() == key) {
+      return i.getState() == InputState::kDown;
+    }
+  }
+
+  return false;
+}
+
+bool InputMap::IsKeyPressed(int key) {
+  int current_state = 0;
+
+  //Get Key
+  if (key >= 32) {
+    current_state = glfwGetKey(windowHandle_, key);
+  }
+  else {
+    current_state = glfwGetMouseButton(windowHandle_, key);
+  }
+
+  //Check Key
+  for (Input i : input_) {
+    if (i.getKey() == key) {
+      return i.getState() == InputState::kPressed;
+    }
+  }
+
+  return false;
+}
+
+bool InputMap::IsKeyUp(int key) {
+  int current_state = 0;
+
+  //Get Key
+  if (key >= 32) {
+    current_state = glfwGetKey(windowHandle_, key);
+  }
+  else {
+    current_state = glfwGetMouseButton(windowHandle_, key);
+  }
+
+  //Check Key
+  for (Input i : input_) {
+    if (i.getKey() == key) {
+      return i.getState() == InputState::kUp;
+    }
+  }
+
+  return false;
 }
 
 void InputMap::updateInputs() {
-  for (int i = 0; i < inputmap_.size(); i++) {
+  for (int i = 0; i < 88; i++) {
       //Get input's state of last frame
-      int last_state = inputmap_[i]->getState();
+      int last_state = input_[i].getState();
       int current_state = 0;
 
       //Get if input is pressed or not on this frame
-      if (inputmap_[i]->getKey() >= 32) {
-        current_state = glfwGetKey(windowHandle_, inputmap_[i]->getKey());
+      if (input_[i].getKey() >= 32) {
+        current_state = glfwGetKey(windowHandle_, input_[i].getKey());
       }
       else {
-        current_state = glfwGetMouseButton(windowHandle_, inputmap_[i]->getKey());
+        current_state = glfwGetMouseButton(windowHandle_, input_[i].getKey());
       }
 
       //Check key up
       if ((last_state == InputState::kPressed || last_state == InputState::kDown) && current_state == GLFW_RELEASE) {
-        inputmap_[i]->setState(InputState::kUp);
+        input_[i].setState(InputState::kUp);
       }
       else
       //Check key inactive
       if (last_state == InputState::kUp && current_state == GLFW_RELEASE) {
-        inputmap_[i]->setState(InputState::kInactive);
+        input_[i].setState(InputState::kInactive);
       }
       else
       //Check key down
       if (last_state == InputState::kInactive && current_state == GLFW_PRESS) {
-        inputmap_[i]->setState(InputState::kDown);
+        input_[i].setState(InputState::kDown);
       }
       else
       //Check key pressed
       if (last_state == InputState::kDown && current_state == GLFW_PRESS) {
-        inputmap_[i]->setState(InputState::kPressed);
+        input_[i].setState(InputState::kPressed);
       }
   }
 
