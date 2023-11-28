@@ -107,16 +107,13 @@ enum InputState {
 class Input {
 public:
 
-  Input(InputMap& inputmap, int key);
+  Input();
   ~Input() = default;
-
-  bool IsKeyDown();
-  bool IsKeyPressed();
-  bool IsKeyUp();
 
   void setState(unsigned int state);
   unsigned int getState() const;
 
+  void setKey(int key);
   int getKey() const;
 private:
 
@@ -130,7 +127,13 @@ public:
   InputMap(Window& w);
   ~InputMap();
 
-  void addInput(Input* new_input);
+  bool IsKeyDown(char key);
+  bool IsKeyPressed(char key);
+  bool IsKeyUp(char key);
+  bool IsKeyDown(int key);
+  bool IsKeyPressed(int key);
+  bool IsKeyUp(int key);
+
   void updateInputs();
 
   void setScroll(double scroll_x, double scroll_y);
@@ -139,8 +142,8 @@ public:
   void getMousePos(double &x, double &y);
 
 private:
-  std::vector<Input*> inputmap_;
   GLFWwindow* windowHandle_;
+  Input input_[88];
 
   static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
   inline static double scroll_x_;
