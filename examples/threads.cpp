@@ -40,7 +40,6 @@ int* CreateTexture(int w, int h) {
 int main(int, char**) {
   ThreadManager thread_manager;
 
-  /*
   std::vector<std::future<double>> resultado;
   int n_reps = 10000;
 
@@ -54,13 +53,14 @@ int main(int, char**) {
   thread_manager.waitFuture(resultado[0]);
   double num = resultado[0].get();
   std::cout << "Resultado: " << num << std::endl;
-  */
   
+  /*
   std::string key = "Texture";
   std::function<double()> mycall_double = []() { return heavyFunction(0, 1000000); };
   std::future<double> future = thread_manager.addToChain(mycall_double, key);
 
   std::future<double> future2 = thread_manager.addToChain(mycall_double, key);
 
+  */
   return 0;
 }

@@ -15,6 +15,7 @@ public:
 
 	void setStop(bool stop);
 
+	/*
 	template<typename T>
 	std::future<T> addToChain(const std::function<T()>& f, std::string key) {
 		std::shared_ptr<std::packaged_task<T()>> task = std::make_shared<std::packaged_task<T()>>(std::move(f));
@@ -43,6 +44,7 @@ public:
 
 		return future;
 	}
+	*/
 
 	template<typename T> 
 	std::future<T> add(const std::function<T()>& f) {

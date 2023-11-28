@@ -17,6 +17,8 @@
 #include "Input.hpp"
 #include "shader_management.hpp"
 #include "buffer.hpp"
+#include "thread_manager.hpp"
+using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
 
@@ -248,6 +250,7 @@ int main(int, char**) {
 	if (glewInit() != GLEW_OK) return -1;
 
 	ComponentManager component_manager;
+	ThreadManager thread_manager;
 
 	std::vector<size_t> entities;
 	int n_entities = 100;
@@ -280,8 +283,20 @@ int main(int, char**) {
 	}
 
 	//Create obj entity
+	std::vector<std::future<double>> resultado;
 	std::vector<Vertex> obj_test;
 	std::vector<unsigned> obj_indices_test;
+	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
+
+	//std::function<void()> mycall_double = [obj_test, obj_indices_test]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
+	//std::future<double> future = thread_manager.add(mycall_double);
+
+	//resultado.push_back(std::move(future));
+
+	//thread_manager.waitFuture(resultado[0]);
+	//double num = resultado[0].get();
+	//std::cout << "Resultado: " << num << std::endl;
+
 	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
 	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
