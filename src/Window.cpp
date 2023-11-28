@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include "Window.hpp"
 #include <time.h>
 
@@ -67,6 +68,7 @@ Window::Window(Window&& w) : handle_{w.handle_ } {
 Window::Window(int w, int h, const char* title) {
   handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
   glfwMakeContextCurrent(handle_);
+  glewInit();
 
   currentTime_ = 0;
   lastTime_ = 0;

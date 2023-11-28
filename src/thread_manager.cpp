@@ -1,7 +1,7 @@
 #include "thread_manager.hpp"
 
 ThreadManager::ThreadManager() {
-	stop_ = true;
+	stop_ = false;
 
 	auto worker_count = std::thread::hardware_concurrency();
 	for (int i = 0; i != worker_count; i++) {

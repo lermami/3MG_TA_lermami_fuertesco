@@ -243,8 +243,6 @@ int main(int, char**) {
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-	if (glewInit() != GLEW_OK) return -1;
-
 
 	std::vector<size_t> entities;
 	int n_entities = 100;
@@ -277,19 +275,14 @@ int main(int, char**) {
 	}
 
 	//Create obj entity
-	std::future<bool> obj_ready;
 	std::vector<Vertex> obj_test;
 	std::vector<unsigned> obj_indices_test;
-	
-	/*
-	std::function<bool()> loadobj = [&]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
-	std::future<bool> future = thread_manager.add(loadobj);
+	std::future<bool> future;
 
-	obj_ready = std::move(future);
-	thread_manager.waitFuture(obj_ready);
-	*/
-	
-	LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test);
+	std::function<bool()> mycall_double = [&obj_test, &obj_indices_test]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
+	future = thread_manager.add(mycall_double);
+
+	thread_manager.waitFuture(future);
 
 	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);

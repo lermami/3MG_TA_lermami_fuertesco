@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <tiny_obj_loader.h>
 
 #include <optional>
 #include <string>
@@ -16,6 +17,7 @@ using namespace std::chrono_literals;
 #include "geometry_test.hpp"
 #include "shader_management.hpp"
 #include "thread_manager.hpp"
+#include "component_manager.hpp"
 
 double heavyFunction(int id, int iterations) {
   double result = 0.0;
@@ -37,21 +39,74 @@ int* CreateTexture(int w, int h) {
   return t;
 }
 
+bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::string warning, error;
+	std::cout << "a";
+
+	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
+
+	if (!err) {
+		if (!error.empty()) {
+			std::cout << "Error loading obj: " << error.c_str();
+		}
+	}
+
+	if (!warning.empty()) {
+		std::cout << "Warning loading obj: " << warning.c_str();
+	}
+
+	for (size_t s = 0; s < shapes.size(); s++) {
+		// Loop over faces(polygon)
+		size_t index_offset = 0;
+
+		for (int i = 0; i < attrib.vertices.size() / 3; i++) {
+			/*
+			Vertex vx;
+			vx.x_ = attrib.vertices[3 * i + 0];
+			vx.y_ = attrib.vertices[3 * i + 1];
+			vx.z_ = attrib.vertices[3 * i + 2];
+			vertex.push_back(vx);
+			*/
+		}
+
+		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+			int fv = shapes[s].mesh.num_face_vertices[f];
+
+			// Loop over vertices in the face.
+			for (size_t v = 0; v < fv; v++) {
+				// access to vertex
+				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+
+				indices.push_back(static_cast<unsigned int>(idx.vertex_index));
+			}
+			index_offset += fv;
+
+			// per-face material
+			shapes[s].mesh.material_ids[f];
+		}
+
+	}
+
+	return true;
+}
+
 int main(int, char**) {
+	Engine e;
   ThreadManager thread_manager;
+	ComponentManager component_manager;
 
-  std::vector<std::future<double>> resultado;
-  int n_reps = 10000;
+	std::future<bool> future;
 
-  for (int i = 0; i < n_reps; i++) {
-    std::function<double()> mycall_double = [i]() { return heavyFunction(i, 1000000); };
-    std::future<double> future = thread_manager.add(mycall_double);
+	std::vector<Vertex> obj_test;
+	std::vector<unsigned> obj_indices_test;
 
-    resultado.push_back(std::move(future));
-  }
+  std::function<bool()> mycall_double = [&obj_test, &obj_indices_test]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
+  future = thread_manager.add(mycall_double);
 
-  thread_manager.waitFuture(resultado[0]);
-  double num = resultado[0].get();
+  thread_manager.waitFuture(future);
+  double num = future.get();
   std::cout << "Resultado: " << num << std::endl;
   
   /*
