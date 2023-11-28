@@ -105,9 +105,9 @@ enum InputState {
 };
 
 class Input {
+  friend class InputMap;
 public:
 
-  Input();
   ~Input() = default;
 
   void setState(unsigned int state);
@@ -117,12 +117,12 @@ public:
   int getKey() const;
 private:
 
+  Input();
   unsigned int state_;
   int key_;
 };
 
 class InputMap {
-  friend class Input;
 public:
   InputMap(Window& w);
   ~InputMap();
