@@ -2,7 +2,7 @@
 
 #include <vector>
 
-enum Key {
+enum KeyEnum {
   kKey_LeftClick = 0,
   kKey_RightClick,
   kKey_MiddleClick,
@@ -95,7 +95,7 @@ enum Key {
 };
 
 class Window;
-class InputMap;
+class Input;
 
 enum InputState {
   kInactive,
@@ -104,11 +104,11 @@ enum InputState {
   kUp,
 };
 
-class Input {
-  friend class InputMap;
+class Key {
+  friend class Input;
 public:
 
-  ~Input() = default;
+  ~Key() = default;
 
   void setState(unsigned int state);
   unsigned int getState() const;
@@ -117,15 +117,15 @@ public:
   int getKey() const;
 private:
 
-  Input();
+  Key();
   unsigned int state_;
   int key_;
 };
 
-class InputMap {
+class Input {
 public:
-  InputMap(Window& w);
-  ~InputMap();
+  Input(Window& w);
+  ~Input();
 
   bool IsKeyDown(char key);
   bool IsKeyPressed(char key);
@@ -143,7 +143,7 @@ public:
 
 private:
   GLFWwindow* windowHandle_;
-  Input input_[88];
+  Key input_[88];
 
   static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
   inline static double scroll_x_;

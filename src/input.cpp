@@ -2,28 +2,28 @@
 #include "Input.hpp"
 #include "Window.hpp"
 
-Input::Input() {
+Key::Key() {
   key_ = 0;
   state_ = InputState::kInactive;
 }
 
-void Input::setState(unsigned int state) {
+void Key::setState(unsigned int state) {
   state_ = state;
 }
 
-unsigned int Input::getState() const {
+unsigned int Key::getState() const {
   return state_;
 }
 
-void Input::setKey(int key) {
+void Key::setKey(int key) {
   key_ = key;
 }
 
-int Input::getKey() const {
+int Key::getKey() const {
   return key_;
 }
 
-InputMap::InputMap(Window& w) {
+Input::Input(Window& w) {
   windowHandle_ = w.handle_;
 
   scroll_x_ = 0;
@@ -76,11 +76,11 @@ InputMap::InputMap(Window& w) {
 
 }
 
-InputMap::~InputMap() {
+Input::~Input() {
   
 }
 
-bool InputMap::IsKeyDown(char key) {
+bool Input::IsKeyDown(char key) {
   int current_state = 0;
 
   //Get Key
@@ -92,7 +92,7 @@ bool InputMap::IsKeyDown(char key) {
   }
 
   //Check Key
-  for(Input i : input_){
+  for(Key i : input_){
     if (i.getKey() == key) {
       return i.getState() == InputState::kDown;
     }
@@ -101,7 +101,7 @@ bool InputMap::IsKeyDown(char key) {
   return false;
 }
 
-bool InputMap::IsKeyPressed(char key) {
+bool Input::IsKeyPressed(char key) {
   int current_state = 0;
 
   //Get Key
@@ -113,7 +113,7 @@ bool InputMap::IsKeyPressed(char key) {
   }
 
   //Check Key
-  for (Input i : input_) {
+  for (Key i : input_) {
     if (i.getKey() == key) {
       return i.getState() == InputState::kPressed;
     }
@@ -122,7 +122,7 @@ bool InputMap::IsKeyPressed(char key) {
   return false;
 }
 
-bool InputMap::IsKeyUp(char key) {
+bool Input::IsKeyUp(char key) {
   int current_state = 0;
 
   //Get Key
@@ -134,7 +134,7 @@ bool InputMap::IsKeyUp(char key) {
   }
 
   //Check Key
-  for (Input i : input_) {
+  for (Key i : input_) {
     if (i.getKey() == key) {
       return i.getState() == InputState::kUp;
     }
@@ -144,7 +144,7 @@ bool InputMap::IsKeyUp(char key) {
 }
 
 
-bool InputMap::IsKeyDown(int key) {
+bool Input::IsKeyDown(int key) {
   int current_state = 0;
 
   //Get Key
@@ -156,7 +156,7 @@ bool InputMap::IsKeyDown(int key) {
   }
 
   //Check Key
-  for (Input i : input_) {
+  for (Key i : input_) {
     if (i.getKey() == key) {
       return i.getState() == InputState::kDown;
     }
@@ -165,7 +165,7 @@ bool InputMap::IsKeyDown(int key) {
   return false;
 }
 
-bool InputMap::IsKeyPressed(int key) {
+bool Input::IsKeyPressed(int key) {
   int current_state = 0;
 
   //Get Key
@@ -177,7 +177,7 @@ bool InputMap::IsKeyPressed(int key) {
   }
 
   //Check Key
-  for (Input i : input_) {
+  for (Key i : input_) {
     if (i.getKey() == key) {
       return i.getState() == InputState::kPressed;
     }
@@ -186,7 +186,7 @@ bool InputMap::IsKeyPressed(int key) {
   return false;
 }
 
-bool InputMap::IsKeyUp(int key) {
+bool Input::IsKeyUp(int key) {
   int current_state = 0;
 
   //Get Key
@@ -198,7 +198,7 @@ bool InputMap::IsKeyUp(int key) {
   }
 
   //Check Key
-  for (Input i : input_) {
+  for (Key i : input_) {
     if (i.getKey() == key) {
       return i.getState() == InputState::kUp;
     }
@@ -207,7 +207,7 @@ bool InputMap::IsKeyUp(int key) {
   return false;
 }
 
-void InputMap::updateInputs() {
+void Input::updateInputs() {
   for (int i = 0; i < 88; i++) {
       //Get input's state of last frame
       int last_state = input_[i].getState();
@@ -263,23 +263,23 @@ void InputMap::updateInputs() {
   glfwGetCursorPos(windowHandle_, &mouse_x_, &mouse_y_);
 }
 
-void InputMap::getMousePos(double& x, double& y) {
+void Input::getMousePos(double& x, double& y) {
   x = mouse_x_;
   y = mouse_y_;
 }
 
-void InputMap::setScroll(double scroll_x, double scroll_y) {
+void Input::setScroll(double scroll_x, double scroll_y) {
   scroll_x_ = scroll_x;
   scroll_y_ = scroll_y;
 }
 
-void InputMap::getScroll(double& scroll_x, double& scroll_y) {
+void Input::getScroll(double& scroll_x, double& scroll_y) {
   scroll_x = scroll_x_;
   scroll_y = scroll_y_;
 }
 
 
-void InputMap::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+void Input::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
   if ((xoffset > 0 && scroll_x_ > 0) || (xoffset < 0 && scroll_x_ < 0)) {
     scroll_x_ += xoffset;
   }

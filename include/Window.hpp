@@ -13,7 +13,7 @@ class Engine;
 
 class Window {
 public:
-  friend class InputMap;
+  friend class Input;
 
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;

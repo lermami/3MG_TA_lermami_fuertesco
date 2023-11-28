@@ -25,12 +25,12 @@ int main(int, char**) {
 
   Triangle t("../include/test.vs", "../include/test.fs");
 
-  InputMap inputMap(w);
+  Input inputMap(w);
 
-  Input up(inputMap, Key::kKey_W);
-  Input left(inputMap, Key::kKey_A);
-  Input down(inputMap, Key::kKey_S);
-  Input right(inputMap, Key::kKey_D);
+  Key up(inputMap, Key::kKey_W);
+  Key left(inputMap, Key::kKey_A);
+  Key down(inputMap, Key::kKey_S);
+  Key right(inputMap, Key::kKey_D);
 
   while (!w.is_done()) {
     w.calculateLastTime();

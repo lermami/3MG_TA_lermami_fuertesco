@@ -303,7 +303,7 @@ int main(int, char**) {
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
 	//Input Declaration
-	InputMap input_map(w);
+	Input input_map(w);
 	float input_velocity = 0.05f;
 
 	double mouse_x = 0, mouse_y = 0;
