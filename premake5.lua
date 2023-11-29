@@ -100,13 +100,15 @@ project"Window"
   includedirs {
 		"include", "include/math_library"
 		}
+  links "Motor"
+
   conan_config_exec("Debug")
   conan_config_exec("Release")
   conan_config_exec("RelWithDebInfo")
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
   
   files {
-    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+    "examples/window.cpp"
   }
 
 project"EntitySystem"
@@ -116,6 +118,7 @@ project"EntitySystem"
   includedirs {
 	"include", "include/math_library"
 	}
+  links "Motor"
 
   conan_config_exec("Debug")
   conan_config_exec("Release")
@@ -123,7 +126,7 @@ project"EntitySystem"
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
 
 files {
-    "examples/entity_system.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+    "examples/entity_system.cpp"
 
   }
 
@@ -134,6 +137,7 @@ project"Threads"
   includedirs {
   "include", "include/math_library"
   }
+  links "Motor"
 
   conan_config_exec("Debug")
   conan_config_exec("Release")
@@ -141,5 +145,5 @@ project"Threads"
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
 
   files {
-    "examples/threads.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+    "examples/threads.cpp"
   }

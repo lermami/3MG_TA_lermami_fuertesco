@@ -22,8 +22,6 @@ using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
 
-struct ComponentLife {};
-
 bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
@@ -74,35 +72,6 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 	return true;
 }
 
-void physics_system(std::vector<std::optional<Position>>& positions, std::vector<std::optional<Physics>>& physics) {
-
-	auto p = positions.begin();
-	auto ph = physics.begin();
-	for (; p != positions.end(); p++, ph++) {
-		if (!p->has_value() || !ph->has_value()) continue;
-		auto& pv = p->value();
-		auto& phv = ph->value();
-
-		// Fisica dura
-
-	}
-	assert(ph == physics.end());
-}
-
-void initialize_position_system(Position& pos, float x, float y) {
-	pos.x = x;
-	pos.y = y;
-}
-
-void print_position_system(size_t n, Position& pos) {
-	printf("Entity %zu: X: %f Y: %f\n", n, pos.x, pos.y);
-}
-
-void init_render_system(RenderComponent& render) {
-
-}
-
-//TODO: position, rotation and size move to init_transform_component
 void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, 
 												std::vector<unsigned>& indices_, unsigned int program) {
 
@@ -130,10 +99,10 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
 	render.program_ = program;
 }
 
-void init_transform_system(TransformComponent& transfrom, Vec3& pos, Vec3& rot, Vec3& size) {
-	transfrom.pos_ = pos;
-	transfrom.size_ = size;
-	transfrom.rot_ = rot;
+void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size) {
+	transform.pos_ = pos;
+	transform.size_ = size;
+	transform.rot_ = rot;
 }
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
@@ -146,11 +115,11 @@ void init_color_system(RenderComponent& render, float r, float g, float b, float
 
 }
 
-void move_system(std::vector<std::optional<TransformComponent>>& transfroms, Vec3 mov) {
+void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
 
-	auto r = transfroms.begin();
+	auto r = transforms.begin();
 
-	for (; r != transfroms.end(); r++) {
+	for (; r != transforms.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& transfrom = r->value();
 		transfrom.pos_ += mov;
@@ -158,25 +127,25 @@ void move_system(std::vector<std::optional<TransformComponent>>& transfroms, Vec
 
 }
 
-void rotate_system(std::vector<std::optional<TransformComponent>>& transfroms, Vec3 rot) {
-	auto r = transfroms.begin();
+void rotate_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 rot) {
+	auto r = transforms.begin();
 
-	for (; r != transfroms.end(); r++) {
+	for (; r != transforms.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& transfrom = r->value();
 		transfrom.rot_ += rot;
 	}
 }
 
-size_t on_click_system(std::vector<std::optional<TransformComponent>>& transfroms, float mouse_x, float mouse_y) {
+size_t on_click_system(std::vector<std::optional<TransformComponent>>& transforms, float mouse_x, float mouse_y) {
 
 	mouse_x = (mouse_x / 1024 * 2) - 1;
 	mouse_y = ((mouse_y / 768 * 2) - 1) * -1;
 
-	auto r = transfroms.begin();
+	auto r = transforms.begin();
 	size_t e = 0;
 
-	for (; r != transfroms.end(); r++, e++) {
+	for (; r != transforms.end(); r++, e++) {
 		if (!r->has_value()) continue;
 
 		//TODO: Add size
@@ -199,17 +168,17 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& trasforms) {
+void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
 
 	auto r = renders.begin();
-	auto t = trasforms.begin();
+	auto t = transforms.begin();
 
 	for (; r != renders.end(); r++ , t++) {
 		if (!r->has_value() && !t->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
 
-		Mat4 m = transform.model_matrix_;
+		Mat4& m = transform.model_matrix_;
 
 		m = m.Identity();
 		m = m.Multiply(m.Translate(transform.pos_));
@@ -226,7 +195,6 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		render.elements_buffer_.get()->uploadFloatAttribute(1, 4, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
 
 		auto order_buffer = render.order_buffer_.get();
-
 		order_buffer->bind(kTarget_Elements);
 		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
 	}
@@ -243,11 +211,11 @@ int main(int, char**) {
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-
 	std::vector<size_t> entities;
-	int n_entities = 100;
-
 	auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
+	
+	//Create n triangles in random position
+	int n_triangles = 100;
 
 	std::vector<Vertex> triangle = {
 		{-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
@@ -257,8 +225,7 @@ int main(int, char**) {
 
 	std::vector<unsigned> tr_indices = { 0, 1, 2 };
 
-	//Create n triangles in random position
-	for (int i = 0; i < n_entities; i++) {
+	for (int i = 0; i < n_triangles; i++) {
 		Vec3 tr_pos;
 		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
 		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
@@ -301,7 +268,6 @@ int main(int, char**) {
 
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
-
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
