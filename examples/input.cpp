@@ -8,6 +8,7 @@
 #include "shader_management.hpp"
 #include "buffer.hpp"
 #include "default_systems.hpp"
+#include "input.hpp"
 #include "component_manager.hpp"
 
 int main(int, char**) {
@@ -44,12 +45,49 @@ int main(int, char**) {
   init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram);
 
 
+  Input input_map(w);
+  float input_velocity = 0.05f;
+
   while (!w.is_done()) {
     w.calculateLastTime();
     glClear(GL_COLOR_BUFFER_BIT);
 
+    //Inputs
+    input_map.updateInputs();
+
+    float input_x = 0, input_y = 0;
+    float rotate = 0;
+    double mouse_x = 0, mouse_y = 0;
+
+    input_map.getMousePos(mouse_x, mouse_y);
+
+    if (input_map.IsKeyPressed('W')) {
+      input_y = input_velocity;
+    }
+
+    if (input_map.IsKeyPressed('S')) {
+      input_y = -input_velocity;
+    }
+    if (input_map.IsKeyPressed('A')) {
+      input_x = -input_velocity;
+    }
+
+    if (input_map.IsKeyPressed('D')) {
+      input_x = input_velocity;
+    }
+
+    if (input_map.IsKeyPressed('E')) {
+      rotate = -input_velocity;
+    }
+
+    if (input_map.IsKeyPressed('Q')) {
+      rotate = input_velocity;
+    }
+
 
     // Draw triangle
+    move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
+    rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, 0.0f, rotate));
     render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
     w.swap();

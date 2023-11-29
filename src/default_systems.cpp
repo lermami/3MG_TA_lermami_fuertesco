@@ -72,19 +72,19 @@ size_t on_click_system(std::vector<std::optional<TransformComponent>>& transform
 	mouse_y = ((mouse_y / 768 * 2) - 1) * -1;
 
 	auto r = transforms.begin();
-	size_t e = 0;
+	size_t e = 1;
 
 	for (; r != transforms.end(); r++, e++) {
 		if (!r->has_value()) continue;
 
 		//TODO: Add size
-		float x1 = r->value().pos_.x;
-		float x2 = r->value().pos_.x;
-		float y1 = r->value().pos_.y;
-		float y2 = r->value().pos_.y;
+		float x1 = r->value().pos_.x - r->value().size_.x;
+		float x2 = r->value().pos_.x + r->value().size_.x;
+		float y1 = r->value().pos_.y - r->value().size_.y;
+		float y2 = r->value().pos_.y + r->value().size_.y;
 
 		if (mouse_x > x1 && mouse_x < x2 &&
-			mouse_y < y1 && mouse_y > y2)
+			mouse_y > y1 && mouse_y < y2)
 			return e;
 
 	}
@@ -93,6 +93,8 @@ size_t on_click_system(std::vector<std::optional<TransformComponent>>& transform
 }
 
 void set_position_system(TransformComponent& transform, Vec3 pos) {
+	pos.x = (pos.x / 1024 * 2) - 1;
+	pos.y = ((pos.y / 768 * 2) - 1) * -1;
 
 	transform.pos_ = pos;
 }

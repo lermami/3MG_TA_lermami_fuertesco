@@ -44,7 +44,7 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 		// Loop over faces(polygon)
 		size_t index_offset = 0;
 
-		for (int i = 0; i < attrib.vertices.size()/3; i++) {
+		for (int i = 0; i < attrib.vertices.size() / 3; i++) {
 			Vertex vx;
 			vx.x_ = attrib.vertices[3 * i + 0];
 			vx.y_ = attrib.vertices[3 * i + 1];
@@ -59,7 +59,7 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 			for (size_t v = 0; v < fv; v++) {
 				// access to vertex
 				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-				
+
 				indices.push_back(static_cast<unsigned int>(idx.vertex_index));
 			}
 			index_offset += fv;
@@ -72,6 +72,7 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 
 	return true;
 }
+
 
 int main(int, char**) {
 	Engine e;
@@ -86,33 +87,6 @@ int main(int, char**) {
 
 	std::vector<size_t> entities;
 	auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
-	
-	//Create n triangles in random position
-	int n_triangles = 100;
-
-	std::vector<Vertex> triangle = {
-		{-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-		{0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-		{0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-	};
-
-	std::vector<unsigned> tr_indices = { 0, 1, 2 };
-
-	for (int i = 0; i < n_triangles; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
-
-		Vec3 tr_size(2.0f, 2.0f, 2.0f);
-		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
-
-		entities.push_back(component_manager.add_entity());
-		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
-		auto tr_transform = component_manager.get_component<TransformComponent>(entities[i]);
-		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-		init_vertex_system(*tr_render, triangle, tr_indices, simpleProgram);
-	}
 
 	//Create obj entity
 	std::vector<Vertex> obj_test;
@@ -124,16 +98,25 @@ int main(int, char**) {
 
 	thread_manager.waitFuture(future);
 
-	Vec3 obj_pos(0.0f, 0.0f, 0.0f);
-	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-	Vec3 obj_size(0.5f, 0.5f, 0.5f);
-	entities.push_back(component_manager.add_entity());
-	auto tr_render = component_manager.get_component<RenderComponent>(entities.back());
-	auto tr_transform = component_manager.get_component<TransformComponent>(entities.back());
+	unsigned n_obj = 533;
 
-	init_transform_system(*tr_transform, obj_pos, obj_rot, obj_size);
-	init_vertex_system(*tr_render, obj_test, obj_indices_test, simpleProgram);
-	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+	for (unsigned i = 0; i < n_obj; i++) {
+		Vec3 tr_pos;
+		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.z = 0.0f;
+
+		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+		Vec3 obj_size(0.05f, 0.05f, 0.05f);
+
+		entities.push_back(component_manager.add_entity());
+		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
+		auto tr_transform = component_manager.get_component<TransformComponent>(entities[i]);
+
+		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+		init_vertex_system(*tr_render, obj_test, obj_indices_test, simpleProgram);
+		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+	}
 
 	//Input Declaration
 	Input input_map(w);
@@ -157,7 +140,7 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('W')) {
 			input_y = input_velocity;
 		}
-		
+
 		if (input_map.IsKeyPressed('S')) {
 			input_y = -input_velocity;
 		}
@@ -176,17 +159,17 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('Q')) {
 			rotate = input_velocity;
 		}
-		
+
 		if (input_map.IsKeyDown(kKey_LeftClick)) {
 			clicked_e = on_click_system(*component_manager.get_component_list<TransformComponent>(), (float)mouse_x, (float)mouse_y);
 		}
 
-		if (input_map.IsKeyDown(kKey_RightClick)) {
+		if (input_map.IsKeyUp(kKey_LeftClick)) {
 			clicked_e = 0;
 		}
 
 		if (clicked_e != 0)
-			set_position_system(*component_manager.get_component<TransformComponent>(entities[clicked_e]), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
+			set_position_system(*component_manager.get_component<TransformComponent>(entities[clicked_e - 1]), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
 		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());

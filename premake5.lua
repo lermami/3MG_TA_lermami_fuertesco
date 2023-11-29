@@ -129,7 +129,25 @@ project"Triangle"
     "examples/triangle.cpp"
   }
 
-project"EntitySystem"
+project"Input"
+  kind "ConsoleApp"
+  language "C++"
+  targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+  includedirs {
+		"include", "include/math_library"
+		}
+  links "Motor"
+
+  conan_config_exec("Debug")
+  conan_config_exec("Release")
+  conan_config_exec("RelWithDebInfo")
+  debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
+  
+  files {
+    "examples/input.cpp"
+  }
+
+project"Triangle Many"
   kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
@@ -144,17 +162,17 @@ project"EntitySystem"
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
 
 files {
-    "examples/entity_system.cpp"
+    "examples/triangle_many.cpp"
 
   }
 
-project"Threads"
+project"Obj Many"
   kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-  "include", "include/math_library"
-  }
+	"include", "include/math_library"
+	}
   links "Motor"
 
   conan_config_exec("Debug")
@@ -162,6 +180,7 @@ project"Threads"
   conan_config_exec("RelWithDebInfo")
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
 
-  files {
-    "examples/threads.cpp"
+files {
+    "examples/obj_many.cpp"
+
   }
