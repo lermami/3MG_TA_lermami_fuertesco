@@ -111,6 +111,24 @@ project"Window"
     "examples/window.cpp"
   }
 
+project"Triangle"
+  kind "ConsoleApp"
+  language "C++"
+  targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+  includedirs {
+		"include", "include/math_library"
+		}
+  links "Motor"
+
+  conan_config_exec("Debug")
+  conan_config_exec("Release")
+  conan_config_exec("RelWithDebInfo")
+  debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
+  
+  files {
+    "examples/triangle.cpp"
+  }
+
 project"EntitySystem"
   kind "ConsoleApp"
   language "C++"
