@@ -12,7 +12,6 @@
 #include<iostream>
 
 #include "component_manager.hpp"
-#include "gpu_manager.hpp"
 #include "Window.hpp"
 #include "Engine.hpp"
 #include "Input.hpp"
@@ -22,8 +21,6 @@
 using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
-
-struct ComponentLife {};
 
 bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
 	tinyobj::attrib_t attrib;
@@ -75,7 +72,6 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 	return true;
 }
 
-//TODO: position, rotation and size move to init_transform_component
 void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v, 
 												std::vector<unsigned>& indices_, unsigned int program) {
 
@@ -119,11 +115,11 @@ void init_color_system(RenderComponent& render, float r, float g, float b, float
 
 }
 
-void move_system(std::vector<std::optional<TransformComponent>>& transfroms, Vec3 mov) {
+void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
 
-	auto r = transfroms.begin();
+	auto r = transforms.begin();
 
-	for (; r != transfroms.end(); r++) {
+	for (; r != transforms.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& transfrom = r->value();
 		transfrom.pos_ += mov;
@@ -131,25 +127,25 @@ void move_system(std::vector<std::optional<TransformComponent>>& transfroms, Vec
 
 }
 
-void rotate_system(std::vector<std::optional<TransformComponent>>& transfroms, Vec3 rot) {
-	auto r = transfroms.begin();
+void rotate_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 rot) {
+	auto r = transforms.begin();
 
-	for (; r != transfroms.end(); r++) {
+	for (; r != transforms.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& transfrom = r->value();
 		transfrom.rot_ += rot;
 	}
 }
 
-size_t on_click_system(std::vector<std::optional<TransformComponent>>& transfroms, float mouse_x, float mouse_y) {
+size_t on_click_system(std::vector<std::optional<TransformComponent>>& transforms, float mouse_x, float mouse_y) {
 
 	mouse_x = (mouse_x / 1024 * 2) - 1;
 	mouse_y = ((mouse_y / 768 * 2) - 1) * -1;
 
-	auto r = transfroms.begin();
+	auto r = transforms.begin();
 	size_t e = 0;
 
-	for (; r != transfroms.end(); r++, e++) {
+	for (; r != transforms.end(); r++, e++) {
 		if (!r->has_value()) continue;
 
 		//TODO: Add size
