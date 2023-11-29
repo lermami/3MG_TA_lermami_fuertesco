@@ -1,3 +1,4 @@
+#pragma once
 #include<unordered_map>
 #include<memory>
 #include<optional>
@@ -5,17 +6,6 @@
 #include "buffer.hpp"
 #include "vector_3.hpp"
 #include "matrix_4.hpp"
-
-struct Position {
-	float x, y, z;
-};
-
-struct Physics {
-	float acceleration;
-};
-
-struct Material {
-};
 
 struct Vertex {
 	float x_, y_, z_;
