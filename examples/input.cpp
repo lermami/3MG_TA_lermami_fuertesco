@@ -19,7 +19,7 @@ int main(int, char**) {
   if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
-  w.clearColor(0.4, 0.4, 0.4, 1);
+  w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
   if (glewInit() != GLEW_OK) return -1;
 
@@ -37,7 +37,7 @@ int main(int, char**) {
 
   size_t triangle = component_manager.add_entity();
 
-  auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
+  auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
   auto tr_render = component_manager.get_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.get_component<TransformComponent>(triangle);

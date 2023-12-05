@@ -64,8 +64,6 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 			}
 			index_offset += fv;
 
-			// per-face material
-			shapes[s].mesh.material_ids[f];
 		}
 
 	}
@@ -143,8 +141,6 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 			}
 			index_offset += fv;
 
-			// per-face material
-			shapes[s].mesh.material_ids[f];
 		}
 
 	}
@@ -170,9 +166,9 @@ int main(int, char**) {
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<std::vector<Vertex>>> objs_vertex;
 	std::vector<std::future<std::vector<unsigned>>> objs_indices;
-	obj_paths.emplace_back("../data/Suzanne.obj");
-	obj_paths.emplace_back("../data/wolf/Wolf_obj.obj");
-	obj_paths.emplace_back("../data/gun/Gun.obj");
+	obj_paths.emplace_back("../assets/Suzanne.obj");
+	obj_paths.emplace_back("../assets/wolf/Wolf_obj.obj");
+	obj_paths.emplace_back("../assets/gun/Gun.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {

@@ -13,7 +13,7 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
 	render.elements_buffer_.get()->uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
 
 	render.order_buffer_ = std::make_shared<Buffer>();
-	render.order_buffer_.get()->init(indices_.size());
+	render.order_buffer_.get()->init((unsigned)indices_.size());
 	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size() * sizeof(unsigned)));
 
 	/*

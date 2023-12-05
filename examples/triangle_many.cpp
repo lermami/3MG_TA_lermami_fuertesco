@@ -35,7 +35,7 @@ int main(int, char**) {
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
 	std::vector<size_t> entities;
-	auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
+	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 	
 	//Create n triangles in random position
 	int n_triangles = 1000;

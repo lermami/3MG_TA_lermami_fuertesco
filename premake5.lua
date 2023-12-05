@@ -147,7 +147,7 @@ project"Input"
     "examples/input.cpp"
   }
 
-project"Triangle Many"
+project"TriangleMany"
   kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
@@ -166,7 +166,7 @@ files {
 
   }
 
-project"Obj Many"
+project"ObjMany"
   kind "ConsoleApp"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"

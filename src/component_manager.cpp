@@ -6,7 +6,7 @@ size_t ComponentManager::add_entity() {
 		deleted_components_.pop_back();
 
 		for (auto& [key, value] : component_classes_) {
-			value->add_component(id);
+			value->add_component((int)id);
 		}
 		return id;
 	}
