@@ -188,11 +188,10 @@ int main(int, char**) {
 
 	std::vector<Vertex> suzanne_vertices = objs_vertex[0].get();
 	std::vector<Vertex> wolf_vertices = objs_vertex[1].get();
+	std::vector<Vertex> tank_vertices = objs_vertex[2].get();
 
 	std::vector<unsigned> suzanne_indices = objs_indices[0].get();
 	std::vector<unsigned> wolf_indices = objs_indices[1].get();
-
-	std::vector<Vertex> tank_vertices = objs_vertex[2].get();
 	std::vector<unsigned> tank_indices = objs_indices[2].get();
 
 	unsigned n_obj = 533;

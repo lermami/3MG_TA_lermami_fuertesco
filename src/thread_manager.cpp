@@ -24,6 +24,7 @@ ThreadManager::ThreadManager() {
 }
 
 ThreadManager::~ThreadManager() {
+	stop_ = true;
 	condition_.notify_all();
 	for (auto& w : workers_) {
 		if (w.joinable()) 
