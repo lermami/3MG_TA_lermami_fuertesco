@@ -190,7 +190,7 @@ int main(int, char**) {
 	std::vector<unsigned> wolf_indices = objs_indices[1].get();
 	std::vector<unsigned> tank_indices = objs_indices[2].get();
 
-	unsigned n_obj = 533;
+	unsigned n_obj = 5000;
 
 	for (unsigned i = 0; i < n_obj / 3; i++) {
 		Vec3 tr_pos;
