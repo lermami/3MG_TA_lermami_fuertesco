@@ -73,6 +73,85 @@ bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned
 	return true;
 }
 
+std::vector<Vertex> LoadObjVertices(const char* path) {
+	std::vector<Vertex> ret;
+
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::string warning, error;
+
+	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
+
+	if (!err) {
+		if (!error.empty()) {
+			std::cout << "Error loading obj: " << error.c_str();
+		}
+	}
+
+	if (!warning.empty()) {
+		std::cout << "Warning loading obj: " << warning.c_str();
+	}
+
+	for (size_t s = 0; s < shapes.size(); s++) {
+		// Loop over faces(polygon)
+		size_t index_offset = 0;
+
+		for (int i = 0; i < attrib.vertices.size() / 3; i++) {
+			Vertex vx;
+			vx.x_ = attrib.vertices[3 * i + 0];
+			vx.y_ = attrib.vertices[3 * i + 1];
+			vx.z_ = attrib.vertices[3 * i + 2];
+			ret.push_back(vx);
+		}
+	}
+
+	return ret;
+}
+
+std::vector<unsigned> LoadObjIndices(const char* path) {
+	std::vector<unsigned> ret;
+
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::string warning, error;
+
+	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
+
+	if (!err) {
+		if (!error.empty()) {
+			std::cout << "Error loading obj: " << error.c_str();
+		}
+	}
+
+	if (!warning.empty()) {
+		std::cout << "Warning loading obj: " << warning.c_str();
+	}
+
+	for (size_t s = 0; s < shapes.size(); s++) {
+		// Loop over faces(polygon)
+		size_t index_offset = 0;
+
+		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+			int fv = shapes[s].mesh.num_face_vertices[f];
+
+			// Loop over vertices in the face.
+			for (size_t v = 0; v < fv; v++) {
+				// access to vertex
+				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+
+				ret.push_back(static_cast<unsigned int>(idx.vertex_index));
+			}
+			index_offset += fv;
+
+			// per-face material
+			shapes[s].mesh.material_ids[f];
+		}
+
+	}
+
+	return ret;
+}
+
 
 int main(int, char**) {
 	Engine e;
@@ -88,19 +167,37 @@ int main(int, char**) {
 	std::vector<size_t> entities;
 	auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
 
+	std::vector<std::string> obj_paths;
+	std::vector<std::future<std::vector<Vertex>>> objs_vertex;
+	std::vector<std::future<std::vector<unsigned>>> objs_indices;
+	obj_paths.emplace_back("../data/Suzanne.obj");
+	obj_paths.emplace_back("../data/wolf/Wolf_obj.obj");
+	obj_paths.emplace_back("../data/gun/Gun.obj");
+
 	//Create obj entity
-	std::vector<Vertex> obj_test;
-	std::vector<unsigned> obj_indices_test;
-	std::future<bool> future;
+	for (auto& path : obj_paths) {
+		std::function<std::vector<Vertex>()> mycall_vertex = [path]() { return LoadObjVertices(path.c_str()); };
+		std::function<std::vector<unsigned>()> mycall_indices = [path]() { return LoadObjIndices(path.c_str()); };
 
-	std::function<bool()> mycall_double = [&obj_test, &obj_indices_test]() { return LoadObj("../include/Suzanne.obj", obj_test, obj_indices_test); };
-	future = thread_manager.add(mycall_double);
+		std::future<std::vector<Vertex>> future_v = thread_manager.add(mycall_vertex);
+		std::future<std::vector<unsigned>> future_i = thread_manager.add(mycall_indices);
 
-	thread_manager.waitFuture(future);
+		objs_vertex.push_back(std::move(future_v));
+		objs_indices.push_back(std::move(future_i));
+	}
+
+	std::vector<Vertex> suzanne_vertices = objs_vertex[0].get();
+	std::vector<Vertex> wolf_vertices = objs_vertex[1].get();
+
+	std::vector<unsigned> suzanne_indices = objs_indices[0].get();
+	std::vector<unsigned> wolf_indices = objs_indices[1].get();
+
+	std::vector<Vertex> tank_vertices = objs_vertex[2].get();
+	std::vector<unsigned> tank_indices = objs_indices[2].get();
 
 	unsigned n_obj = 533;
 
-	for (unsigned i = 0; i < n_obj; i++) {
+	for (unsigned i = 0; i < n_obj / 3; i++) {
 		Vec3 tr_pos;
 		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
 		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
@@ -114,7 +211,43 @@ int main(int, char**) {
 		auto tr_transform = component_manager.get_component<TransformComponent>(entities[i]);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, obj_test, obj_indices_test, simpleProgram);
+		init_vertex_system(*tr_render, suzanne_vertices, suzanne_indices, simpleProgram);
+		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+	}
+
+	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
+		Vec3 tr_pos;
+		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.z = 0.0f;
+
+		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+		Vec3 obj_size(0.1f, 0.1f, 0.1f);
+
+		entities.push_back(component_manager.add_entity());
+		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
+		auto tr_transform = component_manager.get_component<TransformComponent>(entities[i]);
+
+		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+		init_vertex_system(*tr_render, wolf_vertices, wolf_indices, simpleProgram);
+		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+	}
+
+	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
+		Vec3 tr_pos;
+		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
+		tr_pos.z = 0.0f;
+
+		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+		Vec3 obj_size(0.1f, 0.1f, 0.1f);
+
+		entities.push_back(component_manager.add_entity());
+		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
+		auto tr_transform = component_manager.get_component<TransformComponent>(entities[i]);
+
+		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+		init_vertex_system(*tr_render, tank_vertices, tank_indices, simpleProgram);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 

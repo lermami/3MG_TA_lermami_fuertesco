@@ -90,7 +90,7 @@ project "Motor"
   forceincludes { "stdafx.hpp" }
 
   files {
-    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*, "data/*""
   }
 
 project"Window"
