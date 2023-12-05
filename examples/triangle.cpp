@@ -36,7 +36,7 @@ int main(int, char**) {
 
   size_t triangle = component_manager.add_entity();
 
-  auto simpleProgram = CreateProgram("../include/test.vs", "../include/test.fs");
+  auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
   auto tr_render = component_manager.get_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.get_component<TransformComponent>(triangle);

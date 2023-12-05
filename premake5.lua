@@ -90,7 +90,7 @@ project "Motor"
   forceincludes { "stdafx.hpp" }
 
   files {
-    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*, "data/*""
+    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
   }
 
 project"Window"
@@ -116,7 +116,7 @@ project"Triangle"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library"
+		"include", "include/math_library", "data/"
 		}
   links "Motor"
 
