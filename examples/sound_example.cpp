@@ -8,6 +8,10 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include "soundmanager.h"
+#include "soundsource.h"
+#include "soundbuffer.h"
+
 int main(int, char**) {
   Engine e;
 
@@ -21,11 +25,30 @@ int main(int, char**) {
 
   w.initImGui();
 
+  SoundManager soundM_;
+
+  ALCdevice* device = alcOpenDevice(NULL);
+  ALCcontext* ctx = alcCreateContext(device, NULL);
+  alcMakeContextCurrent(ctx);
+
+  ALfloat a[] = { 0, 0, 0 };
+  ALfloat b[] = { 0, 0, 0 };
+  SoundSource src1 = SoundSource("Juan Pis", a, b, 0);
+
+  SoundBuffer buf1 =
+    SoundBuffer::MakeBuffer("assets/test.wav").value();
+
+  src1.addSound(&buf1);
+
+  soundM_.addsrc(src1);
+  soundM_.addBuffer(buf1);
+
   while (!w.is_done()) {
     w.calculateLastTime();
     glClear(GL_COLOR_BUFFER_BIT);
     w.updateImGui();
 
+    soundM_.SoundsInfoImgui();
 
     w.swap();
 

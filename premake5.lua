@@ -82,7 +82,7 @@ project "Motor"
   kind "StaticLib"
   targetdir "build/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library", "deps/imgui",
+		"include", "include/math_library", "deps/imgui", "include/sound",
 		}
   conan_config_lib()
   pchheader "stdafx.hpp"
@@ -90,7 +90,7 @@ project "Motor"
   forceincludes { "stdafx.hpp" }
 
   files {
-    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*", "deps/imgui/*"
+    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*", "deps/imgui/*", "include/sound/*", "src/sound/*"
   }
 
 project"Window"
@@ -98,7 +98,7 @@ project"Window"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library", "deps/imgui",
+		"include", "include/math_library", "deps/imgui","include/sound",
 		}
   links "Motor"
 
@@ -116,7 +116,7 @@ project"Triangle"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library", "data/", "deps",
+		"include", "include/math_library", "data/", "deps","include/sound",
 		}
   links "Motor"
 
@@ -134,7 +134,7 @@ project"Input"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library", "deps",
+		"include", "include/math_library", "deps","include/sound",
 		}
   links "Motor"
 
@@ -152,7 +152,7 @@ project"TriangleMany"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-	"include", "include/math_library", "deps",
+	"include", "include/math_library", "deps","include/sound",
 	}
   links "Motor"
 
@@ -171,7 +171,7 @@ project"ObjMany"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-	"include", "include/math_library", "deps",
+	"include", "include/math_library", "deps","include/sound",
 	}
   links "Motor"
 
@@ -190,7 +190,7 @@ project"SoundIntegration"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-	"include", "include/math_library", "deps",
+	"include", "include/math_library", "deps","include/sound",
 	}
   links "Motor"
 
