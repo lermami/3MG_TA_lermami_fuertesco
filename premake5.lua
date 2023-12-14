@@ -82,7 +82,7 @@ project "Motor"
   kind "StaticLib"
   targetdir "build/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library"
+		"include", "include/math_library", "deps/imgui",
 		}
   conan_config_lib()
   pchheader "stdafx.hpp"
@@ -90,7 +90,7 @@ project "Motor"
   forceincludes { "stdafx.hpp" }
 
   files {
-    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*"
+    "examples/window.cpp","src/*", "include/*", "include/math_library/*", "src/math_library/*", "deps/imgui/*"
   }
 
 project"Window"
@@ -98,7 +98,7 @@ project"Window"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library"
+		"include", "include/math_library", "deps/imgui",
 		}
   links "Motor"
 
@@ -116,7 +116,7 @@ project"Triangle"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library", "data/"
+		"include", "include/math_library", "data/", "deps",
 		}
   links "Motor"
 
@@ -134,7 +134,7 @@ project"Input"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library"
+		"include", "include/math_library", "deps",
 		}
   links "Motor"
 
@@ -152,7 +152,7 @@ project"TriangleMany"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-	"include", "include/math_library"
+	"include", "include/math_library", "deps",
 	}
   links "Motor"
 
@@ -171,7 +171,7 @@ project"ObjMany"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-	"include", "include/math_library"
+	"include", "include/math_library", "deps",
 	}
   links "Motor"
 
@@ -182,5 +182,24 @@ project"ObjMany"
 
 files {
     "examples/obj_many.cpp"
+
+  }
+
+project"SoundIntegration"
+  kind "ConsoleApp"
+  language "C++"
+  targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+  includedirs {
+	"include", "include/math_library", "deps",
+	}
+  links "Motor"
+
+  conan_config_exec("Debug")
+  conan_config_exec("Release")
+  conan_config_exec("RelWithDebInfo")
+  debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
+
+files {
+    "examples/sound_example.cpp"
 
   }

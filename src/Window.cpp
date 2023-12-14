@@ -2,6 +2,10 @@
 #include "Window.hpp"
 #include <time.h>
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title) {
   Window window(w, h, title);
 
@@ -11,6 +15,33 @@ std::optional<Window> Window::create(Engine& engine, int w, int h, const char* t
   else {
     return std::nullopt;
   }
+}
+
+void Window::initImGui() {
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO();
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+  // Setup Platform/Renderer bindings
+
+  ImGui_ImplGlfw_InitForOpenGL(handle_, true);
+  ImGui_ImplOpenGL3_Init("#version 130");
+  // Setup Dear ImGui style
+  ImGui::StyleColorsDark();
+
+  imguiInit_ = true;
+}
+
+void Window::updateImGui() {
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+}
+
+void Window::renderImgui() {
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 bool Window::is_done() const {
@@ -23,8 +54,11 @@ bool Window::is_done() const {
 void Window::swap() {
   deltaTime_ = (float)(currentTime_ - lastTime_);
 
+  if (imguiInit_) renderImgui();
+
   glfwPollEvents();
   glfwSwapBuffers(handle_);
+
 }
 
 void Window::calculateCurrentTime() {
@@ -46,7 +80,12 @@ float Window::getDeltaTime() {
 
 Window::~Window() {
   handle_ = NULL;
-  
+
+  if (imguiInit_) {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+  }
 }
 
 Window::Window(Window& w) : handle_{ w.handle_ }{
@@ -55,6 +94,8 @@ Window::Window(Window& w) : handle_{ w.handle_ }{
   currentTime_ = w.currentTime_;
   lastTime_ = w.lastTime_;
   deltaTime_ = w.deltaTime_;
+
+  imguiInit_ = false;
 }
 
 Window::Window(Window&& w) : handle_{w.handle_ } {
@@ -74,5 +115,6 @@ Window::Window(int w, int h, const char* title) {
   lastTime_ = 0;
   deltaTime_ = 0;
 
+  imguiInit_ = false;
 }
 

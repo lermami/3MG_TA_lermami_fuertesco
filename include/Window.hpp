@@ -15,6 +15,9 @@ public:
   void swap();
   void clearColor(float r, float g, float b, float a) const;
 
+  void initImGui();
+  void updateImGui();
+
   float getDeltaTime();
   void calculateCurrentTime();
   void calculateLastTime();
@@ -26,10 +29,12 @@ public:
 
 private:
   Window(int w, int h, const char* title);
+  void renderImgui();
 
   GLFWwindow* handle_;
   clock_t  currentTime_;
   clock_t  lastTime_;
   float deltaTime_;
+  bool imguiInit_;
 };
 
