@@ -57,7 +57,7 @@ Window::Window(Window& w) : handle_{ w.handle_ }{
   deltaTime_ = w.deltaTime_;
 }
 
-Window::Window(Window&& w) : handle_{w.handle_ } {
+Window::Window(Window&& w) noexcept : handle_{w.handle_ }  {
   w.handle_ = NULL;
 
   currentTime_ = w.currentTime_;

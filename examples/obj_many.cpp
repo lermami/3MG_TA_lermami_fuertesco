@@ -23,54 +23,6 @@ using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
 
-bool LoadObj(const char* path, std::vector<Vertex>& vertex, std::vector<unsigned>& indices) {
-	tinyobj::attrib_t attrib;
-	std::vector<tinyobj::shape_t> shapes;
-	std::string warning, error;
-
-	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
-
-	if (!err) {
-		if (!error.empty()) {
-			std::cout << "Error loading obj: " << error.c_str();
-		}
-	}
-
-	if (!warning.empty()) {
-		std::cout << "Warning loading obj: " << warning.c_str();
-	}
-
-	for (size_t s = 0; s < shapes.size(); s++) {
-		// Loop over faces(polygon)
-		size_t index_offset = 0;
-
-		for (int i = 0; i < attrib.vertices.size() / 3; i++) {
-			Vertex vx;
-			vx.x_ = attrib.vertices[3 * i + 0];
-			vx.y_ = attrib.vertices[3 * i + 1];
-			vx.z_ = attrib.vertices[3 * i + 2];
-			vertex.push_back(vx);
-		}
-
-		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			int fv = shapes[s].mesh.num_face_vertices[f];
-
-			// Loop over vertices in the face.
-			for (size_t v = 0; v < fv; v++) {
-				// access to vertex
-				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-
-				indices.push_back(static_cast<unsigned int>(idx.vertex_index));
-			}
-			index_offset += fv;
-
-		}
-
-	}
-
-	return true;
-}
-
 std::vector<Vertex> LoadObjVertices(const char* path) {
 	std::vector<Vertex> ret;
 
@@ -94,7 +46,7 @@ std::vector<Vertex> LoadObjVertices(const char* path) {
 		// Loop over faces(polygon)
 		size_t index_offset = 0;
 
-		for (int i = 0; i < attrib.vertices.size() / 3; i++) {
+		for (size_t i = 0; i < attrib.vertices.size() / 3; i++) {
 			Vertex vx;
 			vx.x_ = attrib.vertices[3 * i + 0];
 			vx.y_ = attrib.vertices[3 * i + 1];
@@ -190,7 +142,7 @@ int main(int, char**) {
 	std::vector<unsigned> wolf_indices = objs_indices[1].get();
 	std::vector<unsigned> tank_indices = objs_indices[2].get();
 
-	unsigned n_obj = 5000;
+	unsigned n_obj = 1000;
 
 	for (unsigned i = 0; i < n_obj / 3; i++) {
 		Vec3 tr_pos;
@@ -272,6 +224,7 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('S')) {
 			input_y = -input_velocity;
 		}
+
 		if (input_map.IsKeyPressed('A')) {
 			input_x = -input_velocity;
 		}
