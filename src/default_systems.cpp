@@ -1,6 +1,9 @@
 #include "default_systems.hpp"
 #include <GL/glew.h>
 
+#include "imgui.h"
+#include "sound/soundbuffer.h"
+
 void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
 	std::vector<unsigned>& indices_, unsigned int program) {
 
@@ -16,15 +19,6 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
 	render.order_buffer_.get()->init((unsigned)indices_.size());
 	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size() * sizeof(unsigned)));
 
-	/*
-	glGenVertexArrays(1, &render.VAO_);
-	glBindVertexArray(render.VAO_);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(render.vertex_[0]), (void*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	*/
-
 	render.program_ = program;
 }
 
@@ -32,6 +26,15 @@ void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, 
 	transform.pos_ = pos;
 	transform.size_ = size;
 	transform.rot_ = rot;
+}
+
+void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* label, ALfloat pos[3], ALfloat vel[3], float gain, float pitch, bool playing) {
+	audio.sound_source_ = SoundSource(label, pos, vel, gain, pitch);
+
+	audio.sound_source_.addSound(&buff);
+
+	if(playing)
+		audio.sound_source_.Play();
 }
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
@@ -129,4 +132,45 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		order_buffer->bind(kTarget_Elements);
 		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
 	}
+}
+
+void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) {
+	auto l = audio_list.begin();
+
+	ImGui::Begin("Sound information");
+
+	int i = 0;
+	for (; l != audio_list.end(); l++, i++) {
+		if (!l->has_value()) continue;
+
+		auto& sound = l->value().sound_source_;
+
+		ImGui::PushID(i);
+
+		bool open = ImGui::CollapsingHeader(sound.Name().c_str());
+
+		if (open) {
+			if (ImGui::Button("Play")) {
+				sound.Play();
+			}
+			ImGui::SameLine();
+
+			if (ImGui::Button("Stop")) {
+				sound.Stop();
+			}
+
+			float aux_gain = sound.Gain();
+			if (ImGui::SliderFloat("Gain", &aux_gain, 0.0f, 1.0f, "%.3f")) {
+				sound.setGain(aux_gain);
+			}
+
+			float aux_p = sound.Pitch();
+			if (ImGui::SliderFloat("Pitch", &aux_p, 0.0f, 2.0f, "%.3f")) {
+				sound.setPitch(aux_p);
+			}
+		}
+		ImGui::PopID();
+	}
+
+	ImGui::End();
 }

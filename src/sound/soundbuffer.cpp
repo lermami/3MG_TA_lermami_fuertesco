@@ -106,7 +106,8 @@ SoundBuffer::SoundBuffer(SoundBuffer&& b)
       active_{true},
       frequency_{b.frequency_},
       format_{b.format_},
-      size_{b.size_} {
+      size_{b.size_},
+      name_{ b.name_ }{
     b.buffer_ = 0;
     b.active_ = false;
 }

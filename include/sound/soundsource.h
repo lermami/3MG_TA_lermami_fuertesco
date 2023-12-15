@@ -9,14 +9,13 @@ class SoundBuffer;
 class SoundSource {
 
 public:
+    SoundSource();
     SoundSource(std::string name,ALfloat pos[3], ALfloat speed[3],float gain = 1.0f, float pitch = 1.0f);
     ~SoundSource();
-    SoundSource(const SoundSource& other) = delete;
+    SoundSource(const SoundSource& other);
     SoundSource(SoundSource& other);
     SoundSource(SoundSource&& other);
-
-    //SoundSource& operator= (const SoundSource& other) = default;
-    
+    SoundSource& operator=(const SoundSource& o);  
 
     void setLoop(bool state); 
     void setPos(ALfloat pos[3]);

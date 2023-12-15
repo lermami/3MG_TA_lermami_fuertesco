@@ -95,7 +95,7 @@ Window::Window(Window& w) : handle_{ w.handle_ }{
   lastTime_ = w.lastTime_;
   deltaTime_ = w.deltaTime_;
 
-  imguiInit_ = false;
+  imguiInit_ = w.imguiInit_;
 }
 
 Window::Window(Window&& w) : handle_{w.handle_ } {
@@ -104,6 +104,8 @@ Window::Window(Window&& w) : handle_{w.handle_ } {
   currentTime_ = w.currentTime_;
   lastTime_ = w.lastTime_;
   deltaTime_ = w.deltaTime_;
+
+  imguiInit_ = w.imguiInit_;
 }
 
 Window::Window(int w, int h, const char* title) {
