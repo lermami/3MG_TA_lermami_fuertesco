@@ -5,7 +5,7 @@
 3. Wait for the dependencies to finish being implemented, 
 	i.e. when the console that has been opened finishes all its processes and closes.
 
-4. In the same folder where we are (tools) we double click on the file "premake5.bat". Press 'd' whenever it asks if it is a file or directory.
+4. In the same folder where we are (tools) we double click on the file "gendeps.bat". Press 'd' whenever it asks if it is a file or directory.
 
 6. Exit to the main directory and go to the "build" folder that was created in the previous steps 
    and open the file "Motor.sln".
