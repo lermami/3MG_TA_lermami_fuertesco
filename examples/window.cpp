@@ -13,12 +13,8 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  if(glewInit() != GLEW_OK) return -1;
-
   while (!w.is_done()) {
     w.calculateLastTime();
-    glClear(GL_COLOR_BUFFER_BIT);
-
 
     w.swap();
 
