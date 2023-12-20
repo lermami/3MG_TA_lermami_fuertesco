@@ -1,8 +1,4 @@
-premake5.exe --file=../premake5.lua vs2019
+@ECHO OFF
+cd %~dp0
 
-xcopy /s /d /Y .\..\assets .\..\build\Triangle\assets
-xcopy /s /d /Y .\..\assets .\..\build\Input\assets
-xcopy /s /d /Y .\..\assets .\..\build\Motor\assets
-xcopy /s /d /Y .\..\assets .\..\build\ObjMany\assets
-xcopy /s /d /Y .\..\assets .\..\build\TriangleMany\assets
-xcopy /s /d /Y .\..\assets .\..\build\Window\assets
+premake5.exe --file=../premake5.lua vs2019

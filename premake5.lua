@@ -82,7 +82,7 @@ project "Motor"
   kind "StaticLib"
   targetdir "build/%{cfg.buildcfg}"
   includedirs {
-		"include", "include/math_library", "deps/imgui", "include/sound",
+		"include", "include/math_library", "deps/imgui", "include/sound"
 		}
   conan_config_lib()
   pchheader "stdafx.hpp"
@@ -171,7 +171,7 @@ project"ObjMany"
   language "C++"
   targetdir "build/%{prj.name}/%{cfg.buildcfg}"
   includedirs {
-	"include", "include/math_library", "deps","include/sound",
+	"include", "include/math_library", "deps", "include/sound"
 	}
   links "Motor"
 
@@ -182,7 +182,6 @@ project"ObjMany"
 
 files {
     "examples/obj_many.cpp"
-
   }
 
 project"SoundIntegration"
