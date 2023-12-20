@@ -3,9 +3,11 @@
 #include<memory>
 #include<optional>
 #include<cassert>
+
 #include "buffer.hpp"
 #include "vector_3.hpp"
 #include "matrix_4.hpp"
+#include "sound/soundsource.h"
 
 struct Vertex {
 	float x_, y_, z_;
@@ -20,6 +22,17 @@ struct TransformComponent {
 	Vec3 pos_;
 	Vec3 rot_;
 	Vec3 size_;
+};
+
+struct AudioComponent {
+	AudioComponent(std::string name, ALfloat pos[3],
+		ALfloat speed[3], float gain = 1.0f, float pitch = 1.0f)
+		: sound_source_(name, pos, speed, gain, pitch) {}
+
+	AudioComponent() = default;
+	AudioComponent& operator=(const AudioComponent& o) = default;
+
+	SoundSource sound_source_;
 };
 
 struct RenderComponent {
@@ -71,6 +84,7 @@ struct ComponentManager {
 	ComponentManager() {
 		add_component_class<RenderComponent>();
 		add_component_class<TransformComponent>();
+		add_component_class<AudioComponent>();
 	}
 
 	template<typename T> void add_component_class() {
