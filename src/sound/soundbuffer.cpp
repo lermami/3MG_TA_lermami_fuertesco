@@ -10,7 +10,7 @@ std::optional<SoundBuffer> SoundBuffer::MakeBuffer(const std::string filename) {
         WAVE_Data wave_data;
         unsigned char* data;
         b.name_ = filename;
-        soundFile = fopen(filename.c_str(), "rb");
+        fopen_s(&soundFile, filename.c_str(), "rb");
         if (!soundFile)
             return b;
 

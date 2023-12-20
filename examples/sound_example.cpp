@@ -22,13 +22,8 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  if (glewInit() != GLEW_OK) return -1;
-
-  ALCdevice* device = alcOpenDevice(NULL);
-  ALCcontext* ctx = alcCreateContext(device, NULL);
-  alcMakeContextCurrent(ctx);
-
   w.initImGui();
+  w.initSoundContext();
 
   std::vector<Vertex> triangle_mesh = {
     {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
@@ -44,13 +39,11 @@ int main(int, char**) {
 
   auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
-
   size_t triangle = component_manager.add_entity();
 
   auto tr_render = component_manager.get_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.get_component<TransformComponent>(triangle);
   auto tr_audio = component_manager.get_component<AudioComponent>(triangle);
-
 
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
   init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram);
@@ -76,7 +69,6 @@ int main(int, char**) {
 
   while (!w.is_done()) {
     w.calculateLastTime();
-    glClear(GL_COLOR_BUFFER_BIT);
     
     w.updateImGui();
 

@@ -6,6 +6,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "AL/alc.h"
+
 std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title) {
   Window window(w, h, title);
 
@@ -15,6 +17,12 @@ std::optional<Window> Window::create(Engine& engine, int w, int h, const char* t
   else {
     return std::nullopt;
   }
+}
+
+void Window::initSoundContext() {
+  ALCdevice* device = alcOpenDevice(NULL);
+  ALCcontext* ctx = alcCreateContext(device, NULL);
+  alcMakeContextCurrent(ctx);
 }
 
 void Window::initImGui() {

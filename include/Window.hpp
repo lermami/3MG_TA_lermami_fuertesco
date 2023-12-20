@@ -18,6 +18,8 @@ public:
   void initImGui();
   void updateImGui();
 
+  void initSoundContext();
+
   float getDeltaTime();
   void calculateCurrentTime();
   void calculateLastTime();
