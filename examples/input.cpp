@@ -21,8 +21,6 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  if (glewInit() != GLEW_OK) return -1;
-
   std::vector<Vertex> triangle_mesh = {
     {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
     {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
@@ -44,13 +42,10 @@ int main(int, char**) {
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
   init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram);
 
-
   Input input_map(w);
-  float input_velocity = 0.05f;
 
   while (!w.is_done()) {
     w.calculateLastTime();
-    glClear(GL_COLOR_BUFFER_BIT);
 
     //Inputs
     input_map.updateInputs();
@@ -58,6 +53,7 @@ int main(int, char**) {
     float input_x = 0, input_y = 0;
     float rotate = 0;
     double mouse_x = 0, mouse_y = 0;
+    float input_velocity = 1.0f * w.getDeltaTime();
 
     input_map.getMousePos(mouse_x, mouse_y);
 
@@ -77,11 +73,11 @@ int main(int, char**) {
     }
 
     if (input_map.IsKeyPressed('E')) {
-      rotate = -input_velocity;
+      rotate = -input_velocity * 2.0f;
     }
 
     if (input_map.IsKeyPressed('Q')) {
-      rotate = input_velocity;
+      rotate = input_velocity * 2.0f;
     }
 
 
@@ -91,7 +87,6 @@ int main(int, char**) {
     render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
     w.swap();
-
     w.calculateCurrentTime();
   }
 

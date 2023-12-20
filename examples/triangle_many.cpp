@@ -34,7 +34,6 @@ int main(int, char**) {
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-	std::vector<size_t> entities;
 	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 	
 	//Create n triangles in random position
@@ -57,29 +56,28 @@ int main(int, char**) {
 		Vec3 tr_size(0.1f, 0.1f, 0.0f);
 		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
-		entities.push_back(component_manager.add_entity());
-		auto tr_render = component_manager.get_component<RenderComponent>(entities[i]);
-		auto tr_transform = component_manager.get_component<TransformComponent>(entities[i]);
+		size_t new_e = component_manager.add_entity();
+		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
+		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
 		init_vertex_system(*tr_render, triangle, tr_indices, simpleProgram);
 	}
 
 	//Input Declaration
 	Input input_map(w);
-	float input_velocity = 0.05f;
 
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
-		glClear(GL_COLOR_BUFFER_BIT);
 
 		input_map.updateInputs();
 
 		float input_x = 0, input_y = 0;
 		float rotate = 0;
 		double mouse_x = 0, mouse_y = 0;
+		float input_velocity = 1.0f * w.getDeltaTime();
 
 		input_map.getMousePos(mouse_x, mouse_y);
 
@@ -99,11 +97,11 @@ int main(int, char**) {
 		}
 
 		if (input_map.IsKeyPressed('E')) {
-			rotate = -input_velocity;
+			rotate = -input_velocity * 2.0f;
 		}
 
 		if (input_map.IsKeyPressed('Q')) {
-			rotate = input_velocity;
+			rotate = input_velocity * 2.0f;
 		}
 		
 		if (input_map.IsKeyDown(kKey_LeftClick)) {
@@ -115,7 +113,7 @@ int main(int, char**) {
 		}
 
 		if (clicked_e != 0)
-			set_position_system(*component_manager.get_component<TransformComponent>(entities[clicked_e-1]), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
+			set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
 		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());

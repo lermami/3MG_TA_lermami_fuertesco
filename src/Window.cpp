@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include "Window.hpp"
 #include <time.h>
+#include <cassert>
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -66,7 +67,7 @@ void Window::swap() {
 
   glfwPollEvents();
   glfwSwapBuffers(handle_);
-
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Window::calculateCurrentTime() {
@@ -106,7 +107,7 @@ Window::Window(Window& w) : handle_{ w.handle_ }{
   imguiInit_ = w.imguiInit_;
 }
 
-Window::Window(Window&& w) : handle_{w.handle_ } {
+Window::Window(Window&& w) noexcept : handle_{w.handle_ }  {
   w.handle_ = NULL;
 
   currentTime_ = w.currentTime_;
@@ -119,7 +120,10 @@ Window::Window(Window&& w) : handle_{w.handle_ } {
 Window::Window(int w, int h, const char* title) {
   handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
   glfwMakeContextCurrent(handle_);
-  glewInit();
+  
+  GLenum initstate = glewInit();
+  assert(initstate == GLEW_OK);
+
 
   currentTime_ = 0;
   lastTime_ = 0;

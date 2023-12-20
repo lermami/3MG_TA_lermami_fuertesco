@@ -40,7 +40,7 @@ struct RenderComponent {
 	std::vector<unsigned> indices_;
 	std::shared_ptr<Buffer> elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;
-	unsigned int program_;
+	unsigned int program_ = -1;
 };
 
 struct component_base {
@@ -62,7 +62,7 @@ struct component_list : component_base {
 	virtual void add_component(int position) override {
 		T a;
 		//-1 because position refers to an entity that starts in 1
-		components_[position-1] = a;
+		components_[(size_t)position-1] = a;
 	}
 
 	virtual size_t size() override {

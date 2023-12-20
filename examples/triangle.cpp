@@ -20,8 +20,6 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  if (glewInit() != GLEW_OK) return -1;
-
   std::vector<Vertex> triangle_mesh = {
     {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
     {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
@@ -46,8 +44,6 @@ int main(int, char**) {
 
   while (!w.is_done()) {
     w.calculateLastTime();
-    glClear(GL_COLOR_BUFFER_BIT);
-
 
     // Draw triangle
     render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());

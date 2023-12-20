@@ -26,7 +26,7 @@ public:
 
   ~Window();
   Window(Window& w);
-  Window(Window&& w);
+  Window(Window&& w) noexcept;
   Window(const Window&) = delete;
 
 private:
