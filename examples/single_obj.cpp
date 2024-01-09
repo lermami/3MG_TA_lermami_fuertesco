@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <tiny_obj_loader.h>
+#include "stb_image/stbi_image.h"
 
 #include<vector>
 #include<optional>
@@ -37,10 +38,10 @@ std::vector<Vertex> LoadObjVertices(const char* path) {
 			std::cout << "Error loading obj: " << error.c_str();
 		}
 	}
-
+	/*
 	if (!warning.empty()) {
 		std::cout << "Warning loading obj: " << warning.c_str();
-	}
+	}*/
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -76,10 +77,11 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 			std::cout << "Error loading obj: " << error.c_str();
 		}
 	}
-
+	/*
 	if (!warning.empty()) {
 		std::cout << "Warning loading obj: " << warning.c_str();
 	}
+	*/
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -115,14 +117,12 @@ int main(int, char**) {
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+	auto simpleProgram = CreateProgram("../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<std::vector<Vertex>>> objs_vertex;
 	std::vector<std::future<std::vector<unsigned>>> objs_indices;
-	obj_paths.emplace_back("../assets/Suzanne.obj");
-	obj_paths.emplace_back("../assets/wolf/Wolf_obj.obj");
-	obj_paths.emplace_back("../assets/gun/Gun.obj");
+	obj_paths.emplace_back("../assets/laboon/laboon.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -136,69 +136,44 @@ int main(int, char**) {
 		objs_indices.push_back(std::move(future_i));
 	}
 
-	std::vector<Vertex> suzanne_vertices = objs_vertex[0].get();
-	std::vector<Vertex> wolf_vertices = objs_vertex[1].get();
-	std::vector<Vertex> tank_vertices = objs_vertex[2].get();
+	std::vector<Vertex> laboon_vertices = objs_vertex[0].get();
 
-	std::vector<unsigned> suzanne_indices = objs_indices[0].get();
-	std::vector<unsigned> wolf_indices = objs_indices[1].get();
-	std::vector<unsigned> tank_indices = objs_indices[2].get();
+	std::vector<unsigned> laboon_indices = objs_indices[0].get();
 
 	unsigned n_obj = 1000;
 
-	for (unsigned i = 0; i < n_obj / 3; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
+	Vec3 tr_pos;
+	tr_pos.x = 0;
+	tr_pos.y = -0.3f;
+	tr_pos.z = 0;
 
-		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(0.05f, 0.05f, 0.05f);
+	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+	Vec3 obj_size(0.007f, 0.007f, 0.007f);
 
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+	size_t new_e = component_manager.add_entity();
+	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
+	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
-		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, suzanne_vertices, suzanne_indices, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	}
+	//Texture temp
+	int width, height, nrChannels;
+	unsigned char* laboon_tex_src = stbi_load("../assets/laboon/laboon.png", &width, &height, &nrChannels, 0);
 
-	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
+	unsigned int laboon_tex;
+	glGenTextures(1, &laboon_tex);
+	glBindTexture(GL_TEXTURE_2D, laboon_tex);
 
-		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(0.1f, 0.1f, 0.1f);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, laboon_tex_src);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_vertex_system(*tr_render, laboon_vertices, laboon_indices, simpleProgram, laboon_tex);
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, wolf_vertices, wolf_indices, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	}
-
-	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
-
-		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(0.1f, 0.1f, 0.1f);
-
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
-
-		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, tank_vertices, tank_indices, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	}
+	stbi_image_free(laboon_tex_src);
 
 	//Input Declaration
 	Input input_map(w);
@@ -211,7 +186,7 @@ int main(int, char**) {
 		input_map.updateInputs();
 
 		float input_x = 0, input_y = 0;
-		float rotate = 0;
+		float rotate = 1;
 		double mouse_x = 0, mouse_y = 0;
 		float input_velocity = 1.0f * w.getDeltaTime();
 
@@ -232,27 +207,9 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('D')) {
 			input_x = input_velocity;
 		}
-
-		if (input_map.IsKeyPressed('E')) {
-			rotate = -input_velocity * 2.0f;
-		}
-
-		if (input_map.IsKeyPressed('Q')) {
-			rotate = input_velocity * 2.0f;
-		}
-
-		if (input_map.IsKeyDown(kKey_LeftClick)) {
-			clicked_e = on_click_system(*component_manager.get_component_list<TransformComponent>(), (float)mouse_x, (float)mouse_y);
-		}
-
-		if (input_map.IsKeyUp(kKey_LeftClick)) {
-			clicked_e = 0;
-		}
-
-		if (clicked_e != 0)
-			set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
+		
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
-		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
+		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate * w.getDeltaTime(), 0.0f));
 		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();

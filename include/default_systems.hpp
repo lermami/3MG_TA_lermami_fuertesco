@@ -2,7 +2,7 @@
 #include "component_manager.hpp"
 
 void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
-	std::vector<unsigned>& indices_, unsigned int program);
+	std::vector<unsigned>& indices_, unsigned int program, unsigned int texture);
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size);
 

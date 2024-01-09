@@ -41,6 +41,7 @@ struct RenderComponent {
 	std::shared_ptr<Buffer> elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;
 	unsigned int program_ = -1;
+	unsigned int texture_ = -1;
 };
 
 struct component_base {

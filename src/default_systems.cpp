@@ -5,7 +5,7 @@
 #include "sound/soundbuffer.h"
 
 void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
-	std::vector<unsigned>& indices_, unsigned int program) {
+	std::vector<unsigned>& indices_, unsigned int program, unsigned int texture) {
 
 	for (int i = 0; i < v.size(); i++) {
 		render.vertex_.push_back(v[i]);
@@ -20,6 +20,7 @@ void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
 	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size() * sizeof(unsigned)));
 
 	render.program_ = program;
+	render.texture_ = texture;
 }
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size) {
@@ -125,8 +126,15 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
+		//Vertices
 		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
+		//Color
 		render.elements_buffer_.get()->uploadFloatAttribute(1, 4, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
+		//Uv
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 2, sizeof(render.vertex_[0]), (void*)(10 * sizeof(float)));
+
+		//Texture
+		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
 
 		auto order_buffer = render.order_buffer_.get();
 		order_buffer->bind(kTarget_Elements);
