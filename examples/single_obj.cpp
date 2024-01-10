@@ -47,17 +47,36 @@ std::vector<Vertex> LoadObjVertices(const char* path) {
 		// Loop over faces(polygon)
 		size_t index_offset = 0;
 
-		for (size_t i = 0; i < attrib.vertices.size() / 3; i++) {
-			Vertex vx;
-			vx.x_ = attrib.vertices[3 * i + 0];
-			vx.y_ = attrib.vertices[3 * i + 1];
-			vx.z_ = attrib.vertices[3 * i + 2];
 
-			vx.u_ = attrib.texcoords[2 * i + 0];
-			vx.v_ = attrib.texcoords[2 * i + 1];
+
+		unsigned int vertices_counter = 0, texcoords_counter = 0;
+		bool getting_vertex_info = true;
+
+		while (getting_vertex_info) {
+
+			Vertex vx;
+			getting_vertex_info = false;
+
+			if (vertices_counter < attrib.vertices.size() / 3) {
+				vx.x_ = attrib.vertices[3 * vertices_counter + 0];
+				vx.y_ = attrib.vertices[3 * vertices_counter + 1];
+				vx.z_ = attrib.vertices[3 * vertices_counter + 2];
+
+				getting_vertex_info = true;
+				vertices_counter++;
+			}
+
+			if (texcoords_counter < attrib.texcoords.size() / 2) {
+				vx.u_ = attrib.texcoords[2 * texcoords_counter + 0];
+				vx.v_ = attrib.texcoords[2 * texcoords_counter + 1];
+
+				getting_vertex_info = true;
+				texcoords_counter++;
+			}
 
 			ret.push_back(vx);
 		}
+
 	}
 
 	return ret;
@@ -88,12 +107,13 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 		size_t index_offset = 0;
 
 		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			int fv = shapes[s].mesh.num_face_vertices[f];
+			int fv = size_t(shapes[s].mesh.num_face_vertices[f]);
+			
 
 			// Loop over vertices in the face.
 			for (size_t v = 0; v < fv; v++) {
 				// access to vertex
-				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+				tinyobj::index_t idx = shapes[s].mesh.indices[(index_offset + v)];
 
 				ret.push_back(static_cast<unsigned int>(idx.vertex_index));
 			}
@@ -179,6 +199,11 @@ int main(int, char**) {
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
+	glEnable(GL_DEPTH_TEST);
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
