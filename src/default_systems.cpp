@@ -40,10 +40,10 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
 	for (auto& v : render.vertex_) {
-		v.r_ = r;
-		v.g_ = g;
-		v.b_ = b;
-		v.a_ = a;
+		v.color.x = r;
+		v.color.y = g;
+		v.color.z = b;
+		v.color.w = a;
 	}
 
 }

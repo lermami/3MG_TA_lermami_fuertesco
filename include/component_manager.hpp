@@ -5,15 +5,49 @@
 #include<cassert>
 
 #include "buffer.hpp"
+#include "vector_2.hpp"
 #include "vector_3.hpp"
+#include "vector_4.hpp"
 #include "matrix_4.hpp"
 #include "sound/soundsource.h"
 
 struct Vertex {
-	float x_, y_, z_;
-	float nx_, ny_, nz_;
-	float u_, v_;
-	float r_, g_, b_, a_;
+	Vec3 pos;
+	Vec3 normal;
+	Vec2 uv;
+	Vec4 color;
+
+	bool operator==(const Vertex& o) const{
+		return pos == o.pos && normal == o.normal && uv == o.uv;
+	}
+
+	Vertex& operator=(const Vertex& o) {
+		pos = o.pos;
+		normal = o.normal;
+		uv = o.uv;
+		color = o.color;
+
+		return *this;
+	}
+
+	Vertex() {
+		pos = Vec3(0, 0, 0);
+		normal = Vec3(0, 0, 0);
+		uv = Vec2(0, 0);
+		color = Vec4(0, 0, 0, 0);
+	}
+
+	Vertex(const Vertex& other) {
+
+	}
+	Vertex(Vertex& other) {
+
+	}
+
+	Vertex(Vertex&& other) {
+
+	}
+
 };
 
 struct TransformComponent {
