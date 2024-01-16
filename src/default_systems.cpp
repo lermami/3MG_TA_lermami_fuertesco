@@ -128,10 +128,10 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 		//Vertices
 		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
-		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 4, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
 		//Uv
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 2, sizeof(render.vertex_[0]), (void*)(10 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, sizeof(render.vertex_[0]), (void*)(6 * sizeof(float)));
+		//Color
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, sizeof(render.vertex_[0]), (void*)(10 * sizeof(float)));
 
 		//Texture
 		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
@@ -179,6 +179,28 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 		}
 		ImGui::PopID();
 	}
+
+	ImGui::End();
+}
+
+void imgui_transform_system(TransformComponent& transform) {
+	ImGui::Begin("Transform");
+
+	Vec3 aux_pos = transform.pos_;
+	if (ImGui::DragFloat3("Position", &aux_pos.x, 0.05f, -1.0f, 1.0f, "%.3f")) {
+		transform.pos_ = aux_pos;
+	}
+
+	Vec3 aux_rot = transform.rot_;
+	if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+		transform.rot_ = aux_rot;
+	}
+
+	float aux_size = transform.size_.x;
+	if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 3.0f, "%.3f")) {
+		transform.size_ = aux_size;
+	}
+
 
 	ImGui::End();
 }

@@ -11,9 +11,9 @@
 
 struct Vertex {
 	float x_, y_, z_;
-	float r_, g_, b_, a_;
 	float nx_, ny_, nz_;
 	float u_, v_;
+	float r_, g_, b_, a_;
 };
 
 struct TransformComponent {

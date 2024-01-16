@@ -21,3 +21,5 @@ void set_position_system(TransformComponent& transform, Vec3 pos);
 void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
+
+void imgui_transform_system(TransformComponent& transform);

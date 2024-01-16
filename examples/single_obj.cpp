@@ -47,35 +47,35 @@ std::vector<Vertex> LoadObjVertices(const char* path) {
 		// Loop over faces(polygon)
 		size_t index_offset = 0;
 
-
-
 		unsigned int vertices_counter = 0, texcoords_counter = 0;
 		bool getting_vertex_info = true;
 
 		while (getting_vertex_info) {
-
-			Vertex vx;
 			getting_vertex_info = false;
+				
+			for (size_t v = 0; v < 3; v++) {
+				Vertex vx;
+				if (vertices_counter < attrib.vertices.size() / 3) {
+					vx.x_ = attrib.vertices[3 * (size_t)vertices_counter + 0];
+					vx.y_ = attrib.vertices[3 * (size_t)vertices_counter + 1];
+					vx.z_ = attrib.vertices[3 * (size_t)vertices_counter + 2];
 
-			if (vertices_counter < attrib.vertices.size() / 3) {
-				vx.x_ = attrib.vertices[3 * vertices_counter + 0];
-				vx.y_ = attrib.vertices[3 * vertices_counter + 1];
-				vx.z_ = attrib.vertices[3 * vertices_counter + 2];
+					getting_vertex_info = true;
+					vertices_counter++;
+				}
 
-				getting_vertex_info = true;
-				vertices_counter++;
+				if (texcoords_counter < attrib.texcoords.size() / 2) {
+					vx.u_ = attrib.texcoords[2 * (size_t)texcoords_counter + 0];
+					vx.v_ = attrib.texcoords[2 * (size_t)texcoords_counter + 1];
+
+					getting_vertex_info = true;
+					texcoords_counter++;
+				}
+
+				ret.push_back(vx);
 			}
-
-			if (texcoords_counter < attrib.texcoords.size() / 2) {
-				vx.u_ = attrib.texcoords[2 * texcoords_counter + 0];
-				vx.v_ = attrib.texcoords[2 * texcoords_counter + 1];
-
-				getting_vertex_info = true;
-				texcoords_counter++;
-			}
-
-			ret.push_back(vx);
 		}
+	
 
 	}
 
@@ -136,13 +136,14 @@ int main(int, char**) {
 
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
+	w.initImGui();
 
 	auto simpleProgram = CreateProgram("../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<std::vector<Vertex>>> objs_vertex;
 	std::vector<std::future<std::vector<unsigned>>> objs_indices;
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
+	obj_paths.emplace_back("../assets/obj_test.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -157,18 +158,13 @@ int main(int, char**) {
 	}
 
 	std::vector<Vertex> laboon_vertices = objs_vertex[0].get();
-
 	std::vector<unsigned> laboon_indices = objs_indices[0].get();
 
 	unsigned n_obj = 1000;
-
-	Vec3 tr_pos;
-	tr_pos.x = 0;
-	tr_pos.y = -0.3f;
-	tr_pos.z = 0;
-
+	
+	Vec3 tr_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-	Vec3 obj_size(0.007f, 0.007f, 0.007f);
+	Vec3 obj_size(0.5f, 0.5f, 0.5f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
@@ -176,7 +172,7 @@ int main(int, char**) {
 
 	//Texture temp
 	int width, height, nrChannels;
-	unsigned char* laboon_tex_src = stbi_load("../assets/laboon/laboon.png", &width, &height, &nrChannels, 0);
+	unsigned char* laboon_tex_src = stbi_load("../assets/wall.jpg", &width, &height, &nrChannels, 0);
 
 	unsigned int laboon_tex;
 	glGenTextures(1, &laboon_tex);
@@ -186,7 +182,7 @@ int main(int, char**) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, laboon_tex_src);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, laboon_tex_src);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
@@ -209,6 +205,7 @@ int main(int, char**) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();
+		w.updateImGui();
 
 		float input_x = 0, input_y = 0;
 		float rotate = 1;
@@ -233,8 +230,9 @@ int main(int, char**) {
 			input_x = input_velocity;
 		}
 		
+		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
-		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate * w.getDeltaTime(), 0.0f));
+		//rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(rotate * w.getDeltaTime(), rotate * w.getDeltaTime(), 0.0f));
 		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();
