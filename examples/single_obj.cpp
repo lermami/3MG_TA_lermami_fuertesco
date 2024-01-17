@@ -85,6 +85,7 @@ std::vector<Vertex> LoadObjVertices(const char* path) {
 
 std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 	std::vector<Vertex> ret;
+	std::vector<unsigned> indices;
 
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
@@ -103,7 +104,7 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 		std::cout << "Warning loading obj: " << warning.c_str();
 	}*/
 
-	std::map<int, std::pair<Vertex, int>> map;
+	std::map<Vertex, int> map;
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -138,21 +139,23 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 				// vertex.green = attrib.colors[3*size_t(idx.vertex_index)+1];
 				// vertex.blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
+				//auto it = map.find(vertex);
 				auto it = map.begin();
 				bool found = false;
-				
-				for (; it != map.end() && !found; ++it) {
 
-					if(it->second.first == vertex){
+				for (it; it != map.end(); it++) {
+					if (vertex == it->first) {
+						indices.push_back(it->second);
 						found = true;
-						map[id] = it->second;
 					}
 				}
 
 				if (!found) {
-					map[id] = std::make_pair(vertex, id);
+					map.emplace(vertex, id);
+					ret.push_back(vertex);
+					indices.push_back(id);
+					id++;
 				}
-				id++;
 			}
 			index_offset += fv;
 
@@ -166,13 +169,15 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 }
 
 std::vector<unsigned> LoadObjIndices(const char* path) {
-	std::vector<unsigned> ret;
+	std::vector<Vertex> ret;
+	std::vector<unsigned> indices;
 
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::string warning, error;
 
 	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
+	int id = 0;
 
 	if (!err) {
 		if (!error.empty()) {
@@ -182,31 +187,70 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 	/*
 	if (!warning.empty()) {
 		std::cout << "Warning loading obj: " << warning.c_str();
-	}
-	*/
+	}*/
+
+	std::map<Vertex, int> map;
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
 		size_t index_offset = 0;
-
 		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			int fv = size_t(shapes[s].mesh.num_face_vertices[f]);
-			
+			size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
 
 			// Loop over vertices in the face.
 			for (size_t v = 0; v < fv; v++) {
+				Vertex vertex;
 				// access to vertex
-				tinyobj::index_t idx = shapes[s].mesh.indices[(index_offset + v)];
+				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+				vertex.pos.x = attrib.vertices[3 * size_t(idx.vertex_index) + 0];
+				vertex.pos.y = attrib.vertices[3 * size_t(idx.vertex_index) + 1];
+				vertex.pos.z = attrib.vertices[3 * size_t(idx.vertex_index) + 2];
 
-				ret.push_back(static_cast<unsigned int>(idx.vertex_index));
+				// Check if `normal_index` is zero or positive. negative = no normal data
+				if (idx.normal_index >= 0) {
+					vertex.normal.x = attrib.normals[3 * size_t(idx.normal_index) + 0];
+					vertex.normal.y = attrib.normals[3 * size_t(idx.normal_index) + 1];
+					vertex.normal.z = attrib.normals[3 * size_t(idx.normal_index) + 2];
+				}
+
+				// Check if `texcoord_index` is zero or positive. negative = no texcoord data
+				if (idx.texcoord_index >= 0) {
+					vertex.uv.x = attrib.texcoords[2 * size_t(idx.texcoord_index) + 0];
+					vertex.uv.y = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
+				}
+
+				// Optional: vertex colors
+				// vertex.red   = attrib.colors[3*size_t(idx.vertex_index)+0];
+				// vertex.green = attrib.colors[3*size_t(idx.vertex_index)+1];
+				// vertex.blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
+
+				//auto it = map.find(vertex);
+				auto it = map.begin();
+				bool found = false;
+
+				for (it; it != map.end(); it++) {
+					if (vertex == it->first) {
+						indices.push_back(it->second);
+						found = true;
+					}
+				}
+
+				if (!found) {
+					map.emplace(vertex, id);
+					ret.push_back(vertex);
+					indices.push_back(id);
+					id++;
+				}
 			}
 			index_offset += fv;
 
+			// per-face material
+			shapes[s].mesh.material_ids[f];
 		}
-
 	}
 
-	return ret;
+	printf("a");
+	return indices;
 }
 
 int main(int, char**) {
@@ -226,7 +270,7 @@ int main(int, char**) {
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<std::vector<Vertex>>> objs_vertex;
 	std::vector<std::future<std::vector<unsigned>>> objs_indices;
-	obj_paths.emplace_back("../assets/obj_test.obj");
+	obj_paths.emplace_back("../assets/laboon/laboon.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -255,7 +299,7 @@ int main(int, char**) {
 
 	//Texture temp
 	int width, height, nrChannels;
-	unsigned char* laboon_tex_src = stbi_load("../assets/wall.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* laboon_tex_src = stbi_load("../assets/laboon/laboon.png", &width, &height, &nrChannels, 0);
 
 	unsigned int laboon_tex;
 	glGenTextures(1, &laboon_tex);
@@ -265,7 +309,7 @@ int main(int, char**) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, laboon_tex_src);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, laboon_tex_src);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
