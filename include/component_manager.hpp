@@ -3,6 +3,7 @@
 #include<memory>
 #include<optional>
 #include<cassert>
+#include <utility>
 
 #include "buffer.hpp"
 #include "vector_2.hpp"
@@ -19,6 +20,10 @@ struct Vertex {
 
 	bool operator==(const Vertex& o) const{
 		return pos == o.pos && normal == o.normal && uv == o.uv;
+	}
+
+	bool operator<(const Vertex& o) const {
+		return std::tie(pos.x, pos.y, pos.z) < std::tie(o.pos.x, o.pos.y, o.pos.z);
 	}
 
 	Vertex& operator=(const Vertex& o) {
@@ -38,14 +43,24 @@ struct Vertex {
 	}
 
 	Vertex(const Vertex& other) {
-
+		pos = other.pos;
+		normal = other.normal;
+		uv = other.uv;
+		color = other.color;
 	}
-	Vertex(Vertex& other) {
 
+	Vertex(Vertex& other) {
+		pos = other.pos;
+		normal = other.normal;
+		uv = other.uv;
+		color = other.color;
 	}
 
 	Vertex(Vertex&& other) {
-
+		pos = other.pos;
+		normal = other.normal;
+		uv = other.uv;
+		color = other.color;
 	}
 
 };

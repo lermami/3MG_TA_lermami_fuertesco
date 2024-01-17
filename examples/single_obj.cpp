@@ -91,6 +91,7 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 	std::string warning, error;
 
 	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
+	int id = 0;
 
 	if (!err) {
 		if (!error.empty()) {
@@ -102,8 +103,7 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 		std::cout << "Warning loading obj: " << warning.c_str();
 	}*/
 
-	std::map<Vertex, int> map;
-	int unique_value = 0;
+	std::map<int, std::pair<Vertex, int>> map;
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -138,15 +138,21 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 				// vertex.green = attrib.colors[3*size_t(idx.vertex_index)+1];
 				// vertex.blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
-				/*
-				if (map.contains(vertex)) {
+				auto it = map.begin();
+				bool found = false;
+				
+				for (; it != map.end() && !found; ++it) {
 
+					if(it->second.first == vertex){
+						found = true;
+						map[id] = it->second;
+					}
 				}
-				else {
-					map.insert({ vertex,unique_value });
-					unique_value++;
+
+				if (!found) {
+					map[id] = std::make_pair(vertex, id);
 				}
-				*/
+				id++;
 			}
 			index_offset += fv;
 
@@ -155,6 +161,7 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 		}
 	}
 
+	printf("a");
 	return ret;
 }
 
@@ -223,7 +230,7 @@ int main(int, char**) {
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
-		std::function<std::vector<Vertex>()> mycall_vertex = [path]() { return LoadObjVertices(path.c_str()); };
+		std::function<std::vector<Vertex>()> mycall_vertex = [path]() { return LoadObjVerticesWIP(path.c_str()); };
 		std::function<std::vector<unsigned>()> mycall_indices = [path]() { return LoadObjIndices(path.c_str()); };
 
 		std::future<std::vector<Vertex>> future_v = thread_manager.add(mycall_vertex);
