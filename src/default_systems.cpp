@@ -126,12 +126,15 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
+
 		//Vertices
 		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
+		//Normals
+		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
 		//Uv
 		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, sizeof(render.vertex_[0]), (void*)(6 * sizeof(float)));
 		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, sizeof(render.vertex_[0]), (void*)(10 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, sizeof(render.vertex_[0]), (void*)(8 * sizeof(float)));
 
 		//Texture
 		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);

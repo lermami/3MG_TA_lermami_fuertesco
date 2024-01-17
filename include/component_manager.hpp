@@ -19,6 +19,7 @@ struct Vertex {
 	Vec4 color;
 
 	bool operator==(const Vertex& o) const{
+		bool debug = pos == o.pos && normal == o.normal && uv == o.uv;
 		return pos == o.pos && normal == o.normal && uv == o.uv;
 	}
 

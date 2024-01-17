@@ -27,64 +27,6 @@ using namespace std::chrono_literals;
 
 std::vector<Vertex> LoadObjVertices(const char* path) {
 	std::vector<Vertex> ret;
-
-	tinyobj::attrib_t attrib;
-	std::vector<tinyobj::shape_t> shapes;
-	std::string warning, error;
-
-	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
-
-	if (!err) {
-		if (!error.empty()) {
-			std::cout << "Error loading obj: " << error.c_str();
-		}
-	}
-	/*
-	if (!warning.empty()) {
-		std::cout << "Warning loading obj: " << warning.c_str();
-	}*/
-
-	for (size_t s = 0; s < shapes.size(); s++) {
-		// Loop over faces(polygon)
-		size_t index_offset = 0;
-
-		unsigned int vertices_counter = 0, texcoords_counter = 0;
-		bool getting_vertex_info = true;
-
-		while (getting_vertex_info) {
-			getting_vertex_info = false;
-				
-			for (size_t v = 0; v < 3; v++) {
-				Vertex vx;
-				if (vertices_counter < attrib.vertices.size() / 3) {
-					vx.pos.x = attrib.vertices[3 * (size_t)vertices_counter + 0];
-					vx.pos.y = attrib.vertices[3 * (size_t)vertices_counter + 1];
-					vx.pos.z = attrib.vertices[3 * (size_t)vertices_counter + 2];
-
-					getting_vertex_info = true;
-					vertices_counter++;
-				}
-
-				if (texcoords_counter < attrib.texcoords.size() / 2) {
-					vx.uv.x = attrib.texcoords[2 * (size_t)texcoords_counter + 0];
-					vx.uv.y = attrib.texcoords[2 * (size_t)texcoords_counter + 1];
-
-					getting_vertex_info = true;
-					texcoords_counter++;
-				}
-
-				ret.push_back(vx);
-			}
-		}
-	
-
-	}
-
-	return ret;
-}
-
-std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
-	std::vector<Vertex> ret;
 	std::vector<unsigned> indices;
 
 	tinyobj::attrib_t attrib;
@@ -104,7 +46,7 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 		std::cout << "Warning loading obj: " << warning.c_str();
 	}*/
 
-	std::map<Vertex, int> map;
+	std::map<int, Vertex> map;
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -139,19 +81,17 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 				// vertex.green = attrib.colors[3*size_t(idx.vertex_index)+1];
 				// vertex.blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
-				//auto it = map.find(vertex);
-				auto it = map.begin();
 				bool found = false;
 
-				for (it; it != map.end(); it++) {
-					if (vertex == it->first) {
-						indices.push_back(it->second);
+				for (auto it = map.begin(); it != map.end() && !found; it++) {
+					if (vertex == it->second) {
+						indices.push_back(it->first);
 						found = true;
 					}
 				}
-
+				
 				if (!found) {
-					map.emplace(vertex, id);
+					map.emplace(id, vertex);
 					ret.push_back(vertex);
 					indices.push_back(id);
 					id++;
@@ -164,7 +104,6 @@ std::vector<Vertex> LoadObjVerticesWIP(const char* path) {
 		}
 	}
 
-	printf("a");
 	return ret;
 }
 
@@ -189,7 +128,7 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 		std::cout << "Warning loading obj: " << warning.c_str();
 	}*/
 
-	std::map<Vertex, int> map;
+	std::map<int, Vertex> map;
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -224,19 +163,17 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 				// vertex.green = attrib.colors[3*size_t(idx.vertex_index)+1];
 				// vertex.blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
-				//auto it = map.find(vertex);
-				auto it = map.begin();
 				bool found = false;
 
-				for (it; it != map.end(); it++) {
-					if (vertex == it->first) {
-						indices.push_back(it->second);
+				for (auto it = map.begin(); it != map.end() && !found; it++) {
+					if (vertex == it->second) {
+						indices.push_back(it->first);
 						found = true;
 					}
 				}
 
 				if (!found) {
-					map.emplace(vertex, id);
+					map.emplace(id, vertex);
 					ret.push_back(vertex);
 					indices.push_back(id);
 					id++;
@@ -249,7 +186,6 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 		}
 	}
 
-	printf("a");
 	return indices;
 }
 
@@ -274,7 +210,7 @@ int main(int, char**) {
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
-		std::function<std::vector<Vertex>()> mycall_vertex = [path]() { return LoadObjVerticesWIP(path.c_str()); };
+		std::function<std::vector<Vertex>()> mycall_vertex = [path]() { return LoadObjVertices(path.c_str()); };
 		std::function<std::vector<unsigned>()> mycall_indices = [path]() { return LoadObjIndices(path.c_str()); };
 
 		std::future<std::vector<Vertex>> future_v = thread_manager.add(mycall_vertex);
@@ -291,7 +227,7 @@ int main(int, char**) {
 	
 	Vec3 tr_pos(0.0f, 0.0f, 0.0f);
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-	Vec3 obj_size(0.5f, 0.5f, 0.5f);
+	Vec3 obj_size(0.007f, 0.007f, 0.007f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
@@ -299,6 +235,7 @@ int main(int, char**) {
 
 	//Texture temp
 	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(1);
 	unsigned char* laboon_tex_src = stbi_load("../assets/laboon/laboon.png", &width, &height, &nrChannels, 0);
 
 	unsigned int laboon_tex;
