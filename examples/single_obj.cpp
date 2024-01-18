@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <tiny_obj_loader.h>
-#include "stb_image/stbi_image.h"
 
 #include<vector>
 #include<optional>
@@ -21,6 +20,7 @@
 #include "buffer.hpp"
 #include "thread_manager.hpp"
 #include "default_systems.hpp"
+#include "texture.hpp"
 using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
@@ -233,27 +233,12 @@ int main(int, char**) {
 	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
-	//Texture temp
-	int width, height, nrChannels;
-	stbi_set_flip_vertically_on_load(1);
-	unsigned char* laboon_tex_src = stbi_load("../assets/laboon/laboon.png", &width, &height, &nrChannels, 0);
-
-	unsigned int laboon_tex;
-	glGenTextures(1, &laboon_tex);
-	glBindTexture(GL_TEXTURE_2D, laboon_tex);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, laboon_tex_src);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
+	unsigned laboon_tex = laboon.LoadTexture("../assets/laboon/laboon.png");
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_vertex_system(*tr_render, laboon_vertices, laboon_indices, simpleProgram, laboon_tex);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-
-	stbi_image_free(laboon_tex_src);
 
 	//Input Declaration
 	Input input_map(w);
