@@ -18,6 +18,8 @@ size_t on_click_system(std::vector<std::optional<TransformComponent>>& transform
 
 void set_position_system(TransformComponent& transform, Vec3 pos);
 
+void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
+
 void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);

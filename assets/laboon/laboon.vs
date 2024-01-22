@@ -1,6 +1,8 @@
 #version 330
 
 uniform mat4 u_m_matrix;
+uniform mat4 u_v_matrix;
+uniform vec3 u_camera_pos;
 
 layout(location = 0) in vec3 vp;
 layout(location = 1) in vec2 a_uv;
@@ -11,29 +13,64 @@ out vec4 color;
 out vec3 pos;
 out vec2 uv;
 out vec3 normal;
-/*
-mat4 ViewMatrix(){
 
-    vec3 forward = normalize(vp - vec3(0,0,0));
-    vec3 left = normalize(cross(vec3(0,0,1), vec3(0,1,0));
-    vec3 updated_up = normalize(cross(vec3(-1,0,0), vec3(0,0,1)));
+out vec3 world_position;
+out vec3 world_normal;
+out vec3 cam_dir;
 
-    float dot_left_pos = dot(left, vec3(0,0,0));
-    float dot_up_pos = dot(updated_up, vec3(0,0,0)));
-    float dot_fwd_pos = dot(forward, vec3(0,0,0)));
+mat4 ViewMat(){
+  vec3 forward = normalize(vp - u_camera_pos);
+  vec3 left = normalize(cross(forward, vec3(0,1,0)));
+  vec3 updated_up = normalize(cross(left, forward));
 
-    mat4 mat = mat4(left.x, updated_up.x, -forward.x, 0,
-                left.y, updated_up.y, -forward.y, 0,
-                left.z, updated_up.z, -forward.z, 0,
-                -dot_left_pos, -dot_up_pos, dot_fwd_pos, 1);
+  float dot_left_pos = dot(left, u_camera_pos);
+  float dot_up_pos = dot(updated_up, u_camera_pos);
+  float dot_fwd_pos = dot(forward, u_camera_pos);
 
-    return mat;
+  mat4 m = mat4(left.x,         updated_up.x,   -forward.x,   0.0f,
+                left.y,         updated_up.y,   -forward.y,   0.0f,
+                left.z,         updated_up.z,   -forward.z,   0.0f,
+                -dot_left_pos,  -dot_up_pos,    dot_fwd_pos,  1.0f);
+  
+  return m;
 }
-*/
-void main() {
-    gl_Position = u_m_matrix * vec4(vp, 1.0);
-    color = a_color;
-    pos = vp;
-    uv = a_uv;
-    normal = a_normal;
+
+
+mat4 OrthographicMat(float left, float right, float top, float bottom, float near, float far){
+
+  mat4 m = mat4(2.0f/(right-left),          0.0f,                       0.0f,                    0.0f,
+                0.0f,                       2.0f/(top-bottom),          0.0f,                    0.0f,
+                0.0f,                       0.0f,                       -2.0f/(far-near),        0.0f,
+                -(right+left)/(right-left), -(top+bottom)/(top-bottom), -(far+near)/(far-near),  1.0f);
+
+    return m;
+}
+
+mat4 PerpectiveMat(float fov, float aspect, float near, float far){
+
+  mat4 m = mat4(1.0f/aspect*fov,    0.0f,         0.0f,                           0.0f,
+                0.0f,               1.0f/fov,     0.0f,                           0.0f,
+                0.0f,               0.0f,         (-far-near)/(far-near),         -1.0f,
+                0.0f,               0.0f,         -(2.0f*far*near)/(far-near),    0.0f);
+
+  return m;
+}
+
+void main() { 
+  
+  mat4 v_matrix = ViewMat();
+  //mat4 p_matrix = OrthographicMat(-1.0f, 1.0f, 1.0f, -1.0f, 0.1f, 100.0f);
+  mat4 p_matrix = PerpectiveMat(45.0f, 1024.0f/768.0f, 0.1f, 100.0f);
+
+  gl_Position = p_matrix * v_matrix * u_m_matrix * vec4(vp, 1.0);
+  gl_Position = u_m_matrix * vec4(vp, 1.0);
+  
+	world_position = vp;                          //((u_m_matrix * vec4(a_position, 1.0f)).xyz);
+	world_normal = mat3(u_m_matrix) * a_normal;   //normalize((u_m_matrix * vec4(a_normal, 0.0f)).xyz);
+	cam_dir = normalize(u_camera_pos - (u_m_matrix * vec4(world_position, 1.0f)).xyz);
+  
+  color = a_color;
+	uv = a_uv;
+	normal = mat3(u_m_matrix) * a_normal;
+	pos = vp;
 };

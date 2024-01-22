@@ -103,8 +103,7 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
-
+void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
 	auto r = renders.begin();
 	auto t = transforms.begin();
 
@@ -124,6 +123,30 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		glUseProgram(render.program_);
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+		float camera_pos[3] = {0, 0, -1};
+		GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
+		glUniform3fv(own_posLoc, sizeof(float)*3, &camera_pos[0]);
+
+		//Texture
+		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+
+
+	}
+}
+
+void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
+
+	auto r = renders.begin();
+	auto t = transforms.begin();
+
+	for (; r != renders.end(); r++, t++) {
+		if (!r->has_value() && !t->has_value()) continue;
+		auto& render = r->value();
+		auto& transform = t->value();
+
+		glUseProgram(render.program_);
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 

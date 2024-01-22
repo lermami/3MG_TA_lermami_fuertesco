@@ -225,8 +225,8 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 	
-	Vec3 tr_pos(0.0f, 0.0f, 0.0f);
-	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+	Vec3 tr_pos(0.0f, 0.0f, 1.0f);
+	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(0.007f, 0.007f, 0.007f);
 
 	size_t new_e = component_manager.add_entity();
@@ -282,6 +282,7 @@ int main(int, char**) {
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		//rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(rotate * w.getDeltaTime(), rotate * w.getDeltaTime(), 0.0f));
+		shader_prop_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();
