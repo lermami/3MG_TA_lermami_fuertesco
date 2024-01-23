@@ -29,9 +29,8 @@ unsigned Texture::LoadTexture(const char* path) {
 	GLenum min = (GLenum)min_filter_format_;
 	GLenum mag = (GLenum)mag_filter_format_;
 
-	unsigned int tex;
-	glGenTextures(1, &tex);
-	glBindTexture(type, tex);
+	glGenTextures(1, &handle_);
+	glBindTexture(type, handle_);
 
 	glTexParameteri(type, GL_TEXTURE_WRAP_S, wrap_s);
 	glTexParameteri(type, GL_TEXTURE_WRAP_T, wrap_t);
@@ -42,7 +41,7 @@ unsigned Texture::LoadTexture(const char* path) {
 
 	stbi_image_free(tex_src);
 
-	return tex;
+	return handle_;
 }
 
 void Texture::set_wrap_s(TextureParameters param) {

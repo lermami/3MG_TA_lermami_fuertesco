@@ -132,3 +132,15 @@ Window::Window(int w, int h, const char* title) {
   imguiInit_ = false;
 }
 
+void Window::enableCulling(bool enable) {
+  enable ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+}
+
+void Window::enableDepthTest(bool enable) {
+  enable ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+}
+
+void Window::setCulling(CullingMode culling, FrontFace frontface) {
+  glCullFace((GLenum)culling);
+  glFrontFace((GLenum)frontface);
+}

@@ -4,6 +4,23 @@
 #include <vector>
 #include <ctime>
 
+enum class FrontFace {
+  kClockWise = 0x0900,
+  kCounterClockWise = 0x0901
+};
+
+enum class CullingMode {
+  kFrontLeft = 0x0400,
+  kFrontRight = 0x0401,
+  kBackLeft = 0x0402,
+  kBackRight = 0x0403,
+  kFront = 0x0404,
+  kBack = 0x0405,
+  kLeft = 0x0406,
+  kRight = 0x0407,
+  kFrontAndBack = 0x0408,
+};
+
 class Engine;
 
 class Window {
@@ -23,6 +40,10 @@ public:
   float getDeltaTime();
   void calculateCurrentTime();
   void calculateLastTime();
+
+  void enableCulling(bool enable);
+  void setCulling(CullingMode culling, FrontFace frontface);
+  void enableDepthTest(bool enable);
 
   ~Window();
   Window(Window& w);

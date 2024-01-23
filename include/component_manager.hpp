@@ -19,51 +19,8 @@ struct Vertex {
 	Vec4 color;
 
 	bool operator==(const Vertex& o) const{
-		bool debug = pos == o.pos && normal == o.normal && uv == o.uv;
 		return pos == o.pos && normal == o.normal && uv == o.uv;
 	}
-
-	bool operator<(const Vertex& o) const {
-		return std::tie(pos.x, pos.y, pos.z) < std::tie(o.pos.x, o.pos.y, o.pos.z);
-	}
-
-	Vertex& operator=(const Vertex& o) {
-		pos = o.pos;
-		normal = o.normal;
-		uv = o.uv;
-		color = o.color;
-
-		return *this;
-	}
-
-	Vertex() {
-		pos = Vec3(0, 0, 0);
-		normal = Vec3(0, 0, 0);
-		uv = Vec2(0, 0);
-		color = Vec4(0, 0, 0, 0);
-	}
-
-	Vertex(const Vertex& other) {
-		pos = other.pos;
-		normal = other.normal;
-		uv = other.uv;
-		color = other.color;
-	}
-
-	Vertex(Vertex& other) {
-		pos = other.pos;
-		normal = other.normal;
-		uv = other.uv;
-		color = other.color;
-	}
-
-	Vertex(Vertex&& other) {
-		pos = other.pos;
-		normal = other.normal;
-		uv = other.uv;
-		color = other.color;
-	}
-
 };
 
 struct TransformComponent {
@@ -85,9 +42,13 @@ struct AudioComponent {
 	SoundSource sound_source_;
 };
 
-struct RenderComponent {
+struct Geometry {
 	std::vector<Vertex> vertex_;
 	std::vector<unsigned> indices_;
+};
+
+struct RenderComponent {
+	Geometry geometry_;
 	std::shared_ptr<Buffer> elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;
 	unsigned int program_ = -1;

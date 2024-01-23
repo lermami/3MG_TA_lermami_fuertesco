@@ -4,20 +4,22 @@
 #include "imgui.h"
 #include "sound/soundbuffer.h"
 
-void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
-	std::vector<unsigned>& indices_, unsigned int program, unsigned int texture) {
+void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture) {
 
-	for (int i = 0; i < v.size(); i++) {
-		render.vertex_.push_back(v[i]);
+	for (int i = 0; i < geometry.vertex_.size(); i++) {
+		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
 	}
 
+	unsigned vertex_struct_size = (unsigned) sizeof(render.geometry_.vertex_[0]);
+	unsigned vertex_buffer_size = render.geometry_.vertex_.size();
+
 	render.elements_buffer_ = std::make_shared<Buffer>();
-	render.elements_buffer_.get()->init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
-	render.elements_buffer_.get()->uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.elements_buffer_.get()->init(vertex_struct_size * vertex_buffer_size);
+	render.elements_buffer_.get()->uploadData(&render.geometry_.vertex_[0], vertex_struct_size * vertex_buffer_size);
 
 	render.order_buffer_ = std::make_shared<Buffer>();
-	render.order_buffer_.get()->init((unsigned)indices_.size());
-	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size() * sizeof(unsigned)));
+	render.order_buffer_.get()->init((unsigned)geometry.indices_.size());
+	render.order_buffer_.get()->uploadData(&geometry.indices_[0], (unsigned)(geometry.indices_.size() * sizeof(unsigned)));
 
 	render.program_ = program;
 	render.texture_ = texture;
@@ -39,7 +41,7 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 }
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
-	for (auto& v : render.vertex_) {
+	for (auto& v : render.geometry_.vertex_) {
 		v.color.x = r;
 		v.color.y = g;
 		v.color.z = b;
@@ -139,25 +141,25 @@ void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, st
 void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
 
 	auto r = renders.begin();
-	auto t = transforms.begin();
 
-	for (; r != renders.end(); r++, t++) {
-		if (!r->has_value() && !t->has_value()) continue;
+	for (; r != renders.end(); r++) {
+		if (!r->has_value()) continue;
 		auto& render = r->value();
-		auto& transform = t->value();
 
 		glUseProgram(render.program_);
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 
+		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
 		//Vertices
-		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
+		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
 		//Normals
-		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
 		//Uv
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, sizeof(render.vertex_[0]), (void*)(6 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, sizeof(render.vertex_[0]), (void*)(8 * sizeof(float)));
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
 		//Texture
 		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
