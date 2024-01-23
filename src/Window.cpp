@@ -87,6 +87,16 @@ float Window::getDeltaTime() {
   return deltaTime_;
 }
 
+void Window::getWindowSize(unsigned int& w, unsigned int& h) {
+  w = width_;
+  h = height_;
+}
+
+void Window::setwindowsize(unsigned int w, unsigned int h) {
+  width_ = w;
+  height_ = h;
+}
+
 Window::~Window() {
   handle_ = NULL;
 
@@ -100,6 +110,8 @@ Window::~Window() {
 Window::Window(Window& w) : handle_{ w.handle_ }{
   w.handle_ = NULL;
 
+  width_ = w.width_;
+  height_ = w.height_;
   currentTime_ = w.currentTime_;
   lastTime_ = w.lastTime_;
   deltaTime_ = w.deltaTime_;
@@ -110,6 +122,8 @@ Window::Window(Window& w) : handle_{ w.handle_ }{
 Window::Window(Window&& w) noexcept : handle_{w.handle_ }  {
   w.handle_ = NULL;
 
+  width_ = w.width_;
+  height_ = w.height_;
   currentTime_ = w.currentTime_;
   lastTime_ = w.lastTime_;
   deltaTime_ = w.deltaTime_;
@@ -124,7 +138,8 @@ Window::Window(int w, int h, const char* title) {
   GLenum initstate = glewInit();
   assert(initstate == GLEW_OK);
 
-
+  width_ = w;
+  height_ = h;
   currentTime_ = 0;
   lastTime_ = 0;
   deltaTime_ = 0;

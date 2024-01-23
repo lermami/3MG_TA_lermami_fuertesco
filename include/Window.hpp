@@ -45,6 +45,10 @@ public:
   void setCulling(CullingMode culling, FrontFace frontface);
   void enableDepthTest(bool enable);
 
+  void getWindowSize(unsigned int& w, unsigned int& h);
+
+  void setwindowsize(unsigned int w, unsigned int h);
+
   ~Window();
   Window(Window& w);
   Window(Window&& w) noexcept;
@@ -57,6 +61,8 @@ private:
   GLFWwindow* handle_;
   clock_t  currentTime_;
   clock_t  lastTime_;
+  unsigned int width_;
+  unsigned int height_;
   float deltaTime_;
   bool imguiInit_;
 };

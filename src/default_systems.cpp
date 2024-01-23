@@ -1,8 +1,12 @@
 #include "default_systems.hpp"
 #include <GL/glew.h>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include "imgui.h"
 #include "sound/soundbuffer.h"
+
 
 void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture) {
 
@@ -122,16 +126,34 @@ void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, st
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
+		glm::vec3 target_pos{ transform.pos_.x, transform.pos_.y, transform.pos_.z };
+		glm::vec3 camera_pos{ 0.0f, 0.0f, -1.0f };
+		glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
+
+		glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f/768.0f, 0.01f, 100.0f);
+		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100.0f);
+		glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
+
 		glUseProgram(render.program_);
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-		float camera_pos[3] = {0, 0, -1};
+		
 		GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
 		glUniform3fv(own_posLoc, sizeof(float)*3, &camera_pos[0]);
 
 		//Texture
 		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+		//View & projection
+		GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
+		glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
+		glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
+
+		GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
+		glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
 
 
 

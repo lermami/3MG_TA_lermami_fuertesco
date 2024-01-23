@@ -4,6 +4,7 @@ glew/2.2.0
 openal-soft/1.22.2
 audiofile/1.1.1
 tinyobjloader/2.0.0-rc10
+glm/cci.20230113
 
 [generators]
 premake
