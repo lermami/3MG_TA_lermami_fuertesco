@@ -1,25 +1,32 @@
 #include "default_systems.hpp"
 #include <GL/glew.h>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include "imgui.h"
 #include "sound/soundbuffer.h"
 
-void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
-	std::vector<unsigned>& indices_, unsigned int program) {
 
-	for (int i = 0; i < v.size(); i++) {
-		render.vertex_.push_back(v[i]);
+void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture) {
+
+	for (int i = 0; i < geometry.vertex_.size(); i++) {
+		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
 	}
 
+	unsigned vertex_struct_size = (unsigned) sizeof(render.geometry_.vertex_[0]);
+	unsigned vertex_buffer_size = render.geometry_.vertex_.size();
+
 	render.elements_buffer_ = std::make_shared<Buffer>();
-	render.elements_buffer_.get()->init((unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
-	render.elements_buffer_.get()->uploadData(&render.vertex_[0], (unsigned)(sizeof(render.vertex_[0]) * render.vertex_.size()));
+	render.elements_buffer_.get()->init(vertex_struct_size * vertex_buffer_size);
+	render.elements_buffer_.get()->uploadData(&render.geometry_.vertex_[0], vertex_struct_size * vertex_buffer_size);
 
 	render.order_buffer_ = std::make_shared<Buffer>();
-	render.order_buffer_.get()->init((unsigned)indices_.size());
-	render.order_buffer_.get()->uploadData(&indices_[0], (unsigned)(indices_.size() * sizeof(unsigned)));
+	render.order_buffer_.get()->init((unsigned)geometry.indices_.size());
+	render.order_buffer_.get()->uploadData(&geometry.indices_[0], (unsigned)(geometry.indices_.size() * sizeof(unsigned)));
 
 	render.program_ = program;
+	render.texture_ = texture;
 }
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size) {
@@ -38,11 +45,11 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 }
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
-	for (auto& v : render.vertex_) {
-		v.r_ = r;
-		v.g_ = g;
-		v.b_ = b;
-		v.a_ = a;
+	for (auto& v : render.geometry_.vertex_) {
+		v.color.x = r;
+		v.color.y = g;
+		v.color.z = b;
+		v.color.w = a;
 	}
 
 }
@@ -107,8 +114,8 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 	auto r = renders.begin();
 	auto t = transforms.begin();
 
-	for (; r != renders.end(); r++, t++) {
-		if (!r->has_value() && !t->has_value()) continue;
+	for (; r != renders.end(); r++) {
+		if (!r->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
 
@@ -120,13 +127,49 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
+		glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
+		glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
+		glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
+
+		glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
+		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
+		glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
+
 		glUseProgram(render.program_);
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
+		GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
+		glUniform1fv(own_posLoc, sizeof(float) * 3, &camera_pos[0]);
+
+		//Texture
+		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+		//View & projection
+		GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
+		glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
+		glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
+
+		GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
+		glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
+
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
-		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, sizeof(render.vertex_[0]), (void*)0);
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 4, sizeof(render.vertex_[0]), (void*)(3 * sizeof(float)));
+
+		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+		//Vertices
+		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+		//Normals
+		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+		//Uv
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+		//Color
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+		//Texture
+		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
 
 		auto order_buffer = render.order_buffer_.get();
 		order_buffer->bind(kTarget_Elements);
@@ -171,6 +214,28 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 		}
 		ImGui::PopID();
 	}
+
+	ImGui::End();
+}
+
+void imgui_transform_system(TransformComponent& transform) {
+	ImGui::Begin("Transform");
+
+	Vec3 aux_pos = transform.pos_;
+	if (ImGui::DragFloat3("Position", &aux_pos.x, 1.0f, -1000.0f, 1000.0f, "%.3f")) {
+		transform.pos_ = aux_pos;
+	}
+
+	Vec3 aux_rot = transform.rot_;
+	if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+		transform.rot_ = aux_rot;
+	}
+
+	float aux_size = transform.size_.x;
+	if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 3.0f, "%.3f")) {
+		transform.size_ = aux_size;
+	}
+
 
 	ImGui::End();
 }

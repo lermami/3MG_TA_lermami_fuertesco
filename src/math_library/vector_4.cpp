@@ -46,3 +46,4 @@ Vec4::Vec4(const Vec4& other) {
 }
 
 Vec4::~Vec4() { }
+

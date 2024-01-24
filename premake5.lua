@@ -184,6 +184,24 @@ files {
     "examples/obj_many.cpp"
   }
 
+project"SingleObj"
+  kind "ConsoleApp"
+  language "C++"
+  targetdir "build/%{prj.name}/%{cfg.buildcfg}"
+  includedirs {
+	"include", "include/math_library", "deps", "include/sound"
+	}
+  links "Motor"
+
+  conan_config_exec("Debug")
+  conan_config_exec("Release")
+  conan_config_exec("RelWithDebInfo")
+  debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
+
+files {
+    "examples/single_obj.cpp"
+  }
+
 project"SoundIntegration"
   kind "ConsoleApp"
   language "C++"

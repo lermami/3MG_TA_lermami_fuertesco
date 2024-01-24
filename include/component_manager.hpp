@@ -3,17 +3,24 @@
 #include<memory>
 #include<optional>
 #include<cassert>
+#include <utility>
 
 #include "buffer.hpp"
+#include "vector_2.hpp"
 #include "vector_3.hpp"
+#include "vector_4.hpp"
 #include "matrix_4.hpp"
 #include "sound/soundsource.h"
 
 struct Vertex {
-	float x_, y_, z_;
-	float r_, g_, b_, a_;
-	float nx_, ny_, nz_;
-	float u_, v_;
+	Vec3 pos;
+	Vec3 normal;
+	Vec2 uv;
+	Vec4 color;
+
+	bool operator==(const Vertex& o) const{
+		return pos == o.pos && normal == o.normal && uv == o.uv;
+	}
 };
 
 struct TransformComponent {
@@ -35,12 +42,17 @@ struct AudioComponent {
 	SoundSource sound_source_;
 };
 
-struct RenderComponent {
+struct Geometry {
 	std::vector<Vertex> vertex_;
 	std::vector<unsigned> indices_;
+};
+
+struct RenderComponent {
+	Geometry geometry_;
 	std::shared_ptr<Buffer> elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;
 	unsigned int program_ = -1;
+	unsigned int texture_ = -1;
 };
 
 struct component_base {

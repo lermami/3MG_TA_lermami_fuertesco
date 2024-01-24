@@ -1,8 +1,7 @@
 #pragma once
 #include "component_manager.hpp"
 
-void init_vertex_system(RenderComponent& render, std::vector<Vertex>& v,
-	std::vector<unsigned>& indices_, unsigned int program);
+void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture);
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size);
 
@@ -18,6 +17,10 @@ size_t on_click_system(std::vector<std::optional<TransformComponent>>& transform
 
 void set_position_system(TransformComponent& transform, Vec3 pos);
 
+void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
+
 void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
+
+void imgui_transform_system(TransformComponent& transform);

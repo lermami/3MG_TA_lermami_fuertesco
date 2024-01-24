@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "stb_image/stbi_image.h"
 
 #include <optional>
 
@@ -22,11 +23,28 @@ int main(int, char**) {
 
   std::vector<Vertex> triangle_mesh = {
     {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-    {0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+    {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0},
+    {0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0.5, 1},
   };
 
   std::vector<unsigned> tr_indices = { 0, 1, 2 };
+
+  //Texture temp
+  int width, height, nrChannels;
+  unsigned char* laboon_tex_src = stbi_load("../assets/wall.jpg", &width, &height, &nrChannels, 0);
+
+  unsigned int laboon_tex;
+  glGenTextures(1, &laboon_tex);
+  glBindTexture(GL_TEXTURE_2D, laboon_tex);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, laboon_tex_src);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  stbi_image_free(laboon_tex_src);
 
   Vec3 tr_pos(0.0f, 0.0f, 0.0f);
   Vec3 tr_size(10.0f, 10.0f, 0.0f);
@@ -34,12 +52,12 @@ int main(int, char**) {
 
   size_t triangle = component_manager.add_entity();
 
-  auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+  auto simpleProgram = CreateProgram("../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
   auto tr_render = component_manager.get_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.get_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram);
+  init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram, laboon_tex);
 
 
   while (!w.is_done()) {

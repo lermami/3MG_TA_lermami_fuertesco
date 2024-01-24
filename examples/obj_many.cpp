@@ -51,6 +51,10 @@ std::vector<Vertex> LoadObjVertices(const char* path) {
 			vx.x_ = attrib.vertices[3 * i + 0];
 			vx.y_ = attrib.vertices[3 * i + 1];
 			vx.z_ = attrib.vertices[3 * i + 2];
+
+			vx.u_ = attrib.texcoords[2 * i + 0];
+			vx.v_ = attrib.texcoords[2 * i + 1];
+
 			ret.push_back(vx);
 		}
 	}
@@ -99,7 +103,6 @@ std::vector<unsigned> LoadObjIndices(const char* path) {
 
 	return ret;
 }
-
 
 int main(int, char**) {
 	Engine e;
@@ -157,7 +160,7 @@ int main(int, char**) {
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, suzanne_vertices, suzanne_indices, simpleProgram);
+		init_vertex_system(*tr_render, suzanne_vertices, suzanne_indices, simpleProgram, 0);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
@@ -175,7 +178,7 @@ int main(int, char**) {
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, wolf_vertices, wolf_indices, simpleProgram);
+		init_vertex_system(*tr_render, wolf_vertices, wolf_indices, simpleProgram, 0);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
@@ -193,7 +196,7 @@ int main(int, char**) {
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, tank_vertices, tank_indices, simpleProgram);
+		init_vertex_system(*tr_render, tank_vertices, tank_indices, simpleProgram, 0);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
