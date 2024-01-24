@@ -20,6 +20,7 @@
 #include "thread_manager.hpp"
 #include "default_systems.hpp"
 #include "texture.hpp"
+#include "camera.hpp"
 using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
@@ -31,7 +32,7 @@ int main(int, char**) {
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
-
+	
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	w.initImGui();
@@ -39,6 +40,8 @@ int main(int, char**) {
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
+
+	Camera cam(w);
 
 	auto simpleProgram = CreateProgram("../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
@@ -57,8 +60,6 @@ int main(int, char**) {
 
 	Geometry laboon_geo = objs[0].get();
 
-	unsigned n_obj = 1000;
-	
 	Vec3 tr_pos(0.0f, 0.0f, -500.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
@@ -110,9 +111,7 @@ int main(int, char**) {
 		
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
-		//rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(rotate * w.getDeltaTime(), rotate * w.getDeltaTime(), 0.0f));
-		//shader_prop_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
-		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();
 

@@ -6,6 +6,7 @@
 
 #include "imgui.h"
 #include "sound/soundbuffer.h"
+#include "camera.hpp"
 
 
 void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture) {
@@ -109,7 +110,7 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
+void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
 
 	auto r = renders.begin();
 	auto t = transforms.begin();
@@ -131,9 +132,10 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
 		glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
 
-		glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
-		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
-		glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
+
+		glm::mat4 perpective = cam.getProjectionMatrix(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
+		glm::mat4 ortographic;
+		glm::mat4 view = cam.getViewMatrix(Vec3(0.0f, 0.0f, -1.0f), Vec3(0.0f, 1.0f, 0.0f));
 
 		glUseProgram(render.program_);
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
