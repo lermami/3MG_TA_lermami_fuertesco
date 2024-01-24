@@ -23,87 +23,6 @@ using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
 
-std::vector<Vertex> LoadObjVertices(const char* path) {
-	std::vector<Vertex> ret;
-
-	tinyobj::attrib_t attrib;
-	std::vector<tinyobj::shape_t> shapes;
-	std::string warning, error;
-
-	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
-
-	if (!err) {
-		if (!error.empty()) {
-			std::cout << "Error loading obj: " << error.c_str();
-		}
-	}
-
-	if (!warning.empty()) {
-		std::cout << "Warning loading obj: " << warning.c_str();
-	}
-
-	for (size_t s = 0; s < shapes.size(); s++) {
-		// Loop over faces(polygon)
-		size_t index_offset = 0;
-
-		for (size_t i = 0; i < attrib.vertices.size() / 3; i++) {
-			Vertex vx;
-			vx.x_ = attrib.vertices[3 * i + 0];
-			vx.y_ = attrib.vertices[3 * i + 1];
-			vx.z_ = attrib.vertices[3 * i + 2];
-
-			vx.u_ = attrib.texcoords[2 * i + 0];
-			vx.v_ = attrib.texcoords[2 * i + 1];
-
-			ret.push_back(vx);
-		}
-	}
-
-	return ret;
-}
-
-std::vector<unsigned> LoadObjIndices(const char* path) {
-	std::vector<unsigned> ret;
-
-	tinyobj::attrib_t attrib;
-	std::vector<tinyobj::shape_t> shapes;
-	std::string warning, error;
-
-	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
-
-	if (!err) {
-		if (!error.empty()) {
-			std::cout << "Error loading obj: " << error.c_str();
-		}
-	}
-
-	if (!warning.empty()) {
-		std::cout << "Warning loading obj: " << warning.c_str();
-	}
-
-	for (size_t s = 0; s < shapes.size(); s++) {
-		// Loop over faces(polygon)
-		size_t index_offset = 0;
-
-		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-			int fv = shapes[s].mesh.num_face_vertices[f];
-
-			// Loop over vertices in the face.
-			for (size_t v = 0; v < fv; v++) {
-				// access to vertex
-				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-
-				ret.push_back(static_cast<unsigned int>(idx.vertex_index));
-			}
-			index_offset += fv;
-
-		}
-
-	}
-
-	return ret;
-}
-
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
@@ -114,6 +33,11 @@ int main(int, char**) {
 
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
+	w.initImGui();
+	w.enableCulling(true);
+	w.enableDepthTest(true);
+	w.setDepthTestMode(DepthTestMode::kLess);
+	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
 	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
