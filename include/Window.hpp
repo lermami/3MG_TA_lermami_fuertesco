@@ -21,6 +21,13 @@ enum class CullingMode {
   kFrontAndBack = 0x0408,
 };
 
+enum class DepthTestMode {
+  kNever = 0x0200,
+  kLess = 0x0201,
+  kEqual = 0x0202,
+  kGreater = 0x0204,
+};
+
 class Engine;
 
 class Window {
@@ -42,8 +49,9 @@ public:
   void calculateLastTime();
 
   void enableCulling(bool enable);
-  void setCulling(CullingMode culling, FrontFace frontface);
+  void setCullingMode(CullingMode culling, FrontFace frontface);
   void enableDepthTest(bool enable);
+  void setDepthTestMode(DepthTestMode mode);
 
   void getWindowSize(unsigned int& w, unsigned int& h);
 

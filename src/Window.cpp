@@ -155,7 +155,11 @@ void Window::enableDepthTest(bool enable) {
   enable ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
 
-void Window::setCulling(CullingMode culling, FrontFace frontface) {
+void Window::setCullingMode(CullingMode culling, FrontFace frontface) {
   glCullFace((GLenum)culling);
   glFrontFace((GLenum)frontface);
+}
+
+void Window::setDepthTestMode(DepthTestMode mode) {
+  glDepthFunc((GLenum)mode);
 }

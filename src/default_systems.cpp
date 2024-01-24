@@ -109,12 +109,13 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
-void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
+void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
+
 	auto r = renders.begin();
 	auto t = transforms.begin();
 
-	for (; r != renders.end(); r++, t++) {
-		if (!r->has_value() && !t->has_value()) continue;
+	for (; r != renders.end(); r++) {
+		if (!r->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
 
@@ -126,21 +127,20 @@ void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, st
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
-		glm::vec3 target_pos{ transform.pos_.x, transform.pos_.y, transform.pos_.z };
-		glm::vec3 camera_pos{ 0.0f, 0.0f, -1.0f };
+		glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
+		glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
 		glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
 
-		glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f/768.0f, 0.01f, 100.0f);
-		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100.0f);
+		glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
+		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
 		glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
 
 		glUseProgram(render.program_);
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-		
 		GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
-		glUniform3fv(own_posLoc, sizeof(float)*3, &camera_pos[0]);
+		glUniform1fv(own_posLoc, sizeof(float) * 3, &camera_pos[0]);
 
 		//Texture
 		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
@@ -154,21 +154,6 @@ void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, st
 
 		GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
 		glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
-
-
-
-	}
-}
-
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
-
-	auto r = renders.begin();
-
-	for (; r != renders.end(); r++) {
-		if (!r->has_value()) continue;
-		auto& render = r->value();
-
-		glUseProgram(render.program_);
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 
@@ -237,7 +222,7 @@ void imgui_transform_system(TransformComponent& transform) {
 	ImGui::Begin("Transform");
 
 	Vec3 aux_pos = transform.pos_;
-	if (ImGui::DragFloat3("Position", &aux_pos.x, 0.05f, -1.0f, 1.0f, "%.3f")) {
+	if (ImGui::DragFloat3("Position", &aux_pos.x, 1.0f, -1000.0f, 1000.0f, "%.3f")) {
 		transform.pos_ = aux_pos;
 	}
 
