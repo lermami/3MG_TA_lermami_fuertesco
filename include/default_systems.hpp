@@ -9,6 +9,14 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a);
 
+void init_ambient_light_system(LightComponent& light, Vec3 color, Vec3 specular);
+
+void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular);
+
+void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic);
+
+void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle);
+
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov);
 
 void rotate_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 rot);

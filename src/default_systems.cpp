@@ -54,6 +54,58 @@ void init_color_system(RenderComponent& render, float r, float g, float b, float
 
 }
 
+void init_ambient_light_system(LightComponent& light, Vec3 color, Vec3 specular) {
+	light.direction_ = Vec3{ 0,0,0 };
+	light.pos_ = Vec3{ 0,0,0 };
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = 0.0f;
+	light.linear_ = 0.0f;
+	light.quadratic_ = 0.0f;
+	light.cutoff_angle_ = 0.0f;
+
+	light.type_ = LightType::kAmbient;
+}
+
+void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
+	light.direction_ = direction;
+	light.pos_ = Vec3{ 0,0,0 };
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = 0.0f;
+	light.linear_ = 0.0f;
+	light.quadratic_ = 0.0f;
+	light.cutoff_angle_ = 0.0f;
+
+	light.type_ = LightType::kDirectional;
+}
+
+void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
+	light.direction_ = Vec3{ 0,0,0 };
+	light.pos_ = position;
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = constant;
+	light.linear_ = linear;
+	light.quadratic_ = quadratic;
+	light.cutoff_angle_ = 0.0f;
+
+	light.type_ = LightType::kPoint;
+}
+
+void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
+	light.direction_ = direction;
+	light.pos_ = position;
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = constant;
+	light.linear_ = linear;
+	light.quadratic_ = quadratic;
+	light.cutoff_angle_ = cutoff_angle;
+
+	light.type_ = LightType::kSpot;
+}
+
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
 
 	auto r = transforms.begin();
@@ -154,6 +206,22 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 
 		GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
 		glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
+
+		/*<----------------------------------------------------------------------------------------------------------------------------
+		//Light
+		// Crear un buffer de uniformes
+		GLuint ubo;
+		glGenBuffers(1, &ubo);
+		glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+
+		// Definir el tamaño del buffer
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(Light), nullptr, GL_DYNAMIC_DRAW);
+
+		// Desenlazar el buffer de uniformes
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		
+		GLuint blockIndex = glGetUniformBlockIndex(render.program_, "LightBlock");
+		glBindBufferBase(GL_UNIFORM_BUFFER, blockIndex, ubo);*/
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 

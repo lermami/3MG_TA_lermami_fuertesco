@@ -20,6 +20,8 @@
 #include "thread_manager.hpp"
 #include "default_systems.hpp"
 #include "texture.hpp"
+#include "light.hpp"
+
 using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
@@ -66,6 +68,9 @@ int main(int, char**) {
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+	/*<---------------------------------------------------------------------------------------------------------------
+	size_t light_entity = component_manager.add_entity();
+	auto ambient_light = component_manager.get_component<LightComponent>(light_entity);*/
 
 	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
@@ -78,6 +83,9 @@ int main(int, char**) {
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
+
+	//Light
+	LightComponent light(Vec3{0.8f, 0.0f, 0.0f}, Vec3{ 0.8f, 0.0f, 0.0f });
 
 	while (!w.is_done()) {
 		w.calculateLastTime();

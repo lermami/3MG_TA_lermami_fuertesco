@@ -11,6 +11,8 @@
 #include "vector_4.hpp"
 #include "matrix_4.hpp"
 #include "sound/soundsource.h"
+#include "light.hpp"
+
 
 struct Vertex {
 	Vec3 pos;
@@ -97,6 +99,7 @@ struct ComponentManager {
 		add_component_class<RenderComponent>();
 		add_component_class<TransformComponent>();
 		add_component_class<AudioComponent>();
+		add_component_class<LightComponent>();
 	}
 
 	template<typename T> void add_component_class() {
