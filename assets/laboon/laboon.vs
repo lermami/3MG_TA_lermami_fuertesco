@@ -2,8 +2,10 @@
 
 uniform mat4 u_m_matrix;
 uniform mat4 u_v_matrix;
+
 uniform mat4 u_o_matrix;
 uniform mat4 u_p_matrix;
+
 uniform vec3 u_camera_pos;
 
 layout(location = 0) in vec3 vp;
