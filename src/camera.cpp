@@ -1,23 +1,31 @@
 #include "camera.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include "Window.hpp"
+#include "input.hpp"
+
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #include "vector_2.hpp"
 
-#include "input.hpp"
-
-Camera::Camera(Window& w, Vec3 pos, float speed, float sensitivity) {
+Camera::Camera(Window& w, Vec3 pos, float speed, float sensitivity) : window_{ w } {
   pos_ = pos;
   speed_ = speed;
   sensitivity_ = sensitivity;
-  
-  //TODO: change hardcode
   up_ = Vec3(0.0f, 1.0f, 0.0f);
   forward_ = Vec3(0.0f, 0.0f, -1.0f);
+  projectionMode_ = ProjectionMode::kPerspective;
 }
 
 Camera::~Camera() {
 
+}
+
+void Camera::setProjectionMode(ProjectionMode mode) {
+  projectionMode_ = mode;
+}
+
+ProjectionMode Camera::getProjectionMode() {
+  return projectionMode_;
 }
 
 glm::mat4 Camera::getPerspectiveMatrix(float fov, float aspect, float near, float far) {
@@ -92,3 +100,33 @@ void Camera::updateForward(Input& input, const float w, const float h){
   forward_.y = sin(omega);
   forward_.z = cos(omega) * sin(alpha);
 }
+
+void Camera::doRender() {
+  for (int i = 0; i < window_.getProgramListSize(); i++) {
+    unsigned program = window_.getProgram(i);
+    glUseProgram(program);
+
+    switch (projectionMode_) {
+      case ProjectionMode::kPerspective:
+        glm::mat4 perpective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
+
+        glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(perpective));
+      break;
+      case ProjectionMode::kOrthogonal:
+        glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
+
+        glUniformMatrix4fv(glGetUniformLocation(program, "u_o_matrix"), 1, GL_FALSE, glm::value_ptr(ortographic));
+      break;
+    }
+
+    //View
+    glm::mat4 view = getViewMatrix(pos_ + forward_, up_);
+    GLint viewMatrixLoc = glGetUniformLocation(0, "u_v_matrix");
+    glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+    //Camera position
+    GLint camPosLoc = glGetUniformLocation(program, "u_camera_pos");
+    glUniform1fv(camPosLoc, sizeof(float) * 3, &pos_.x);
+  }
+}
+

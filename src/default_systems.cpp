@@ -8,8 +8,7 @@
 #include "sound/soundbuffer.h"
 #include "camera.hpp"
 
-
-void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture) {
+void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture) {
 
 	for (int i = 0; i < geometry.vertex_.size(); i++) {
 		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
@@ -115,7 +114,8 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 	auto r = renders.begin();
 	auto t = transforms.begin();
 
-	//TODO: sacar camara
+	//TODO: FIX
+	cam.doRender();
 
 	for (; r != renders.end(); r++, t++) {
 		if (!r->has_value() && !t->has_value()) continue;
@@ -130,36 +130,12 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
-		glm::vec3 cam_pos{ cam.getPosition().x, cam.getPosition().y, cam.getPosition().z };
-
-		glm::mat4 perpective = cam.getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
-		//glm::mat4 ortographic = cam.getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
-		glm::mat4 view = cam.getViewMatrix(cam.getPosition() + cam.forward(), Vec3(0.0f, 1.0f, 0.0f));
-		
-		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
-
-		glUseProgram(render.program_);
-
 		//Model matrix
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-		//Camera position
-		GLint camPosLoc = glGetUniformLocation(render.program_, "u_camera_pos");
-		glUniform1fv(camPosLoc, sizeof(float) * 3, &cam_pos[0]);
-
 		//Texture
 		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
-
-		//View & projection
-		GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
-		glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-		GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
-		glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
-
-		GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
-		glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 
@@ -173,9 +149,6 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 		//Color
 		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
-
-		//Texture
-		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
 
 		auto order_buffer = render.order_buffer_.get();
 		order_buffer->bind(kTarget_Elements);

@@ -1,7 +1,3 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <tiny_obj_loader.h>
-
 #include<vector>
 #include<optional>
 #include<cassert>
@@ -11,8 +7,8 @@
 #include<fstream>
 #include<iostream>
 
-#include "component_manager.hpp"
 #include "Window.hpp"
+#include "component_manager.hpp"
 #include "Engine.hpp"
 #include "Input.hpp"
 #include "shader_management.hpp"
@@ -41,7 +37,7 @@ int main(int, char**) {
 
 	Camera cam(w, Vec3(0.0f,0.0f,0.0f), 10.0f);
 
-	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
@@ -182,7 +178,6 @@ int main(int, char**) {
 
 		cam.updateForward(input_map, 1024, 768);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
-		imgui_transform_system(*component_manager.get_component<TransformComponent>(900));
 		cam.move(input);
 		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
