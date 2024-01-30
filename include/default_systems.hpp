@@ -27,7 +27,7 @@ void set_position_system(TransformComponent& transform, Vec3 pos);
 
 void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
 
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
+void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights);
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 

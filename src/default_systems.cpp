@@ -161,87 +161,108 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
+void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
 
 	auto r = renders.begin();
 	auto t = transforms.begin();
+	auto l = lights.begin();
 
 	for (; r != renders.end(); r++) {
 		if (!r->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
-
-		Mat4& m = transform.model_matrix_;
-
-		m = m.Identity();
-		m = m.Multiply(m.Translate(transform.pos_));
-		m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
-		m = m.Multiply(m.Scale(transform.size_));
-		m = m.Transpose();
-
-		glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
-		glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
-		glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
-
-		glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
-		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
-		glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
-
-		glUseProgram(render.program_);
-		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
-		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
-
-		GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
-		glUniform1fv(own_posLoc, sizeof(float) * 3, &camera_pos[0]);
-
-		//Texture
-		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
-
-		//View & projection
-		GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
-		glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-		GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
-		glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
-
-		GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
-		glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
-
-		/*<----------------------------------------------------------------------------------------------------------------------------
+		/*<-------------------------------------------------------------------------------------------------------------
 		//Light
-		// Crear un buffer de uniformes
-		GLuint ubo;
-		glGenBuffers(1, &ubo);
-		glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+		for (; l != lights.end(); l++) {
+			auto& light = l->value();
 
-		// Definir el tamaño del buffer
-		glBufferData(GL_UNIFORM_BUFFER, sizeof(Light), nullptr, GL_DYNAMIC_DRAW);
+			GLuint loc = glGetUniformLocation(render.program_, "u_light.pos_");
+			glUniform1fv(loc, sizeof(float) * 3, &light.pos_.x);
 
-		// Desenlazar el buffer de uniformes
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-		
-		GLuint blockIndex = glGetUniformBlockIndex(render.program_, "LightBlock");
-		glBindBufferBase(GL_UNIFORM_BUFFER, blockIndex, ubo);*/
+			Vec3 a(1.0f, 0.0f, 0.0f);
 
-		render.elements_buffer_.get()->bind(kTarget_VertexData);
+			GLuint ara = glGetUniformLocation(render.program_, "color_");
+			glUniform1fv(ara, sizeof(float) * 3, &a.x);
 
-		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+			loc = glGetUniformLocation(render.program_, "u_light.spec_color_");
+			glUniform1fv(loc, sizeof(float) * 3, &light.spec_color_.x);
 
-		//Vertices
-		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
-		//Normals
-		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
-		//Uv
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
-		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+			loc = glGetUniformLocation(render.program_, "u_light.direction_");
+			glUniform1fv(loc, sizeof(float) * 3, &light.direction_.x);
 
-		//Texture
-		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+			loc = glGetUniformLocation(render.program_, "u_light.constant_");
+			glUniform1f(loc, light.constant_);
 
-		auto order_buffer = render.order_buffer_.get();
-		order_buffer->bind(kTarget_Elements);
-		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+			loc = glGetUniformLocation(render.program_, "u_light.linear_");
+			glUniform1f(loc, light.linear_);
+
+			loc = glGetUniformLocation(render.program_, "u_light.quadratic_");
+			glUniform1f(loc, light.quadratic_);
+
+			loc = glGetUniformLocation(render.program_, "u_light.cutoff_angle_");
+			glUniform1f(loc, light.cutoff_angle_);
+		}
+		*/
+
+		//TODO: FiX geometry 
+		if (render.geometry_.vertex_.size() != 0) {
+			Mat4& m = transform.model_matrix_;
+
+			m = m.Identity();
+			m = m.Multiply(m.Translate(transform.pos_));
+			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+			m = m.Multiply(m.Scale(transform.size_));
+			m = m.Transpose();
+
+			glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
+			glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
+			glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
+
+			glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
+			glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
+			glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
+
+			glUseProgram(render.program_);
+			
+			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
+			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+			GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
+			glUniform1fv(own_posLoc, sizeof(float) * 3, &camera_pos[0]);
+
+			//Texture
+			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+			//View & projection
+			GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
+			glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+			GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
+			glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
+
+			GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
+			glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
+
+			render.elements_buffer_.get()->bind(kTarget_VertexData);
+
+			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+			//Vertices
+			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			//Normals
+			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			//Uv
+			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			//Color
+			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+			//Texture
+			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+			auto order_buffer = render.order_buffer_.get();
+			order_buffer->bind(kTarget_Elements);
+			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+		}
 	}
 }
 

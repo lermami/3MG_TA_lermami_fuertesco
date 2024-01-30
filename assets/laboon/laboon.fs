@@ -34,5 +34,6 @@ uniform sampler2D u_texture;
 
 
 void main() {
-   frag_colour = texture(u_texture, uv);
+   frag_colour = color;
+   //texture(u_texture, uv);
 };

@@ -3,7 +3,7 @@
 LightComponent::LightComponent() {
   direction_ = Vec3{ 0,0,0 };
   pos_ = Vec3{ 0,0,0 };
-  color_ = 0.0f;
+  color_ = Vec3{ 1,0,0 };
   spec_color_ = 0.0f;
   constant_ = 0.0f;
   linear_ = 0.0f;

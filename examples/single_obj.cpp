@@ -65,19 +65,22 @@ int main(int, char**) {
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
-	size_t new_e = component_manager.add_entity();
-	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
-	/*<---------------------------------------------------------------------------------------------------------------
-	size_t light_entity = component_manager.add_entity();
-	auto ambient_light = component_manager.get_component<LightComponent>(light_entity);*/
-
 	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 
+	size_t new_e = component_manager.add_entity();
+	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
+	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+	
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	size_t light_entity = component_manager.add_entity();
+	auto ambient_light = component_manager.get_component<LightComponent>(light_entity);
+	init_ambient_light_system(*ambient_light, Vec3(1.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f));
+
+
 
 	//Input Declaration
 	Input input_map(w);
@@ -120,7 +123,7 @@ int main(int, char**) {
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		//rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(rotate * w.getDeltaTime(), rotate * w.getDeltaTime(), 0.0f));
 		//shader_prop_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
-		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
 
 		w.swap();
 

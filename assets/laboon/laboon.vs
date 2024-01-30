@@ -49,9 +49,8 @@ void main() {
   world_normal = mat3(u_m_matrix) * a_normal;   //normalize((u_m_matrix * vec4(a_normal, 0.0f)).xyz);
   cam_dir = normalize(u_camera_pos - (u_m_matrix * vec4(world_position, 1.0f)).xyz);
   
-  color = a_color;
+  color = vec4(u_light.color_, 1.0f);
   uv = a_uv;
   normal = mat3(u_m_matrix) * a_normal;
   pos = vp;
-  light = u_light;
 };
