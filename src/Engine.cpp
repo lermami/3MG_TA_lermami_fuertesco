@@ -5,6 +5,8 @@
 
 Engine::Engine(){
   glfwInit();
+
+	srand(time(NULL));
 }
 
 Engine::~Engine(){

@@ -86,7 +86,7 @@ int main(int, char**) {
 		input_map.updateInputs();
 		w.updateImGui();
 
-		float input_x = 0, input_y = 0;
+		Vec3 input;
 		float rotate = 1;
 		double mouse_x = 0, mouse_y = 0;
 		float input_velocity = 1.0f * w.getDeltaTime();
@@ -94,23 +94,31 @@ int main(int, char**) {
 		input_map.getMousePos(mouse_x, mouse_y);
 
 		if (input_map.IsKeyPressed('W')) {
-			input_y = input_velocity;
+			input.z = input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('S')) {
-			input_y = -input_velocity;
+			input.z = -input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('A')) {
-			input_x = -input_velocity;
+			input.x = -input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('D')) {
-			input_x = input_velocity;
+			input.x = input_velocity;
+		}
+
+		if (input_map.IsKeyPressed('Q')) {
+			input.y = -input_velocity;
+		}
+
+		if (input_map.IsKeyPressed('E')) {
+			input.y = input_velocity;
 		}
 		
+		cam.move(input);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
-		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();

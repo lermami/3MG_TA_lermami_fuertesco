@@ -9,6 +9,7 @@
 #include "buffer.hpp"
 #include "default_systems.hpp"
 #include "component_manager.hpp"
+#include "camera.hpp"
 
 #include "sound/soundbuffer.h"
 
@@ -20,24 +21,27 @@ int main(int, char**) {
   if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
+  Camera cam(w);
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
   w.initImGui();
   w.initSoundContext();
 
-  std::vector<Vertex> triangle_mesh = {
-    {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-    {0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+  Geometry triangleGeo;
+
+  triangleGeo.vertex_ = {
+    {{-0.05f, -0.05f, 0}, {1, 0, 0}, {1, 0}, {1, 0, 0, 0}},
+    {{0.05f, -0.05f, 0}, {0, 1, 0}, {1, 0}, {0, 1, 0, 0} },
+    {{0.0f, 0.05f, 0}, {0, 0, 1}, {1, 0}, {0, 0, 1, 0} },
   };
 
-  std::vector<unsigned> tr_indices = { 0, 1, 2 };
+  triangleGeo.indices_= { 0, 1, 2 };
 
   Vec3 tr_pos(-0.5f, 0.0f, 0.0f);
   Vec3 tr_size(10.0f, 10.0f, 0.0f);
   Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
-  auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+  auto simpleProgram = CreateProgram("../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 
   size_t triangle = component_manager.add_entity();
 
@@ -46,7 +50,7 @@ int main(int, char**) {
   auto tr_audio = component_manager.get_component<AudioComponent>(triangle);
 
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram);
+  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
 
   ALfloat pos[3] = { 0,0,0 };
   ALfloat vel[3] = { 0,0,0 };
@@ -62,7 +66,7 @@ int main(int, char**) {
   auto tr_audio2 = component_manager.get_component<AudioComponent>(triangle2);
 
   init_transform_system(*tr_transform2, tr_pos2, tr_rot, tr_size);
-  init_vertex_system(*tr_render2, triangle_mesh, tr_indices, simpleProgram);
+  init_render_component_system(*tr_render2, triangleGeo, simpleProgram, NULL);
 
   SoundBuffer b2 = SoundBuffer::MakeBuffer("../assets/test2.wav").value();
   init_audio_system(*tr_audio2, b2, "Test2", pos, vel, 1.0f, 1.0f, false);
@@ -75,7 +79,8 @@ int main(int, char**) {
     basic_sound_system(*component_manager.get_component_list<AudioComponent>());
 
     // Draw triangle
-    render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+    imgui_transform_system(*component_manager.get_component<TransformComponent>(1));
+    render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
     w.swap();
 

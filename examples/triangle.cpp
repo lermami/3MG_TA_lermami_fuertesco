@@ -9,6 +9,7 @@
 #include "shader_management.hpp"
 #include "buffer.hpp"
 #include "default_systems.hpp"
+#include "camera.hpp"
 #include "component_manager.hpp"
 
 int main(int, char**) {
@@ -21,30 +22,17 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  std::vector<Vertex> triangle_mesh = {
-    {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0},
-    {0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0.5, 1},
+  Camera cam(w);
+
+  Geometry triangleGeo;
+
+  triangleGeo.vertex_ = {
+    {{-0.05f, -0.05f, 0}, {1, 0, 0}, {1, 0}, {1, 0, 0, 0}},
+    {{0.05f, -0.05f, 0}, {0, 1, 0}, {1, 0}, {0, 1, 0, 0} },
+    {{0.0f, 0.05f, 0}, {0, 0, 1}, {1, 0}, {0, 0, 1, 0} },
   };
 
-  std::vector<unsigned> tr_indices = { 0, 1, 2 };
-
-  //Texture temp
-  int width, height, nrChannels;
-  unsigned char* laboon_tex_src = stbi_load("../assets/wall.jpg", &width, &height, &nrChannels, 0);
-
-  unsigned int laboon_tex;
-  glGenTextures(1, &laboon_tex);
-  glBindTexture(GL_TEXTURE_2D, laboon_tex);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, laboon_tex_src);
-  glGenerateMipmap(GL_TEXTURE_2D);
-
-  stbi_image_free(laboon_tex_src);
+  triangleGeo.indices_ = { 0, 1, 2 };
 
   Vec3 tr_pos(0.0f, 0.0f, 0.0f);
   Vec3 tr_size(10.0f, 10.0f, 0.0f);
@@ -52,19 +40,19 @@ int main(int, char**) {
 
   size_t triangle = component_manager.add_entity();
 
-  auto simpleProgram = CreateProgram("../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
+  auto simpleProgram = CreateProgram("../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 
   auto tr_render = component_manager.get_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.get_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram, laboon_tex);
+  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
 
 
   while (!w.is_done()) {
     w.calculateLastTime();
 
     // Draw triangle
-    render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+    render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
     w.swap();
 

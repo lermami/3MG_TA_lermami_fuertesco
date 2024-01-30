@@ -117,8 +117,8 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 
 	//TODO: sacar camara
 
-	for (; r != renders.end(); r++) {
-		if (!r->has_value()) continue;
+	for (; r != renders.end(); r++, t++) {
+		if (!r->has_value() && !t->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
 
@@ -130,14 +130,12 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
-		glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
-		glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
 		glm::vec3 cam_pos{ cam.getPosition().x, cam.getPosition().y, cam.getPosition().z };
 
 		
-		glm::mat4 perpective = cam.getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 1000.0f);
-		//glm::mat4 ortographic = cam.getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
-		glm::mat4 view = cam.getViewMatrix(Vec3(0.0f, 0.0f, -1.0f), Vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 perpective = cam.getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
+		//glm::mat4 ortographic = cam.getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
+		glm::mat4 view = cam.getViewMatrix(Vec3(0.0f, 0.0f, -100.0f), Vec3(0.0f, 1.0f, 0.0f));
 		
 		glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
 
