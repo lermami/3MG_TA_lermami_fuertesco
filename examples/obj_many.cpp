@@ -28,7 +28,6 @@ int main(int, char**) {
 	ThreadManager thread_manager;
 	ComponentManager component_manager;
 
-
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
 

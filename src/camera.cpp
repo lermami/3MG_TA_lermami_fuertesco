@@ -65,10 +65,9 @@ Vec3 Camera::forward() {
 }
 
 void Camera::updateForward(Input& input, const float w, const float h){
-
-  static float alpha = 0;
+  static float alpha = -1.57f;
   static float omega = 0;
-  static float last_alpha = 0;
+  static float last_alpha = -1.57f;
   static float last_omega = 0;
   static Vec2 first_pos(0.0f, 0.0f);
 
@@ -88,7 +87,6 @@ void Camera::updateForward(Input& input, const float w, const float h){
     last_alpha = alpha;
     last_omega = omega;
   }
-
 
   forward_.x = cos(omega) * cos(alpha);
   forward_.y = sin(omega);
