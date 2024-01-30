@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vector_3.hpp"
 #include <glm/glm.hpp>
+#include "vector_3.hpp"
 
 enum class ProjectionMode {
   kPerspective,
@@ -9,6 +9,7 @@ enum class ProjectionMode {
 };
 
 class Window;
+class Input;
 
 class Camera {
 public:
@@ -20,11 +21,18 @@ public:
   glm::mat4 getOrthogonalMatrix(float left, float right, float bottom, float top, float near, float far);
   glm::mat4 getViewMatrix(Vec3 target, Vec3 up);
 
+  void updateForward(Input& input, const float w, const float h);
+  Vec3 forward();
+
   void move(Vec3 vel);
   Vec3 getPosition();
 
 private:
   Vec3 pos_;
+  Vec3 forward_;
+  Vec3 up_;
+  Vec3 right_;
+
   float speed_;
   float sensitivity_;
 };

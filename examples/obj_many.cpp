@@ -40,7 +40,7 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	Camera cam(w);
+	Camera cam(w, Vec3(0.0f,0.0f,0.0f), 10.0f);
 
 	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
@@ -180,6 +180,8 @@ int main(int, char**) {
 		//if (clicked_e != 0)
 			//set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		//move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, input_z));
+
+		cam.updateForward(input_map, 1024, 768);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(900));
 		cam.move(input);
