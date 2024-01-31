@@ -171,41 +171,13 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 		if (!r->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
-		/*<-------------------------------------------------------------------------------------------------------------
-		//Light
-		for (; l != lights.end(); l++) {
-			auto& light = l->value();
 
-			GLuint loc = glGetUniformLocation(render.program_, "u_light.pos_");
-			glUniform1fv(loc, sizeof(float) * 3, &light.pos_.x);
-
-			Vec3 a(1.0f, 0.0f, 0.0f);
-
-			GLuint ara = glGetUniformLocation(render.program_, "color_");
-			glUniform1fv(ara, sizeof(float) * 3, &a.x);
-
-			loc = glGetUniformLocation(render.program_, "u_light.spec_color_");
-			glUniform1fv(loc, sizeof(float) * 3, &light.spec_color_.x);
-
-			loc = glGetUniformLocation(render.program_, "u_light.direction_");
-			glUniform1fv(loc, sizeof(float) * 3, &light.direction_.x);
-
-			loc = glGetUniformLocation(render.program_, "u_light.constant_");
-			glUniform1f(loc, light.constant_);
-
-			loc = glGetUniformLocation(render.program_, "u_light.linear_");
-			glUniform1f(loc, light.linear_);
-
-			loc = glGetUniformLocation(render.program_, "u_light.quadratic_");
-			glUniform1f(loc, light.quadratic_);
-
-			loc = glGetUniformLocation(render.program_, "u_light.cutoff_angle_");
-			glUniform1f(loc, light.cutoff_angle_);
-		}
-		*/
 
 		//TODO: FiX geometry 
 		if (render.geometry_.vertex_.size() != 0) {
+
+			glUseProgram(render.program_);
+
 			Mat4& m = transform.model_matrix_;
 
 			m = m.Identity();
@@ -221,8 +193,6 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 			glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
 			glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
 			glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
-
-			glUseProgram(render.program_);
 			
 			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
@@ -258,6 +228,35 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 
 			//Texture
 			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+			//Light
+			for (; l != lights.end(); l++) {
+				auto& light = l->value();
+
+				GLuint light_pos = glGetUniformLocation(render.program_, "u_light.pos_");
+				glUniform1fv(light_pos, sizeof(float) * 3, &light.pos_.x);
+
+				GLuint light_color = glGetUniformLocation(render.program_, "u_light.color_");
+				glUniform1fv(light_color, sizeof(float) * 3, &light.color_.x);
+
+				GLuint light_spec = glGetUniformLocation(render.program_, "u_light.spec_color_");
+				glUniform1fv(light_spec, sizeof(float) * 3, &light.spec_color_.x);
+
+				GLuint light_dir = glGetUniformLocation(render.program_, "u_light.direction_");
+				glUniform1fv(light_dir, sizeof(float) * 3, &light.direction_.x);
+
+				GLuint light_const = glGetUniformLocation(render.program_, "u_light.constant_");
+				glUniform1f(light_const, light.constant_);
+
+				GLuint light_linear = glGetUniformLocation(render.program_, "u_light.linear_");
+				glUniform1f(light_linear, light.linear_);
+
+				GLuint light_quadractic = glGetUniformLocation(render.program_, "u_light.quadratic_");
+				glUniform1f(light_quadractic, light.quadratic_);
+
+				GLuint light_cutoff = glGetUniformLocation(render.program_, "u_light.cutoff_angle_");
+				glUniform1f(light_cutoff, light.cutoff_angle_);
+			}
 
 			auto order_buffer = render.order_buffer_.get();
 			order_buffer->bind(kTarget_Elements);
