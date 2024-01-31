@@ -24,14 +24,8 @@ out vec3 cam_dir;
 
 void main() { 
   
-  gl_Position = u_p_matrix * u_v_matrix * u_m_matrix * vec4(vp, 1.0);
-  
-  world_position = vp;                          //((u_m_matrix * vec4(a_position, 1.0f)).xyz);
-  world_normal = mat3(u_m_matrix) * a_normal;   //normalize((u_m_matrix * vec4(a_normal, 0.0f)).xyz);
-  cam_dir = normalize(u_camera_pos - (u_m_matrix * vec4(world_position, 1.0f)).xyz);
-  
+  gl_Position = u_m_matrix * vec4(vp, 1.0);
+
   color = a_color;
-  uv = a_uv;
-  normal = mat3(u_m_matrix) * a_normal;
-  pos = vp;
+  
 };

@@ -1,6 +1,5 @@
-#include <GLFW/glfw3.h>
-#include "Input.hpp"
 #include "Window.hpp"
+#include "Input.hpp"
 
 Key::Key() {
   key_ = 0;

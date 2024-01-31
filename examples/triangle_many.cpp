@@ -18,7 +18,7 @@
 #include "buffer.hpp"
 #include "thread_manager.hpp"
 #include "default_systems.hpp"
-using namespace std::chrono_literals;
+#include "camera.hpp"
 
 #include "matrix_4.hpp"
 
@@ -34,18 +34,22 @@ int main(int, char**) {
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+	Camera cam(w);
+
+	auto simpleProgram = CreateProgram("../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 	
 	//Create n triangles in random position
-	int n_triangles = 1000;
+	int n_triangles = 10000;
 
-	std::vector<Vertex> triangle = {
-		{-1.0f, -1.0f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-		{1.0f, -1.0f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-		{0.0f, 1.0f, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+	Geometry triangleGeo;
+
+	triangleGeo.vertex_ = {
+		{{-0.05f, -0.05f, 0}, {1, 0, 0}, {1, 0}, {1, 0, 0, 0}},
+		{{0.05f, -0.05f, 0}, {0, 1, 0}, {1, 0}, {0, 1, 0, 0} },
+		{{0.0f, 0.05f, 0}, {0, 0, 1}, {1, 0}, {0, 0, 1, 0} },
 	};
 
-	std::vector<unsigned> tr_indices = { 0, 1, 2 };
+	triangleGeo.indices_ = { 0, 1, 2 };
 
 	for (int i = 0; i < n_triangles; i++) {
 		Vec3 tr_pos;
@@ -53,14 +57,14 @@ int main(int, char**) {
 		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
 		tr_pos.z = 0.0f;
 
-		Vec3 tr_size(0.1f, 0.1f, 0.0f);
+		Vec3 tr_size(0.3f, 0.3f, 0.0f);
 		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
 		size_t new_e = component_manager.add_entity();
 		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-		init_vertex_system(*tr_render, triangle, tr_indices, simpleProgram);
+		init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
 	}
 
 	//Input Declaration
@@ -116,7 +120,7 @@ int main(int, char**) {
 			set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
-		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();
 

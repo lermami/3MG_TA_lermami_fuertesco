@@ -1,4 +1,5 @@
 #include "shader_management.hpp"
+#include "Window.hpp"
 
 #include <GL/glew.h>
 #include <fstream>
@@ -29,9 +30,10 @@ void CompileShader(unsigned int id, const char* src) {
     glGetShaderInfoLog(id, 512, NULL, infoLog);
     printf("ERROR::SHADER::COMPILATION_FAILED\n");
   }
+
 }
 
-unsigned int CreateProgram(const char* v, const char* f) {
+unsigned int CreateProgram(Window& w, const char* v, const char* f) {
   //Read shaders
   std::string vs = ReadFiles(v);
   std::string fs = ReadFiles(f);
@@ -56,6 +58,9 @@ unsigned int CreateProgram(const char* v, const char* f) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
     printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n");
     return 0;
+  }
+  else {
+    w.addProgram(shaderProgram);
   }
 
   //Clean shaders
