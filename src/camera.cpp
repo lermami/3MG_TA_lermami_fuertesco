@@ -108,9 +108,9 @@ void Camera::doRender() {
 
     switch (projectionMode_) {
       case ProjectionMode::kPerspective:
-        glm::mat4 perpective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
+        glm::mat4 perspective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
 
-        glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(perpective));
+        glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(perspective));
       break;
       case ProjectionMode::kOrthogonal:
         glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
@@ -121,7 +121,7 @@ void Camera::doRender() {
 
     //View
     glm::mat4 view = getViewMatrix(pos_ + forward_, up_);
-    GLint viewMatrixLoc = glGetUniformLocation(0, "u_v_matrix");
+    GLint viewMatrixLoc = glGetUniformLocation(program, "u_v_matrix");
     glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
 
     //Camera position

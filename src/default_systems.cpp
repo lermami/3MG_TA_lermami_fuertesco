@@ -114,7 +114,6 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 	auto r = renders.begin();
 	auto t = transforms.begin();
 
-	//TODO: FIX
 	cam.doRender();
 
 	for (; r != renders.end(); r++, t++) {
@@ -130,6 +129,7 @@ void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& rend
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
+		glUseProgram(render.program_);
 		//Model matrix
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
