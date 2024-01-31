@@ -46,7 +46,7 @@ int main(int, char**) {
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
+	obj_paths.emplace_back("../assets/obj_test.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -61,7 +61,7 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 	
-	Vec3 tr_pos(0.0f, 0.0f, -500.0f);
+	Vec3 tr_pos(0.0f, 0.0f, -6.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
@@ -78,7 +78,7 @@ int main(int, char**) {
 
 	size_t light_entity = component_manager.add_entity();
 	auto ambient_light = component_manager.get_component<LightComponent>(light_entity);
-	init_ambient_light_system(*ambient_light, Vec3(1.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f));
+	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -5.0f), Vec3(1.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f), 0.0014f, 0.00007f, 2.5f);
 
 
 
