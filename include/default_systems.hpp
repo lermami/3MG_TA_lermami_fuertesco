@@ -11,6 +11,8 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a);
 
+void init_camera_system(CameraComponent& cameraComp, Vec3 pos = Vec3(0.0f, 0.0f, 0.0f), float speed = 1.0f, float sensitivity = 1.0f);
+
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov);
 
 void rotate_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 rot);
@@ -19,9 +21,13 @@ size_t on_click_system(std::vector<std::optional<TransformComponent>>& transform
 
 void set_position_system(TransformComponent& transform, Vec3 pos);
 
+void move_camera_system(CameraComponent& cam, Vec3 input);
+
+void rotate_camera_system(CameraComponent& cam, Input& input, const float w, const float h);
+
 void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
 
-void render_system(Camera cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
+void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 

@@ -11,6 +11,15 @@
 #include "vector_4.hpp"
 #include "matrix_4.hpp"
 #include "sound/soundsource.h"
+#include "Window.hpp"
+
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+enum class ProjectionMode {
+	kPerspective,
+	kOrthogonal,
+};
 
 struct Vertex {
 	Vec3 pos;
@@ -55,6 +64,80 @@ struct RenderComponent {
 	unsigned int texture_ = -1;
 };
 
+struct CameraComponent {
+	Vec3 pos_;
+	Vec3 forward_;
+	Vec3 up_;
+	Vec3 right_;
+
+	float speed_;
+	float sensitivity_;
+
+	ProjectionMode projectionMode_;
+
+	CameraComponent(){
+		pos_ = Vec3(0.0f, 0.0f, 0.0f);
+		right_ = Vec3(0.0f, 0.0f, 0.0f);
+		up_ = Vec3(0.0f, 1.0f, 0.0f);
+		forward_ = Vec3(0.0f, 0.0f, -1.0f);
+
+		speed_ = 1.0f;
+		sensitivity_ = 1.0f;
+
+		projectionMode_ = ProjectionMode::kPerspective;
+	}
+
+	void setProjectionMode(ProjectionMode mode) {
+		projectionMode_ = mode;
+	}
+	ProjectionMode getProjectionMode() {
+		return projectionMode_;
+	}
+
+	glm::mat4 getPerspectiveMatrix(float fov, float aspect, float near, float far){
+		return glm::perspective(glm::radians(fov), aspect, near, far);
+	}
+	glm::mat4 getOrthogonalMatrix(float left, float right, float bottom, float top, float near, float far) {
+		return glm::ortho(left, right, bottom, top, near, far);
+	}
+	glm::mat4 getViewMatrix(Vec3 target, Vec3 up) {
+		glm::vec3 c = { pos_.x, pos_.y, pos_.z };
+		glm::vec3 t = { target.x, target.y, target.z };
+		glm::vec3 u = { up.x, up.y, up.z };
+
+		return glm::lookAt(c, t, u);
+	}
+
+	void doRender(Window& w) {
+		for (int i = 0; i < w.getProgramListSize(); i++) {
+			unsigned program = w.getProgram(i);
+			glUseProgram(program);
+
+			switch (projectionMode_) {
+			case ProjectionMode::kPerspective:
+				glm::mat4 perspective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
+
+				glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(perspective));
+				break;
+			case ProjectionMode::kOrthogonal:
+				glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
+
+				glUniformMatrix4fv(glGetUniformLocation(program, "u_o_matrix"), 1, GL_FALSE, glm::value_ptr(ortographic));
+				break;
+			}
+
+			//View
+			glm::mat4 view = getViewMatrix(pos_ + forward_, up_);
+			GLint viewMatrixLoc = glGetUniformLocation(program, "u_v_matrix");
+			glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+			//Camera position
+			GLint camPosLoc = glGetUniformLocation(program, "u_camera_pos");
+			glUniform1fv(camPosLoc, sizeof(float) * 3, &pos_.x);
+		}
+	}
+};
+
 struct component_base {
 	virtual void add_component() = 0;
 	virtual void add_component(int position) = 0;
@@ -97,6 +180,7 @@ struct ComponentManager {
 		add_component_class<RenderComponent>();
 		add_component_class<TransformComponent>();
 		add_component_class<AudioComponent>();
+		add_component_class<CameraComponent>();
 	}
 
 	template<typename T> void add_component_class() {

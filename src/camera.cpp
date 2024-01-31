@@ -6,7 +6,7 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #include "vector_2.hpp"
-
+/*
 Camera::Camera(Window& w, Vec3 pos, float speed, float sensitivity) : window_{ w } {
   pos_ = pos;
   speed_ = speed;
@@ -130,3 +130,5 @@ void Camera::doRender() {
   }
 }
 
+
+*/

@@ -41,7 +41,7 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	Camera cam(w);
+	//Camera cam(w);
 
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
@@ -64,16 +64,19 @@ int main(int, char**) {
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
+	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
+	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
+
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
-	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
-	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
-
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	size_t main_camera = component_manager.add_entity();
+	auto camera_comp = component_manager.get_component<CameraComponent>(main_camera);
 
 	//Input Declaration
 	Input input_map(w);
@@ -117,9 +120,10 @@ int main(int, char**) {
 			input.y = input_velocity;
 		}
 		
-		cam.move(input);
+		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
+		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
-		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();
 
