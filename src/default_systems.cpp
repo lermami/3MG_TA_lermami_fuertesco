@@ -6,6 +6,7 @@
 
 #include "imgui.h"
 #include "sound/soundbuffer.h"
+#include "shader_management.hpp"
 #include "camera.hpp"
 #include "input.hpp"
 
@@ -55,11 +56,64 @@ void init_color_system(RenderComponent& render, float r, float g, float b, float
 
 }
 
+void init_ambient_light_system(LightComponent& light, Vec3 color, Vec3 specular) {
+	light.direction_ = Vec3{ 0,0,0 };
+	light.pos_ = Vec3{ 0,0,0 };
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = 0.0f;
+	light.linear_ = 0.0f;
+	light.quadratic_ = 0.0f;
+	light.cutoff_angle_ = 0.0f;
+
+	light.type_ = LightType::kAmbient;
+}
+
+void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
+	light.direction_ = direction;
+	light.pos_ = Vec3{ 0,0,0 };
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = 0.0f;
+	light.linear_ = 0.0f;
+	light.quadratic_ = 0.0f;
+	light.cutoff_angle_ = 0.0f;
+
+	light.type_ = LightType::kDirectional;
+}
+
+void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
+	light.direction_ = Vec3{ 0,0,0 };
+	light.pos_ = position;
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = constant;
+	light.linear_ = linear;
+	light.quadratic_ = quadratic;
+	light.cutoff_angle_ = 0.0f;
+
+	light.type_ = LightType::kPoint;
+}
+
+void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
+	light.direction_ = direction;
+	light.pos_ = position;
+	light.color_ = color;
+	light.spec_color_ = specular;
+	light.constant_ = constant;
+	light.linear_ = linear;
+	light.quadratic_ = quadratic;
+	light.cutoff_angle_ = cutoff_angle;
+
+	light.type_ = LightType::kSpot;
+}
+
 void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, float sensitivity) {
 	cameraComp.pos_ = pos;
 	cameraComp.speed_ = speed;
 	cameraComp.sensitivity_ = sensitivity;
 }
+
 
 
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
@@ -117,11 +171,19 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
+
+void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
+
+	auto r = renders.begin();
+	auto t = transforms.begin();
+	auto l = lights.begin();
+=======
 void move_camera_system(CameraComponent& cam, Vec3 input) {
 
 	if (input.z < 0) {
 		cam.pos_ -= cam.forward_ * cam.speed_;
 	}
+
 
 	if (input.z > 0) {
 		cam.pos_ += cam.forward_ * cam.speed_;
@@ -144,6 +206,161 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 	static float last_omega = 0;
 	static Vec2 first_pos(0.0f, 0.0f);
 
+
+
+		//TODO: FiX geometry 
+		if (render.geometry_.vertex_.size() != 0) {
+
+			glUseProgram(render.program_);
+
+			Mat4& m = transform.model_matrix_;
+
+			m = m.Identity();
+			m = m.Multiply(m.Translate(transform.pos_));
+			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+			m = m.Multiply(m.Scale(transform.size_));
+			m = m.Transpose();
+
+			glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
+			glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
+			glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
+
+			glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
+			glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
+			glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
+			
+			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
+			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+			GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
+			glUniform1fv(own_posLoc, sizeof(float) * 3, &camera_pos[0]);
+
+			//Texture
+			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+			//View & projection
+			GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
+			glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+			GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
+			glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
+
+			GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
+			glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
+
+			render.elements_buffer_.get()->bind(kTarget_VertexData);
+
+			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+			//Vertices
+			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			//Normals
+			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			//Uv
+			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			//Color
+			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+			//Texture
+			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+			//Light
+			unsigned int ambient_iterator = 0;
+			unsigned int directional_iterator = 0;
+			unsigned int point_iterator = 0;
+			unsigned int spot_iterator = 0;
+
+
+			for (; l != lights.end(); l++) {
+				auto& light = l->value();
+				char name[64];
+
+				//Ambient
+				if (light.type_ == LightType::kAmbient) {
+					sprintf(name, "u_ambient_light[%d].color_", ambient_iterator);
+					SetVector3(render.program_, name, light.color_);
+
+					sprintf(name, "u_ambient_light[%d].spec_color_", ambient_iterator);
+					SetVector3(render.program_, name, light.spec_color_);
+
+					ambient_iterator++;
+				}
+
+				//Directional
+				if (light.type_ == LightType::kDirectional) {
+					sprintf(name, "u_directional_light[%d].color_", directional_iterator);
+					SetVector3(render.program_, name, light.color_);
+
+					sprintf(name, "u_directional_light[%d].spec_color_", directional_iterator);
+					SetVector3(render.program_, name, light.spec_color_);
+
+					sprintf(name, "u_directional_light[%d].direction_", directional_iterator);
+					SetVector3(render.program_, name, light.direction_);
+
+					directional_iterator++;
+				}
+
+				//Point
+				if (light.type_ == LightType::kPoint) {
+					sprintf(name, "u_point_light[%d].pos_", point_iterator);
+					SetVector3(render.program_, name, light.pos_);
+
+					sprintf(name, "u_point_light[%d].color_", point_iterator);
+					SetVector3(render.program_, name, light.color_);
+
+					sprintf(name, "u_point_light[%d].spec_color_", point_iterator);
+					SetVector3(render.program_, name, light.spec_color_);
+
+					sprintf(name, "u_point_light[%d].constant_", point_iterator);
+					GLuint light_const = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_const, light.constant_);
+
+					sprintf(name, "u_point_light[%d].linear_", point_iterator);
+					GLuint light_linear = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_linear, light.linear_);
+
+					sprintf(name, "u_point_light[%d].quadratic_", point_iterator);
+					GLuint light_quadractic = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_quadractic, light.quadratic_);
+
+					point_iterator++;
+				}
+
+				//Spot
+				if (light.type_ == LightType::kSpot) {
+					sprintf(name, "u_spot_light[%d].pos_", spot_iterator);
+					SetVector3(render.program_, name, light.pos_);
+
+					sprintf(name, "u_spot_light[%d].color_", spot_iterator);
+					SetVector3(render.program_, name, light.color_);
+
+					sprintf(name, "u_spot_light[%d].spec_color_", spot_iterator);
+					SetVector3(render.program_, name, light.spec_color_);
+
+					sprintf(name, "u_spot_light[%d].direction_", spot_iterator);
+					SetVector3(render.program_, name, light.direction_);
+
+					sprintf(name, "u_spot_light[%d].constant_", spot_iterator);
+					GLuint light_const = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_const, light.constant_);
+
+					sprintf(name, "u_spot_light[%d].linear_", spot_iterator);
+					GLuint light_linear = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_linear, light.linear_);
+
+					sprintf(name, "u_spot_light[%d].quadratic_", spot_iterator);
+					GLuint light_quadractic = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_quadractic, light.quadratic_);
+
+					sprintf(name, "u_spot_light[%d].cutoff_angle_", spot_iterator);
+					GLuint light_cutoff = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_cutoff, light.cutoff_angle_);
+
+					spot_iterator++;
+				}
+			}
+
+=======
 	double mouse_x, mouse_y;
 	input.getMousePos(mouse_x, mouse_y);
 
@@ -208,6 +425,7 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 			//Color
 			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
+
 			auto order_buffer = render.order_buffer_.get();
 			order_buffer->bind(kTarget_Elements);
 			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
@@ -260,7 +478,7 @@ void imgui_transform_system(TransformComponent& transform) {
 	ImGui::Begin("Transform");
 
 	Vec3 aux_pos = transform.pos_;
-	if (ImGui::DragFloat3("Position", &aux_pos.x, 1.0f, -1000.0f, 1000.0f, "%.3f")) {
+	if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
 		transform.pos_ = aux_pos;
 	}
 

@@ -20,7 +20,9 @@
 #include "thread_manager.hpp"
 #include "default_systems.hpp"
 #include "texture.hpp"
+#include "light.hpp"
 #include "camera.hpp"
+
 using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
@@ -47,7 +49,7 @@ int main(int, char**) {
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
+	obj_paths.emplace_back("../assets/obj_test.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -60,7 +62,9 @@ int main(int, char**) {
 
 	Geometry laboon_geo = objs[0].get();
 
-	Vec3 tr_pos(0.0f, 0.0f, -500.0f);
+	unsigned n_obj = 1000;
+	
+	Vec3 tr_pos(0.0f, 0.0f, -6.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
@@ -75,6 +79,25 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
+  //light
+	size_t light_entity[4];
+	light_entity[0] = component_manager.add_entity();
+	auto ambient_light = component_manager.get_component<LightComponent>(light_entity[0]);
+	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f));
+
+	light_entity[1] = component_manager.add_entity();
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[1]);
+	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+
+	light_entity[2] = component_manager.add_entity();
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
+	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
+
+	light_entity[3] = component_manager.add_entity();
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
+	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.6f);
+  
+  //Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.get_component<CameraComponent>(main_camera);
 
@@ -123,7 +146,8 @@ int main(int, char**) {
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
-		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+
+		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
 
 		w.swap();
 

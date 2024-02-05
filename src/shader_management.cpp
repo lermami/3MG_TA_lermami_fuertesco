@@ -88,3 +88,8 @@ std::string ReadFiles(const std::string& file) {
   fileStream.close();
   return final;
 }
+
+void SetVector3(unsigned int program, char* name, Vec3 vector) {
+  GLuint id = glGetUniformLocation(program, name);
+  glUniform3f(id, vector.x, vector.y, vector.z);
+}

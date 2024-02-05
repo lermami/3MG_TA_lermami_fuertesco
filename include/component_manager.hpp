@@ -11,6 +11,7 @@
 #include "vector_4.hpp"
 #include "matrix_4.hpp"
 #include "sound/soundsource.h"
+#include "light.hpp"
 #include "Window.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
@@ -180,6 +181,7 @@ struct ComponentManager {
 		add_component_class<RenderComponent>();
 		add_component_class<TransformComponent>();
 		add_component_class<AudioComponent>();
+		add_component_class<LightComponent>();
 		add_component_class<CameraComponent>();
 	}
 
