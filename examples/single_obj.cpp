@@ -22,15 +22,12 @@
 #include "texture.hpp"
 #include "light.hpp"
 #include "camera.hpp"
-
-using namespace std::chrono_literals;
-
 #include "matrix_4.hpp"
 
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
-	ComponentManager component_manager;
+	ComponentManager component_manager(e);
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
@@ -81,7 +78,7 @@ int main(int, char**) {
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.get_component<LightComponent>(light_entity[0]);
-	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f));
+	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f));
 
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.get_component<LightComponent>(light_entity[1]);
@@ -98,6 +95,8 @@ int main(int, char**) {
   //Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.get_component<CameraComponent>(main_camera);
+	w.setCurrentCam(main_camera);
+
 
 	//Input Declaration
 	Input input_map(w);
@@ -145,7 +144,8 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 
-		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
+		//render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
+		w.render();
 
 		w.swap();
 

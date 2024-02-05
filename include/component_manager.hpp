@@ -13,14 +13,10 @@
 #include "sound/soundsource.h"
 #include "light.hpp"
 #include "Window.hpp"
+#include "Engine.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-
-enum class ProjectionMode {
-	kPerspective,
-	kOrthogonal,
-};
 
 struct Vertex {
 	Vec3 pos;
@@ -109,9 +105,9 @@ struct CameraComponent {
 		return glm::lookAt(c, t, u);
 	}
 
-	void doRender(Window& w) {
-		for (int i = 0; i < w.getProgramListSize(); i++) {
-			unsigned program = w.getProgram(i);
+	void doRender(Window* w) {
+		for (int i = 0; i < w->getProgramListSize(); i++) {
+			unsigned program = w->getProgram(i);
 			glUseProgram(program);
 
 			switch (projectionMode_) {
@@ -177,7 +173,9 @@ struct ComponentManager {
 	std::unordered_map<std::size_t, std::unique_ptr<component_base>> component_classes_;
 	std::vector <size_t> deleted_components_;
 
-	ComponentManager() {
+	ComponentManager(Engine& e) {
+		e.componentM_ = this;
+
 		add_component_class<RenderComponent>();
 		add_component_class<TransformComponent>();
 		add_component_class<AudioComponent>();

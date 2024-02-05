@@ -11,8 +11,7 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 void init_color_system(RenderComponent& render, float r, float g, float b, float a);
 
-
-void init_ambient_light_system(LightComponent& light, Vec3 color, Vec3 specular);
+void init_ambient_light_system(LightComponent& light, Vec3 color);
 
 void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular);
 

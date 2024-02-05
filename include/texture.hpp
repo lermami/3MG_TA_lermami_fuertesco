@@ -1,21 +1,6 @@
 #pragma once
 
-enum class TextureType {
-  kTexture_1D = 0x0DE0,
-  kTexture_2D = 0x0DE1,
-  kTexture_3D = 0x806F,
-};
-
-enum class TextureFormat {
-  kRGB = 0x1907,
-  kRGBA = 0x1908,
-};
-
-enum class TextureParameters {
-  kRepeat,
-  kLinear,
-};
-
+#include "enum.hpp"
 
 class Texture {
 public:

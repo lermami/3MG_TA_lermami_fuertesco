@@ -56,11 +56,11 @@ void init_color_system(RenderComponent& render, float r, float g, float b, float
 
 }
 
-void init_ambient_light_system(LightComponent& light, Vec3 color, Vec3 specular) {
+void init_ambient_light_system(LightComponent& light, Vec3 color) {
 	light.direction_ = Vec3{ 0,0,0 };
 	light.pos_ = Vec3{ 0,0,0 };
 	light.color_ = color;
-	light.spec_color_ = specular;
+	light.spec_color_ = Vec3{ 0,0,0 };
 	light.constant_ = 0.0f;
 	light.linear_ = 0.0f;
 	light.quadratic_ = 0.0f;
@@ -225,7 +225,7 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 	auto t = transforms.begin();
 	auto l = lights.begin();
 
-	current_cam.doRender(w);
+	current_cam.doRender(&w);
 
 	for (; r != renders.end(); r++, t++) {
 		if (!r->has_value() && !t->has_value()) continue;
@@ -264,9 +264,6 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 				if (light.type_ == LightType::kAmbient) {
 					sprintf(name, "u_ambient_light[%d].color_", ambient_iterator);
 					SetVector3(render.program_, name, light.color_);
-
-					sprintf(name, "u_ambient_light[%d].spec_color_", ambient_iterator);
-					SetVector3(render.program_, name, light.spec_color_);
 
 					ambient_iterator++;
 				}

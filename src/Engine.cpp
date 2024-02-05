@@ -93,3 +93,7 @@ Geometry Engine::LoadObj(const char* path) {
 
 	return geometry;
 }
+
+ComponentManager* Engine::getComponentManager() {
+	return componentM_;
+}
