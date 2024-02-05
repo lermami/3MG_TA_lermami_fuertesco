@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include "Window.hpp"
 #include <time.h>
 #include <cassert>
@@ -162,4 +161,26 @@ void Window::setCullingMode(CullingMode culling, FrontFace frontface) {
 
 void Window::setDepthTestMode(DepthTestMode mode) {
   glDepthFunc((GLenum)mode);
+}
+
+void Window::addProgram(unsigned new_program) {
+  bool is_new = true;
+
+  for (auto& program : program_list_) {
+    if (program == new_program) {
+      is_new = false;
+    }
+  }
+
+  if (is_new) {
+    program_list_.push_back(new_program);
+  }
+}
+
+unsigned Window::getProgram(int n) {
+  return program_list_.at(n);
+}
+
+int Window::getProgramListSize() {
+  return (int)program_list_.size();
 }

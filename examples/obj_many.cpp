@@ -1,7 +1,3 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <tiny_obj_loader.h>
-
 #include<vector>
 #include<optional>
 #include<cassert>
@@ -11,15 +7,15 @@
 #include<fstream>
 #include<iostream>
 
-#include "component_manager.hpp"
 #include "Window.hpp"
+#include "component_manager.hpp"
 #include "Engine.hpp"
 #include "Input.hpp"
 #include "shader_management.hpp"
 #include "buffer.hpp"
 #include "thread_manager.hpp"
 #include "default_systems.hpp"
-using namespace std::chrono_literals;
+#include "camera.hpp"
 
 #include "matrix_4.hpp"
 
@@ -39,88 +35,82 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+	Camera cam(w, Vec3(0.0f,0.0f,0.0f), 10.0f);
+
+	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
 	std::vector<std::string> obj_paths;
-	std::vector<std::future<std::vector<Vertex>>> objs_vertex;
-	std::vector<std::future<std::vector<unsigned>>> objs_indices;
+	std::vector<std::future<Geometry>> objs;
 	obj_paths.emplace_back("../assets/Suzanne.obj");
 	obj_paths.emplace_back("../assets/wolf/Wolf_obj.obj");
 	obj_paths.emplace_back("../assets/gun/Gun.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
-		std::function<std::vector<Vertex>()> mycall_vertex = [path]() { return LoadObjVertices(path.c_str()); };
-		std::function<std::vector<unsigned>()> mycall_indices = [path]() { return LoadObjIndices(path.c_str()); };
+		std::function<Geometry()> loadobj_func = [path]() { return Engine::LoadObj(path.c_str()); };
 
-		std::future<std::vector<Vertex>> future_v = thread_manager.add(mycall_vertex);
-		std::future<std::vector<unsigned>> future_i = thread_manager.add(mycall_indices);
+		std::future<Geometry> future = thread_manager.add(loadobj_func);
 
-		objs_vertex.push_back(std::move(future_v));
-		objs_indices.push_back(std::move(future_i));
+		objs.push_back(std::move(future));
 	}
 
-	std::vector<Vertex> suzanne_vertices = objs_vertex[0].get();
-	std::vector<Vertex> wolf_vertices = objs_vertex[1].get();
-	std::vector<Vertex> tank_vertices = objs_vertex[2].get();
-
-	std::vector<unsigned> suzanne_indices = objs_indices[0].get();
-	std::vector<unsigned> wolf_indices = objs_indices[1].get();
-	std::vector<unsigned> tank_indices = objs_indices[2].get();
+	Geometry suzanneGeo = objs[0].get();
+	Geometry wolfGeo = objs[1].get();
+	Geometry tankGeo = objs[2].get();
 
 	unsigned n_obj = 1000;
 
 	for (unsigned i = 0; i < n_obj / 3; i++) {
 		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
+		tr_pos.x = (rand() % 150) - 75;
+		tr_pos.y = (rand() % 150) - 75;
+		tr_pos.z = -100.0f;
 
 		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(0.05f, 0.05f, 0.05f);
+		Vec3 obj_size(2.0f, 2.0f, 2.0f);
 
 		size_t new_e = component_manager.add_entity();
 		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, suzanne_vertices, suzanne_indices, simpleProgram, 0);
+		init_render_component_system(*tr_render, suzanneGeo, simpleProgram, 0);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
 		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
+		tr_pos.x = (rand() % 28) - 14;
+		tr_pos.y = (rand() % 28) - 14;
+		tr_pos.z = -20.0f;
 
 		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(0.1f, 0.1f, 0.1f);
+		Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
 		size_t new_e = component_manager.add_entity();
 		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, wolf_vertices, wolf_indices, simpleProgram, 0);
+		init_render_component_system(*tr_render, wolfGeo, simpleProgram, 0);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
 		Vec3 tr_pos;
-		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.y = (float)((rand() % 200) - 100) / 100.0f;
-		tr_pos.z = 0.0f;
+		tr_pos.x = (rand() % 100) - 50;
+		tr_pos.y = (rand() % 100) - 50;
+		tr_pos.z = -60.0f;
 
 		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(0.1f, 0.1f, 0.1f);
+		Vec3 obj_size(5.0f, 5.0f, 5.0f);
 
 		size_t new_e = component_manager.add_entity();
 		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_vertex_system(*tr_render, tank_vertices, tank_indices, simpleProgram, 0);
+		init_render_component_system(*tr_render, tankGeo, simpleProgram, 0);
 		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
@@ -133,8 +123,9 @@ int main(int, char**) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();
+		w.updateImGui();
 
-		float input_x = 0, input_y = 0;
+		Vec3 input;
 		float rotate = 0;
 		double mouse_x = 0, mouse_y = 0;
 		float input_velocity = 1.0f * w.getDeltaTime();
@@ -142,42 +133,53 @@ int main(int, char**) {
 		input_map.getMousePos(mouse_x, mouse_y);
 
 		if (input_map.IsKeyPressed('W')) {
-			input_y = input_velocity;
+			input.z = -input_velocity * 10.0f;
 		}
 
 		if (input_map.IsKeyPressed('S')) {
-			input_y = -input_velocity;
+			input.z = input_velocity * 10.0f;
 		}
 
 		if (input_map.IsKeyPressed('A')) {
-			input_x = -input_velocity;
+			input.x = -input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('D')) {
-			input_x = input_velocity;
-		}
-
-		if (input_map.IsKeyPressed('E')) {
-			rotate = -input_velocity * 2.0f;
+			input.x = input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('Q')) {
+			input.y = -input_velocity;
+		}
+
+		if (input_map.IsKeyPressed('E')) {
+			input.y = input_velocity;
+		}
+
+		if (input_map.IsKeyPressed(kKey_Right)) {
+			rotate = -input_velocity * 2.0f;
+		}
+
+		if (input_map.IsKeyPressed(kKey_Left)) {
 			rotate = input_velocity * 2.0f;
 		}
 
 		if (input_map.IsKeyDown(kKey_LeftClick)) {
-			clicked_e = on_click_system(*component_manager.get_component_list<TransformComponent>(), (float)mouse_x, (float)mouse_y);
+			//clicked_e = on_click_system(*component_manager.get_component_list<TransformComponent>(), (float)mouse_x, (float)mouse_y);
 		}
 
 		if (input_map.IsKeyUp(kKey_LeftClick)) {
 			clicked_e = 0;
 		}
 
-		if (clicked_e != 0)
-			set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
-		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
+		//if (clicked_e != 0)
+			//set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
+		//move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, input_z));
+
+		cam.updateForward(input_map, 1024, 768);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
-		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+		cam.move(input);
+		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
 		w.swap();
 

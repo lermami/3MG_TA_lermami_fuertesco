@@ -7,9 +7,10 @@
 #include "imgui.h"
 #include "sound/soundbuffer.h"
 #include "shader_management.hpp"
+#include "camera.hpp"
+#include "input.hpp"
 
-
-void init_render_component_system(RenderComponent& render, Geometry geometry, unsigned int program, unsigned int texture) {
+void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture) {
 
 	for (int i = 0; i < geometry.vertex_.size(); i++) {
 		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
@@ -107,6 +108,14 @@ void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position
 	light.type_ = LightType::kSpot;
 }
 
+void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, float sensitivity) {
+	cameraComp.pos_ = pos;
+	cameraComp.speed_ = speed;
+	cameraComp.sensitivity_ = sensitivity;
+}
+
+
+
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
 
 	auto r = transforms.begin();
@@ -162,16 +171,41 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
+
 void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
 
 	auto r = renders.begin();
 	auto t = transforms.begin();
 	auto l = lights.begin();
+=======
+void move_camera_system(CameraComponent& cam, Vec3 input) {
 
-	for (; r != renders.end(); r++) {
-		if (!r->has_value()) continue;
-		auto& render = r->value();
-		auto& transform = t->value();
+	if (input.z < 0) {
+		cam.pos_ -= cam.forward_ * cam.speed_;
+	}
+
+
+	if (input.z > 0) {
+		cam.pos_ += cam.forward_ * cam.speed_;
+	}
+
+	if (input.x > 0) {
+		cam.pos_ += Vec3::CrossProduct(cam.forward_, cam.up_).Normalized();
+	}
+
+	if (input.x < 0) {
+		cam.pos_ -= Vec3::CrossProduct(cam.forward_, cam.up_).Normalized();
+	}
+
+}
+
+void rotate_camera_system(CameraComponent& cam, Input& input, const float w, const float h) {
+	static float alpha = -1.57f;
+	static float omega = 0;
+	static float last_alpha = -1.57f;
+	static float last_omega = 0;
+	static Vec2 first_pos(0.0f, 0.0f);
+
 
 
 		//TODO: FiX geometry 
@@ -325,6 +359,72 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 					spot_iterator++;
 				}
 			}
+
+=======
+	double mouse_x, mouse_y;
+	input.getMousePos(mouse_x, mouse_y);
+
+	if (input.IsKeyDown(kKey_LeftClick)) {
+		first_pos = Vec2((float)mouse_x, (float)mouse_y);
+	}
+
+	if (input.IsKeyPressed(kKey_LeftClick)) {
+		alpha = last_alpha + ((float)mouse_x - first_pos.x) / w * cam.sensitivity_;
+		omega = last_omega + ((float)mouse_y - first_pos.y) / h * -1;
+	}
+
+	if (input.IsKeyUp(kKey_LeftClick)) {
+		last_alpha = alpha;
+		last_omega = omega;
+	}
+
+	cam.forward_.x = cos(omega) * cos(alpha);
+	cam.forward_.y = sin(omega);
+	cam.forward_.z = cos(omega) * sin(alpha);
+}
+
+void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
+
+	auto r = renders.begin();
+	auto t = transforms.begin();
+	
+	current_cam.doRender(w);
+
+	for (; r != renders.end(); r++, t++) {
+		if (!r->has_value() && !t->has_value()) continue;
+		auto& render = r->value();
+		auto& transform = t->value();
+
+		if (render.geometry_.vertex_.size() > 0) {
+			Mat4& m = transform.model_matrix_;
+
+			m = m.Identity();
+			m = m.Multiply(m.Translate(transform.pos_));
+			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+			m = m.Multiply(m.Scale(transform.size_));
+			m = m.Transpose();
+
+			glUseProgram(render.program_);
+			//Model matrix
+			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
+			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+			//Texture
+			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+			render.elements_buffer_.get()->bind(kTarget_VertexData);
+
+			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+			//Vertices
+			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			//Normals
+			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			//Uv
+			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			//Color
+			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
 
 			auto order_buffer = render.order_buffer_.get();
 			order_buffer->bind(kTarget_Elements);

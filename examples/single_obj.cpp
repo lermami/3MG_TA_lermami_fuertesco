@@ -21,6 +21,7 @@
 #include "default_systems.hpp"
 #include "texture.hpp"
 #include "light.hpp"
+#include "camera.hpp"
 
 using namespace std::chrono_literals;
 
@@ -33,7 +34,7 @@ int main(int, char**) {
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
-
+	
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	w.initImGui();
@@ -42,7 +43,9 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	auto simpleProgram = CreateProgram("../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
+	//Camera cam(w);
+
+	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
@@ -71,11 +74,12 @@ int main(int, char**) {
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
-	
+
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
+  //light
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.get_component<LightComponent>(light_entity[0]);
@@ -92,6 +96,10 @@ int main(int, char**) {
 	light_entity[3] = component_manager.add_entity();
 	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
 	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.6f);
+  
+  //Camera
+	size_t main_camera = component_manager.add_entity();
+	auto camera_comp = component_manager.get_component<CameraComponent>(main_camera);
 
 	//Input Declaration
 	Input input_map(w);
@@ -104,7 +112,7 @@ int main(int, char**) {
 		input_map.updateInputs();
 		w.updateImGui();
 
-		float input_x = 0, input_y = 0;
+		Vec3 input;
 		float rotate = 1;
 		double mouse_x = 0, mouse_y = 0;
 		float input_velocity = 1.0f * w.getDeltaTime();
@@ -112,26 +120,34 @@ int main(int, char**) {
 		input_map.getMousePos(mouse_x, mouse_y);
 
 		if (input_map.IsKeyPressed('W')) {
-			input_y = input_velocity;
+			input.z = input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('S')) {
-			input_y = -input_velocity;
+			input.z = -input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('A')) {
-			input_x = -input_velocity;
+			input.x = -input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('D')) {
-			input_x = input_velocity;
+			input.x = input_velocity;
+		}
+
+		if (input_map.IsKeyPressed('Q')) {
+			input.y = -input_velocity;
+		}
+
+		if (input_map.IsKeyPressed('E')) {
+			input.y = input_velocity;
 		}
 		
+		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
+		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
-		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
-		//rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(rotate * w.getDeltaTime(), rotate * w.getDeltaTime(), 0.0f));
-		//shader_prop_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
-		render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
+
+		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
 
 		w.swap();
 

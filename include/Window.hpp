@@ -1,4 +1,5 @@
 #pragma once
+#include <GL/glew.h>
 #include "GLFW/glfw3.h"
 #include <optional>
 #include <vector>
@@ -33,6 +34,7 @@ class Engine;
 class Window {
 public:
   friend class Input;
+  friend class Camera;
 
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;
@@ -54,8 +56,11 @@ public:
   void setDepthTestMode(DepthTestMode mode);
 
   void getWindowSize(unsigned int& w, unsigned int& h);
-
   void setwindowsize(unsigned int w, unsigned int h);
+
+  void addProgram(unsigned new_program);
+  unsigned getProgram(int n);
+  int getProgramListSize();
 
   ~Window();
   Window(Window& w);
@@ -73,5 +78,7 @@ private:
   unsigned int height_;
   float deltaTime_;
   bool imguiInit_;
+
+  std::vector<unsigned> program_list_;
 };
 

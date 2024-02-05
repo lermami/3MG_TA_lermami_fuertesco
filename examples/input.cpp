@@ -10,6 +10,7 @@
 #include "default_systems.hpp"
 #include "input.hpp"
 #include "component_manager.hpp"
+#include "camera.hpp"
 
 int main(int, char**) {
   Engine e;
@@ -21,13 +22,16 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  std::vector<Vertex> triangle_mesh = {
-    {-0.05f, -0.05f, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0.05f, -0.05f, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-    {0.0f, 0.05f, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+  Camera cam(w);
+  Geometry triangleGeo;
+
+  triangleGeo.vertex_ = {
+    {{-0.05f, -0.05f, 0}, {1, 0, 0}, {1, 0}, {1, 0, 0, 0}},
+    {{0.05f, -0.05f, 0}, {0, 1, 0}, {1, 0}, {0, 1, 0, 0} },
+    {{0.0f, 0.05f, 0}, {0, 0, 1}, {1, 0}, {0, 0, 1, 0} },
   };
 
-  std::vector<unsigned> tr_indices = { 0, 1, 2 };
+  triangleGeo.indices_ = { 0, 1, 2 };
 
   Vec3 tr_pos(0.0f, 0.0f, 0.0f);
   Vec3 tr_size(10.0f, 10.0f, 0.0f);
@@ -35,12 +39,12 @@ int main(int, char**) {
 
   size_t triangle = component_manager.add_entity();
 
-  auto simpleProgram = CreateProgram("../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+  auto simpleProgram = CreateProgram("../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 
   auto tr_render = component_manager.get_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.get_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_vertex_system(*tr_render, triangle_mesh, tr_indices, simpleProgram);
+  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
 
   Input input_map(w);
 
@@ -80,11 +84,10 @@ int main(int, char**) {
       rotate = input_velocity * 2.0f;
     }
 
-
     // Draw triangle
     move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
     rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, 0.0f, rotate));
-    render_system(*component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+    render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
 
     w.swap();
     w.calculateCurrentTime();

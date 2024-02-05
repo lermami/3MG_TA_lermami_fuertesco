@@ -1,10 +1,12 @@
 #include "Engine.hpp"
-#include "GLFW/glfw3.h"
 #include <tiny_obj_loader.h>
+#include "GLFW/glfw3.h"
 
 
 Engine::Engine(){
   glfwInit();
+
+	srand(time(NULL));
 }
 
 Engine::~Engine(){
