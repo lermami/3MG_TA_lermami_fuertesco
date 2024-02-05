@@ -114,8 +114,6 @@ void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, floa
 	cameraComp.sensitivity_ = sensitivity;
 }
 
-
-
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
 
 	auto r = transforms.begin();
@@ -171,19 +169,11 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	transform.pos_ = pos;
 }
 
-
-void render_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
-
-	auto r = renders.begin();
-	auto t = transforms.begin();
-	auto l = lights.begin();
-=======
 void move_camera_system(CameraComponent& cam, Vec3 input) {
 
 	if (input.z < 0) {
 		cam.pos_ -= cam.forward_ * cam.speed_;
 	}
-
 
 	if (input.z > 0) {
 		cam.pos_ += cam.forward_ * cam.speed_;
@@ -206,13 +196,44 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 	static float last_omega = 0;
 	static Vec2 first_pos(0.0f, 0.0f);
 
+	double mouse_x, mouse_y;
+	input.getMousePos(mouse_x, mouse_y);
 
+	if (input.IsKeyDown(kKey_LeftClick)) {
+		first_pos = Vec2((float)mouse_x, (float)mouse_y);
+	}
 
-		//TODO: FiX geometry 
-		if (render.geometry_.vertex_.size() != 0) {
+	if (input.IsKeyPressed(kKey_LeftClick)) {
+		alpha = last_alpha + ((float)mouse_x - first_pos.x) / w * cam.sensitivity_;
+		omega = last_omega + ((float)mouse_y - first_pos.y) / h * -1;
+	}
 
-			glUseProgram(render.program_);
+	if (input.IsKeyUp(kKey_LeftClick)) {
+		last_alpha = alpha;
+		last_omega = omega;
+	}
 
+	cam.forward_.x = cos(omega) * cos(alpha);
+	cam.forward_.y = sin(omega);
+	cam.forward_.z = cos(omega) * sin(alpha);
+}
+
+void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, 
+	std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
+
+	auto r = renders.begin();
+	auto t = transforms.begin();
+	auto l = lights.begin();
+
+	current_cam.doRender(w);
+
+	for (; r != renders.end(); r++, t++) {
+		if (!r->has_value() && !t->has_value()) continue;
+		auto& render = r->value();
+		auto& transform = t->value();
+
+		//TODO: fix ecs bug
+		if (render.geometry_.vertex_.size() > 0) {
 			Mat4& m = transform.model_matrix_;
 
 			m = m.Identity();
@@ -221,45 +242,10 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 			m = m.Multiply(m.Scale(transform.size_));
 			m = m.Transpose();
 
-			glm::vec3 target_pos{ 0.0f, 0.0f, -1.0f };
-			glm::vec3 camera_pos{ 0.0f, 0.0f, 0.0f };
-			glm::vec3 up_vector{ 0.0f, 1.0f, 0.0f };
-
-			glm::mat4 perpective = glm::perspective(glm::radians(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
-			glm::mat4 ortographic = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 1000.0f);
-			glm::mat4 view = glm::lookAt(camera_pos, target_pos, up_vector);
-			
+			glUseProgram(render.program_);
+			//Model matrix
 			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
-
-			GLint own_posLoc = glGetUniformLocation(render.program_, "u_camera_pos");
-			glUniform1fv(own_posLoc, sizeof(float) * 3, &camera_pos[0]);
-
-			//Texture
-			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
-
-			//View & projection
-			GLint viewMatrixLoc = glGetUniformLocation(render.program_, "u_v_matrix");
-			glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-			GLint ortographicMatrixLoc = glGetUniformLocation(render.program_, "u_o_matrix");
-			glUniformMatrix4fv(ortographicMatrixLoc, 1, GL_FALSE, glm::value_ptr(ortographic));
-
-			GLint perspectiveMatrixLoc = glGetUniformLocation(render.program_, "u_p_matrix");
-			glUniformMatrix4fv(perspectiveMatrixLoc, 1, GL_FALSE, glm::value_ptr(perpective));
-
-			render.elements_buffer_.get()->bind(kTarget_VertexData);
-
-			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
-
-			//Vertices
-			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
-			//Normals
-			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
-			//Uv
-			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
-			//Color
-			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
 			//Texture
 			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
@@ -269,7 +255,6 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 			unsigned int directional_iterator = 0;
 			unsigned int point_iterator = 0;
 			unsigned int spot_iterator = 0;
-
 
 			for (; l != lights.end(); l++) {
 				auto& light = l->value();
@@ -360,58 +345,6 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 				}
 			}
 
-=======
-	double mouse_x, mouse_y;
-	input.getMousePos(mouse_x, mouse_y);
-
-	if (input.IsKeyDown(kKey_LeftClick)) {
-		first_pos = Vec2((float)mouse_x, (float)mouse_y);
-	}
-
-	if (input.IsKeyPressed(kKey_LeftClick)) {
-		alpha = last_alpha + ((float)mouse_x - first_pos.x) / w * cam.sensitivity_;
-		omega = last_omega + ((float)mouse_y - first_pos.y) / h * -1;
-	}
-
-	if (input.IsKeyUp(kKey_LeftClick)) {
-		last_alpha = alpha;
-		last_omega = omega;
-	}
-
-	cam.forward_.x = cos(omega) * cos(alpha);
-	cam.forward_.y = sin(omega);
-	cam.forward_.z = cos(omega) * sin(alpha);
-}
-
-void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms) {
-
-	auto r = renders.begin();
-	auto t = transforms.begin();
-	
-	current_cam.doRender(w);
-
-	for (; r != renders.end(); r++, t++) {
-		if (!r->has_value() && !t->has_value()) continue;
-		auto& render = r->value();
-		auto& transform = t->value();
-
-		if (render.geometry_.vertex_.size() > 0) {
-			Mat4& m = transform.model_matrix_;
-
-			m = m.Identity();
-			m = m.Multiply(m.Translate(transform.pos_));
-			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
-			m = m.Multiply(m.Scale(transform.size_));
-			m = m.Transpose();
-
-			glUseProgram(render.program_);
-			//Model matrix
-			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
-			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
-
-			//Texture
-			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
-
 			render.elements_buffer_.get()->bind(kTarget_VertexData);
 
 			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
@@ -424,7 +357,6 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 			//Color
 			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
-
 
 			auto order_buffer = render.order_buffer_.get();
 			order_buffer->bind(kTarget_Elements);

@@ -43,8 +43,6 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	//Camera cam(w);
-
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
 	std::vector<std::string> obj_paths;
@@ -79,7 +77,7 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-  //light
+  //Light
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.get_component<LightComponent>(light_entity[0]);
@@ -94,8 +92,8 @@ int main(int, char**) {
 	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
 
 	light_entity[3] = component_manager.add_entity();
-	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.6f);
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[3]);
+	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
   
   //Camera
 	size_t main_camera = component_manager.add_entity();
