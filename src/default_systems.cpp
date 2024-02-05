@@ -218,6 +218,18 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 	cam.forward_.z = cos(omega) * sin(alpha);
 }
 
+glm::mat4 ConfigureShaderAndMatrices() {
+	glm::mat4 lightProjection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
+
+	glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+	return lightSpaceMatrix;
+}
+
 void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, 
 	std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
 
@@ -343,6 +355,7 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 
 					spot_iterator++;
 				}
+				//TODO: glm::mat4 ConfigureShaderAndMatrices() <-------------------------------------------------------------------------------------------
 			}
 
 			render.elements_buffer_.get()->bind(kTarget_VertexData);
