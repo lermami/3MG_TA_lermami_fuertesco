@@ -237,37 +237,81 @@ void render_system(std::vector<std::optional<RenderComponent>>& renders, std::ve
 				auto& light = l->value();
 				char name[32];
 
-				sprintf(name, "u_light[%d].pos_", iterator);
-				SetVector3(render.program_, name, light.pos_);
+				//Ambient
+				if (light.type_ == LightType::kAmbient) {
+					sprintf(name, "u_ambient_light[%d].color_", iterator);
+					SetVector3(render.program_, name, light.color_);
 
-				sprintf(name, "u_light[%d].color_", iterator);
-				SetVector3(render.program_, name, light.color_);
+					sprintf(name, "u_ambient_light[%d].spec_color_", iterator);
+					SetVector3(render.program_, name, light.spec_color_);
+				}
 
-				sprintf(name, "u_light[%d].spec_color_", iterator);
-				SetVector3(render.program_, name, light.spec_color_);
+				//Directional
+				if (light.type_ == LightType::kDirectional) {
+					sprintf(name, "u_directional_light[%d].color_", iterator);
+					SetVector3(render.program_, name, light.color_);
 
-				sprintf(name, "u_light[%d].direction_", iterator);
-				SetVector3(render.program_, name, light.direction_);
+					sprintf(name, "u_directional_light[%d].spec_color_", iterator);
+					SetVector3(render.program_, name, light.spec_color_);
 
-				sprintf(name, "u_light[%d].type_", iterator);
-				GLuint light_type = glGetUniformLocation(render.program_, name);
-				glUniform1i(light_type, (int)light.type_);
+					sprintf(name, "u_directional_light[%d].direction_", iterator);
+					SetVector3(render.program_, name, light.direction_);
+				}
 
-				sprintf(name, "u_light[%d].constant_", iterator);
-				GLuint light_const = glGetUniformLocation(render.program_, name);
-				glUniform1f(light_const, light.constant_);
+				//Point
+				if (light.type_ == LightType::kPoint) {
+					sprintf(name, "u_point_light[%d].pos_", iterator);
+					SetVector3(render.program_, name, light.pos_);
 
-				sprintf(name, "u_light[%d].linear_", iterator);
-				GLuint light_linear = glGetUniformLocation(render.program_, name);
-				glUniform1f(light_linear, light.linear_);
+					sprintf(name, "u_point_light[%d].color_", iterator);
+					SetVector3(render.program_, name, light.color_);
 
-				sprintf(name, "u_light[%d].quadratic_", iterator);
-				GLuint light_quadractic = glGetUniformLocation(render.program_, name);
-				glUniform1f(light_quadractic, light.quadratic_);
+					sprintf(name, "u_point_light[%d].spec_color_", iterator);
+					SetVector3(render.program_, name, light.spec_color_);
 
-				sprintf(name, "u_light[%d].cutoff_angle_", iterator);
-				GLuint light_cutoff = glGetUniformLocation(render.program_, name);
-				glUniform1f(light_cutoff, light.cutoff_angle_);
+					sprintf(name, "u_point_light[%d].constant_", iterator);
+					GLuint light_const = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_const, light.constant_);
+
+					sprintf(name, "u_point_light[%d].linear_", iterator);
+					GLuint light_linear = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_linear, light.linear_);
+
+					sprintf(name, "u_point_light[%d].quadratic_", iterator);
+					GLuint light_quadractic = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_quadractic, light.quadratic_);
+				}
+
+				//Spot
+				if (light.type_ == LightType::kSpot) {
+					sprintf(name, "u_spot_light[%d].pos_", iterator);
+					SetVector3(render.program_, name, light.pos_);
+
+					sprintf(name, "u_spot_light[%d].color_", iterator);
+					SetVector3(render.program_, name, light.color_);
+
+					sprintf(name, "u_spot_light[%d].spec_color_", iterator);
+					SetVector3(render.program_, name, light.spec_color_);
+
+					sprintf(name, "u_spot_light[%d].direction_", iterator);
+					SetVector3(render.program_, name, light.direction_);
+
+					sprintf(name, "u_spot_light[%d].constant_", iterator);
+					GLuint light_const = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_const, light.constant_);
+
+					sprintf(name, "u_spot_light[%d].linear_", iterator);
+					GLuint light_linear = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_linear, light.linear_);
+
+					sprintf(name, "u_spot_light[%d].quadratic_", iterator);
+					GLuint light_quadractic = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_quadractic, light.quadratic_);
+
+					sprintf(name, "u_spot_light[%d].cutoff_angle_", iterator);
+					GLuint light_cutoff = glGetUniformLocation(render.program_, name);
+					glUniform1f(light_cutoff, light.cutoff_angle_);
+				}
 			}
 
 			auto order_buffer = render.order_buffer_.get();

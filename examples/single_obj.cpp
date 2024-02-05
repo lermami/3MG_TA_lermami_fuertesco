@@ -78,7 +78,7 @@ int main(int, char**) {
 
 	size_t light_entity = component_manager.add_entity();
 	auto ambient_light = component_manager.get_component<LightComponent>(light_entity);
-	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -5.0f), Vec3(1.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f), 0.0014f, 0.00007f, 2.5f);
+	init_ambient_light_system(*ambient_light, Vec3(1.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f));
 
 
 

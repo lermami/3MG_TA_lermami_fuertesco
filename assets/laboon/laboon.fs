@@ -1,9 +1,32 @@
 #version 330
 
-struct Light
+struct AmbientLight
 {
-  int type_;
+  vec3 color_;
+  vec3 spec_color_;
+};
 
+struct DirectionalLight
+{
+  vec3 color_;
+  vec3 spec_color_;
+
+  vec3 direction_;
+};
+
+struct PointLight
+{
+  vec3 pos_;
+  vec3 color_;
+  vec3 spec_color_;
+
+  float constant_;
+  float linear_;
+  float quadratic_;
+};
+
+struct SpotLight
+{
   vec3 pos_;
   vec3 color_;
   vec3 spec_color_;
@@ -29,12 +52,27 @@ in vec3 world_normal;
 in vec3 cam_dir;
 
 uniform sampler2D u_texture;
-uniform Light u_light[2];
 
-vec3 DirectionalLight(Light light){
+//Lights
+uniform AmbientLight u_ambient_light[5];
+uniform DirectionalLight u_directional_light[5];
+uniform PointLight u_point_light[5];
+uniform SpotLight u_spot_light[5];
 
-  Light aux_light = light;
+vec3 CalculateAmbientLight(AmbientLight light){
 
+  AmbientLight aux_light = light;
+  
+  vec3 result = aux_light.color_ + aux_light.spec_color_;
+  result = max(result, 0.0);
+  
+  return result; 
+}
+
+vec3 CalculateDirectionalLight(DirectionalLight light){
+
+  DirectionalLight aux_light = light;
+  
   // color_
   vec3 lightDir = normalize(aux_light.direction_);
   float diff = max(dot(world_normal, lightDir), 0.0);
@@ -43,17 +81,18 @@ vec3 DirectionalLight(Light light){
   // spec_color_
   vec3 reflectDir = normalize(reflect(-lightDir, world_normal));
   float spec = pow(max(dot(cam_dir, reflectDir), 0.0), 0.5) * 0.5;//TODO: Fix Shyni
-  aux_light.spec_color_ *= spec * 0.2;
-
+  aux_light.spec_color_ *= spec * 0.2f;
+  
   vec3 result = aux_light.spec_color_ + aux_light.color_;
   result = max(result, 0.0);
 
   return result;
 }
 
-vec3 PointLight(Light light){
+vec3 CalculatePointLight(PointLight light){
 
-  Light aux_light = light;
+  PointLight aux_light = light;
+
   // color_ 
   vec3 lightDir = aux_light.pos_ - world_position;
   float distance = length(lightDir);
@@ -73,9 +112,10 @@ vec3 PointLight(Light light){
   return result; 
 }
 
-vec3 SpotLight(Light light){
+vec3 CalculateSpotLight(SpotLight light){
 
-  Light aux_light = light;
+  SpotLight aux_light = light;
+
   // color_ 
   vec3 viewDir = aux_light.pos_ - world_position;
   
@@ -99,34 +139,34 @@ vec3 SpotLight(Light light){
   return result; 
 }
 
-/*
-kAmbient = 0,
-kDirectional = 1,
-kPoint = 2,
-kSpot = 3,
-*/
+
+//kAmbient = 0,
+//kDirectional = 1,
+//kPoint = 2,
+//kSpot = 3,
 
 
-vec3 LightProcess(Light light){
-  vec3 result;
 
-
-  if(light.type_ == 0){
-    result = light.color_;
+vec3 LightProcess(){
+  vec3 result = vec3(0.0f, 0.0f, 0.0f);
+  
+  for(int i=0; i<5; i++){
+    result += CalculateAmbientLight(u_ambient_light[i]);
+  }
+ 
+  for(int i=0; i<5; i++){
+    result += CalculateDirectionalLight(u_directional_light[i]);
+  }
+  
+  for(int i=0; i<5; i++){
+    result += CalculatePointLight(u_point_light[i]);
+  }
+  
+  for(int i=0; i<5; i++){
+    result += CalculateSpotLight(u_spot_light[i]);
   }
 
-  if(light.type_ == 1){
-    result = DirectionalLight(light);
-  }
-
-  if(light.type_ == 2){
-    result = PointLight(light);
-  }
-
-  if(light.type_ == 3){
-    result = SpotLight(light);
-  }
-
+  //result = CalculateAmbientLight(u_ambient_light[1]);
   return result;
 }
 
@@ -134,11 +174,8 @@ vec3 LightProcess(Light light){
 void main() {
 
   vec3 light = vec3(0.0, 0.0, 0.0);
-  for(int i=0; i<2; i++){
-    light += LightProcess(u_light[i]);
-  }
+  light = LightProcess();
 
-
-   frag_colour = texture(u_texture, uv);
-   frag_colour *= vec4(light, 1.0);
+  frag_colour = texture(u_texture, uv);
+  frag_colour *= vec4(light, 1.0);
 };
