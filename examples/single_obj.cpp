@@ -76,19 +76,27 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	size_t light_entity = component_manager.add_entity();
-	auto ambient_light = component_manager.get_component<LightComponent>(light_entity);
-	init_ambient_light_system(*ambient_light, Vec3(1.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f));
+	size_t light_entity[4];
+	light_entity[0] = component_manager.add_entity();
+	auto ambient_light = component_manager.get_component<LightComponent>(light_entity[0]);
+	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f));
 
+	light_entity[1] = component_manager.add_entity();
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[1]);
+	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 
+	light_entity[2] = component_manager.add_entity();
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
+	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
+
+	light_entity[3] = component_manager.add_entity();
+	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
+	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.6f);
 
 	//Input Declaration
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
-
-	//Light
-	LightComponent light(Vec3{0.8f, 0.0f, 0.0f}, Vec3{ 0.8f, 0.0f, 0.0f });
 
 	while (!w.is_done()) {
 		w.calculateLastTime();

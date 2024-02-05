@@ -81,13 +81,35 @@ vec3 CalculateDirectionalLight(DirectionalLight light){
   // spec_color_
   vec3 reflectDir = normalize(reflect(-lightDir, world_normal));
   float spec = pow(max(dot(cam_dir, reflectDir), 0.0), 0.5) * 0.5;//TODO: Fix Shyni
-  aux_light.spec_color_ *= spec * 0.2f;
+  aux_light.spec_color_ *= spec * 0.2;
   
   vec3 result = aux_light.spec_color_ + aux_light.color_;
   result = max(result, 0.0);
 
   return result;
 }
+/*
+ 	
+   // diffuse 
+   vec3 norm = normalize(Normal);
+   vec3 lightDir = normalize(light.position - FragPos);
+   float diff = max(dot(norm, lightDir), 0.0);
+   vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;  
+   
+   // specular
+   vec3 viewDir = normalize(viewPos - FragPos);
+   vec3 reflectDir = reflect(-lightDir, norm);  
+   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+   vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
+   
+   // attenuation
+   float distance    = length(light.position - FragPos);
+   float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+
+   ambient  *= attenuation;  
+   diffuse   *= attenuation;
+   specular *= attenuation; 
+*/
 
 vec3 CalculatePointLight(PointLight light){
 
@@ -148,25 +170,24 @@ vec3 CalculateSpotLight(SpotLight light){
 
 
 vec3 LightProcess(){
-  vec3 result = vec3(0.0f, 0.0f, 0.0f);
+  vec3 result = vec3(0.0, 0.0, 0.0);
   
   for(int i=0; i<5; i++){
-    result += CalculateAmbientLight(u_ambient_light[i]);
+    result += max(CalculateAmbientLight(u_ambient_light[i]), 0.0);
   }
  
   for(int i=0; i<5; i++){
-    result += CalculateDirectionalLight(u_directional_light[i]);
+    result += max(CalculateDirectionalLight(u_directional_light[i]), 0.0);
   }
   
   for(int i=0; i<5; i++){
-    result += CalculatePointLight(u_point_light[i]);
+    result += max(CalculatePointLight(u_point_light[i]), 0.0);
   }
   
   for(int i=0; i<5; i++){
-    result += CalculateSpotLight(u_spot_light[i]);
+    result += max(CalculateSpotLight(u_spot_light[i]), 0.0);
   }
 
-  //result = CalculateAmbientLight(u_ambient_light[1]);
   return result;
 }
 
@@ -176,6 +197,6 @@ void main() {
   vec3 light = vec3(0.0, 0.0, 0.0);
   light = LightProcess();
 
-  frag_colour = texture(u_texture, uv);
-  frag_colour *= vec4(light, 1.0);
+  //frag_colour = texture(u_texture, uv);
+  frag_colour = vec4(light, 1.0);
 };
