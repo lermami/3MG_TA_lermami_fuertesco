@@ -3,7 +3,7 @@
 #include<memory>
 #include<optional>
 #include<cassert>
-#include <utility>
+#include<utility>
 
 #include "buffer.hpp"
 #include "vector_2.hpp"
@@ -13,7 +13,6 @@
 #include "sound/soundsource.h"
 #include "light.hpp"
 #include "Window.hpp"
-#include "Engine.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -173,15 +172,15 @@ struct ComponentManager {
 	std::unordered_map<std::size_t, std::unique_ptr<component_base>> component_classes_;
 	std::vector <size_t> deleted_components_;
 
-	ComponentManager(Engine& e) {
-		e.componentM_ = this;
-
+	ComponentManager() {
 		add_component_class<RenderComponent>();
 		add_component_class<TransformComponent>();
 		add_component_class<AudioComponent>();
 		add_component_class<LightComponent>();
 		add_component_class<CameraComponent>();
 	}
+
+	~ComponentManager() = default;
 
 	template<typename T> void add_component_class() {
 		component_classes_.emplace(typeid(T).hash_code(), std::make_unique<component_list<T>>());

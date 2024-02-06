@@ -1,20 +1,21 @@
 #pragma once
-#include <vector>
+#include<vector>
+#include<memory>
 
+#include "enum.hpp"
 
-class ComponentManager;
+struct ComponentManager;
+struct Geometry;
 
 class Engine {
-  friend class ComponentManager;
 public:
   Engine();
   ~Engine();
 
   static Geometry LoadObj(const char* path);
 
-  ComponentManager* getComponentManager();
+  ComponentManager& getComponentManager();
 
 private:
-  ComponentManager* componentM_;
-
+  std::unique_ptr<ComponentManager> componentM_;
 };

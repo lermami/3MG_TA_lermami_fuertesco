@@ -27,7 +27,7 @@
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
-	ComponentManager component_manager(e);
+	auto& component_manager = e.getComponentManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
@@ -73,7 +73,7 @@ int main(int, char**) {
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-
+	
   //Light
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
@@ -96,7 +96,6 @@ int main(int, char**) {
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.get_component<CameraComponent>(main_camera);
 	w.setCurrentCam(main_camera);
-
 
 	//Input Declaration
 	Input input_map(w);
