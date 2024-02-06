@@ -125,20 +125,6 @@ int main(int, char**) {
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// 1. first render to depth map
-	glViewport(0, 0, shadow_w, shadow_h);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	ConfigureShaderAndMatrices();
-	RenderScene();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// 2. then render scene as normal with shadow mapping (using depth map)
-	glViewport(0, 0, scr_w, scr_h);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	ConfigureShaderAndMatrices();
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	RenderScene();
-
 	//Input Declaration
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
@@ -185,7 +171,19 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 
+
+		// 1. first render to depth map
+		glViewport(0, 0, shadow_w, shadow_h);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// 2. then render scene as normal with shadow mapping (using depth map)
+		glViewport(0, 0, scr_w, scr_h);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>(), depthMap);
 
 		w.swap();
 

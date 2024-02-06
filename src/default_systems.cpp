@@ -221,8 +221,8 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 glm::mat4 ConfigureShaderAndMatrices() {
 	glm::mat4 lightProjection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
 
-	glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
+	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
@@ -231,7 +231,7 @@ glm::mat4 ConfigureShaderAndMatrices() {
 }
 
 void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, 
-	std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights) {
+	std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights, unsigned int depth_map) {
 
 	auto r = renders.begin();
 	auto t = transforms.begin();
@@ -355,7 +355,15 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 
 					spot_iterator++;
 				}
-				//TODO: glm::mat4 ConfigureShaderAndMatrices() <-------------------------------------------------------------------------------------------
+			}
+
+			//Shadows
+			glm::mat4 shadow_mat = ConfigureShaderAndMatrices(current_cam);
+			GLuint shadow = glGetUniformLocation(render.program_, "u_shadow_matrix");
+			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
+
+			if (depth_map != 0) {
+				glUniform1ui(glGetUniformLocation(depth_map, "u_depthmap"), 0);
 			}
 
 			render.elements_buffer_.get()->bind(kTarget_VertexData);

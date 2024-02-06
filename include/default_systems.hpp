@@ -38,7 +38,7 @@ void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, st
 
 glm::mat4 ConfigureShaderAndMatrices();
 
-void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights);
+void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights, unsigned int depth_map);
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 
