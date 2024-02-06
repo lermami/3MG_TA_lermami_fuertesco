@@ -143,7 +143,6 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 
-		//render_system(w, *component_manager.get_component<CameraComponent>(main_camera), *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>(), *component_manager.get_component_list<LightComponent>());
 		w.render();
 
 		w.swap();
