@@ -53,6 +53,8 @@ in vec3 cam_dir;
 
 uniform sampler2D u_texture;
 
+uniform sampler2D u_depthmap;
+
 //Lights
 uniform AmbientLight u_ambient_light[5];
 uniform DirectionalLight u_directional_light[5];
@@ -88,28 +90,6 @@ vec3 CalculateDirectionalLight(DirectionalLight light){
 
   return result;
 }
-/*
- 	
-   // diffuse 
-   vec3 norm = normalize(Normal);
-   vec3 lightDir = normalize(light.position - FragPos);
-   float diff = max(dot(norm, lightDir), 0.0);
-   vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;  
-   
-   // specular
-   vec3 viewDir = normalize(viewPos - FragPos);
-   vec3 reflectDir = reflect(-lightDir, norm);  
-   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-   vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
-   
-   // attenuation
-   float distance    = length(light.position - FragPos);
-   float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
-
-   ambient  *= attenuation;  
-   diffuse   *= attenuation;
-   specular *= attenuation; 
-*/
 
 vec3 CalculatePointLight(PointLight light){
 
@@ -197,6 +177,8 @@ void main() {
   vec3 light = vec3(0.0, 0.0, 0.0);
   light = LightProcess();
 
-  //frag_colour = texture(u_texture, uv);
+  frag_colour = texture(u_texture, uv);
   frag_colour = vec4(light, 1.0);
+  float depthValue = texture(u_depthmap, uv).r;
+  frag_colour = vec4(vec3(depthValue), 1.0);
 };
