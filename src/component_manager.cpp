@@ -1,5 +1,13 @@
 #include "component_manager.hpp"
 
+ComponentManager::ComponentManager(){
+		add_component_class<RenderComponent>();
+		add_component_class<TransformComponent>();
+		add_component_class<AudioComponent>();
+		add_component_class<LightComponent>();
+		add_component_class<CameraComponent>();
+}
+
 size_t ComponentManager::add_entity() {
 	if (deleted_components_.size() > 0) {
 		size_t id = deleted_components_.back();
