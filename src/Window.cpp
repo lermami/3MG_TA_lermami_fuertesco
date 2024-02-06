@@ -341,6 +341,76 @@ void Window::render() {
 	}
 }
 
+void Window::renderShadowMap(unsigned int depth_map, unsigned int program) {
+	auto& componentM = engine_.getComponentManager();
+	auto renders = componentM.get_component_list<RenderComponent>();
+	auto transforms = componentM.get_component_list<TransformComponent>();
+
+	auto r = renders->begin();
+	auto t = transforms->begin();
+
+	auto current_cam = componentM.get_component<CameraComponent>(current_cam_);
+	current_cam->doRender(this);
+
+	for (; r != renders->end(); r++, t++) {
+		if (!r->has_value() && !t->has_value()) continue;
+		auto& render = r->value();
+		auto& transform = t->value();
+
+		Mat4& m = transform.model_matrix_;
+
+		m = m.Identity();
+		m = m.Multiply(m.Translate(transform.pos_));
+		m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+		m = m.Multiply(m.Scale(transform.size_));
+		m = m.Transpose();
+
+		glUseProgram(render.program_);
+		//Model matrix
+		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
+		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+		//Texture
+		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+
+		render.elements_buffer_.get()->bind(kTarget_VertexData);
+		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+		//Vertices
+		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+		//Normals
+		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+		//Uv
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+		//Color
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+		auto order_buffer = render.order_buffer_.get();
+		order_buffer->bind(kTarget_Elements);
+
+		//Shadows
+		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+		GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
+		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
+
+		glUniform1ui(glGetUniformLocation(depth_map, "u_depth_map"), 0);
+
+	}
+		depth_map = 
+}
+
+glm::mat4 ConfigureShaderAndMatrices() {
+	glm::mat4 lightProjection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
+
+	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+	return lightSpaceMatrix;
+}
+
 void Window::setCurrentCam(size_t cam) {
 	current_cam_ = cam;
 }

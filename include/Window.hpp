@@ -13,6 +13,11 @@ public:
   friend class Input;
   friend class Camera;
 
+  ~Window();
+  Window(Window& w);
+  Window(Window&& w) noexcept;
+  Window(const Window&) = delete;
+
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;
   void swap();
@@ -41,14 +46,12 @@ public:
 
   void renderLights();
   void render();
+  void renderShadowMap(unsigned int depth_map);
 
   void setCurrentCam(size_t cam);
   size_t getCurrentCam();
 
-  ~Window();
-  Window(Window& w);
-  Window(Window&& w) noexcept;
-  Window(const Window&) = delete;
+  glm::mat4 ConfigureShaderAndMatrices();
 
 private:
   Window(Engine& e, int w, int h, const char* title);
