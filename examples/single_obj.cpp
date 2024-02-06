@@ -23,6 +23,7 @@
 #include "light.hpp"
 #include "camera.hpp"
 #include "matrix_4.hpp"
+#include "default_components.hpp"
 
 int main(int, char**) {
 	Engine e;
@@ -67,8 +68,8 @@ int main(int, char**) {
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 
 	size_t new_e = component_manager.add_entity();
-	auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-	auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
+	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
@@ -77,24 +78,24 @@ int main(int, char**) {
   //Light
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
-	auto ambient_light = component_manager.get_component<LightComponent>(light_entity[0]);
+	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
 	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f));
 
 	light_entity[1] = component_manager.add_entity();
-	ambient_light = component_manager.get_component<LightComponent>(light_entity[1]);
+	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
 	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 
 	light_entity[2] = component_manager.add_entity();
-	ambient_light = component_manager.get_component<LightComponent>(light_entity[2]);
+	ambient_light = component_manager.create_component<LightComponent>(light_entity[2]);
 	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
 
 	light_entity[3] = component_manager.add_entity();
-	ambient_light = component_manager.get_component<LightComponent>(light_entity[3]);
+	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
 	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
   
   //Camera
 	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.get_component<CameraComponent>(main_camera);
+	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
 	w.setCurrentCam(main_camera);
 
 	//Input Declaration

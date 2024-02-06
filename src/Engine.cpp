@@ -1,5 +1,6 @@
 #include "Engine.hpp"
 #include "component_manager.hpp"
+#include "default_components.hpp"
 
 #include <tiny_obj_loader.h>
 #include "GLFW/glfw3.h"

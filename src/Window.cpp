@@ -208,133 +208,130 @@ void Window::render() {
 		auto& render = r->value();
 		auto& transform = t->value();
 
-		//TODO: fix ecs bug
-		if (render.geometry_.vertex_.size() > 0) {
-			Mat4& m = transform.model_matrix_;
+		Mat4& m = transform.model_matrix_;
 
-			m = m.Identity();
-			m = m.Multiply(m.Translate(transform.pos_));
-			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
-			m = m.Multiply(m.Scale(transform.size_));
-			m = m.Transpose();
+		m = m.Identity();
+		m = m.Multiply(m.Translate(transform.pos_));
+		m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+		m = m.Multiply(m.Scale(transform.size_));
+		m = m.Transpose();
 
-			glUseProgram(render.program_);
-			//Model matrix
-			GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
-			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+		glUseProgram(render.program_);
+		//Model matrix
+		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
+		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-			//Texture
-			glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+		//Texture
+		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
 
-			//Light
-			unsigned int ambient_iterator = 0;
-			unsigned int directional_iterator = 0;
-			unsigned int point_iterator = 0;
-			unsigned int spot_iterator = 0;
+		//Light
+		unsigned int ambient_iterator = 0;
+		unsigned int directional_iterator = 0;
+		unsigned int point_iterator = 0;
+		unsigned int spot_iterator = 0;
 
-			for (; l != lights->end(); l++) {
-				auto& light = l->value();
-				char name[64];
+		for (; l != lights->end(); l++) {
+			if (!l->has_value()) continue;
+			auto& light = l->value();
+			char name[64];
 
-				//Ambient
-				if (light.type_ == LightType::kAmbient) {
-					sprintf_s(name, "u_ambient_light[%d].color_", ambient_iterator);
-					SetVector3(render.program_, name, light.color_);
+			//Ambient
+			if (light.type_ == LightType::kAmbient) {
+				sprintf_s(name, "u_ambient_light[%d].color_", ambient_iterator);
+				SetVector3(render.program_, name, light.color_);
 
-					ambient_iterator++;
-				}
-
-				//Directional
-				if (light.type_ == LightType::kDirectional) {
-					sprintf_s(name, "u_directional_light[%d].color_", directional_iterator);
-					SetVector3(render.program_, name, light.color_);
-
-					sprintf_s(name, "u_directional_light[%d].spec_color_", directional_iterator);
-					SetVector3(render.program_, name, light.spec_color_);
-
-					sprintf_s(name, "u_directional_light[%d].direction_", directional_iterator);
-					SetVector3(render.program_, name, light.direction_);
-
-					directional_iterator++;
-				}
-
-				//Point
-				if (light.type_ == LightType::kPoint) {
-					sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
-					SetVector3(render.program_, name, light.pos_);
-
-					sprintf_s(name, "u_point_light[%d].color_", point_iterator);
-					SetVector3(render.program_, name, light.color_);
-
-					sprintf_s(name, "u_point_light[%d].spec_color_", point_iterator);
-					SetVector3(render.program_, name, light.spec_color_);
-
-					sprintf_s(name, "u_point_light[%d].constant_", point_iterator);
-					GLuint light_const = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_const, light.constant_);
-
-					sprintf_s(name, "u_point_light[%d].linear_", point_iterator);
-					GLuint light_linear = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_linear, light.linear_);
-
-					sprintf_s(name, "u_point_light[%d].quadratic_", point_iterator);
-					GLuint light_quadractic = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_quadractic, light.quadratic_);
-
-					point_iterator++;
-				}
-
-				//Spot
-				if (light.type_ == LightType::kSpot) {
-					sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
-					SetVector3(render.program_, name, light.pos_);
-
-					sprintf_s(name, "u_spot_light[%d].color_", spot_iterator);
-					SetVector3(render.program_, name, light.color_);
-
-					sprintf_s(name, "u_spot_light[%d].spec_color_", spot_iterator);
-					SetVector3(render.program_, name, light.spec_color_);
-
-					sprintf_s(name, "u_spot_light[%d].direction_", spot_iterator);
-					SetVector3(render.program_, name, light.direction_);
-
-					sprintf_s(name, "u_spot_light[%d].constant_", spot_iterator);
-					GLuint light_const = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_const, light.constant_);
-
-					sprintf_s(name, "u_spot_light[%d].linear_", spot_iterator);
-					GLuint light_linear = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_linear, light.linear_);
-
-					sprintf_s(name, "u_spot_light[%d].quadratic_", spot_iterator);
-					GLuint light_quadractic = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_quadractic, light.quadratic_);
-
-					sprintf_s(name, "u_spot_light[%d].cutoff_angle_", spot_iterator);
-					GLuint light_cutoff = glGetUniformLocation(render.program_, name);
-					glUniform1f(light_cutoff, light.cutoff_angle_);
-
-					spot_iterator++;
-				}
+				ambient_iterator++;
 			}
 
-			render.elements_buffer_.get()->bind(kTarget_VertexData);
+			//Directional
+			if (light.type_ == LightType::kDirectional) {
+				sprintf_s(name, "u_directional_light[%d].color_", directional_iterator);
+				SetVector3(render.program_, name, light.color_);
 
-			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+				sprintf_s(name, "u_directional_light[%d].spec_color_", directional_iterator);
+				SetVector3(render.program_, name, light.spec_color_);
 
-			//Vertices
-			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
-			//Normals
-			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
-			//Uv
-			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
-			//Color
-			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+				sprintf_s(name, "u_directional_light[%d].direction_", directional_iterator);
+				SetVector3(render.program_, name, light.direction_);
 
-			auto order_buffer = render.order_buffer_.get();
-			order_buffer->bind(kTarget_Elements);
-			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+				directional_iterator++;
+			}
+
+			//Point
+			if (light.type_ == LightType::kPoint) {
+				sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
+				SetVector3(render.program_, name, light.pos_);
+
+				sprintf_s(name, "u_point_light[%d].color_", point_iterator);
+				SetVector3(render.program_, name, light.color_);
+
+				sprintf_s(name, "u_point_light[%d].spec_color_", point_iterator);
+				SetVector3(render.program_, name, light.spec_color_);
+
+				sprintf_s(name, "u_point_light[%d].constant_", point_iterator);
+				GLuint light_const = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_const, light.constant_);
+
+				sprintf_s(name, "u_point_light[%d].linear_", point_iterator);
+				GLuint light_linear = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_linear, light.linear_);
+
+				sprintf_s(name, "u_point_light[%d].quadratic_", point_iterator);
+				GLuint light_quadractic = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_quadractic, light.quadratic_);
+
+				point_iterator++;
+			}
+
+			//Spot
+			if (light.type_ == LightType::kSpot) {
+				sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
+				SetVector3(render.program_, name, light.pos_);
+
+				sprintf_s(name, "u_spot_light[%d].color_", spot_iterator);
+				SetVector3(render.program_, name, light.color_);
+
+				sprintf_s(name, "u_spot_light[%d].spec_color_", spot_iterator);
+				SetVector3(render.program_, name, light.spec_color_);
+
+				sprintf_s(name, "u_spot_light[%d].direction_", spot_iterator);
+				SetVector3(render.program_, name, light.direction_);
+
+				sprintf_s(name, "u_spot_light[%d].constant_", spot_iterator);
+				GLuint light_const = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_const, light.constant_);
+
+				sprintf_s(name, "u_spot_light[%d].linear_", spot_iterator);
+				GLuint light_linear = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_linear, light.linear_);
+
+				sprintf_s(name, "u_spot_light[%d].quadratic_", spot_iterator);
+				GLuint light_quadractic = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_quadractic, light.quadratic_);
+
+				sprintf_s(name, "u_spot_light[%d].cutoff_angle_", spot_iterator);
+				GLuint light_cutoff = glGetUniformLocation(render.program_, name);
+				glUniform1f(light_cutoff, light.cutoff_angle_);
+
+				spot_iterator++;
+			}
 		}
+
+		render.elements_buffer_.get()->bind(kTarget_VertexData);
+		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+		//Vertices
+		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+		//Normals
+		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+		//Uv
+		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+		//Color
+		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+		auto order_buffer = render.order_buffer_.get();
+		order_buffer->bind(kTarget_Elements);
+		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
 	}
 }
 
