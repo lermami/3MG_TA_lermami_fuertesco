@@ -4,30 +4,7 @@
 #include <optional>
 #include <vector>
 #include <ctime>
-
-enum class FrontFace {
-  kClockWise = 0x0900,
-  kCounterClockWise = 0x0901
-};
-
-enum class CullingMode {
-  kFrontLeft = 0x0400,
-  kFrontRight = 0x0401,
-  kBackLeft = 0x0402,
-  kBackRight = 0x0403,
-  kFront = 0x0404,
-  kBack = 0x0405,
-  kLeft = 0x0406,
-  kRight = 0x0407,
-  kFrontAndBack = 0x0408,
-};
-
-enum class DepthTestMode {
-  kNever = 0x0200,
-  kLess = 0x0201,
-  kEqual = 0x0202,
-  kGreater = 0x0204,
-};
+#include "enum.hpp"
 
 class Engine;
 
@@ -62,13 +39,19 @@ public:
   unsigned getProgram(int n);
   int getProgramListSize();
 
+  void renderLights();
+  void render();
+
+  void setCurrentCam(size_t cam);
+  size_t getCurrentCam();
+
   ~Window();
   Window(Window& w);
   Window(Window&& w) noexcept;
   Window(const Window&) = delete;
 
 private:
-  Window(int w, int h, const char* title);
+  Window(Engine& e, int w, int h, const char* title);
   void renderImgui();
 
   GLFWwindow* handle_;
@@ -79,6 +62,9 @@ private:
   float deltaTime_;
   bool imguiInit_;
 
+  size_t current_cam_;
+
   std::vector<unsigned> program_list_;
+  Engine& engine_;
 };
 

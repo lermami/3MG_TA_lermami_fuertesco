@@ -1,7 +1,11 @@
 #pragma once
-#include <vector>
-#include "component_manager.hpp"
+#include<vector>
+#include<memory>
 
+#include "enum.hpp"
+
+struct ComponentManager;
+struct Geometry;
 
 class Engine {
 public:
@@ -10,4 +14,8 @@ public:
 
   static Geometry LoadObj(const char* path);
 
+  ComponentManager& getComponentManager();
+
+private:
+  std::unique_ptr<ComponentManager> componentM_;
 };

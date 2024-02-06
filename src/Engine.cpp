@@ -1,12 +1,17 @@
 #include "Engine.hpp"
+#include "component_manager.hpp"
+#include "default_components.hpp"
+
 #include <tiny_obj_loader.h>
 #include "GLFW/glfw3.h"
 
 
-Engine::Engine(){
+#include <time.h>
+
+Engine::Engine() : componentM_ {std::make_unique<ComponentManager>() } {
   glfwInit();
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 Engine::~Engine(){
@@ -86,10 +91,12 @@ Geometry Engine::LoadObj(const char* path) {
 			}
 			index_offset += fv;
 
-			// per-face material
-			shapes[s].mesh.material_ids[f];
 		}
 	}
 
 	return geometry;
+}
+
+ComponentManager& Engine::getComponentManager() {
+	return *componentM_;
 }

@@ -1,13 +1,7 @@
 #pragma once
 
 #include "vector_3.hpp"
-
-enum class LightType {
-  kAmbient = 0,
-  kDirectional = 1,
-  kPoint = 2,
-  kSpot = 3,
-};
+#include "enum.hpp"
 
 struct LightComponent{
 public:

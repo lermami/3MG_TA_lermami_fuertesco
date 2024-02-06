@@ -1,10 +1,6 @@
 #pragma once
 #include <memory>
-
-enum Target {
-  kTarget_VertexData,
-  kTarget_Elements,
-};
+#include "enum.hpp"
 
 class Buffer {
 public:
