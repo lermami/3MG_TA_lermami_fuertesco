@@ -39,6 +39,7 @@ public:
   unsigned getProgram(int n);
   int getProgramListSize();
 
+  void renderLights();
   void render();
 
   void setCurrentCam(size_t cam);
