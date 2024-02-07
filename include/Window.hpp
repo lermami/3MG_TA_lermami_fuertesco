@@ -5,6 +5,7 @@
 #include <vector>
 #include <ctime>
 #include "enum.hpp"
+#include "glm/glm.hpp"
 
 class Engine;
 
@@ -45,8 +46,8 @@ public:
   int getProgramListSize();
 
   void renderLights();
-  void render();
-  void renderShadowMap(unsigned int depth_map);
+  void render(unsigned int depth_map);
+  void renderShadowMap(unsigned int depth_map, unsigned int program);
 
   void setCurrentCam(size_t cam);
   size_t getCurrentCam();

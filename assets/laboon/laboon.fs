@@ -179,6 +179,4 @@ void main() {
 
   frag_colour = texture(u_texture, uv);
   frag_colour = vec4(light, 1.0);
-  float depthValue = texture(u_depthmap, uv).r;
-  frag_colour = vec4(vec3(depthValue), 1.0);
 };

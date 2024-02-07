@@ -30,7 +30,7 @@ using namespace std::chrono_literals;
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
-	ComponentManager component_manager;
+	auto& component_manager = e.getComponentManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
@@ -44,7 +44,8 @@ int main(int, char**) {
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
-	auto simpleProgram = CreateProgram(w, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
+	auto simpleProgram2 = CreateProgram(w, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
+	auto simpleProgram3 = CreateProgram(w, "../assets/Shader/ShadowMap/depthtest.vs", "../assets/Shader/ShadowMap/depthtest.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
@@ -63,9 +64,9 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 	
-	Vec3 tr_pos(0.0f, 0.0f, -6.0f);
+	Vec3 tr_pos(0.0f, 1.5f, -5.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(1.0f, 1.0f, 1.0f);
+	Vec3 obj_size(0.5f, 0.5f, 0.5f);
 
 	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
@@ -78,35 +79,60 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
+	tr_pos = Vec3(0.0f, -3.0f, -10.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(200.0f, 200.0f, 0.2f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_render_component_system(*tr_render, laboon_geo, simpleProgram3, laboon_handle);
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	tr_pos = Vec3(2.0f, 0.0f, -6.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(0.5f, 0.5f, 0.5f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	tr_pos = Vec3(-1.0f, 0.0f, -7.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(0.25f, 0.25f, 0.25f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	/*
   //Light
-	size_t light_entity[4];
-	light_entity[0] = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f));
-
-	light_entity[1] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
-	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
-
-	light_entity[2] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[2]);
-	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
-
-	light_entity[3] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
+	size_t light_entity;
+	light_entity = component_manager.add_entity();
+	auto ambient_light = component_manager.create_component<LightComponent>(light_entity);
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));*/
   
   //Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
-
+	w.setCurrentCam(main_camera);
 	//Shadow
 		//Creat depth map buffer
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
 
 		//Create 2D Texture as the framebuffer's depth buffer
-	const unsigned int shadow_w = 1024, shadow_h = 768;
+	const unsigned int shadow_w = 1024, shadow_h = 1024;
 	const unsigned int scr_w = 1024, scr_h = 768;
 
 	unsigned int depthMap;
@@ -168,23 +194,26 @@ int main(int, char**) {
 			input.y = input_velocity;
 		}
 		
-		move_camera_system(*component_manager.create_component<CameraComponent>(main_camera), input);
-		rotate_camera_system(*component_manager.create_component<CameraComponent>(main_camera), input_map, 1024, 768);
-		imgui_transform_system(*component_manager.create_component<TransformComponent>(new_e));
+		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
+		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
+
+		imgui_transform_system(*component_manager.get_component<TransformComponent>(1));
+		imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
+		imgui_transform_system(*component_manager.get_component<TransformComponent>(4));
 
 
 		// 1. first render to depth map
 		glViewport(0, 0, shadow_w, shadow_h);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		w.renderShadowMap(depthMap);
+		w.renderShadowMap(depthMap, simpleProgram2);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// 2. then render scene as normal with shadow mapping (using depth map)
 		glViewport(0, 0, scr_w, scr_h);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-		w.render();
+		w.render(depthMap);
 
 		w.swap();
 

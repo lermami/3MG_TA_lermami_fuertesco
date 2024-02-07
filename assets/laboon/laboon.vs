@@ -28,8 +28,8 @@ out vec3 cam_dir;
 
 void main() { 
   
-  //gl_Position = u_p_matrix * u_v_matrix * u_m_matrix * vec4(vp, 1.0);
-  gl_Position =  u_p_matrix * u_v_matrix * u_shadow_matrix * u_m_matrix * vec4(vp, 1.0);
+  gl_Position = u_p_matrix * u_v_matrix * u_m_matrix * vec4(vp, 1.0);
+  //gl_Position =  u_p_matrix * u_v_matrix * u_shadow_matrix * u_m_matrix * vec4(vp, 1.0);
   //gl_Position = u_shadow_matrix * (u_p_matrix * u_v_matrix * u_m_matrix) * vec4(vp, 1.0);
   
   world_position = ((u_m_matrix * vec4(vp, 1.0f)).xyz);       //vp; 
