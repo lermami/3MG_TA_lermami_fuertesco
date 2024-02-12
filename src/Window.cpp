@@ -326,6 +326,10 @@ void Window::render(unsigned int depth_map) {
 		//Shadows
 		glUniform1ui(glGetUniformLocation(depth_map, "u_depth_map"), 0);
 
+		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
+		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
+
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
 

@@ -50,9 +50,10 @@ in vec3 normal;
 in vec3 world_position;
 in vec3 world_normal;
 in vec3 cam_dir;
+in vec3 frag_pos;
+in vec4 frag_pos_light_space;
 
 uniform sampler2D u_texture;
-
 uniform sampler2D u_depthmap;
 
 //Lights
@@ -151,10 +152,6 @@ vec3 CalculateSpotLight(SpotLight light){
 
 vec3 LightProcess(){
   vec3 result = vec3(0.0, 0.0, 0.0);
-  
-  for(int i=0; i<5; i++){
-    result += max(CalculateAmbientLight(u_ambient_light[i]), 0.0);
-  }
  
   for(int i=0; i<5; i++){
     result += max(CalculateDirectionalLight(u_directional_light[i]), 0.0);
@@ -171,12 +168,45 @@ vec3 LightProcess(){
   return result;
 }
 
+vec3 AmbientProcess(){
+  vec3 result = vec3(0.0, 0.0, 0.0);
+
+  for(int i=0; i<5; i++){
+    result += max(CalculateAmbientLight(u_ambient_light[i]), 0.0);
+  }
+
+  return result;
+}
+
+float ShadowProcess(vec4 pos_light_space){
+
+    // perform perspective divide
+    vec3 projCoords = pos_light_space.xyz / pos_light_space.w;
+
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(u_depthmap, projCoords.xy).r; 
+
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+}
+
 
 void main() {
 
-  vec3 light = vec3(0.0, 0.0, 0.0);
-  light = LightProcess();
+  vec3 light = LightProcess();
+  vec3 ambient = AmbientProcess();
 
-  frag_colour = texture(u_texture, uv);
+  float shadow = ShadowProcess(frag_pos_light_space);
+
+  vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;
+
   frag_colour = vec4(light, 1.0);
 };

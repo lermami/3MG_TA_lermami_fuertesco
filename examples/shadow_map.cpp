@@ -90,7 +90,7 @@ int main(int, char**) {
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, square_geo, simpleProgram3, laboon_handle);
+	init_render_component_system(*tr_render, square_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
 	tr_pos = Vec3(0.5f, 1.5f, -8.0f);
