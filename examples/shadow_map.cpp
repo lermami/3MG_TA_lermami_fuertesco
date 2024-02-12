@@ -50,6 +50,7 @@ int main(int, char**) {
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
 	obj_paths.emplace_back("../assets/obj_test.obj");
+	obj_paths.emplace_back("../assets/square.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -61,10 +62,11 @@ int main(int, char**) {
 	}
 
 	Geometry laboon_geo = objs[0].get();
+	Geometry square_geo = objs[1].get();
 
 	unsigned n_obj = 1000;
 	
-	Vec3 tr_pos(0.0f, 1.5f, -5.0f);
+	Vec3 tr_pos(0.0f, 1.5f, -3.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(0.5f, 0.5f, 0.5f);
 
@@ -79,19 +81,19 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	tr_pos = Vec3(0.0f, -3.0f, -10.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(200.0f, 200.0f, 0.2f);
+	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
+	obj_rot = Vec3(1.57f, 0.0f, 0.0f);
+	obj_size = Vec3(200.0f, 100.0f, 200.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, laboon_geo, simpleProgram3, laboon_handle);
+	init_render_component_system(*tr_render, square_geo, simpleProgram3, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	tr_pos = Vec3(2.0f, 0.0f, -6.0f);
+	tr_pos = Vec3(0.5f, 1.5f, -8.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(0.5f, 0.5f, 0.5f);
 
@@ -103,7 +105,7 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	tr_pos = Vec3(-1.0f, 0.0f, -7.0f);
+	tr_pos = Vec3(-1.0f, 0.0f, -5.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(0.25f, 0.25f, 0.25f);
 

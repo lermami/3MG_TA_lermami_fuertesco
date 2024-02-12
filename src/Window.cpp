@@ -400,9 +400,9 @@ void Window::renderShadowMap(unsigned int depth_map, unsigned int program) {
 }
 
 glm::mat4 Window::ConfigureShaderAndMatrices() {
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 100000.0f);
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 50.0f);
 
-	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f),
 		glm::vec3(0.0f, 0.0f, -1.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 

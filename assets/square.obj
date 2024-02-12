@@ -1,0 +1,18 @@
+# Vertices
+v -1.0 0.0 1.0
+v 1.0 0.0 1.0
+v -1.0 0.0 -1.0
+v 1.0 0.0 -1.0
+
+# Coordenadas de textura (UV)
+vt 0.0 0.0
+vt 1.0 0.0
+vt 0.0 1.0
+vt 1.0 1.0
+
+# Normales
+vn 0.0 1.0 0.0
+
+# Caras (triángulos)
+f 1/1/1 2/2/1 4/4/1
+f 1/1/1 4/4/1 3/3/1
