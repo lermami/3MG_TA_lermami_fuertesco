@@ -81,18 +81,6 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
-	obj_rot = Vec3(1.57f, 0.0f, 0.0f);
-	obj_size = Vec3(200.0f, 100.0f, 200.0f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, square_geo, simpleProgram, laboon_handle);
-	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-
 	tr_pos = Vec3(0.5f, 1.5f, -8.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(0.5f, 0.5f, 0.5f);
@@ -117,12 +105,29 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	/*
+	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
+	obj_rot = Vec3(1.57f, 0.0f, 0.0f);
+	obj_size = Vec3(200.0f, 100.0f, 200.0f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_render_component_system(*tr_render, square_geo, simpleProgram, laboon_handle);
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	
   //Light
-	size_t light_entity;
-	light_entity = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity);
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));*/
+	size_t light_entity[2];
+
+	light_entity[0] = component_manager.add_entity();
+	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+
+	light_entity[1] = component_manager.add_entity();
+	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
+	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
   
   //Camera
 	size_t main_camera = component_manager.add_entity();
@@ -200,15 +205,15 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(1));
+		imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
-		imgui_transform_system(*component_manager.get_component<TransformComponent>(4));
-
+		
 
 		// 1. first render to depth map
 		glViewport(0, 0, shadow_w, shadow_h);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		w.renderShadowMap(depthMap, simpleProgram2);
+		w.renderShadowMap(simpleProgram2);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// 2. then render scene as normal with shadow mapping (using depth map)

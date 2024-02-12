@@ -3,7 +3,6 @@
 struct AmbientLight
 {
   vec3 color_;
-  vec3 spec_color_;
 };
 
 struct DirectionalLight
@@ -54,7 +53,7 @@ in vec3 frag_pos;
 in vec4 frag_pos_light_space;
 
 uniform sampler2D u_texture;
-uniform sampler2D u_depthmap;
+uniform sampler2D u_depth_map;
 
 //Lights
 uniform AmbientLight u_ambient_light[5];
@@ -66,7 +65,7 @@ vec3 CalculateAmbientLight(AmbientLight light){
 
   AmbientLight aux_light = light;
   
-  vec3 result = aux_light.color_ + aux_light.spec_color_;
+  vec3 result = aux_light.color_;
   result = max(result, 0.0);
   
   return result; 
@@ -187,7 +186,7 @@ float ShadowProcess(vec4 pos_light_space){
     projCoords = projCoords * 0.5 + 0.5;
 
     // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(u_depthmap, projCoords.xy).r; 
+    float closestDepth = texture(u_depth_map, projCoords.xy).r; 
 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;

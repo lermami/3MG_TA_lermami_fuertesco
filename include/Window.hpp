@@ -47,7 +47,7 @@ public:
 
   void renderLights();
   void render(unsigned int depth_map);
-  void renderShadowMap(unsigned int depth_map, unsigned int program);
+  void renderShadowMap(unsigned int program);
 
   void setCurrentCam(size_t cam);
   size_t getCurrentCam();

@@ -321,10 +321,10 @@ void Window::render(unsigned int depth_map) {
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
 		//Texture
-		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+		glUniform1ui(glGetUniformLocation(render.program_, "u_texture"), render.texture_);
 
 		//Shadows
-		glUniform1ui(glGetUniformLocation(depth_map, "u_depth_map"), 0);
+		glUniform1ui(glGetUniformLocation(render.program_, "u_depth_map"), depth_map);
 
 		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
@@ -348,7 +348,7 @@ void Window::render(unsigned int depth_map) {
 	}
 }
 
-void Window::renderShadowMap(unsigned int depth_map, unsigned int program) {
+void Window::renderShadowMap(unsigned int program) {
 	auto& componentM = engine_.getComponentManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>();
