@@ -52,8 +52,8 @@ in vec3 cam_dir;
 in vec3 frag_pos;
 in vec4 frag_pos_light_space;
 
-uniform sampler2D u_texture;
 uniform sampler2D u_depth_map;
+uniform sampler2D u_texture;
 
 //Lights
 uniform AmbientLight u_ambient_light[5];
@@ -207,8 +207,9 @@ void main() {
 
   vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;
 
-  result = (ambient + light) * texture(u_texture, uv).rgb;
-
   frag_colour = vec4(result, 1.0);
   //frag_colour = texture(u_texture, uv);
+
+  //float depthValue = texture(u_depth_map, uv).r;
+  // frag_colour = vec4(vec3(depthValue), 1.0); // orthographic
 };

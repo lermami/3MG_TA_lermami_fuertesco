@@ -17,5 +17,5 @@ void main()
 {             
     float depthValue = texture(u_depth_map, TexCoords).r;
     //FragColor = vec4(vec3(LinearizeDepth(depthValue) / 100000), 1.0); // perspective
-    FragColor = vec4(vec3(depthValue), 1.0); // orthographic
+   FragColor = vec4(vec3(depthValue), 1.0); // orthographic
 }

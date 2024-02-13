@@ -138,7 +138,6 @@ int main(int, char**) {
 	w.setCurrentCam(main_camera);
 
 	//Shadow	 
-	
 	//Create depth map buffer
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
@@ -157,7 +156,7 @@ int main(int, char**) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		//attach the framebuffer's depth buffer
+	//Attach the framebuffer's depth buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
 	glDrawBuffer(GL_NONE);
@@ -171,10 +170,6 @@ int main(int, char**) {
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
-
-		//a
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		input_map.updateInputs();
 		w.updateImGui();
@@ -213,7 +208,7 @@ int main(int, char**) {
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 
-		imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
+		imgui_transform_system(*component_manager.get_component_list<TransformComponent>());
 		//imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
 		//imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
 
