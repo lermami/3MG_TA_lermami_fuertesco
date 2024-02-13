@@ -121,7 +121,7 @@ void Window::swap() {
 
   glfwPollEvents();
   glfwSwapBuffers(handle_);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::calculateCurrentTime() {
@@ -201,6 +201,7 @@ void Window::renderLights() {
 	unsigned int spot_iterator = 0;
 
 	for (auto& program : program_list_) {
+		glUseProgram(program);
 		for (; l != lights->end(); l++) {
 			if (!l->has_value()) continue;
 			auto& light = l->value();
@@ -321,6 +322,7 @@ void Window::render(unsigned int depth_map) {
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
 		//Texture
+		glBindTexture(GL_TEXTURE_2D, render.texture_);
 		glUniform1ui(glGetUniformLocation(render.program_, "u_texture"), render.texture_);
 
 		//Shadows
@@ -356,6 +358,8 @@ void Window::renderShadowMap(unsigned int program) {
 	auto r = renders->begin();
 	auto t = transforms->begin();
 
+	glUseProgram(program);
+
 	for (; r != renders->end(); r++, t++) {
 		if (!r->has_value() && !t->has_value()) continue;
 		auto& render = r->value();
@@ -371,11 +375,14 @@ void Window::renderShadowMap(unsigned int program) {
 			m = m.Multiply(m.Scale(transform.size_));
 			m = m.Transpose();
 
-			glUseProgram(program);
-
 			//Model matrix
 			GLint modelMatrixLoc = glGetUniformLocation(program, "u_m_matrix");
 			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+			//Shadows
+			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
+			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
 			render.elements_buffer_.get()->bind(kTarget_VertexData);
 			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
@@ -392,19 +399,13 @@ void Window::renderShadowMap(unsigned int program) {
 			auto order_buffer = render.order_buffer_.get();
 			order_buffer->bind(kTarget_Elements);
 
-			//Shadows
-			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
-			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
-			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
-
-
 			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
 		}
 	}
 }
 
 glm::mat4 Window::ConfigureShaderAndMatrices() {
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 50.0f);
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 500.0f);
 
 	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f),
 		glm::vec3(0.0f, 0.0f, -1.0f),

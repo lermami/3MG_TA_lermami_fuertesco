@@ -45,7 +45,7 @@ int main(int, char**) {
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/obj_test.obj");
+	obj_paths.emplace_back("../assets/laboon/laboon.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -74,7 +74,7 @@ int main(int, char**) {
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	
+	/*
   //Light
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
@@ -92,7 +92,8 @@ int main(int, char**) {
 	light_entity[3] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
 	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
-  
+	*/
+
   //Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
@@ -144,7 +145,7 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
 
-		w.render();
+		w.render(0);
 
 		w.swap();
 

@@ -207,5 +207,8 @@ void main() {
 
   vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;
 
-  frag_colour = vec4(light, 1.0);
+  result = (ambient + light) * texture(u_texture, uv).rgb;
+
+  frag_colour = vec4(result, 1.0);
+  //frag_colour = texture(u_texture, uv);
 };

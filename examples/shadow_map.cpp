@@ -51,6 +51,7 @@ int main(int, char**) {
 	std::vector<std::future<Geometry>> objs;
 	obj_paths.emplace_back("../assets/obj_test.obj");
 	obj_paths.emplace_back("../assets/square.obj");
+	obj_paths.emplace_back("../assets/laboon/laboon.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -61,52 +62,55 @@ int main(int, char**) {
 		objs.push_back(std::move(future));
 	}
 
-	Geometry laboon_geo = objs[0].get();
+	Geometry laboon_geo = objs[2].get();
 	Geometry square_geo = objs[1].get();
+	Geometry cube_geo = objs[0].get();
 
 	unsigned n_obj = 1000;
 	
-	Vec3 tr_pos(0.0f, 1.5f, -3.0f);
-	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(0.5f, 0.5f, 0.5f);
+	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGB);
+	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
-	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
-	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
+	//Cubes
+	Vec3 tr_pos(0.0f, -0.5f, -2.0f);
+	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
+	Vec3 obj_size(2.2f, 2.2f, 2.2f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-
-	tr_pos = Vec3(0.5f, 1.5f, -8.0f);
+	
+	tr_pos = Vec3(0.25f, 5.5f, 5.75f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(0.5f, 0.5f, 0.5f);
+	obj_size = Vec3(1.8f, 1.8f, 1.8f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	tr_pos = Vec3(-1.0f, 0.0f, -5.0f);
+	tr_pos = Vec3(-11.5f, 0.25f, 8.75f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(0.25f, 0.25f, 0.25f);
+	obj_size = Vec3(3.0f, 3.0f, 3.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
+	//Floor
 	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
-	obj_rot = Vec3(1.57f, 0.0f, 0.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(200.0f, 100.0f, 200.0f);
 
 	new_e = component_manager.add_entity();
@@ -117,13 +121,12 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, square_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	
   //Light
 	size_t light_entity[2];
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.8f, 0.3f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
 
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
@@ -133,15 +136,17 @@ int main(int, char**) {
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
 	w.setCurrentCam(main_camera);
-	//Shadow
-		//Creat depth map buffer
+
+	//Shadow	 
+	
+	//Create depth map buffer
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
 
-		//Create 2D Texture as the framebuffer's depth buffer
-	const unsigned int shadow_w = 1024, shadow_h = 1024;
+	//Create 2D Texture as the framebuffer's depth buffer
+	const unsigned int shadow_w = 128, shadow_h = 128;
 	const unsigned int scr_w = 1024, scr_h = 768;
-
+	
 	unsigned int depthMap;
 	glGenTextures(1, &depthMap);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
@@ -158,7 +163,7 @@ int main(int, char**) {
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	
 	//Input Declaration
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
@@ -166,6 +171,10 @@ int main(int, char**) {
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
+
+		//a
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		input_map.updateInputs();
 		w.updateImGui();
@@ -204,10 +213,9 @@ int main(int, char**) {
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 
-		imgui_transform_system(*component_manager.get_component<TransformComponent>(1));
-		imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
 		imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
-		
+		//imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
+		//imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
 
 		// 1. first render to depth map
 		glViewport(0, 0, shadow_w, shadow_h);
@@ -216,10 +224,9 @@ int main(int, char**) {
 		w.renderShadowMap(simpleProgram2);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// 2. then render scene as normal with shadow mapping (using depth map)
+		// 2. then render scene as normal with shadow mapping (using depth map)ç
 		glViewport(0, 0, scr_w, scr_h);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
 		w.render(depthMap);
 
 		w.swap();
