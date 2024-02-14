@@ -291,6 +291,14 @@ void Window::renderLights() {
 	}
 }
 
+void check_GL(const std::string& text, const char* file, int line) {
+	if (auto err = glGetError(); err != GL_NO_ERROR) {
+		printf("%s: %s(%d) %s\n", text.c_str(), file, line, gluErrorString(err));
+	}
+}
+
+#define CHECKGL(s) check_GL(s,__FILE__,__LINE__)
+
 void Window::render(unsigned int depth_map) {
 	auto& componentM = engine_.getComponentManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
@@ -302,6 +310,7 @@ void Window::render(unsigned int depth_map) {
 	auto current_cam = componentM.get_component<CameraComponent>(current_cam_);
 	current_cam->doRender(this);
 	renderLights();
+
 
 	for (; r != renders->end(); r++, t++) {
 		if (!r->has_value() && !t->has_value()) continue;
@@ -325,13 +334,17 @@ void Window::render(unsigned int depth_map) {
 		//Texture
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, render.texture_);
+		CHECKGL("0");
+		glUniform1ui(glGetUniformLocation(render.program_, "u_texture"), render.texture_);
+		CHECKGL("1");
 
 		//Shadows
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depth_map);
+		CHECKGL("2");
+		glUniform1ui(glGetUniformLocation(render.program_, "u_depth_map"), depth_map);
+		CHECKGL("3");
 
-		glUniform1ui(glGetUniformLocation(render.program_, "u_texture"), 0);
-		glUniform1ui(glGetUniformLocation(render.program_, "u_depth_map"), 1);
 		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
 		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
@@ -369,48 +382,49 @@ void Window::renderShadowMap(unsigned int program) {
 		auto& render = r->value();
 		auto& transform = t->value();
 
+		if (transform.pos_.x != 200) {
+			Mat4& m = transform.model_matrix_;
 
-		Mat4& m = transform.model_matrix_;
+			m = m.Identity();
+			m = m.Multiply(m.Translate(transform.pos_));
+			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+			m = m.Multiply(m.Scale(transform.size_));
+			m = m.Transpose();
 
-		m = m.Identity();
-		m = m.Multiply(m.Translate(transform.pos_));
-		m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
-		m = m.Multiply(m.Scale(transform.size_));
-		m = m.Transpose();
+			//Model matrix
+			GLint modelMatrixLoc = glGetUniformLocation(program, "u_m_matrix");
+			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
-		//Model matrix
-		GLint modelMatrixLoc = glGetUniformLocation(program, "u_m_matrix");
-		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+			//Shadows
+			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
+			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
+			render.elements_buffer_.get()->bind(kTarget_VertexData);
 
-		//Shadows
-		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
-		GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
-		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
-		render.elements_buffer_.get()->bind(kTarget_VertexData);
+			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
 
-		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+			//Vertices
+			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			//Normals
+			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			//Uv
+			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			//Color
+			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
-		//Vertices
-		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
-		//Normals
-		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
-		//Uv
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
-		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+			auto order_buffer = render.order_buffer_.get();
+			order_buffer->bind(kTarget_Elements);
 
-		auto order_buffer = render.order_buffer_.get();
-		order_buffer->bind(kTarget_Elements);
-
-		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+		}
 	}
 }
 
 glm::mat4 Window::ConfigureShaderAndMatrices() {
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 10000000.0f);
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 500.0f);
 
-	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 800.0f, 300.0f),
-		glm::vec3(0.0f, 0.0f, -1.0f),
+	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 80.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 lightSpaceMatrix = lightProjection * lightView;

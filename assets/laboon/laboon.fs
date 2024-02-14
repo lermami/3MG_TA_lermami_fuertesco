@@ -211,5 +211,5 @@ void main() {
   //frag_colour = texture(u_texture, uv);
 
   //float depthValue = texture(u_depth_map, uv).r;
-  // frag_colour = vec4(vec3(depthValue), 1.0); // orthographic
+  //frag_colour = vec4(vec3(depthValue), 1.0); // orthographic
 };

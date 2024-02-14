@@ -43,8 +43,8 @@ enum class TextureFormat {
 };
 
 enum class TextureParameters {
-  kRepeat,
-  kLinear,
+  kRepeat = 0x2901,
+  kLinear = 0x2601,
 };
 
 //Light

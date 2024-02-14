@@ -68,13 +68,41 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 	
+	//Shadow	 
+	//Create depth map buffer
+	unsigned int depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+
+	//Create 2D Texture as the framebuffer's depth buffer
+	const unsigned int shadow_w = 1024, shadow_h = 1024;
+	const unsigned int scr_w = 1024, scr_h = 768;
+
+	glActiveTexture(GL_TEXTURE0);
 	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGB);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
+	unsigned int depthMap;
+	glGenTextures(1, &depthMap);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		shadow_w, shadow_h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	//Attach the framebuffer's depth buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	//Cubes
-	Vec3 tr_pos(0.0f, -0.5f, -2.0f);
+	Vec3 tr_pos(-6.0f, 6.0f, -6.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(2.2f, 2.2f, 2.2f);
+	Vec3 obj_size(2.0f, 10.0f, 10.0f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -110,7 +138,7 @@ int main(int, char**) {
 
 	//Floor
 	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_rot = Vec3(3.14f/2.0f, 0.0f, 0.0f);
 	obj_size = Vec3(200.0f, 100.0f, 200.0f);
 
 	new_e = component_manager.add_entity();
@@ -126,7 +154,7 @@ int main(int, char**) {
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.8f, 0.3f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
 
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
@@ -136,32 +164,6 @@ int main(int, char**) {
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
 	w.setCurrentCam(main_camera);
-
-	//Shadow	 
-	//Create depth map buffer
-	unsigned int depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);
-
-	//Create 2D Texture as the framebuffer's depth buffer
-	const unsigned int shadow_w = 128, shadow_h = 128;
-	const unsigned int scr_w = 1024, scr_h = 768;
-	
-	unsigned int depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		shadow_w, shadow_h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	//Attach the framebuffer's depth buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
 	//Input Declaration
 	Input input_map(w);
