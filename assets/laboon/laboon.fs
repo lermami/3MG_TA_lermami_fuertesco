@@ -179,22 +179,47 @@ vec3 AmbientProcess(){
 
 float ShadowProcess(vec4 pos_light_space){
 
-    // perform perspective divide
-    vec3 projCoords = pos_light_space.xyz / pos_light_space.w;
+   // perform perspective divide
+  vec3 projCoords = pos_light_space.xyz / pos_light_space.w;
 
-    // transform to [0,1] range
-    projCoords = projCoords * 0.5 + 0.5;
+  // transform to [0,1] range
+  projCoords = projCoords * 0.5 + 0.5;
 
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(u_depth_map, projCoords.xy).r; 
+  // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+  float closestDepth = texture(u_depth_map, projCoords.xy).r; 
 
-    // get depth of current fragment from light's perspective
-    float currentDepth = projCoords.z;
+  // get depth of current fragment from light's perspective
+  float currentDepth = projCoords.z;
 
-    // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+  // calculate bias (based on depth map resolution and slope)
+  vec3 shadow_normal = normalize(normal);
+  vec3 lightDir = normalize(vec3(0, 0, 80) - pos);//FIX ME PLS--> We need light pos
+  float bias = max(0.05 * (1.0 - dot(shadow_normal, lightDir)), 0.005);
+  
+  float shadow =  currentDepth - bias > closestDepth  ? 1.0 : 0.0;    
 
-    return shadow;
+  /*
+  // check whether current frag pos is in shadow
+  // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+  // PCF
+  float shadow = 0.0;
+  vec2 texelSize = 1.0 / textureSize(u_depth_map, 0);
+  for(int x = -1; x <= 1; ++x)
+  {
+      for(int y = -1; y <= 1; ++y)
+      {
+          float pcfDepth = texture(u_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
+          shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+      }    
+  }
+  shadow /= 9.0;
+    
+  // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+  if(projCoords.z > 1.0)
+      shadow = 0.0;
+  */
+  
+  return shadow;
 }
 
 
@@ -202,7 +227,7 @@ void main() {
 
   vec3 light = LightProcess();
   vec3 ambient = AmbientProcess();
-
+ 
   float shadow = ShadowProcess(frag_pos_light_space);
 
   vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;
