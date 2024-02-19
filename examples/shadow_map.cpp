@@ -27,6 +27,14 @@ using namespace std::chrono_literals;
 
 #include "matrix_4.hpp"
 
+void check_GL(const std::string& text, const char* file, int line) {
+	if (auto err = glGetError(); err != GL_NO_ERROR) {
+		printf("%s: %s(%d) %s\n", text.c_str(), file, line, gluErrorString(err));
+	}
+}
+
+#define CHECKGL(s) check_GL(s,__FILE__,__LINE__)
+
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
@@ -77,13 +85,11 @@ int main(int, char**) {
 	const unsigned int shadow_w = 1024, shadow_h = 1024;
 	const unsigned int scr_w = 1024, scr_h = 768;
 
-	glActiveTexture(GL_TEXTURE0);
 	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGB);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
 	unsigned int depthMap;
 	glGenTextures(1, &depthMap);
-	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 		shadow_w, shadow_h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -91,6 +97,7 @@ int main(int, char**) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//Attach the framebuffer's depth buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);

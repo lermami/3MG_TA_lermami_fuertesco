@@ -4,6 +4,7 @@
 #include <optional>
 #include <vector>
 #include <ctime>
+#include <string>
 #include "enum.hpp"
 #include "glm/glm.hpp"
 

@@ -160,12 +160,41 @@ void Window::enableDepthTest(bool enable) {
 }
 
 void Window::setCullingMode(CullingMode culling, FrontFace frontface) {
-  glCullFace((GLenum)culling);
-  glFrontFace((GLenum)frontface);
+	GLenum glculling = GL_NONE;
+
+	switch (culling) {
+		case CullingMode::kBack: glculling = GL_BACK; break;
+		case CullingMode::kBackLeft: glculling = GL_BACK_LEFT; break;
+		case CullingMode::kBackRight: glculling = GL_BACK_RIGHT; break;
+		case CullingMode::kFront: glculling = GL_FRONT; break;
+		case CullingMode::kFrontAndBack: glculling = GL_FRONT_AND_BACK; break;
+		case CullingMode::kFrontLeft: glculling = GL_FRONT_LEFT; break;
+		case CullingMode::kFrontRight: glculling = GL_FRONT_RIGHT; break;
+		case CullingMode::kLeft: glculling = GL_LEFT; break;
+		case CullingMode::kRight: glculling = GL_RIGHT; break;
+	}
+
+	GLenum glfrontface = GL_NONE;
+	switch (frontface) {
+		case FrontFace::kClockWise: glfrontface = GL_CW; break;
+		case FrontFace::kCounterClockWise: glfrontface = GL_CCW; break;
+	}
+
+  glCullFace(glculling);
+  glFrontFace(glfrontface);
 }
 
 void Window::setDepthTestMode(DepthTestMode mode) {
-  glDepthFunc((GLenum)mode);
+	GLenum glmode = GL_NONE;
+
+	switch (mode) {
+		case DepthTestMode::kEqual: glmode = GL_EQUAL; break;
+		case DepthTestMode::kGreater: glmode = GL_GREATER; break;
+		case DepthTestMode::kLess: glmode = GL_LESS; break;
+		case DepthTestMode::kNever: glmode = GL_NEVER; break;
+	}
+
+  glDepthFunc(glmode);
 }
 
 void Window::addProgram(unsigned new_program) {
@@ -291,14 +320,6 @@ void Window::renderLights() {
 	}
 }
 
-void check_GL(const std::string& text, const char* file, int line) {
-	if (auto err = glGetError(); err != GL_NO_ERROR) {
-		printf("%s: %s(%d) %s\n", text.c_str(), file, line, gluErrorString(err));
-	}
-}
-
-#define CHECKGL(s) check_GL(s,__FILE__,__LINE__)
-
 void Window::render(unsigned int depth_map) {
 	auto& componentM = engine_.getComponentManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
@@ -330,20 +351,20 @@ void Window::render(unsigned int depth_map) {
 		//Model matrix
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
-
+		
 		//Texture
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, render.texture_);
-		CHECKGL("0");
-		glUniform1ui(glGetUniformLocation(render.program_, "u_texture"), render.texture_);
-		CHECKGL("1");
+
+		GLuint uniform_loc = glGetUniformLocation(render.program_, "u_texture");
+		glUniform1i(uniform_loc, 0);
 
 		//Shadows
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depth_map);
-		CHECKGL("2");
-		glUniform1ui(glGetUniformLocation(render.program_, "u_depth_map"), depth_map);
-		CHECKGL("3");
+		uniform_loc = glGetUniformLocation(render.program_, "u_depth_map");
+		glUniform1i(uniform_loc, 1);
+	
 
 		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
@@ -421,7 +442,7 @@ void Window::renderShadowMap(unsigned int program) {
 }
 
 glm::mat4 Window::ConfigureShaderAndMatrices() {
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.01f, 500.0f);
+	glm::mat4 lightProjection = glm::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, 0.01f, 500.0f);
 
 	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 80.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f),

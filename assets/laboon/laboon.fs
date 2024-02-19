@@ -52,8 +52,8 @@ in vec3 cam_dir;
 in vec3 frag_pos;
 in vec4 frag_pos_light_space;
 
-uniform sampler2D u_depth_map;
 uniform sampler2D u_texture;
+uniform sampler2D u_depth_map;
 
 //Lights
 uniform AmbientLight u_ambient_light[5];
