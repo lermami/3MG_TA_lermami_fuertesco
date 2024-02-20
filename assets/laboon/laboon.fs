@@ -192,7 +192,7 @@ float ShadowProcess(vec4 pos_light_space){
   float currentDepth = projCoords.z;
 
   // calculate bias (based on depth map resolution and slope)
-  vec3 shadow_normal = normalize(normal);
+  vec3 shadow_normal = normalize(world_normal);
   vec3 lightDir = normalize(vec3(0, 0, 80) - pos);//FIX ME PLS--> We need light pos
   float bias = max(0.05 * (1.0 - dot(shadow_normal, lightDir)), 0.005);
   
