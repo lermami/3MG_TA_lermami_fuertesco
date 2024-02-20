@@ -3,6 +3,7 @@
 #include "enum.hpp"
 #include "shader_management.hpp"
 #include "component_manager.hpp"
+#include "texture.hpp"
 
 #include <time.h>
 #include <cassert>
@@ -37,7 +38,31 @@ Window::Window(Engine& e, int w, int h, const char* title) : engine_{ e } {
 	lastTime_ = 0;
 	deltaTime_ = 0;
 
+	//Add flags
 	imguiInit_ = false;
+	renderShadows_ = true;
+
+	if (renderShadows_) {
+		//Shadow	 
+		//Create depth map buffer
+		glGenFramebuffers(1, &depthmapFBO_);
+
+		//Create 2D Texture as the framebuffer's depth buffer
+
+		Texture depthMapTex(TextureTarget::kTexture_2D, TextureFormat::kDepthComponent, TextureType::kFloat);
+		depthMapTex.set_min_filter(TextureFiltering::kNearest);
+		depthMapTex.set_mag_filter(TextureFiltering::kNearest);
+		depthmap_ = depthMapTex.LoadTexture(1024, 1024);
+
+		//Attach the framebuffer's depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthmap_, 0);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		shadowProgram_ = CreateProgram(*this, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
+	}
 }
 
 Window::~Window() {
@@ -60,6 +85,11 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+
+	renderShadows_ = w.renderShadows_;
+	depthmapFBO_ = w.depthmapFBO_;
+	depthmap_ = w.depthmap_;
+	shadowProgram_ = w.shadowProgram_;
 }
 
 Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }  {
@@ -72,6 +102,12 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+
+	renderShadows_ = w.renderShadows_;
+
+	depthmapFBO_ = w.depthmapFBO_;
+	depthmap_ = w.depthmap_;
+	shadowProgram_ = w.shadowProgram_;
 }
 
 void Window::initSoundContext() {
@@ -160,12 +196,41 @@ void Window::enableDepthTest(bool enable) {
 }
 
 void Window::setCullingMode(CullingMode culling, FrontFace frontface) {
-  glCullFace((GLenum)culling);
-  glFrontFace((GLenum)frontface);
+	GLenum glculling = GL_NONE;
+
+	switch (culling) {
+		case CullingMode::kBack: glculling = GL_BACK; break;
+		case CullingMode::kBackLeft: glculling = GL_BACK_LEFT; break;
+		case CullingMode::kBackRight: glculling = GL_BACK_RIGHT; break;
+		case CullingMode::kFront: glculling = GL_FRONT; break;
+		case CullingMode::kFrontAndBack: glculling = GL_FRONT_AND_BACK; break;
+		case CullingMode::kFrontLeft: glculling = GL_FRONT_LEFT; break;
+		case CullingMode::kFrontRight: glculling = GL_FRONT_RIGHT; break;
+		case CullingMode::kLeft: glculling = GL_LEFT; break;
+		case CullingMode::kRight: glculling = GL_RIGHT; break;
+	}
+
+	GLenum glfrontface = GL_NONE;
+	switch (frontface) {
+		case FrontFace::kClockWise: glfrontface = GL_CW; break;
+		case FrontFace::kCounterClockWise: glfrontface = GL_CCW; break;
+	}
+
+  glCullFace(glculling);
+  glFrontFace(glfrontface);
 }
 
 void Window::setDepthTestMode(DepthTestMode mode) {
-  glDepthFunc((GLenum)mode);
+	GLenum glmode = GL_NONE;
+
+	switch (mode) {
+		case DepthTestMode::kEqual: glmode = GL_EQUAL; break;
+		case DepthTestMode::kGreater: glmode = GL_GREATER; break;
+		case DepthTestMode::kLess: glmode = GL_LESS; break;
+		case DepthTestMode::kNever: glmode = GL_NEVER; break;
+	}
+
+  glDepthFunc(glmode);
 }
 
 void Window::addProgram(unsigned new_program) {
@@ -201,13 +266,14 @@ void Window::renderLights() {
 	unsigned int spot_iterator = 0;
 
 	for (auto& program : program_list_) {
+		glUseProgram(program);
 		for (; l != lights->end(); l++) {
 			if (!l->has_value()) continue;
 			auto& light = l->value();
 			char name[64];
 
 			//Ambient
-			if (light.type_ == LightType::kAmbient) {
+			if (light.target_ == LightType::kAmbient) {
 				sprintf_s(name, "u_ambient_light[%d].color_", ambient_iterator);
 				SetVector3(program, name, light.color_);
 
@@ -215,7 +281,7 @@ void Window::renderLights() {
 			}
 
 			//Directional
-			if (light.type_ == LightType::kDirectional) {
+			if (light.target_ == LightType::kDirectional) {
 				sprintf_s(name, "u_directional_light[%d].color_", directional_iterator);
 				SetVector3(program, name, light.color_);
 
@@ -229,7 +295,7 @@ void Window::renderLights() {
 			}
 
 			//Point
-			if (light.type_ == LightType::kPoint) {
+			if (light.target_ == LightType::kPoint) {
 				sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
 				SetVector3(program, name, light.pos_);
 
@@ -255,7 +321,7 @@ void Window::renderLights() {
 			}
 
 			//Spot
-			if (light.type_ == LightType::kSpot) {
+			if (light.target_ == LightType::kSpot) {
 				sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
 				SetVector3(program, name, light.pos_);
 
@@ -302,10 +368,24 @@ void Window::render() {
 	current_cam->doRender(this);
 	renderLights();
 
+	if (renderShadows_) {
+		glViewport(0, 0, 1024, 1024);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		renderShadowMap(shadowProgram_);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glViewport(0, 0, width_, height_);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+
 	for (; r != renders->end(); r++, t++) {
 		if (!r->has_value() && !t->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
+
+		glUseProgram(render.program_);
 
 		Mat4& m = transform.model_matrix_;
 
@@ -315,13 +395,27 @@ void Window::render() {
 		m = m.Multiply(m.Scale(transform.size_));
 		m = m.Transpose();
 
-		glUseProgram(render.program_);
 		//Model matrix
 		GLint modelMatrixLoc = glGetUniformLocation(render.program_, "u_m_matrix");
 		glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
-
+		
 		//Texture
-		glUniform1ui(glGetUniformLocation(render.texture_, "u_texture"), 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, render.texture_);
+
+		GLuint uniform_loc = glGetUniformLocation(render.program_, "u_texture");
+		glUniform1i(uniform_loc, 0);
+
+		//Shadows
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthmap_);
+		uniform_loc = glGetUniformLocation(render.program_, "u_depth_map");
+		glUniform1i(uniform_loc, 1);
+	
+
+		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
+		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
 		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
@@ -339,6 +433,71 @@ void Window::render() {
 		order_buffer->bind(kTarget_Elements);
 		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
 	}
+}
+
+void Window::renderShadowMap(unsigned int program) {
+	auto& componentM = engine_.getComponentManager();
+	auto renders = componentM.get_component_list<RenderComponent>();
+	auto transforms = componentM.get_component_list<TransformComponent>();
+
+	auto r = renders->begin();
+	auto t = transforms->begin();
+
+	glUseProgram(program);
+
+	for (; r != renders->end(); r++, t++) {
+		if (!r->has_value() && !t->has_value()) continue;
+		auto& render = r->value();
+		auto& transform = t->value();
+
+		if (transform.pos_.x != 200) {
+			Mat4& m = transform.model_matrix_;
+
+			m = m.Identity();
+			m = m.Multiply(m.Translate(transform.pos_));
+			m = m.Multiply(m.RotateX(transform.rot_.x).Multiply(m.RotateY(transform.rot_.y).Multiply(m.RotateZ(transform.rot_.z))));
+			m = m.Multiply(m.Scale(transform.size_));
+			m = m.Transpose();
+
+			//Model matrix
+			GLint modelMatrixLoc = glGetUniformLocation(program, "u_m_matrix");
+			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
+
+			//Shadows
+			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
+			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
+			render.elements_buffer_.get()->bind(kTarget_VertexData);
+
+			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+
+			//Vertices
+			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			//Normals
+			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			//Uv
+			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			//Color
+			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+			auto order_buffer = render.order_buffer_.get();
+			order_buffer->bind(kTarget_Elements);
+
+			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+		}
+	}
+}
+
+glm::mat4 Window::ConfigureShaderAndMatrices() {
+	glm::mat4 lightProjection = glm::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, 0.01f, 500.0f);
+
+	glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 80.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+	return lightSpaceMatrix;
 }
 
 void Window::setCurrentCam(size_t cam) {

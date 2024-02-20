@@ -146,10 +146,9 @@ struct CameraComponent {
 			case ProjectionMode::kOrthogonal:
 				glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
 
-				glUniformMatrix4fv(glGetUniformLocation(program, "u_o_matrix"), 1, GL_FALSE, glm::value_ptr(ortographic));
+				glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(ortographic));
 				break;
 			}
-
 			//View
 			glm::mat4 view = getViewMatrix(pos_ + forward_, up_);
 			GLint viewMatrixLoc = glGetUniformLocation(program, "u_v_matrix");
@@ -157,7 +156,7 @@ struct CameraComponent {
 
 			//Camera position
 			GLint camPosLoc = glGetUniformLocation(program, "u_camera_pos");
-			glUniform1fv(camPosLoc, sizeof(float) * 3, &pos_.x);
+			glUniform3f(camPosLoc, pos_.x, pos_.y, pos_.z);
 		}
 	}
 };

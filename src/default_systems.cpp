@@ -66,7 +66,7 @@ void init_ambient_light_system(LightComponent& light, Vec3 color) {
 	light.quadratic_ = 0.0f;
 	light.cutoff_angle_ = 0.0f;
 
-	light.type_ = LightType::kAmbient;
+	light.target_ = LightType::kAmbient;
 }
 
 void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
@@ -79,7 +79,7 @@ void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 c
 	light.quadratic_ = 0.0f;
 	light.cutoff_angle_ = 0.0f;
 
-	light.type_ = LightType::kDirectional;
+	light.target_ = LightType::kDirectional;
 }
 
 void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
@@ -92,7 +92,7 @@ void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, V
 	light.quadratic_ = quadratic;
 	light.cutoff_angle_ = 0.0f;
 
-	light.type_ = LightType::kPoint;
+	light.target_ = LightType::kPoint;
 }
 
 void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
@@ -105,7 +105,7 @@ void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position
 	light.quadratic_ = quadratic;
 	light.cutoff_angle_ = cutoff_angle;
 
-	light.type_ = LightType::kSpot;
+	light.target_ = LightType::kSpot;
 }
 
 void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, float sensitivity) {
@@ -259,22 +259,36 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 	ImGui::End();
 }
 
-void imgui_transform_system(TransformComponent& transform) {
+void imgui_transform_system(std::vector<std::optional<TransformComponent>>& transforms_list) {
+	auto tr = transforms_list.begin();
+	int num = 0;
+
 	ImGui::Begin("Transform");
 
-	Vec3 aux_pos = transform.pos_;
-	if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
-		transform.pos_ = aux_pos;
-	}
+	for (; tr != transforms_list.end(); tr++) {
+		if (!tr->has_value()) continue;
+		auto& transform = tr->value();
 
-	Vec3 aux_rot = transform.rot_;
-	if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
-		transform.rot_ = aux_rot;
-	}
+		ImGui::PushID(num);
+		if (ImGui::CollapsingHeader("Object")) {
+			Vec3 aux_pos = transform.pos_;
+			if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+				transform.pos_ = aux_pos;
+			}
 
-	float aux_size = transform.size_.x;
-	if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 3.0f, "%.3f")) {
-		transform.size_ = aux_size;
+			Vec3 aux_rot = transform.rot_;
+			if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+				transform.rot_ = aux_rot;
+			}
+
+			float aux_size = transform.size_.x;
+			if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
+				transform.size_ = aux_size;
+			}
+		}
+
+		ImGui::PopID();
+		num++;
 	}
 
 

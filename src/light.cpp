@@ -10,7 +10,7 @@ LightComponent::LightComponent() {
   quadratic_ = 0.0f;
   cutoff_angle_ = 0.0f;
 
-  type_ = LightType::kAmbient;
+  target_ = LightType::kAmbient;
 }
 
 LightComponent::LightComponent(Vec3 color, Vec3 specular) {
@@ -23,7 +23,7 @@ LightComponent::LightComponent(Vec3 color, Vec3 specular) {
   quadratic_ = 0.0f;
   cutoff_angle_ = 0.0f;
 
-  type_ = LightType::kAmbient;
+  target_ = LightType::kAmbient;
 }
 
 LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular) {
@@ -36,7 +36,7 @@ LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular) {
   quadratic_ = 0.0f;
   cutoff_angle_ = 0.0f;
 
-  type_ = LightType::kDirectional;
+  target_ = LightType::kDirectional;
 }
 
 LightComponent::LightComponent(Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
@@ -49,7 +49,7 @@ LightComponent::LightComponent(Vec3 position, Vec3 color, Vec3 specular, float c
   quadratic_ = quadratic;
   cutoff_angle_ = 0.0f;
 
-  type_ = LightType::kPoint;
+  target_ = LightType::kPoint;
 }
 
 LightComponent::LightComponent(Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
@@ -62,7 +62,7 @@ LightComponent::LightComponent(Vec3 direction, Vec3 position, Vec3 color, Vec3 s
   quadratic_ = quadratic;
   cutoff_angle_ = cutoff_angle;
 
-  type_ = LightType::kSpot;
+  target_ = LightType::kSpot;
 }
 
 LightComponent::~LightComponent() {

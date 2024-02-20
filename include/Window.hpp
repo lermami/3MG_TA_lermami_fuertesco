@@ -4,7 +4,9 @@
 #include <optional>
 #include <vector>
 #include <ctime>
+#include <string>
 #include "enum.hpp"
+#include "glm/glm.hpp"
 
 class Engine;
 
@@ -12,6 +14,11 @@ class Window {
 public:
   friend class Input;
   friend class Camera;
+
+  ~Window();
+  Window(Window& w);
+  Window(Window&& w) noexcept;
+  Window(const Window&) = delete;
 
   static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
   bool is_done() const;
@@ -41,14 +48,12 @@ public:
 
   void renderLights();
   void render();
+  void renderShadowMap(unsigned int program);
 
   void setCurrentCam(size_t cam);
   size_t getCurrentCam();
 
-  ~Window();
-  Window(Window& w);
-  Window(Window&& w) noexcept;
-  Window(const Window&) = delete;
+  glm::mat4 ConfigureShaderAndMatrices();
 
 private:
   Window(Engine& e, int w, int h, const char* title);
@@ -66,5 +71,10 @@ private:
 
   std::vector<unsigned> program_list_;
   Engine& engine_;
+
+  bool renderShadows_;
+  unsigned depthmap_;
+  unsigned depthmapFBO_;
+  unsigned shadowProgram_;
 };
 

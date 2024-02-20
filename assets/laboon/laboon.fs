@@ -3,7 +3,6 @@
 struct AmbientLight
 {
   vec3 color_;
-  vec3 spec_color_;
 };
 
 struct DirectionalLight
@@ -50,10 +49,11 @@ in vec3 normal;
 in vec3 world_position;
 in vec3 world_normal;
 in vec3 cam_dir;
+in vec3 frag_pos;
+in vec4 frag_pos_light_space;
 
 uniform sampler2D u_texture;
-
-uniform sampler2D u_depthmap;
+uniform sampler2D u_depth_map;
 
 //Lights
 uniform AmbientLight u_ambient_light[5];
@@ -65,7 +65,7 @@ vec3 CalculateAmbientLight(AmbientLight light){
 
   AmbientLight aux_light = light;
   
-  vec3 result = aux_light.color_ + aux_light.spec_color_;
+  vec3 result = aux_light.color_;
   result = max(result, 0.0);
   
   return result; 
@@ -151,10 +151,6 @@ vec3 CalculateSpotLight(SpotLight light){
 
 vec3 LightProcess(){
   vec3 result = vec3(0.0, 0.0, 0.0);
-  
-  for(int i=0; i<5; i++){
-    result += max(CalculateAmbientLight(u_ambient_light[i]), 0.0);
-  }
  
   for(int i=0; i<5; i++){
     result += max(CalculateDirectionalLight(u_directional_light[i]), 0.0);
@@ -171,14 +167,74 @@ vec3 LightProcess(){
   return result;
 }
 
+vec3 AmbientProcess(){
+  vec3 result = vec3(0.0, 0.0, 0.0);
+
+  for(int i=0; i<5; i++){
+    result += max(CalculateAmbientLight(u_ambient_light[i]), 0.0);
+  }
+
+  return result;
+}
+
+float ShadowProcess(vec4 pos_light_space){
+
+   // perform perspective divide
+  vec3 projCoords = pos_light_space.xyz / pos_light_space.w;
+
+  // transform to [0,1] range
+  projCoords = projCoords * 0.5 + 0.5;
+
+  // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+  float closestDepth = texture(u_depth_map, projCoords.xy).r; 
+
+  // get depth of current fragment from light's perspective
+  float currentDepth = projCoords.z;
+
+  // calculate bias (based on depth map resolution and slope)
+  vec3 shadow_normal = normalize(world_normal);
+  vec3 lightDir = normalize(vec3(0, 0, 80) - pos);//FIX ME PLS--> We need light pos
+  float bias = max(0.05 * (1.0 - dot(shadow_normal, lightDir)), 0.005);
+  
+  float shadow =  currentDepth - bias > closestDepth  ? 1.0 : 0.0;    
+
+  /*
+  // check whether current frag pos is in shadow
+  // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+  // PCF
+  float shadow = 0.0;
+  vec2 texelSize = 1.0 / textureSize(u_depth_map, 0);
+  for(int x = -1; x <= 1; ++x)
+  {
+      for(int y = -1; y <= 1; ++y)
+      {
+          float pcfDepth = texture(u_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
+          shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+      }    
+  }
+  shadow /= 9.0;
+    
+  // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+  if(projCoords.z > 1.0)
+      shadow = 0.0;
+  */
+  
+  return shadow;
+}
+
 
 void main() {
 
-  vec3 light = vec3(0.0, 0.0, 0.0);
-  light = LightProcess();
+  vec3 light = LightProcess();
+  vec3 ambient = AmbientProcess();
+ 
+  float shadow = ShadowProcess(frag_pos_light_space);
 
-  frag_colour = texture(u_texture, uv);
-  frag_colour = vec4(light, 1.0);
-  float depthValue = texture(u_depthmap, uv).r;
-  frag_colour = vec4(vec3(depthValue), 1.0);
+  vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;
+
+  frag_colour = vec4(result, 1.0);
+  //frag_colour = texture(u_texture, uv);
+
+  //float depthValue = texture(u_depth_map, uv).r;
+  //frag_colour = vec4(vec3(depthValue), 1.0); // orthographic
 };

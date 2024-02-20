@@ -2,27 +2,27 @@
 
 //Render options
 enum class FrontFace {
-  kClockWise = 0x0900,
-  kCounterClockWise = 0x0901
+  kClockWise,
+  kCounterClockWise
 };
 
 enum class CullingMode {
-  kFrontLeft = 0x0400,
-  kFrontRight = 0x0401,
-  kBackLeft = 0x0402,
-  kBackRight = 0x0403,
-  kFront = 0x0404,
-  kBack = 0x0405,
-  kLeft = 0x0406,
-  kRight = 0x0407,
-  kFrontAndBack = 0x0408,
+  kFrontLeft,
+  kFrontRight,
+  kBackLeft,
+  kBackRight,
+  kFront,
+  kBack,
+  kLeft,
+  kRight,
+  kFrontAndBack,
 };
 
 enum class DepthTestMode {
-  kNever = 0x0200,
-  kLess = 0x0201,
-  kEqual = 0x0202,
-  kGreater = 0x0204,
+  kNever,
+  kLess,
+  kEqual,
+  kGreater,
 };
 
 enum class ProjectionMode {
@@ -31,20 +31,33 @@ enum class ProjectionMode {
 };
 
 //Texture options
+enum class TextureTarget {
+  kTexture_1D,
+  kTexture_2D,
+  kTexture_3D,
+};
+
 enum class TextureType {
-  kTexture_1D = 0x0DE0,
-  kTexture_2D = 0x0DE1,
-  kTexture_3D = 0x806F,
+  kUnsignedByte,
+  kFloat,
 };
 
 enum class TextureFormat {
-  kRGB = 0x1907,
-  kRGBA = 0x1908,
+  kRGB,
+  kRGBA,
+  kDepthComponent,
 };
 
-enum class TextureParameters {
-  kRepeat,
+enum class TextureFiltering {
+  kNearest,
   kLinear,
+};
+
+enum class TextureWrap{
+  kRepeat,
+  kMirroredRepeat,
+  kClampToEdge,
+  kClampToBorder,
 };
 
 //Light

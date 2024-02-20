@@ -217,7 +217,7 @@ project"ShadowMapping"
   debugargs { _MAIN_SCRIPT_DIR .. "/examples/data" }
 
 files {
-    "examples/shadow_mapp.cpp"
+    "examples/shadow_map.cpp"
   }
 
 project"SoundIntegration"
