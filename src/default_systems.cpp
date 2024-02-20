@@ -66,7 +66,7 @@ void init_ambient_light_system(LightComponent& light, Vec3 color) {
 	light.quadratic_ = 0.0f;
 	light.cutoff_angle_ = 0.0f;
 
-	light.type_ = LightType::kAmbient;
+	light.target_ = LightType::kAmbient;
 }
 
 void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
@@ -79,7 +79,7 @@ void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 c
 	light.quadratic_ = 0.0f;
 	light.cutoff_angle_ = 0.0f;
 
-	light.type_ = LightType::kDirectional;
+	light.target_ = LightType::kDirectional;
 }
 
 void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
@@ -92,7 +92,7 @@ void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, V
 	light.quadratic_ = quadratic;
 	light.cutoff_angle_ = 0.0f;
 
-	light.type_ = LightType::kPoint;
+	light.target_ = LightType::kPoint;
 }
 
 void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
@@ -105,7 +105,7 @@ void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position
 	light.quadratic_ = quadratic;
 	light.cutoff_angle_ = cutoff_angle;
 
-	light.type_ = LightType::kSpot;
+	light.target_ = LightType::kSpot;
 }
 
 void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, float sensitivity) {

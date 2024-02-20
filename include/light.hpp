@@ -23,7 +23,7 @@ public:
 
   ~LightComponent();
 
-  LightType type_;
+  LightType target_;
 
   Vec3 pos_;
   Vec3 color_;

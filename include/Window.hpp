@@ -47,7 +47,7 @@ public:
   int getProgramListSize();
 
   void renderLights();
-  void render(unsigned int depth_map);
+  void render();
   void renderShadowMap(unsigned int program);
 
   void setCurrentCam(size_t cam);
@@ -71,5 +71,10 @@ private:
 
   std::vector<unsigned> program_list_;
   Engine& engine_;
+
+  bool renderShadows_;
+  unsigned depthmap_;
+  unsigned depthmapFBO_;
+  unsigned shadowProgram_;
 };
 

@@ -4,10 +4,14 @@
 
 class Texture {
 public:
-  Texture(TextureType type, TextureFormat format);
+  Texture(TextureTarget target, TextureFormat format, TextureType type);
   ~Texture();
 
+  //With path
   unsigned LoadTexture(const char* path);
+
+  //Without path
+  unsigned LoadTexture(int w, int h);
 
   void set_wrap_s(TextureWrap param);
   void set_wrap_t(TextureWrap param);
@@ -17,6 +21,7 @@ public:
 private:
   unsigned handle_;
   TextureType type_;
+  TextureTarget target_;
   TextureFormat format_;
   TextureWrap wrap_s_format_;
   TextureWrap wrap_t_format_;

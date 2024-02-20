@@ -64,7 +64,7 @@ int main(int, char**) {
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
-	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGBA);
+	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 
 	size_t new_e = component_manager.add_entity();

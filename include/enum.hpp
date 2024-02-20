@@ -31,15 +31,21 @@ enum class ProjectionMode {
 };
 
 //Texture options
-enum class TextureType {
+enum class TextureTarget {
   kTexture_1D,
   kTexture_2D,
   kTexture_3D,
 };
 
+enum class TextureType {
+  kUnsignedByte,
+  kFloat,
+};
+
 enum class TextureFormat {
   kRGB,
   kRGBA,
+  kDepthComponent,
 };
 
 enum class TextureFiltering {

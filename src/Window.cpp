@@ -3,6 +3,7 @@
 #include "enum.hpp"
 #include "shader_management.hpp"
 #include "component_manager.hpp"
+#include "texture.hpp"
 
 #include <time.h>
 #include <cassert>
@@ -37,7 +38,31 @@ Window::Window(Engine& e, int w, int h, const char* title) : engine_{ e } {
 	lastTime_ = 0;
 	deltaTime_ = 0;
 
+	//Add flags
 	imguiInit_ = false;
+	renderShadows_ = true;
+
+	if (renderShadows_) {
+		//Shadow	 
+		//Create depth map buffer
+		glGenFramebuffers(1, &depthmapFBO_);
+
+		//Create 2D Texture as the framebuffer's depth buffer
+
+		Texture depthMapTex(TextureTarget::kTexture_2D, TextureFormat::kDepthComponent, TextureType::kFloat);
+		depthMapTex.set_min_filter(TextureFiltering::kNearest);
+		depthMapTex.set_mag_filter(TextureFiltering::kNearest);
+		depthmap_ = depthMapTex.LoadTexture(1024, 1024);
+
+		//Attach the framebuffer's depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthmap_, 0);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		shadowProgram_ = CreateProgram(*this, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
+	}
 }
 
 Window::~Window() {
@@ -60,6 +85,11 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+
+	renderShadows_ = w.renderShadows_;
+	depthmapFBO_ = w.depthmapFBO_;
+	depthmap_ = w.depthmap_;
+	shadowProgram_ = w.shadowProgram_;
 }
 
 Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }  {
@@ -72,6 +102,12 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+
+	renderShadows_ = w.renderShadows_;
+
+	depthmapFBO_ = w.depthmapFBO_;
+	depthmap_ = w.depthmap_;
+	shadowProgram_ = w.shadowProgram_;
 }
 
 void Window::initSoundContext() {
@@ -237,7 +273,7 @@ void Window::renderLights() {
 			char name[64];
 
 			//Ambient
-			if (light.type_ == LightType::kAmbient) {
+			if (light.target_ == LightType::kAmbient) {
 				sprintf_s(name, "u_ambient_light[%d].color_", ambient_iterator);
 				SetVector3(program, name, light.color_);
 
@@ -245,7 +281,7 @@ void Window::renderLights() {
 			}
 
 			//Directional
-			if (light.type_ == LightType::kDirectional) {
+			if (light.target_ == LightType::kDirectional) {
 				sprintf_s(name, "u_directional_light[%d].color_", directional_iterator);
 				SetVector3(program, name, light.color_);
 
@@ -259,7 +295,7 @@ void Window::renderLights() {
 			}
 
 			//Point
-			if (light.type_ == LightType::kPoint) {
+			if (light.target_ == LightType::kPoint) {
 				sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
 				SetVector3(program, name, light.pos_);
 
@@ -285,7 +321,7 @@ void Window::renderLights() {
 			}
 
 			//Spot
-			if (light.type_ == LightType::kSpot) {
+			if (light.target_ == LightType::kSpot) {
 				sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
 				SetVector3(program, name, light.pos_);
 
@@ -320,7 +356,7 @@ void Window::renderLights() {
 	}
 }
 
-void Window::render(unsigned int depth_map) {
+void Window::render() {
 	auto& componentM = engine_.getComponentManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>(); 
@@ -331,6 +367,17 @@ void Window::render(unsigned int depth_map) {
 	auto current_cam = componentM.get_component<CameraComponent>(current_cam_);
 	current_cam->doRender(this);
 	renderLights();
+
+	if (renderShadows_) {
+		glViewport(0, 0, 1024, 1024);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		renderShadowMap(shadowProgram_);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glViewport(0, 0, width_, height_);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
 
 
 	for (; r != renders->end(); r++, t++) {
@@ -361,7 +408,7 @@ void Window::render(unsigned int depth_map) {
 
 		//Shadows
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, depth_map);
+		glBindTexture(GL_TEXTURE_2D, depthmap_);
 		uniform_loc = glGetUniformLocation(render.program_, "u_depth_map");
 		glUniform1i(uniform_loc, 1);
 	

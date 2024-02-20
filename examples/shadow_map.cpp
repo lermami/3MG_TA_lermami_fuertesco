@@ -52,7 +52,6 @@ int main(int, char**) {
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
-	auto simpleProgram2 = CreateProgram(w, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
 	auto simpleProgram3 = CreateProgram(w, "../assets/Shader/ShadowMap/depthtest.vs", "../assets/Shader/ShadowMap/depthtest.fs");
 
 	std::vector<std::string> obj_paths;
@@ -76,37 +75,10 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 	
-	//Shadow	 
-	//Create depth map buffer
-	unsigned int depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);
-
-	//Create 2D Texture as the framebuffer's depth buffer
-	const unsigned int shadow_w = 1024, shadow_h = 1024;
-	const unsigned int scr_w = 1024, scr_h = 768;
-
-	Texture laboon(TextureType::kTexture_2D, TextureFormat::kRGB);
+	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
-	unsigned int depthMap;
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		shadow_w, shadow_h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//Attach the framebuffer's depth buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	//Cubes
+		//Cubes
 	Vec3 tr_pos(-6.0f, 6.0f, -6.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(2.0f, 10.0f, 10.0f);
@@ -221,17 +193,8 @@ int main(int, char**) {
 		//imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
 		//imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
 
-		// 1. first render to depth map
-		glViewport(0, 0, shadow_w, shadow_h);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		w.renderShadowMap(simpleProgram2);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// 2. then render scene as normal with shadow mapping (using depth map)ç
-		glViewport(0, 0, scr_w, scr_h);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		w.render(depthMap);
+		
+		w.render();
 
 		w.swap();
 
