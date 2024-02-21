@@ -75,7 +75,7 @@ int main(int, char**) {
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 		init_render_component_system(*tr_render, suzanneGeo, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
@@ -93,7 +93,7 @@ int main(int, char**) {
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 		init_render_component_system(*tr_render, wolfGeo, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
@@ -111,7 +111,7 @@ int main(int, char**) {
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 		init_render_component_system(*tr_render, tankGeo, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	//Input Declaration

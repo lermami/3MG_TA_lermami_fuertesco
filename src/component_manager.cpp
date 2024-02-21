@@ -6,6 +6,7 @@ ComponentManager::ComponentManager(){
 		add_component_class<AudioComponent>();
 		add_component_class<LightComponent>();
 		add_component_class<CameraComponent>();
+		add_component_class<ColorComponent>();
 }
 
 size_t ComponentManager::add_entity() {

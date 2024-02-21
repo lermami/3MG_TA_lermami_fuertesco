@@ -42,7 +42,7 @@ int main(int, char**) {
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
-	
+
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	w.initImGui();
@@ -51,14 +51,18 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
-	auto simpleProgram3 = CreateProgram(w, "../assets/Shader/ShadowMap/depthtest.vs", "../assets/Shader/ShadowMap/depthtest.fs");
+	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
+	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
+	auto texture_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLightShadow.vs", "../assets/BasicShader/Texture/TextureLightshadow.fs");
+
+	auto color_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/Color.vs", "../assets/BasicShader/BasicColor/Color.fs");
+	auto color_light_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLight.vs", "../assets/BasicShader/BasicColor/ColorLight.fs");
+	auto color_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLightShadow.vs", "../assets/BasicShader/BasicColor/ColorLightshadow.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
 	obj_paths.emplace_back("../assets/obj_test.obj");
 	obj_paths.emplace_back("../assets/square.obj");
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -69,81 +73,127 @@ int main(int, char**) {
 		objs.push_back(std::move(future));
 	}
 
-	Geometry laboon_geo = objs[2].get();
-	Geometry square_geo = objs[1].get();
 	Geometry cube_geo = objs[0].get();
 
 	unsigned n_obj = 1000;
-	
-	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
-	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
-		//Cubes
-	Vec3 tr_pos(-6.0f, 6.0f, -6.0f);
+	Texture wall(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
+	unsigned wall_handle = wall.LoadTexture("../assets/wall.jpg");
+
+	//Cubes
+		//1
+	Vec3 tr_pos(-3.0f, 2.0f, -8.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(2.0f, 10.0f, 10.0f);
+	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, texture_shader, wall_handle);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	
-	tr_pos = Vec3(0.25f, 5.5f, 5.75f);
+
+		//2
+	tr_pos = Vec3(0.0f, 2.0f, -8.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.8f, 1.8f, 1.8f);
+	obj_size = Vec3(1.0f, 1.0f, 1.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, texture_light_shader, wall_handle);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	tr_pos = Vec3(-11.5f, 0.25f, 8.75f);
+		//3
+	tr_pos = Vec3(3.0f, 2.0f, -8.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(3.0f, 3.0f, 3.0f);
+	obj_size = Vec3(1.0f, 1.0f, 1.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, texture_light_shadow_shader, wall_handle);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-	//Floor
-	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
-	obj_rot = Vec3(3.14f/2.0f, 0.0f, 0.0f);
-	obj_size = Vec3(200.0f, 100.0f, 200.0f);
+		//4
+	tr_pos = Vec3(-3.0f, -2.0f, -8.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+	auto color = component_manager.create_component<ColorComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_color_system(*color, 0.33f, 0.33f, 0.33f, 1.0f);
+	init_render_component_system(*tr_render, cube_geo, color_shader, 0);
+	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+		//5
+	tr_pos = Vec3(0.0f, -2.0f, -8.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+	color = component_manager.create_component<ColorComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_color_system(*color, 0.33f, 0.33f, 0.33f, 1.0f);
+	init_render_component_system(*tr_render, cube_geo, color_light_shader, 0);
+	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+		//6
+	tr_pos = Vec3(3.0f, -2.0f, -8.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+
+	new_e = component_manager.add_entity();
+	tr_render = component_manager.create_component<RenderComponent>(new_e);
+	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+	color = component_manager.create_component<ColorComponent>(new_e);
+
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_color_system(*color, 0.33f, 0.33f, 0.33f, 1.0f);
+	init_render_component_system(*tr_render, cube_geo, color_light_shadow_shader, 0);
+	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+
+	//Back Wall
+	tr_pos = Vec3(0.0f, 0.0f, -12.0f);
+	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	obj_size = Vec3(5.0f, 5.0f, 0.5f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, square_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, cube_geo, texture_light_shadow_shader, wall_handle);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
-  //Light
+	//Light
 	size_t light_entity[2];
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
 
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
 	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
-  
-  //Camera
+
+	//Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
 	w.setCurrentCam(main_camera);
-	
+
 	//Input Declaration
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
@@ -185,7 +235,7 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('E')) {
 			input.y = input_velocity;
 		}
-		
+
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 
@@ -193,7 +243,7 @@ int main(int, char**) {
 		//imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
 		//imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
 
-		
+
 		w.render();
 
 		w.swap();

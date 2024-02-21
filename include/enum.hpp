@@ -173,3 +173,14 @@ enum Target {
   kTarget_VertexData,
   kTarget_Elements,
 };
+
+//Basic Shader enum
+enum ShaderType {
+  kCustom,
+  kTexture,
+  kTextureLight,
+  kTextureLightShadow,
+  kColor,
+  kColorLight,
+  kColorLightShadow,
+};

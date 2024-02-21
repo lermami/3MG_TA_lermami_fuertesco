@@ -9,7 +9,9 @@ void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, 
 
 void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* label, ALfloat pos[3], ALfloat vel[3], float gain = 1.0f, float pitch = 1.0f, bool playing = false);
 
-void init_color_system(RenderComponent& render, float r, float g, float b, float a);
+void init_vertex_color_system(RenderComponent& render, float r, float g, float b, float a);
+
+void init_color_system(ColorComponent& color, float r, float g, float b, float a);
 
 void init_ambient_light_system(LightComponent& light, Vec3 color);
 

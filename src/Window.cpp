@@ -258,7 +258,6 @@ int Window::getProgramListSize() {
 void Window::renderLights() {
 	auto& componentM = engine_.getComponentManager();
 	auto lights = componentM.get_component_list<LightComponent>();
-	auto l = lights->begin();
 
 	unsigned int ambient_iterator = 0;
 	unsigned int directional_iterator = 0;
@@ -267,7 +266,7 @@ void Window::renderLights() {
 
 	for (auto& program : program_list_) {
 		glUseProgram(program);
-		for (; l != lights->end(); l++) {
+		for (auto l = lights->begin(); l != lights->end(); l++) {
 			if (!l->has_value()) continue;
 			auto& light = l->value();
 			char name[64];
@@ -359,10 +358,12 @@ void Window::renderLights() {
 void Window::render() {
 	auto& componentM = engine_.getComponentManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
-	auto transforms = componentM.get_component_list<TransformComponent>(); 
+	auto transforms = componentM.get_component_list<TransformComponent>();
+	auto colors = componentM.get_component_list<ColorComponent>();
 
 	auto r = renders->begin();
 	auto t = transforms->begin();
+	auto c = colors->begin();
 
 	auto current_cam = componentM.get_component<CameraComponent>(current_cam_);
 	current_cam->doRender(this);
@@ -380,7 +381,7 @@ void Window::render() {
 	}
 
 
-	for (; r != renders->end(); r++, t++) {
+	for (; r != renders->end(); r++, t++, c++) {
 		if (!r->has_value() && !t->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
@@ -411,7 +412,14 @@ void Window::render() {
 		glBindTexture(GL_TEXTURE_2D, depthmap_);
 		uniform_loc = glGetUniformLocation(render.program_, "u_depth_map");
 		glUniform1i(uniform_loc, 1);
-	
+
+		//Color
+		if (c->has_value()) {
+			auto& color = c->value();
+
+			GLuint uniform_color = glGetUniformLocation(render.program_, "u_color");
+			glUniform4f(uniform_color, color.color_.x, color.color_.y, color.color_.z, color.color_.w);
+		}
 
 		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");

@@ -46,7 +46,7 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 		audio.sound_source_.Play();
 }
 
-void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
+void init_vertex_color_system(RenderComponent& render, float r, float g, float b, float a) {
 	for (auto& v : render.geometry_.vertex_) {
 		v.color.x = r;
 		v.color.y = g;
@@ -54,6 +54,13 @@ void init_color_system(RenderComponent& render, float r, float g, float b, float
 		v.color.w = a;
 	}
 
+}
+
+void init_color_system(ColorComponent& color, float r, float g, float b, float a) {
+	color.color_.x = r;
+	color.color_.y = g;
+	color.color_.z = b;
+	color.color_.w = a;
 }
 
 void init_ambient_light_system(LightComponent& light, Vec3 color) {

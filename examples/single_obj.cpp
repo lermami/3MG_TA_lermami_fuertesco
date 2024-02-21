@@ -73,7 +73,7 @@ int main(int, char**) {
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
-	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	/*
   //Light
 	size_t light_entity[4];
