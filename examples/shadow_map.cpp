@@ -149,7 +149,7 @@ int main(int, char**) {
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
-	while (!w.is_done()) {
+	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();

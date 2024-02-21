@@ -9,6 +9,7 @@
 #include "buffer.hpp"
 #include "default_systems.hpp"
 #include "camera.hpp"
+#include "Input.hpp"
 #include "component_manager.hpp"
 
 int main(int, char**) {
@@ -49,8 +50,11 @@ int main(int, char**) {
   auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
   w.setCurrentCam(main_camera);
 
-  while (!w.is_done()) {
+  Input input_map(w);
+
+  while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
     w.calculateLastTime();
+    input_map.updateInputs();
 
     // Draw triangle
     w.render();

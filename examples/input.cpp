@@ -51,7 +51,7 @@ int main(int, char**) {
   auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
   w.setCurrentCam(main_camera);
 
-  while (!w.is_done()) {
+  while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
     w.calculateLastTime();
 
     //Inputs
