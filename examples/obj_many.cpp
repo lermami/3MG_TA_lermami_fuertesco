@@ -22,7 +22,7 @@
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
-	ComponentManager component_manager;
+	auto& component_manager = e.getComponentManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
@@ -34,8 +34,6 @@ int main(int, char**) {
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
-
-	Camera cam(w, Vec3(0.0f,0.0f,0.0f), 10.0f);
 
 	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
@@ -70,8 +68,8 @@ int main(int, char**) {
 		Vec3 obj_size(2.0f, 2.0f, 2.0f);
 
 		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
+		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 		init_render_component_system(*tr_render, suzanneGeo, simpleProgram, 0);
@@ -88,8 +86,8 @@ int main(int, char**) {
 		Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
 		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
+		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 		init_render_component_system(*tr_render, wolfGeo, simpleProgram, 0);
@@ -106,8 +104,8 @@ int main(int, char**) {
 		Vec3 obj_size(5.0f, 5.0f, 5.0f);
 
 		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
+		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 		init_render_component_system(*tr_render, tankGeo, simpleProgram, 0);
@@ -118,6 +116,11 @@ int main(int, char**) {
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
+
+	//Camera
+	size_t main_camera = component_manager.add_entity();
+	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	w.setCurrentCam(main_camera);
 
 	while (!w.is_done()) {
 		w.calculateLastTime();
@@ -133,11 +136,11 @@ int main(int, char**) {
 		input_map.getMousePos(mouse_x, mouse_y);
 
 		if (input_map.IsKeyPressed('W')) {
-			input.z = -input_velocity * 10.0f;
+			input.z = input_velocity * 10.0f;
 		}
 
 		if (input_map.IsKeyPressed('S')) {
-			input.z = input_velocity * 10.0f;
+			input.z = -input_velocity * 10.0f;
 		}
 
 		if (input_map.IsKeyPressed('A')) {
@@ -176,10 +179,11 @@ int main(int, char**) {
 			//set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		//move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, input_z));
 
-		cam.updateForward(input_map, 1024, 768);
+		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
+		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
-		cam.move(input);
-		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+
+		w.render();
 
 		w.swap();
 
