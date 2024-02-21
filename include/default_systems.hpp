@@ -3,7 +3,7 @@
 
 class Camera;
 
-void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture);
+void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture);
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size);
 
@@ -39,4 +39,4 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 
-void imgui_transform_system(std::vector<std::optional<TransformComponent>>& transforms_list);
+void imgui_transform_system(Engine& e);

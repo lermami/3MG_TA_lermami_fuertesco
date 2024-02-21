@@ -81,6 +81,7 @@ struct Geometry {
 };
 
 struct RenderComponent {
+	std::string name_;
 	Geometry geometry_;
 	std::shared_ptr<Buffer> elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;

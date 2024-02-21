@@ -9,12 +9,15 @@
 #include "shader_management.hpp"
 #include "camera.hpp"
 #include "input.hpp"
+#include "Engine.hpp"
 
-void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture) {
+void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture) {
 
 	for (int i = 0; i < geometry.vertex_.size(); i++) {
 		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
 	}
+
+	render.name_ = name;
 
 	unsigned vertex_struct_size = (unsigned) sizeof(render.geometry_.vertex_[0]);
 	unsigned vertex_buffer_size = render.geometry_.vertex_.size();
@@ -259,31 +262,41 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 	ImGui::End();
 }
 
-void imgui_transform_system(std::vector<std::optional<TransformComponent>>& transforms_list) {
-	auto tr = transforms_list.begin();
+void imgui_transform_system(Engine& e) {
+	auto& compM = e.getComponentManager();
+
+	auto transformList = *compM.get_component_list<TransformComponent>();
+	auto renderList = *compM.get_component_list<RenderComponent>();
+	
+	auto tr = transformList.begin();
+	auto r = renderList.begin();
+	
 	int num = 0;
 
-	ImGui::Begin("Transform");
+	ImGui::Begin("Components");
 
-	for (; tr != transforms_list.end(); tr++) {
-		if (!tr->has_value()) continue;
+	for (; tr != transformList.end(); tr++, r++) {
+		if (!tr->has_value() && !r->has_value()) continue;
 		auto& transform = tr->value();
+		auto& render = r->value();
 
 		ImGui::PushID(num);
-		if (ImGui::CollapsingHeader("Object")) {
-			Vec3 aux_pos = transform.pos_;
-			if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
-				transform.pos_ = aux_pos;
-			}
+		if (ImGui::CollapsingHeader(render.name_.c_str())) {
+			if (ImGui::CollapsingHeader("Transform")) {
+				Vec3 aux_pos = transform.pos_;
+				if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+					transform.pos_ = aux_pos;
+				}
 
-			Vec3 aux_rot = transform.rot_;
-			if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
-				transform.rot_ = aux_rot;
-			}
+				Vec3 aux_rot = transform.rot_;
+				if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+					transform.rot_ = aux_rot;
+				}
 
-			float aux_size = transform.size_.x;
-			if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
-				transform.size_ = aux_size;
+				float aux_size = transform.size_.x;
+				if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
+					transform.size_ = aux_size;
+				}
 			}
 		}
 
@@ -293,4 +306,6 @@ void imgui_transform_system(std::vector<std::optional<TransformComponent>>& tran
 
 
 	ImGui::End();
+
+	ImGui::ShowDemoWindow();
 }

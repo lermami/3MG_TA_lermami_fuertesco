@@ -182,6 +182,7 @@ int main(int, char**) {
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
+		imgui_transform_system(e);
 
 		w.render();
 
