@@ -20,7 +20,7 @@ public:
   Window(Window&& w) noexcept;
   Window(const Window&) = delete;
 
-  static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window");
+  static std::optional<Window> create(Engine& engine, int w, int h, const char* title = "Window", bool imgui = false);
   bool is_done() const;
   void swap();
   void clearColor(float r, float g, float b, float a) const;
@@ -50,13 +50,15 @@ public:
   void render();
   void renderShadowMap(unsigned int program);
 
+  bool getImguiStatus();
+
   void setCurrentCam(size_t cam);
   size_t getCurrentCam();
 
   glm::mat4 ConfigureShaderAndMatrices();
 
 private:
-  Window(Engine& e, int w, int h, const char* title);
+  Window(Engine& e, int w, int h, const char* title, bool imgui);
   void renderImgui();
 
   GLFWwindow* handle_;

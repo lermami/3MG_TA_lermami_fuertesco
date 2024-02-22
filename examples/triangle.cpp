@@ -16,7 +16,7 @@ int main(int, char**) {
   Engine e;
   auto& component_manager = e.getComponentManager();
 
-  auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+  auto maybe_w = Window::create(e, 1024, 768, "Test Window", false);
   if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
@@ -43,7 +43,7 @@ int main(int, char**) {
   auto tr_render = component_manager.create_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
+  init_render_component_system(*tr_render, "Triangle", triangleGeo, simpleProgram, NULL);
 
   //Camera
   size_t main_camera = component_manager.add_entity();

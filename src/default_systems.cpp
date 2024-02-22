@@ -202,16 +202,16 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 	double mouse_x, mouse_y;
 	input.getMousePos(mouse_x, mouse_y);
 
-	if (input.IsKeyDown(kKey_LeftClick)) {
+	if (input.IsKeyDown(kKey_RightClick)) {
 		first_pos = Vec2((float)mouse_x, (float)mouse_y);
 	}
 
-	if (input.IsKeyPressed(kKey_LeftClick)) {
+	if (input.IsKeyPressed(kKey_RightClick)) {
 		alpha = last_alpha + ((float)mouse_x - first_pos.x) / w * cam.sensitivity_;
 		omega = last_omega + ((float)mouse_y - first_pos.y) / h * -1;
 	}
 
-	if (input.IsKeyUp(kKey_LeftClick)) {
+	if (input.IsKeyUp(kKey_RightClick)) {
 		last_alpha = alpha;
 		last_omega = omega;
 	}
@@ -262,50 +262,60 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 	ImGui::End();
 }
 
-void imgui_transform_system(Engine& e) {
-	auto& compM = e.getComponentManager();
+void imgui_transform_system(Engine& e, Window& w) {
+	if (w.getImguiStatus()) {
+		auto& compM = e.getComponentManager();
 
-	auto transformList = *compM.get_component_list<TransformComponent>();
-	auto renderList = *compM.get_component_list<RenderComponent>();
-	
-	auto tr = transformList.begin();
-	auto r = renderList.begin();
-	
-	int num = 0;
+		auto transformList = compM.get_component_list<TransformComponent>();
+		auto renderList = compM.get_component_list<RenderComponent>();
 
-	ImGui::Begin("Components");
+		auto tr = transformList->begin();
+		auto r = renderList->begin();
 
-	for (; tr != transformList.end(); tr++, r++) {
-		if (!tr->has_value() && !r->has_value()) continue;
-		auto& transform = tr->value();
-		auto& render = r->value();
+		int num = 0;
 
-		ImGui::PushID(num);
-		if (ImGui::CollapsingHeader(render.name_.c_str())) {
-			if (ImGui::CollapsingHeader("Transform")) {
-				Vec3 aux_pos = transform.pos_;
-				if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
-					transform.pos_ = aux_pos;
+		//Init table
+		unsigned w_width, w_height;
+		w.getWindowSize(w_width, w_height);
+		ImGui::SetNextWindowSize(ImVec2(w_width * 0.3f, w_height));
+		ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+		ImGui::Begin("Components", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+		ImGui::Text("Components");
+
+		for (; tr != transformList->end(); tr++, r++) {
+			if (!tr->has_value() && !r->has_value()) continue;
+			auto& transform = tr->value();
+			auto& render = r->value();
+
+			//Component
+			ImGui::PushID(num);
+			if (ImGui::CollapsingHeader(render.name_.c_str())) {
+
+				//Transform
+				if (ImGui::CollapsingHeader("Transform")) {
+					Vec3 aux_pos = transform.pos_;
+					if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+						transform.pos_ = aux_pos;
+					}
+
+					Vec3 aux_rot = transform.rot_;
+					if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+						transform.rot_ = aux_rot;
+					}
+
+					float aux_size = transform.size_.x;
+					if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
+						transform.size_ = aux_size;
+					}
 				}
 
-				Vec3 aux_rot = transform.rot_;
-				if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
-					transform.rot_ = aux_rot;
-				}
-
-				float aux_size = transform.size_.x;
-				if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
-					transform.size_ = aux_size;
-				}
 			}
+
+			ImGui::PopID();
+			num++;
 		}
 
-		ImGui::PopID();
-		num++;
+
+		ImGui::End();
 	}
-
-
-	ImGui::End();
-
-	ImGui::ShowDemoWindow();
 }

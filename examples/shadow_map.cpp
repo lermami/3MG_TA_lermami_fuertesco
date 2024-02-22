@@ -40,12 +40,11 @@ int main(int, char**) {
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
 	
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
-	w.initImGui();
 	w.enableCulling(true);
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
@@ -78,7 +77,7 @@ int main(int, char**) {
 	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
-		//Cubes
+	//Cubes
 	Vec3 tr_pos(-6.0f, 6.0f, -6.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(2.0f, 10.0f, 10.0f);
@@ -88,7 +87,7 @@ int main(int, char**) {
 	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, "Cube 1", cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	
 	tr_pos = Vec3(0.25f, 5.5f, 5.75f);
@@ -100,7 +99,7 @@ int main(int, char**) {
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, "Cube 2", cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
 	tr_pos = Vec3(-11.5f, 0.25f, 8.75f);
@@ -112,7 +111,7 @@ int main(int, char**) {
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, "Cube 3", cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
 	//Floor
@@ -125,7 +124,7 @@ int main(int, char**) {
 	tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, square_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, "Wall", square_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
   //Light
@@ -189,10 +188,7 @@ int main(int, char**) {
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 
-		imgui_transform_system(*component_manager.get_component_list<TransformComponent>());
-		//imgui_transform_system(*component_manager.get_component<TransformComponent>(2));
-		//imgui_transform_system(*component_manager.get_component<TransformComponent>(3));
-
+		imgui_transform_system(e, w);
 		
 		w.render();
 

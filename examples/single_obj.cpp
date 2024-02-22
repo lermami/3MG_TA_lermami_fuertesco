@@ -30,12 +30,11 @@ int main(int, char**) {
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
 	
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
-	w.initImGui();
 	w.enableCulling(true);
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
@@ -143,7 +142,7 @@ int main(int, char**) {
 		
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
-		imgui_transform_system(e);
+		imgui_transform_system(e, w);
 
 		w.render();
 

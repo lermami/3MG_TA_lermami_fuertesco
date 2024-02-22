@@ -39,4 +39,4 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 
-void imgui_transform_system(Engine& e);
+void imgui_transform_system(Engine& e, Window& w);

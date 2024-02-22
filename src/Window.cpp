@@ -14,8 +14,8 @@
 
 #include "AL/alc.h"
 
-std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title) {
-  Window window(engine, w, h, title);
+std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title, bool imgui) {
+  Window window(engine, w, h, title, imgui);
 
   if (!window.is_done()) {
     return window;
@@ -25,8 +25,15 @@ std::optional<Window> Window::create(Engine& engine, int w, int h, const char* t
   }
 }
 
-Window::Window(Engine& e, int w, int h, const char* title) : engine_{ e } {
-	handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
+Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_{ e } {
+	imguiInit_ = imgui;
+	if (imguiInit_) {
+		handle_ = glfwCreateWindow(w + w*0.3, h, title, NULL, NULL);
+		glViewport(w * 0.3f, 0, w, h);
+	}
+	else {
+		handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
+	}
 	glfwMakeContextCurrent(handle_);
 
 	GLenum initstate = glewInit();
@@ -39,7 +46,6 @@ Window::Window(Engine& e, int w, int h, const char* title) : engine_{ e } {
 	deltaTime_ = 0;
 
 	//Add flags
-	imguiInit_ = false;
 	renderShadows_ = true;
 
 	if (renderShadows_) {
@@ -85,6 +91,10 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+	if (imguiInit_) {
+		initImGui();
+	}
+	w.imguiInit_ = false;
 
 	renderShadows_ = w.renderShadows_;
 	depthmapFBO_ = w.depthmapFBO_;
@@ -102,6 +112,10 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+	if (imguiInit_) {
+		initImGui();
+	}
+	w.imguiInit_ = false;
 
 	renderShadows_ = w.renderShadows_;
 
@@ -133,9 +147,11 @@ void Window::initImGui() {
 }
 
 void Window::updateImGui() {
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
+	if (imguiInit_) {
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+	}
 }
 
 void Window::renderImgui() {
@@ -375,7 +391,12 @@ void Window::render() {
 		renderShadowMap(shadowProgram_);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, width_, height_);
+		if (imguiInit_) {
+			glViewport(width_*0.3f, 0, width_, height_);
+		}
+		else {
+			glViewport(0, 0, width_, height_);
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -506,4 +527,8 @@ void Window::setCurrentCam(size_t cam) {
 
 size_t Window::getCurrentCam() {
 	return current_cam_;
+}
+
+bool Window::getImguiStatus() {
+	return imguiInit_;
 }
