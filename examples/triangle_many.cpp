@@ -26,7 +26,7 @@
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
-	ComponentManager component_manager;
+	auto& component_manager = e.getComponentManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
 	if (!maybe_w) return -1;
@@ -34,9 +34,12 @@ int main(int, char**) {
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-	Camera cam(w);
+	//Camera
+	size_t main_camera = component_manager.add_entity();
+	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	w.setCurrentCam(main_camera);
 
-	auto simpleProgram = CreateProgram("../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
+	auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 	
 	//Create n triangles in random position
 	int n_triangles = 10000;
@@ -61,8 +64,8 @@ int main(int, char**) {
 		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
 		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.get_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.get_component<TransformComponent>(new_e);
+		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
+		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
 		init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
 	}
@@ -73,7 +76,7 @@ int main(int, char**) {
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
-	while (!w.is_done()) {
+	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();
@@ -120,7 +123,8 @@ int main(int, char**) {
 			set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
-		render_system(cam, *component_manager.get_component_list<RenderComponent>(), *component_manager.get_component_list<TransformComponent>());
+
+		w.render();
 
 		w.swap();
 

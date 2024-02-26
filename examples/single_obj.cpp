@@ -64,7 +64,7 @@ int main(int, char**) {
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
-	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA);
+	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 
 	size_t new_e = component_manager.add_entity();
@@ -73,8 +73,8 @@ int main(int, char**) {
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
-	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	/*
+	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+	
   //Light
 	size_t light_entity[4];
 	light_entity[0] = component_manager.add_entity();
@@ -92,7 +92,7 @@ int main(int, char**) {
 	light_entity[3] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
 	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
-	*/
+	
 
   //Camera
 	size_t main_camera = component_manager.add_entity();
@@ -104,7 +104,7 @@ int main(int, char**) {
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
-	while (!w.is_done()) {
+	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();
@@ -143,9 +143,9 @@ int main(int, char**) {
 		
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
-		imgui_transform_system(*component_manager.get_component<TransformComponent>(new_e));
+		imgui_transform_system(*component_manager.get_component_list<TransformComponent>());
 
-		w.render(0);
+		w.render();
 
 		w.swap();
 

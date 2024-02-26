@@ -3,6 +3,7 @@
 
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "input.hpp"
 
 int main(int, char**) {
   Engine e;
@@ -13,8 +14,12 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  while (!w.is_done()) {
+  Input input_map(w);
+
+  while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
     w.calculateLastTime();
+
+    input_map.updateInputs();
 
     w.swap();
 
