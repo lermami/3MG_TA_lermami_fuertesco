@@ -9,6 +9,7 @@
 #include "shader_management.hpp"
 #include "camera.hpp"
 #include "input.hpp"
+#include "component_manager.hpp"
 
 void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture) {
 
@@ -300,4 +301,26 @@ void imgui_transform_system(std::vector<std::optional<TransformComponent>>& tran
 
 
 	ImGui::End();
+}
+
+void init_box_collider_system(BoxColliderComponent& component, Vec3 extent, Vec3 center_offset) {
+	component.extent_ = extent;
+	component.center_offset_ = center_offset;
+}
+
+bool are_colliding_system(Engine& e, size_t entity1, size_t entity2) {
+	auto& component_manager = e.getComponentmanager();
+
+	//Colliders
+	auto collider1 = component_manager.get_component<BoxColliderComponent>(entity1);
+	auto collider2 = component_manager.get_component<BoxColliderComponent>(entity2);
+
+	//Transform
+	auto transform1 = component_manager.get_component<TransformComponent>(entity1);
+	auto transform2 = component_manager.get_component<TransformComponent>(entity2);
+
+	if (!collider1->has_value() || !collider2->has_value() 
+		  || !transform1->has_value() || !transform2->has_value()) {
+		return false;
+	}
 }

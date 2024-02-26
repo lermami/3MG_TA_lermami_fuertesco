@@ -42,3 +42,7 @@ void render_system(Window& w, CameraComponent& current_cam, std::vector<std::opt
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 
 void imgui_transform_system(std::vector<std::optional<TransformComponent>>& transforms_list);
+
+void init_box_collider_system(BoxColliderComponent& component, Vec3 extent, Vec3 center_offset = Vec3(0.0f, 0.0f, 0.0f));
+
+bool are_colliding_system(Engine& e, size_t entity1, size_t entity2);
