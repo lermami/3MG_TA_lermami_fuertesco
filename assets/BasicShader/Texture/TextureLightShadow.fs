@@ -49,7 +49,6 @@ in vec3 normal;
 in vec3 world_position;
 in vec3 world_normal;
 in vec3 cam_dir;
-in vec3 frag_pos;
 in vec4 frag_pos_light_space;
 
 uniform sampler2D u_texture;

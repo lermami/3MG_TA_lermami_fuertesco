@@ -131,7 +131,7 @@ int main(int, char**) {
 	auto color = component_manager.create_component<ColorComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_color_system(*color, 0.33f, 0.33f, 0.33f, 1.0f);
+	init_color_system(*color, 0.5f, 0.5f, 0.75f, 1.0f);
 	init_render_component_system(*tr_render, cube_geo, color_shader, 0);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
@@ -146,7 +146,7 @@ int main(int, char**) {
 	color = component_manager.create_component<ColorComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_color_system(*color, 0.33f, 0.33f, 0.33f, 1.0f);
+	init_color_system(*color, 0.5f, 0.5f, 0.75f, 1.0f);
 	init_render_component_system(*tr_render, cube_geo, color_light_shader, 0);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
@@ -161,7 +161,7 @@ int main(int, char**) {
 	color = component_manager.create_component<ColorComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_color_system(*color, 0.33f, 0.33f, 0.33f, 1.0f);
+	init_color_system(*color, 0.5f, 0.5f, 0.75f, 1.0f);
 	init_render_component_system(*tr_render, cube_geo, color_light_shadow_shader, 0);
 	init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 

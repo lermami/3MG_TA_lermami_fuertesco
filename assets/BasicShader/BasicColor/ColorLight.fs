@@ -3,7 +3,6 @@
 struct AmbientLight
 {
   vec3 color_;
-  vec3 spec_color_;
 };
 
 struct DirectionalLight
@@ -40,7 +39,6 @@ struct SpotLight
   float cutoff_angle_;
 };
 
-in vec4 color;
 in vec3 pos;
 in vec2 uv;
 in vec3 normal;
@@ -63,7 +61,7 @@ vec3 CalculateAmbientLight(AmbientLight light){
 
   AmbientLight aux_light = light;
   
-  vec3 result = aux_light.color_ + aux_light.spec_color_;
+  vec3 result = aux_light.color_;
   result = max(result, 0.0);
   
   return result; 

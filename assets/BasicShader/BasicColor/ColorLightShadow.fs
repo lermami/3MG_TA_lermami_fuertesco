@@ -39,9 +39,6 @@ struct SpotLight
   float cutoff_angle_;
 };
 
-out vec4 frag_colour;
-
-in vec4 color;
 in vec3 pos;
 in vec2 uv;
 in vec3 normal;
@@ -49,10 +46,12 @@ in vec3 normal;
 in vec3 world_position;
 in vec3 world_normal;
 in vec3 cam_dir;
-in vec3 frag_pos;
-in vec4 frag_pos_light_space;
+
+out vec4 frag_colour;
 
 uniform vec4 u_color;
+
+in vec4 frag_pos_light_space;
 
 uniform sampler2D u_texture;
 uniform sampler2D u_depth_map;
@@ -171,7 +170,7 @@ vec3 LightProcess(){
 
 vec3 AmbientProcess(){
   vec3 result = vec3(0.0, 0.0, 0.0);
-
+  
   for(int i=0; i<5; i++){
     result += max(CalculateAmbientLight(u_ambient_light[i]), 0.0);
   }
@@ -232,7 +231,7 @@ void main() {
  
   float shadow = ShadowProcess(frag_pos_light_space);
 
-  vec3 result = (ambient + (1.0 - shadow) * light) *u_color.xyz;
+  vec3 result = (ambient + (1.0 - shadow) * light) * u_color.xyz;
 
   frag_colour = vec4(result, 1.0);
 };
