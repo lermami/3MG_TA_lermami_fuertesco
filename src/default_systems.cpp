@@ -13,19 +13,14 @@
 #include <vector>
 
 void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture) {
-
-	for (int i = 0; i < geometry.vertex_.size(); i++) {
-		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
-	}
-
 	render.name_ = name;
 
-	unsigned vertex_struct_size = (unsigned) sizeof(render.geometry_.vertex_[0]);
-	unsigned vertex_buffer_size = render.geometry_.vertex_.size();
+	unsigned vertex_struct_size = (unsigned) sizeof(geometry.vertex_[0]);
+	unsigned vertex_buffer_size = geometry.vertex_.size();
 
 	render.elements_buffer_ = std::make_shared<Buffer>();
 	render.elements_buffer_.get()->init(vertex_struct_size * vertex_buffer_size);
-	render.elements_buffer_.get()->uploadData(&render.geometry_.vertex_[0], vertex_struct_size * vertex_buffer_size);
+	render.elements_buffer_.get()->uploadData(&geometry.vertex_[0], vertex_struct_size * vertex_buffer_size);
 
 	render.order_buffer_ = std::make_shared<Buffer>();
 	render.order_buffer_.get()->init((unsigned)geometry.indices_.size());
@@ -48,16 +43,6 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 	if(playing)
 		audio.sound_source_.Play();
-}
-
-void init_color_system(RenderComponent& render, float r, float g, float b, float a) {
-	for (auto& v : render.geometry_.vertex_) {
-		v.color.x = r;
-		v.color.y = g;
-		v.color.z = b;
-		v.color.w = a;
-	}
-
 }
 
 void init_ambient_light_system(LightComponent& light, Vec3 color) {
@@ -285,60 +270,70 @@ void imgui_transform_system(Engine& e, Window& w) {
 		w.getWindowSize(w_width, w_height);
 		ImGui::SetNextWindowSize(ImVec2(w_width * 0.3f, w_height));
 		ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
-		ImGui::Begin("Components", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
-		ImGui::Text("Components");
+		ImGui::Begin("ImGui", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
-		for (; tr != transformList->end(); tr++, r++) {
-			if (!tr->has_value() && !r->has_value()) continue;
-			auto& transform = tr->value();
-			auto& render = r->value();
+		ImGui::BeginTabBar("Tabs");
+		if (ImGui::BeginTabItem("Components")) {
+			for (; tr != transformList->end(); tr++, r++) {
+				if (!tr->has_value() && !r->has_value()) continue;
+				auto& transform = tr->value();
+				auto& render = r->value();
 
-			//Component
-			ImGui::PushID(num);
-			if (ImGui::CollapsingHeader(render.name_.c_str())) {
+				//Component
+				ImGui::PushID(num);
+				if (ImGui::CollapsingHeader(render.name_.c_str())) {
 
-				//Transform
-				if (ImGui::CollapsingHeader("Transform")) {
-					Vec3 aux_pos = transform.pos_;
-					if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
-						transform.pos_ = aux_pos;
-					}
-
-					Vec3 aux_rot = transform.rot_;
-					if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
-						transform.rot_ = aux_rot;
-					}
-
-					float aux_size = transform.size_.x;
-					if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
-						transform.size_ = aux_size;
-					}
-				}
-
-				//Render
-				if (ImGui::CollapsingHeader("Render")) {
-					unsigned tex_aux = render.texture_;
-
-					if (ImGui::BeginCombo("Lista desplegable", resourceM.getTextureName(tex_aux).c_str()))
-					{
-						for (int i = 0; i < texList.size(); i++)
-						{
-							if (ImGui::Selectable(texNameList[i].c_str(), texList[i] == tex_aux))
-							{
-								render.texture_ = texList[i];
-							}
+					//Transform
+					if (ImGui::CollapsingHeader("Transform")) {
+						Vec3 aux_pos = transform.pos_;
+						if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+							transform.pos_ = aux_pos;
 						}
-						ImGui::EndCombo();
+
+						Vec3 aux_rot = transform.rot_;
+						if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+							transform.rot_ = aux_rot;
+						}
+
+						float aux_size = transform.size_.x;
+						if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
+							transform.size_ = aux_size;
+						}
 					}
+
+					//Render
+					if (ImGui::CollapsingHeader("Render")) {
+						unsigned tex_aux = render.texture_;
+
+						if (ImGui::BeginCombo("Lista desplegable", resourceM.getTextureName(tex_aux).c_str()))
+						{
+							for (int i = 0; i < texList.size(); i++)
+							{
+								if (ImGui::Selectable(texNameList[i].c_str(), texList[i] == tex_aux))
+								{
+									render.texture_ = texList[i];
+								}
+							}
+							ImGui::EndCombo();
+						}
+					}
+
 				}
 
+				ImGui::PopID();
+				num++;
 			}
-
-			ImGui::PopID();
-			num++;
+			ImGui::EndTabItem();
 		}
 
+		if (ImGui::BeginTabItem("Tools")) {
+			if (ImGui::Button("Add entity")) {
+				//do something
+			}
+			ImGui::EndTabItem();
+		}
 
+		ImGui::EndTabBar();
 		ImGui::End();
 	}
 }

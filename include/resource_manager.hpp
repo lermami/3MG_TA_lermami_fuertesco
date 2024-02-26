@@ -5,6 +5,7 @@
 #include <vector>
 #include "texture.hpp"
 
+struct Geometry;
 
 class ResourceManager {
 public:
@@ -12,6 +13,7 @@ public:
   ~ResourceManager();
 
   unsigned loadTexture(const char* name, Texture tex, const char* path);
+  Geometry LoadObj(const char* name, const char* path);
 
   unsigned getTexture(const char* name);
   unsigned getTexture(int index);
@@ -23,5 +25,8 @@ public:
 private:
   std::vector<unsigned> textures_;
   std::vector<std::string> texture_names_;
+
+  std::vector<Geometry> geometries_;
+  std::vector<std::string> geometry_names_;
 
 };

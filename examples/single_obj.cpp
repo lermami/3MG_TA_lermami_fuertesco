@@ -47,10 +47,11 @@ int main(int, char**) {
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
 	obj_paths.emplace_back("../assets/laboon/laboon.obj");
+	obj_paths.emplace_back("../assets/obj_test.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
-		std::function<Geometry()> mycall_vertex = [path]() { return Engine::LoadObj(path.c_str()); };
+		std::function<Geometry()> mycall_vertex = [&]() { return resourceM.LoadObj("A", path.c_str()); };
 
 		std::future<Geometry> future = thread_manager.add(mycall_vertex);
 
@@ -69,7 +70,7 @@ int main(int, char**) {
 																						 "../assets/laboon/laboon.png");
 
 	unsigned wallTex = resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
-		"../assets/wall.jpg");
+																						"../assets/wall.jpg");
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -77,7 +78,6 @@ int main(int, char**) {
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, "Laboon", laboon_geo, simpleProgram, laboonTex);
-	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	
   //Light
 	size_t light_entity[4];
@@ -97,7 +97,6 @@ int main(int, char**) {
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
 	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
 	
-
   //Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
@@ -128,8 +127,8 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('S')) {
 			input.z = -input_velocity;
 		}
-
 		if (input_map.IsKeyPressed('A')) {
+
 			input.x = -input_velocity;
 		}
 

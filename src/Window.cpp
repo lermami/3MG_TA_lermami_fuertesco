@@ -439,7 +439,7 @@ void Window::render() {
 		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
 		render.elements_buffer_.get()->bind(kTarget_VertexData);
-		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+		unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
 
 		//Vertices
 		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
@@ -490,7 +490,7 @@ void Window::renderShadowMap(unsigned int program) {
 			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 			render.elements_buffer_.get()->bind(kTarget_VertexData);
 
-			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
+			unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
 
 			//Vertices
 			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);

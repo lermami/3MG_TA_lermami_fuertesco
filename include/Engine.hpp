@@ -6,16 +6,13 @@
 #include "resource_manager.hpp"
 
 struct ComponentManager;
-struct ResourceManager;
-struct Geometry;
+class ResourceManager;
 
 
 class Engine {
 public:
   Engine();
   ~Engine();
-
-  static Geometry LoadObj(const char* path);
 
   ComponentManager& getComponentManager();
   ResourceManager& getResourceManager();
