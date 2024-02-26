@@ -59,6 +59,7 @@ int main(int, char**) {
 	auto color_light_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLight.vs", "../assets/BasicShader/BasicColor/ColorLight.fs");
 	auto color_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLightShadow.vs", "../assets/BasicShader/BasicColor/ColorLightshadow.fs");
 
+
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
 	obj_paths.emplace_back("../assets/obj_test.obj");

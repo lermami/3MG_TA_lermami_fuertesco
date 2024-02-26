@@ -90,6 +90,7 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	depthmapFBO_ = w.depthmapFBO_;
 	depthmap_ = w.depthmap_;
 	shadowProgram_ = w.shadowProgram_;
+	program_list_ = w.program_list_;
 }
 
 Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }  {
@@ -108,6 +109,7 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	depthmapFBO_ = w.depthmapFBO_;
 	depthmap_ = w.depthmap_;
 	shadowProgram_ = w.shadowProgram_;
+	program_list_ = w.program_list_;
 }
 
 void Window::initSoundContext() {
@@ -244,6 +246,7 @@ void Window::addProgram(unsigned new_program) {
 
   if (is_new) {
     program_list_.push_back(new_program);
+		printf("A");
   }
 }
 
@@ -259,12 +262,15 @@ void Window::renderLights() {
 	auto& componentM = engine_.getComponentManager();
 	auto lights = componentM.get_component_list<LightComponent>();
 
-	unsigned int ambient_iterator = 0;
-	unsigned int directional_iterator = 0;
-	unsigned int point_iterator = 0;
-	unsigned int spot_iterator = 0;
+	
 
 	for (auto& program : program_list_) {
+
+		unsigned int ambient_iterator = 0;
+		unsigned int directional_iterator = 0;
+		unsigned int point_iterator = 0;
+		unsigned int spot_iterator = 0;
+
 		glUseProgram(program);
 		for (auto l = lights->begin(); l != lights->end(); l++) {
 			if (!l->has_value()) continue;
