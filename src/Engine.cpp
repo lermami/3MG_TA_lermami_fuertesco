@@ -8,7 +8,7 @@
 
 #include <time.h>
 
-Engine::Engine() : componentM_ {std::make_unique<ComponentManager>() } {
+Engine::Engine() : componentM_{ std::make_unique<ComponentManager>() }, resourceM_{std::make_unique<ResourceManager>()} {
   glfwInit();
 
 	srand((unsigned int)time(NULL));
@@ -100,3 +100,8 @@ Geometry Engine::LoadObj(const char* path) {
 ComponentManager& Engine::getComponentManager() {
 	return *componentM_;
 }
+
+ResourceManager& Engine::getResourceManager() {
+	return *resourceM_;
+}
+

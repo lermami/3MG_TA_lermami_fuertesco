@@ -24,11 +24,13 @@
 #include "camera.hpp"
 #include "matrix_4.hpp"
 #include "default_components.hpp"
+#include "resource_manager.hpp"
 
 int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
+	auto& resourceM = e.getResourceManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
@@ -63,15 +65,18 @@ int main(int, char**) {
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
-	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte);
-	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
+	unsigned laboonTex = resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
+																						 "../assets/laboon/laboon.png");
+
+	unsigned wallTex = resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
+		"../assets/wall.jpg");
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Laboon", laboon_geo, simpleProgram, laboon_handle);
+	init_render_component_system(*tr_render, "Laboon", laboon_geo, simpleProgram, laboonTex);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	
   //Light
@@ -139,7 +144,7 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('E')) {
 			input.y = input_velocity;
 		}
-		
+
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(e, w);

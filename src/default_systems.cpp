@@ -10,6 +10,7 @@
 #include "camera.hpp"
 #include "input.hpp"
 #include "Engine.hpp"
+#include <vector>
 
 void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture) {
 
@@ -272,6 +273,11 @@ void imgui_transform_system(Engine& e, Window& w) {
 		auto tr = transformList->begin();
 		auto r = renderList->begin();
 
+		auto& resourceM = e.getResourceManager();
+		std::vector<unsigned>& texList = resourceM.getTextureList();
+		std::vector<std::string>& texNameList = resourceM.getTextureNamesList();
+		std::string vectorStr(texList.begin(), texList.end());
+
 		int num = 0;
 
 		//Init table
@@ -306,6 +312,23 @@ void imgui_transform_system(Engine& e, Window& w) {
 					float aux_size = transform.size_.x;
 					if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
 						transform.size_ = aux_size;
+					}
+				}
+
+				//Render
+				if (ImGui::CollapsingHeader("Render")) {
+					unsigned tex_aux = render.texture_;
+
+					if (ImGui::BeginCombo("Lista desplegable", resourceM.getTextureName(tex_aux).c_str()))
+					{
+						for (int i = 0; i < texList.size(); i++)
+						{
+							if (ImGui::Selectable(texNameList[i].c_str(), texList[i] == tex_aux))
+							{
+								render.texture_ = texList[i];
+							}
+						}
+						ImGui::EndCombo();
 					}
 				}
 
