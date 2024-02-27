@@ -15,6 +15,7 @@
 int main(int, char**) {
   Engine e;
   auto& component_manager = e.getComponentManager();
+  auto& resourceM = e.getResourceManager();
 
   auto maybe_w = Window::create(e, 1024, 768, "Test Window", false);
   if (!maybe_w) return -1;
@@ -32,6 +33,8 @@ int main(int, char**) {
 
   triangleGeo.indices_ = { 0, 1, 2 };
 
+  resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+
   Vec3 tr_pos(0.0f, 0.0f, 0.0f);
   Vec3 tr_size(10.0f, 10.0f, 0.0f);
   Vec3 tr_rot(0.0f, 0.0f, 0.0f);
@@ -43,7 +46,7 @@ int main(int, char**) {
   auto tr_render = component_manager.create_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, "Triangle", triangleGeo, simpleProgram, NULL);
+  init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 
   //Camera
   size_t main_camera = component_manager.add_entity();

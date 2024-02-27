@@ -27,6 +27,7 @@ int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
+	auto& resourceM = e.getResourceManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
@@ -54,6 +55,8 @@ int main(int, char**) {
 
 	triangleGeo.indices_ = { 0, 1, 2 };
 
+	resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+
 	for (int i = 0; i < n_triangles; i++) {
 		Vec3 tr_pos;
 		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
@@ -67,7 +70,7 @@ int main(int, char**) {
 		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-		init_render_component_system(*tr_render, "Triangle", triangleGeo, simpleProgram, NULL);
+		init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 	}
 
 	//Input Declaration

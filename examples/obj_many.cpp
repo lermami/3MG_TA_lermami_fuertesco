@@ -23,6 +23,7 @@ int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
+	auto& resourceM = e.getResourceManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
@@ -44,7 +45,7 @@ int main(int, char**) {
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
-		std::function<Geometry()> loadobj_func = [path]() { return Engine::LoadObj(path.c_str()); };
+		std::function<Geometry()> loadobj_func = [&]() { return resourceM.LoadObj("A", path.c_str()); };
 
 		std::future<Geometry> future = thread_manager.add(loadobj_func);
 
@@ -56,6 +57,10 @@ int main(int, char**) {
 	Geometry tankGeo = objs[2].get();
 
 	unsigned n_obj = 1000;
+
+	resourceM.createBuffersWithGeometry(suzanneGeo, "SuzanneVertices", "SuzanneIndices");
+	resourceM.createBuffersWithGeometry(wolfGeo, "WolfVertices", "WolfIndices");
+	resourceM.createBuffersWithGeometry(tankGeo, "TankVertices", "TankIndices");
 
 	for (unsigned i = 0; i < n_obj / 3; i++) {
 		Vec3 tr_pos;
@@ -71,8 +76,7 @@ int main(int, char**) {
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, "Suzanne", suzanneGeo, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_render_component_system(*tr_render, "Suzanne", "SuzanneVertices", "SuzanneIndices", simpleProgram, 0);
 	}
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
@@ -89,8 +93,7 @@ int main(int, char**) {
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, "Wolf", wolfGeo, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_render_component_system(*tr_render, "Wolf", "WolfVertices", "WolfIndices", simpleProgram, 0);
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
@@ -107,8 +110,7 @@ int main(int, char**) {
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, "Tank", tankGeo, simpleProgram, 0);
-		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_render_component_system(*tr_render, "Tank", "TankVertices", "TankIndices", simpleProgram, 0);
 	}
 
 	//Input Declaration
