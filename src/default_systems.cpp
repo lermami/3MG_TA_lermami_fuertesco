@@ -36,6 +36,13 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 		audio.sound_source_.Play();
 }
 
+void init_color_system(ColorComponent& color, float r, float g, float b, float a) {
+	color.color_.x = r;
+	color.color_.y = g;
+	color.color_.z = b;
+	color.color_.w = a;
+}
+
 void init_ambient_light_system(LightComponent& light, Vec3 color) {
 	light.direction_ = Vec3{ 0,0,0 };
 	light.pos_ = Vec3{ 0,0,0 };

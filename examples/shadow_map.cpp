@@ -102,6 +102,7 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 2", cube_geo, simpleProgram, laboon_handle);
 	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 
+
 	tr_pos = Vec3(-11.5f, 0.25f, 8.75f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(3.0f, 3.0f, 3.0f);

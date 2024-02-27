@@ -64,6 +64,10 @@ struct TransformComponent {
 	Vec3 size_;
 };
 
+struct ColorComponent {
+	Vec4 color_;
+};
+
 struct AudioComponent {
 	AudioComponent(std::string name, ALfloat pos[3],
 		ALfloat speed[3], float gain = 1.0f, float pitch = 1.0f)
