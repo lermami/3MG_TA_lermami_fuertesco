@@ -262,7 +262,6 @@ void Window::addProgram(unsigned new_program) {
 
   if (is_new) {
     program_list_.push_back(new_program);
-		printf("A");
   }
 }
 

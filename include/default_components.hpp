@@ -79,6 +79,11 @@ struct AudioComponent {
 	SoundSource sound_source_;
 };
 
+struct BoxColliderComponent {
+	Vec3 extent_;
+	Vec3 center_offset_;
+};
+
 struct Geometry {
 	std::vector<Vertex> vertex_;
 	std::vector<unsigned> indices_;

@@ -12,7 +12,9 @@ void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, 
 
 void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* label, ALfloat pos[3], ALfloat vel[3], float gain = 1.0f, float pitch = 1.0f, bool playing = false);
 
-void init_color_system(ColorComponent& color, float r, float g, float b, float a);
+void init_color_system(ColorComponent& color, float r, float g, float b, float a = 1.0f);
+
+void change_color_system(Engine& e, size_t entity, float r, float g, float b, float a = 1.0f);
 
 void init_ambient_light_system(LightComponent& light, Vec3 color);
 
@@ -28,6 +30,8 @@ void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec
 
 void rotate_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 rot);
 
+void set_transform_system(Engine& e, size_t entity, Vec3 position, Vec3 rotation, Vec3 size);
+
 size_t on_click_system(std::vector<std::optional<TransformComponent>>& transforms, float mouse_x, float mouse_y);
 
 void set_position_system(TransformComponent& transform, Vec3 pos);
@@ -38,4 +42,8 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 
-void imgui_transform_system(Engine& e, Window& w);
+void init_box_collider_system(BoxColliderComponent& component, Vec3 extent, Vec3 center_offset = Vec3(0.0f, 0.0f, 0.0f));
+
+bool are_colliding_system(Engine& e, size_t entity1, size_t entity2);
+
+
