@@ -11,7 +11,9 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 void init_vertex_color_system(RenderComponent& render, float r, float g, float b, float a);
 
-void init_color_system(ColorComponent& color, float r, float g, float b, float a);
+void init_color_system(ColorComponent& color, float r, float g, float b, float a = 1.0f);
+
+void change_color_system(Engine& e, size_t entity, float r, float g, float b, float a = 1.0f);
 
 void init_ambient_light_system(LightComponent& light, Vec3 color);
 
@@ -26,6 +28,8 @@ void init_camera_system(CameraComponent& cameraComp, Vec3 pos = Vec3(0.0f, 0.0f,
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov);
 
 void rotate_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 rot);
+
+void set_transform_system(Engine& e, size_t entity, Vec3 position, Vec3 rotation, Vec3 size);
 
 size_t on_click_system(std::vector<std::optional<TransformComponent>>& transforms, float mouse_x, float mouse_y);
 

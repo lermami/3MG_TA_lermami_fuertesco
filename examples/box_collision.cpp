@@ -41,11 +41,11 @@ int main(int, char**) {
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
-	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
+	auto color_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/Color.vs", "../assets/BasicShader/BasicColor/Color.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
+	obj_paths.emplace_back("../assets/obj_test.obj");
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
@@ -56,42 +56,44 @@ int main(int, char**) {
 		objs.push_back(std::move(future));
 	}
 
-	Geometry laboon_geo = objs[0].get();
+	Geometry cube_geo = objs[0].get();
 
 	unsigned n_obj = 1000;
 	
-	Vec3 tr_pos(0.0f, 0.0f, -6.0f);
-	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(1.0f, 1.0f, 1.0f);
-
 	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 
-	size_t new_e = component_manager.add_entity();
-	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
+	//Cube 1
+	Vec3 tr_pos(-2.0f, 0.0f, -6.0f);
+	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+	Vec3 obj_size(1.0f, 1.0f, 1.0f);
+
+	size_t cube1 = component_manager.add_entity();
+	auto tr_render = component_manager.create_component<RenderComponent>(cube1);
+	auto tr_transform = component_manager.create_component<TransformComponent>(cube1);
+	auto tr_color = component_manager.create_component<ColorComponent>(cube1);
+	auto tr_collider = component_manager.create_component<BoxColliderComponent>(cube1);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, laboon_geo, simpleProgram, laboon_handle);
-	init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
-	
-  //Light
-	size_t light_entity[4];
-	light_entity[0] = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f));
+	init_render_component_system(*tr_render, cube_geo, color_shader, laboon_handle);
+	init_box_collider_system(*tr_collider, Vec3(1, 1, 1));
+	init_color_system(*tr_color, 0.5f, 0.5f, 0.75f, 1.0f);
 
-	light_entity[1] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
-	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+	//Cube 2
+	 tr_pos = Vec3(2.0f, 0.0f, -6.0f);
+	 obj_rot = Vec3(0.0f, 0.0f, 0.0f);
+	 obj_size = Vec3(1.0f, 1.0f, 1.0f);
 
-	light_entity[2] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[2]);
-	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
+	 size_t cube2 = component_manager.add_entity();
+	 tr_render = component_manager.create_component<RenderComponent>(cube2);
+	 tr_transform = component_manager.create_component<TransformComponent>(cube2);
+	 tr_color = component_manager.create_component<ColorComponent>(cube2);
+	 tr_collider = component_manager.create_component<BoxColliderComponent>(cube2);
 
-	light_entity[3] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_render_component_system(*tr_render, cube_geo, color_shader, laboon_handle);
+	init_box_collider_system(*tr_collider, Vec3(1, 1, 1));
+	init_color_system(*tr_color, 0.8f, 0.8f, 0.8f, 1.0f);
 	
 
   //Camera
@@ -117,28 +119,53 @@ int main(int, char**) {
 
 		input_map.getMousePos(mouse_x, mouse_y);
 
+		auto transform1 = component_manager.get_component<TransformComponent>(cube1);
+
 		if (input_map.IsKeyPressed('W')) {
-			input.z = input_velocity;
+			transform1->pos_.y += input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('S')) {
-			input.z = -input_velocity;
+			transform1->pos_.y -= input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('A')) {
-			input.x = -input_velocity;
+			transform1->pos_.x -= input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('D')) {
-			input.x = input_velocity;
+			transform1->pos_.x += input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('Q')) {
-			input.y = -input_velocity;
+			transform1->pos_.z -= input_velocity;
 		}
 
 		if (input_map.IsKeyPressed('E')) {
-			input.y = input_velocity;
+			transform1->pos_.z += input_velocity;
+		}
+
+		if (are_colliding_system(e, cube1, cube2)) {
+			change_color_system(e, cube2, 1.0f, 0.2f, 0.2f, 1.0f);
+
+			auto transform2 = component_manager.get_component<TransformComponent>(cube2);
+
+			float cube_speed = 0.01f;
+
+			Vec3 movement_vector = transform2->pos_ - transform1->pos_;
+
+			movement_vector.Normalize();
+
+			movement_vector *= cube_speed;
+
+			transform2->pos_ += movement_vector;
+
+
+
+
+		}
+		else {
+			change_color_system(e, cube2, 0.8f, 0.8f, 0.8f, 1.0f);
 		}
 		
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
