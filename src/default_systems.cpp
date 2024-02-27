@@ -427,7 +427,6 @@ void imgui_transform_system(Engine& e, Window& w) {
 		ImGui::End();
 	}
 
-	ImGui::ShowDemoWindow();
 }
 
 void init_box_collider_system(BoxColliderComponent& component, Vec3 extent, Vec3 center_offset) {

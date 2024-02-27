@@ -29,13 +29,13 @@ int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
+	auto& resourceM = e.getResourceManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
 	
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
-	w.initImGui();
 	w.enableCulling(true);
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
@@ -49,7 +49,7 @@ int main(int, char**) {
 
 	//Create obj entity
 	for (auto& path : obj_paths) {
-		std::function<Geometry()> mycall_vertex = [path]() { return Engine::LoadObj(path.c_str()); };
+		std::function<Geometry()> mycall_vertex = [&]() { return  resourceM.LoadObj("A", path.c_str()); };
 
 		std::future<Geometry> future = thread_manager.add(mycall_vertex);
 
@@ -57,6 +57,8 @@ int main(int, char**) {
 	}
 
 	Geometry cube_geo = objs[0].get();
+
+	resourceM.createBuffersWithGeometry(cube_geo, "CubeVertices", "CubeIndices");
 
 	unsigned n_obj = 1000;
 	
@@ -75,7 +77,7 @@ int main(int, char**) {
 	auto tr_collider = component_manager.create_component<BoxColliderComponent>(cube1);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, color_shader, laboon_handle);
+	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", color_shader, laboon_handle);
 	init_box_collider_system(*tr_collider, Vec3(1, 1, 1));
 	init_color_system(*tr_color, 0.5f, 0.5f, 0.75f, 1.0f);
 
@@ -91,7 +93,7 @@ int main(int, char**) {
 	 tr_collider = component_manager.create_component<BoxColliderComponent>(cube2);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, cube_geo, color_shader, laboon_handle);
+	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", color_shader, laboon_handle);
 	init_box_collider_system(*tr_collider, Vec3(1, 1, 1));
 	init_color_system(*tr_color, 0.8f, 0.8f, 0.8f, 1.0f);
 	
@@ -170,7 +172,7 @@ int main(int, char**) {
 		
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
-		imgui_transform_system(*component_manager.get_component_list<TransformComponent>());
+		imgui_transform_system(e, w);
 
 		w.render();
 
