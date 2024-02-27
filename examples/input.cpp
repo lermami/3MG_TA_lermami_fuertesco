@@ -15,6 +15,7 @@
 int main(int, char**) {
   Engine e;
   auto& component_manager = e.getComponentManager();
+  auto& resourceM = e.getResourceManager();
 
   auto maybe_w = Window::create(e, 1024, 768, "Test Window");
   if (!maybe_w) return -1;
@@ -39,11 +40,12 @@ int main(int, char**) {
   size_t triangle = component_manager.add_entity();
 
   auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
+  resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
 
   auto tr_render = component_manager.create_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
+  init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 
   Input input_map(w);
 

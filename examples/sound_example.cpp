@@ -17,14 +17,14 @@
 int main(int, char**) {
   Engine e;
   auto& component_manager = e.getComponentManager();
+  auto& resourceM = e.getResourceManager();
 
-  auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+  auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
   if (!maybe_w) return -1;
 
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
-  w.initImGui();
   w.initSoundContext();
 
   Geometry triangleGeo;
@@ -49,8 +49,11 @@ int main(int, char**) {
   auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
   auto tr_audio = component_manager.create_component<AudioComponent>(triangle);
 
+  resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+
+
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
+  init_render_component_system(*tr_render, "Triangle 1", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 
   ALfloat pos[3] = { 0,0,0 };
   ALfloat vel[3] = { 0,0,0 };
@@ -66,7 +69,7 @@ int main(int, char**) {
   auto tr_audio2 = component_manager.create_component<AudioComponent>(triangle2);
 
   init_transform_system(*tr_transform2, tr_pos2, tr_rot, tr_size);
-  init_render_component_system(*tr_render2, triangleGeo, simpleProgram, NULL);
+  init_render_component_system(*tr_render2, "Triangle 2", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 
   SoundBuffer b2 = SoundBuffer::MakeBuffer("../assets/test2.wav").value();
   init_audio_system(*tr_audio2, b2, "Test2", pos, vel, 1.0f, 1.0f, false);
@@ -86,7 +89,7 @@ int main(int, char**) {
     basic_sound_system(*component_manager.get_component_list<AudioComponent>());
 
     // Draw triangle
-    imgui_transform_system(*component_manager.get_component_list<TransformComponent>());
+    imgui_transform_system(e, w);
 
     w.render();
     w.swap();

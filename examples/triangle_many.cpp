@@ -27,8 +27,9 @@ int main(int, char**) {
 	Engine e;
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
+	auto& resourceM = e.getResourceManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
 
 	auto& w = maybe_w.value();
@@ -54,6 +55,8 @@ int main(int, char**) {
 
 	triangleGeo.indices_ = { 0, 1, 2 };
 
+	resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+
 	for (int i = 0; i < n_triangles; i++) {
 		Vec3 tr_pos;
 		tr_pos.x = (float)((rand() % 200) - 100) / 100.0f;
@@ -67,7 +70,7 @@ int main(int, char**) {
 		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-		init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
+		init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 	}
 
 	//Input Declaration
@@ -79,6 +82,7 @@ int main(int, char**) {
 	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
 		w.calculateLastTime();
 
+		w.updateImGui();
 		input_map.updateInputs();
 
 		float input_x = 0, input_y = 0;
@@ -123,6 +127,8 @@ int main(int, char**) {
 			set_position_system(*component_manager.get_component<TransformComponent>(clicked_e), Vec3((float)mouse_x, (float)mouse_y, 0.0f));
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
+
+		imgui_transform_system(e, w);
 
 		w.render();
 

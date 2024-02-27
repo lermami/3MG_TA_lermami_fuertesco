@@ -9,26 +9,14 @@
 #include "shader_management.hpp"
 #include "camera.hpp"
 #include "input.hpp"
-#include "component_manager.hpp"
 #include "Engine.hpp"
+#include "enum.hpp"
+#include <vector>
 
-void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture) {
-
-	for (int i = 0; i < geometry.vertex_.size(); i++) {
-		render.geometry_.vertex_.push_back(geometry.vertex_[i]);
-	}
-
-	unsigned vertex_struct_size = (unsigned) sizeof(render.geometry_.vertex_[0]);
-	unsigned vertex_buffer_size = render.geometry_.vertex_.size();
-
-	render.elements_buffer_ = std::make_shared<Buffer>();
-	render.elements_buffer_.get()->init(vertex_struct_size * vertex_buffer_size);
-	render.elements_buffer_.get()->uploadData(&render.geometry_.vertex_[0], vertex_struct_size * vertex_buffer_size);
-
-	render.order_buffer_ = std::make_shared<Buffer>();
-	render.order_buffer_.get()->init((unsigned)geometry.indices_.size());
-	render.order_buffer_.get()->uploadData(&geometry.indices_[0], (unsigned)(geometry.indices_.size() * sizeof(unsigned)));
-
+void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, std::string orderBuffer, unsigned int program, unsigned int texture) {
+	render.name_ = name;
+	render.elements_buffer_ = vertexBuffer;
+	render.order_buffer_ = orderBuffer;
 	render.program_ = program;
 	render.texture_ = texture;
 }
@@ -46,16 +34,6 @@ void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* lab
 
 	if(playing)
 		audio.sound_source_.Play();
-}
-
-void init_vertex_color_system(RenderComponent& render, float r, float g, float b, float a) {
-	for (auto& v : render.geometry_.vertex_) {
-		v.color.x = r;
-		v.color.y = g;
-		v.color.z = b;
-		v.color.w = a;
-	}
-
 }
 
 void init_color_system(ColorComponent& color, float r, float g, float b, float a) {
@@ -231,16 +209,16 @@ void rotate_camera_system(CameraComponent& cam, Input& input, const float w, con
 	double mouse_x, mouse_y;
 	input.getMousePos(mouse_x, mouse_y);
 
-	if (input.IsKeyDown(kKey_LeftClick)) {
+	if (input.IsKeyDown(kKey_RightClick)) {
 		first_pos = Vec2((float)mouse_x, (float)mouse_y);
 	}
 
-	if (input.IsKeyPressed(kKey_LeftClick)) {
+	if (input.IsKeyPressed(kKey_RightClick)) {
 		alpha = last_alpha + ((float)mouse_x - first_pos.x) / w * cam.sensitivity_;
 		omega = last_omega + ((float)mouse_y - first_pos.y) / h * -1;
 	}
 
-	if (input.IsKeyUp(kKey_LeftClick)) {
+	if (input.IsKeyUp(kKey_RightClick)) {
 		last_alpha = alpha;
 		last_omega = omega;
 	}
@@ -291,40 +269,165 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 	ImGui::End();
 }
 
-void imgui_transform_system(std::vector<std::optional<TransformComponent>>& transforms_list) {
-	auto tr = transforms_list.begin();
-	int num = 0;
+void imgui_transform_system(Engine& e, Window& w) {
+	if (w.getImguiStatus()) {
+		auto& compM = e.getComponentManager();
 
-	ImGui::Begin("Transform");
+		auto transformList = compM.get_component_list<TransformComponent>();
+		auto renderList = compM.get_component_list<RenderComponent>();
+		auto lightList = compM.get_component_list<LightComponent>();
 
-	for (; tr != transforms_list.end(); tr++) {
-		if (!tr->has_value()) continue;
-		auto& transform = tr->value();
+		auto tr = transformList->begin();
+		auto r = renderList->begin();
+		auto l = lightList->begin();
 
-		ImGui::PushID(num);
-		if (ImGui::CollapsingHeader("Object")) {
-			Vec3 aux_pos = transform.pos_;
-			if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
-				transform.pos_ = aux_pos;
+		auto& resourceM = e.getResourceManager();
+		std::vector<unsigned>& texList = resourceM.getTextureList();
+		std::vector<std::string>& texNameList = resourceM.getTextureNamesList();
+		std::string vectorStr(texList.begin(), texList.end());
+
+		int num = 0;
+
+		//Init table
+		unsigned w_width, w_height;
+		w.getWindowSize(w_width, w_height);
+		ImGui::SetNextWindowSize(ImVec2(w_width * 0.3f, w_height));
+		ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+		ImGui::Begin("ImGui", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+
+		ImGui::BeginTabBar("Tabs");
+		if (ImGui::BeginTabItem("Components")) {
+			for (; tr != transformList->end(); tr++, r++) {
+				if (!tr->has_value() && !r->has_value()) continue;
+				auto& transform = tr->value();
+				auto& render = r->value();
+
+				//Component
+				ImGui::PushID(num);
+				if (ImGui::CollapsingHeader(render.name_.c_str())) {
+
+					//Transform
+					if (ImGui::CollapsingHeader("Transform")) {
+						Vec3 aux_pos = transform.pos_;
+						if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+							transform.pos_ = aux_pos;
+						}
+
+						Vec3 aux_rot = transform.rot_;
+						if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
+							transform.rot_ = aux_rot;
+						}
+
+						float aux_size = transform.size_.x;
+						if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
+							transform.size_ = aux_size;
+						}
+					}
+
+					//Render
+					if (ImGui::CollapsingHeader("Render")) {
+						unsigned tex_aux = render.texture_;
+
+						if (ImGui::BeginCombo("Lista desplegable", resourceM.getTextureName(tex_aux).c_str()))
+						{
+							for (int i = 0; i < texList.size(); i++)
+							{
+								if (ImGui::Selectable(texNameList[i].c_str(), texList[i] == tex_aux))
+								{
+									render.texture_ = texList[i];
+								}
+							}
+							ImGui::EndCombo();
+						}
+					}
+
+				}
+
+				ImGui::PopID();
+				num++;
 			}
 
-			Vec3 aux_rot = transform.rot_;
-			if (ImGui::DragFloat3("Rotation", &aux_rot.x, 0.1f, -100.0f, 100.0f, "%.3f")) {
-				transform.rot_ = aux_rot;
-			}
+			num = 0;
 
-			float aux_size = transform.size_.x;
-			if (ImGui::DragFloat("Size", &aux_size, 0.05f, 0.0f, 1000.0f, "%.3f")) {
-				transform.size_ = aux_size;
+			for (; l != lightList->end(); l++) {
+				if (l->has_value()) {
+					ImGui::PushID(num);
+					auto& light = l->value();
+
+					if (ImGui::CollapsingHeader("Light")) {
+						/*
+						switch (light.target_) {
+						case LightType::kAmbient:
+
+							break;
+						case LightType::kDirectional:
+
+							break;
+						case LightType::kPoint:
+
+							break;
+						case LightType::kSpot:
+
+							break;
+						}
+						*/
+
+						Vec3 aux_pos = light.pos_;
+						if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+							light.pos_ = aux_pos;
+						}
+
+						Vec3 aux_color = light.color_;
+						if (ImGui::ColorPicker3("Color", &aux_color.x)) {
+							light.color_ = aux_color;
+						}
+					}
+					ImGui::PopID();
+					num++;
+				}
 			}
+				ImGui::EndTabItem();
 		}
 
-		ImGui::PopID();
-		num++;
+		if (ImGui::BeginTabItem("Tools")) {
+			/*
+			static unsigned tex = resourceM.getTexture(0);
+			static std::string vbuff = "Vertex";
+			static std::string ibuff;
+			if (ImGui::BeginCombo("Lista desplegable", resourceM.getTextureName(tex).c_str()))
+			{
+				for (int i = 0; i < texList.size(); i++)
+				{
+					if (ImGui::Selectable(texNameList[i].c_str(), texList[i] == tex))
+					{
+						tex = texList[i];
+					}
+				}
+				ImGui::EndCombo();
+			}
+
+			if (ImGui::Button("Add entity")) {
+				Vec3 tr_pos(0.0f, 0.0f, -6.0f);
+				Vec3 obj_rot(0.0f, 1.57f, 0.0f);
+				Vec3 obj_size(1.0f, 1.0f, 1.0f);
+
+				size_t new_e = compM.add_entity();
+				auto tr_render = compM.create_component<RenderComponent>(new_e);
+				auto tr_transform = compM.create_component<TransformComponent>(new_e);
+
+				init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+				init_render_component_system(*tr_render, "Laboon", "LaboonVertices", "LaboonIndices", 6, 2);
+			}
+			*/
+
+			ImGui::EndTabItem();
+		}
+
+		ImGui::EndTabBar();
+		ImGui::End();
 	}
 
-
-	ImGui::End();
+	ImGui::ShowDemoWindow();
 }
 
 void init_box_collider_system(BoxColliderComponent& component, Vec3 extent, Vec3 center_offset) {
