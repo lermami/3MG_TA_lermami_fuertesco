@@ -10,25 +10,13 @@
 #include "camera.hpp"
 #include "input.hpp"
 #include "Engine.hpp"
+#include "enum.hpp"
 #include <vector>
 
-void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, unsigned orderBuffer, Geometry& geometry, unsigned int program, unsigned int texture) {
+void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, std::string orderBuffer, unsigned int program, unsigned int texture) {
 	render.name_ = name;
-
-	unsigned vertex_struct_size = (unsigned) sizeof(geometry.vertex_[0]);
-	unsigned vertex_buffer_size = geometry.vertex_.size();
-
-	/*
-	render.elements_buffer_ = std::make_shared<Buffer>();
-	render.elements_buffer_.get()->init(vertex_struct_size * vertex_buffer_size);
-	render.elements_buffer_.get()->uploadData(&geometry.vertex_[0], vertex_struct_size * vertex_buffer_size);
-	*/
 	render.elements_buffer_ = vertexBuffer;
-
-	render.order_buffer_ = std::make_shared<Buffer>();
-	render.order_buffer_.get()->init((unsigned)geometry.indices_.size());
-	render.order_buffer_.get()->uploadData(&geometry.indices_[0], (unsigned)(geometry.indices_.size() * sizeof(unsigned)));
-
+	render.order_buffer_ = orderBuffer;
 	render.program_ = program;
 	render.texture_ = texture;
 }
@@ -257,9 +245,11 @@ void imgui_transform_system(Engine& e, Window& w) {
 
 		auto transformList = compM.get_component_list<TransformComponent>();
 		auto renderList = compM.get_component_list<RenderComponent>();
+		auto lightList = compM.get_component_list<LightComponent>();
 
 		auto tr = transformList->begin();
 		auto r = renderList->begin();
+		auto l = lightList->begin();
 
 		auto& resourceM = e.getResourceManager();
 		std::vector<unsigned>& texList = resourceM.getTextureList();
@@ -326,17 +316,75 @@ void imgui_transform_system(Engine& e, Window& w) {
 				ImGui::PopID();
 				num++;
 			}
-			ImGui::EndTabItem();
+
+			num = 0;
+
+			for (; l != lightList->end(); l++) {
+				if (l->has_value()) {
+					ImGui::PushID(num);
+					auto& light = l->value();
+
+					if (ImGui::CollapsingHeader("Light")) {
+						/*
+						switch (light.target_) {
+						case LightType::kAmbient:
+
+							break;
+						case LightType::kDirectional:
+
+							break;
+						case LightType::kPoint:
+
+							break;
+						case LightType::kSpot:
+
+							break;
+						}
+						*/
+
+						Vec3 aux_pos = light.pos_;
+						if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+							light.pos_ = aux_pos;
+						}
+
+						Vec3 aux_color = light.color_;
+						if (ImGui::ColorPicker3("Color", &aux_color.x)) {
+							light.color_ = aux_color;
+						}
+					}
+					ImGui::PopID();
+					num++;
+				}
+			}
+				ImGui::EndTabItem();
 		}
 
 		if (ImGui::BeginTabItem("Tools")) {
-			if (ImGui::Button("Add entity")) {
-				//do something
+			static unsigned tex = resourceM.getTexture(0);
+			static std::string vbuff = "Vertex";
+			static std::string ibuff;
+			if (ImGui::BeginCombo("Lista desplegable", resourceM.getTextureName(tex).c_str()))
+			{
+				for (int i = 0; i < texList.size(); i++)
+				{
+					if (ImGui::Selectable(texNameList[i].c_str(), texList[i] == tex))
+					{
+						tex = texList[i];
+					}
+				}
+				ImGui::EndCombo();
 			}
+
+			if (ImGui::Button("Add entity")) {
+
+			}
+
 			ImGui::EndTabItem();
 		}
 
 		ImGui::EndTabBar();
 		ImGui::End();
 	}
+
+	ImGui::ShowDemoWindow();
 }

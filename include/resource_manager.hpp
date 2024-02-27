@@ -8,6 +8,7 @@
 
 struct Geometry;
 class VertexBuffer;
+class IndexBuffer;
 
 class ResourceManager {
 public:
@@ -27,6 +28,12 @@ public:
   bool createVertexBuffer(std::string nameID, float* vertices, unsigned size);
   VertexBuffer* getVertexBuffer(std::string nameID);
 
+  bool createIndexBuffer(std::string nameID, unsigned* indices, unsigned size);
+  IndexBuffer* getIndexBuffer(std::string nameID);
+
+  bool createBuffersWithGeometry(Geometry& geo, std::string nameIDVertex, std::string nameIDIndex);
+
+
 private:
   std::vector<unsigned> textures_;
   std::vector<std::string> texture_names_;
@@ -35,5 +42,6 @@ private:
   std::vector<std::string> geometry_names_;
 
   std::unordered_map<std::string, VertexBuffer*> vertexBuffers_;
+  std::unordered_map<std::string, IndexBuffer*> indexBuffers_;
 
 };

@@ -452,41 +452,10 @@ void Window::render() {
 		//Color
 		vao->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
-		/*
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)0);
-		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
-		glEnableVertexAttribArray(0);
+		IndexBuffer* indexBuffer = resourceM.getIndexBuffer(render.order_buffer_);
+		indexBuffer->bind();
 
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)(3 * sizeof(float)));
-		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
-		glEnableVertexAttribArray(3);
-
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)(6 * sizeof(float)));
-		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
-		glEnableVertexAttribArray(1);
-
-		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)(8 * sizeof(float)));
-		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
-		glEnableVertexAttribArray(2);
-		*/
-
-
-		/*
-		render.elements_buffer_.get()->bind(kTarget_VertexData);
-
-		//Vertices
-		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
-		//Normals
-		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
-		//Uv
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
-		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
-		*/
-
-		auto order_buffer = render.order_buffer_.get();
-		order_buffer->bind(kTarget_Elements);
-		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, indexBuffer->getCount(), GL_UNSIGNED_INT, 0);
 	}
 }
 
@@ -536,25 +505,10 @@ void Window::renderShadowMap(unsigned int program) {
 			//Color
 			vao->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
-			/*
-			render.elements_buffer_.get()->bind(kTarget_VertexData);
+			IndexBuffer* indexBuffer = resourceM.getIndexBuffer(render.order_buffer_);
+			indexBuffer->bind();
 
-			unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
-
-			//Vertices
-			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
-			//Normals
-			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
-			//Uv
-			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
-			//Color
-			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
-			*/
-
-			auto order_buffer = render.order_buffer_.get();
-			order_buffer->bind(kTarget_Elements);
-
-			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, indexBuffer->getCount(), GL_UNSIGNED_INT, 0);
 		}
 	}
 }

@@ -6,7 +6,7 @@ class VertexBuffer;
 class Input;
 
 //void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture);
-void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, unsigned orderBuffer, Geometry& geometry, unsigned int program, unsigned int texture);
+void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, std::string orderBuffer, unsigned int program, unsigned int texture);
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size);
 

@@ -164,3 +164,41 @@ VertexBuffer* ResourceManager::getVertexBuffer(std::string nameID) {
 
 	return vertexBuffers_.at(nameID);
 }
+
+bool ResourceManager::createIndexBuffer(std::string nameID, unsigned* indices, unsigned size) {
+	if (indexBuffers_.count(nameID) > 0) {
+		printf("ERROR. INDEX BUFFER NAMED '%s' ALREADY EXISTS", nameID.c_str());
+		return false;
+	}
+
+	indexBuffers_[nameID] = new IndexBuffer(indices, size);
+
+	return true;
+}
+
+IndexBuffer* ResourceManager::getIndexBuffer(std::string nameID) {
+	if (indexBuffers_.count(nameID) == 0) {
+		printf("ERROR. INDEX BUFFER '%s' NOT FOUND", nameID.c_str());
+		return nullptr;
+	}
+
+	return indexBuffers_.at(nameID);
+}
+
+bool ResourceManager::createBuffersWithGeometry(Geometry& geo, std::string nameIDVertex, std::string nameIDIndex) {
+	if (vertexBuffers_.count(nameIDVertex) > 0) {
+		printf("ERROR. VERTEX BUFFER NAMED '%s' ALREADY EXISTS", nameIDVertex.c_str());
+		return false;
+	}
+
+	if (indexBuffers_.count(nameIDIndex) > 0) {
+		printf("ERROR. INDEX BUFFER NAMED '%s' ALREADY EXISTS", nameIDIndex.c_str());
+		return false;
+	}
+
+
+	vertexBuffers_[nameIDVertex] = new VertexBuffer(&geo.vertex_[0].pos.x, geo.vertex_.size() * sizeof(Vertex));
+	indexBuffers_[nameIDIndex] = new IndexBuffer(&geo.indices_[0], geo.indices_.size() * sizeof(unsigned));
+
+	return true;
+}
