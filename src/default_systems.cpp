@@ -360,6 +360,7 @@ void imgui_transform_system(Engine& e, Window& w) {
 		}
 
 		if (ImGui::BeginTabItem("Tools")) {
+			/*
 			static unsigned tex = resourceM.getTexture(0);
 			static std::string vbuff = "Vertex";
 			static std::string ibuff;
@@ -376,8 +377,18 @@ void imgui_transform_system(Engine& e, Window& w) {
 			}
 
 			if (ImGui::Button("Add entity")) {
+				Vec3 tr_pos(0.0f, 0.0f, -6.0f);
+				Vec3 obj_rot(0.0f, 1.57f, 0.0f);
+				Vec3 obj_size(1.0f, 1.0f, 1.0f);
 
+				size_t new_e = compM.add_entity();
+				auto tr_render = compM.create_component<RenderComponent>(new_e);
+				auto tr_transform = compM.create_component<TransformComponent>(new_e);
+
+				init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+				init_render_component_system(*tr_render, "Laboon", "LaboonVertices", "LaboonIndices", 6, 2);
 			}
+			*/
 
 			ImGui::EndTabItem();
 		}
