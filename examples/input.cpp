@@ -43,7 +43,7 @@ int main(int, char**) {
   auto tr_render = component_manager.create_component<RenderComponent>(triangle);
   auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
   init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, triangleGeo, simpleProgram, NULL);
+  init_render_component_system(*tr_render, "Triangle", triangleGeo, simpleProgram, NULL);
 
   Input input_map(w);
 

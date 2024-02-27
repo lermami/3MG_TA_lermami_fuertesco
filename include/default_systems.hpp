@@ -2,14 +2,15 @@
 #include "component_manager.hpp"
 
 class Camera;
+class VertexBuffer;
+class Input;
 
-void init_render_component_system(RenderComponent& render, Geometry& geometry, unsigned int program, unsigned int texture);
+//void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture);
+void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, std::string orderBuffer, unsigned int program, unsigned int texture);
 
 void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size);
 
 void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* label, ALfloat pos[3], ALfloat vel[3], float gain = 1.0f, float pitch = 1.0f, bool playing = false);
-
-void init_vertex_color_system(RenderComponent& render, float r, float g, float b, float a);
 
 void init_color_system(ColorComponent& color, float r, float g, float b, float a);
 
@@ -35,10 +36,6 @@ void move_camera_system(CameraComponent& cam, Vec3 input);
 
 void rotate_camera_system(CameraComponent& cam, Input& input, const float w, const float h);
 
-void shader_prop_system(std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms);
-
-void render_system(Window& w, CameraComponent& current_cam, std::vector<std::optional<RenderComponent>>& renders, std::vector<std::optional<TransformComponent>>& transforms, std::vector<std::optional<LightComponent>>& lights, unsigned int depth_map);
-
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list);
 
-void imgui_transform_system(std::vector<std::optional<TransformComponent>>& transforms_list);
+void imgui_transform_system(Engine& e, Window& w);

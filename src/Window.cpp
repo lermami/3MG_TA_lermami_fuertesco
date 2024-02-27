@@ -14,8 +14,8 @@
 
 #include "AL/alc.h"
 
-std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title) {
-  Window window(engine, w, h, title);
+std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title, bool imgui) {
+  Window window(engine, w, h, title, imgui);
 
   if (!window.is_done()) {
     return window;
@@ -25,8 +25,15 @@ std::optional<Window> Window::create(Engine& engine, int w, int h, const char* t
   }
 }
 
-Window::Window(Engine& e, int w, int h, const char* title) : engine_{ e } {
-	handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
+Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_{ e } {
+	imguiInit_ = imgui;
+	if (imguiInit_) {
+		handle_ = glfwCreateWindow(w + w*0.3, h, title, NULL, NULL);
+		glViewport(w * 0.3f, 0, w, h);
+	}
+	else {
+		handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
+	}
 	glfwMakeContextCurrent(handle_);
 
 	GLenum initstate = glewInit();
@@ -39,7 +46,6 @@ Window::Window(Engine& e, int w, int h, const char* title) : engine_{ e } {
 	deltaTime_ = 0;
 
 	//Add flags
-	imguiInit_ = false;
 	renderShadows_ = true;
 
 	if (renderShadows_) {
@@ -85,6 +91,10 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+	if (imguiInit_) {
+		initImGui();
+	}
+	w.imguiInit_ = false;
 
 	renderShadows_ = w.renderShadows_;
 	depthmapFBO_ = w.depthmapFBO_;
@@ -103,6 +113,10 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	deltaTime_ = w.deltaTime_;
 
 	imguiInit_ = w.imguiInit_;
+	if (imguiInit_) {
+		initImGui();
+	}
+	w.imguiInit_ = false;
 
 	renderShadows_ = w.renderShadows_;
 
@@ -135,9 +149,11 @@ void Window::initImGui() {
 }
 
 void Window::updateImGui() {
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
+	if (imguiInit_) {
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+	}
 }
 
 void Window::renderImgui() {
@@ -363,6 +379,7 @@ void Window::renderLights() {
 
 void Window::render() {
 	auto& componentM = engine_.getComponentManager();
+	auto& resourceM = engine_.getResourceManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>();
 	auto colors = componentM.get_component_list<ColorComponent>();
@@ -382,7 +399,12 @@ void Window::render() {
 		renderShadowMap(shadowProgram_);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, width_, height_);
+		if (imguiInit_) {
+			glViewport(width_*0.3f, 0, width_, height_);
+		}
+		else {
+			glViewport(0, 0, width_, height_);
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -431,26 +453,29 @@ void Window::render() {
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
 		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
-		render.elements_buffer_.get()->bind(kTarget_VertexData);
-		unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
 
+		unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
+		VertexBuffer* vao = resourceM.getVertexBuffer(render.elements_buffer_);
+		vao->bind();
 		//Vertices
-		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+		vao->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
 		//Normals
-		render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+		vao->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
 		//Uv
-		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+		vao->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 		//Color
-		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+		vao->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
-		auto order_buffer = render.order_buffer_.get();
-		order_buffer->bind(kTarget_Elements);
-		glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+		IndexBuffer* indexBuffer = resourceM.getIndexBuffer(render.order_buffer_);
+		indexBuffer->bind();
+
+		glDrawElements(GL_TRIANGLES, indexBuffer->getCount(), GL_UNSIGNED_INT, 0);
 	}
 }
 
 void Window::renderShadowMap(unsigned int program) {
 	auto& componentM = engine_.getComponentManager();
+	auto& resourceM = engine_.getResourceManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>();
 
@@ -481,23 +506,23 @@ void Window::renderShadowMap(unsigned int program) {
 			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
 			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
 			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
-			render.elements_buffer_.get()->bind(kTarget_VertexData);
 
-			unsigned vertex_struct_size = (unsigned)sizeof(render.geometry_.vertex_[0]);
-
+			unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
+			VertexBuffer* vao = resourceM.getVertexBuffer(render.elements_buffer_);
+			vao->bind();
 			//Vertices
-			render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			vao->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
 			//Normals
-			render.elements_buffer_.get()->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			vao->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
 			//Uv
-			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			vao->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 			//Color
-			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+			vao->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
 
-			auto order_buffer = render.order_buffer_.get();
-			order_buffer->bind(kTarget_Elements);
+			IndexBuffer* indexBuffer = resourceM.getIndexBuffer(render.order_buffer_);
+			indexBuffer->bind();
 
-			glDrawElements(GL_TRIANGLES, order_buffer->size(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, indexBuffer->getCount(), GL_UNSIGNED_INT, 0);
 		}
 	}
 }
@@ -520,4 +545,8 @@ void Window::setCurrentCam(size_t cam) {
 
 size_t Window::getCurrentCam() {
 	return current_cam_;
+}
+
+bool Window::getImguiStatus() {
+	return imguiInit_;
 }

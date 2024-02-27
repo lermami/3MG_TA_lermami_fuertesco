@@ -24,12 +24,11 @@ int main(int, char**) {
 	ThreadManager thread_manager;
 	auto& component_manager = e.getComponentManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window");
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
 
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
-	w.initImGui();
 	w.enableCulling(true);
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
@@ -72,8 +71,8 @@ int main(int, char**) {
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, suzanneGeo, simpleProgram, 0);
-		init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_render_component_system(*tr_render, "Suzanne", suzanneGeo, simpleProgram, 0);
+		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
@@ -90,8 +89,8 @@ int main(int, char**) {
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, wolfGeo, simpleProgram, 0);
-		init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_render_component_system(*tr_render, "Wolf", wolfGeo, simpleProgram, 0);
+		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
@@ -108,8 +107,8 @@ int main(int, char**) {
 		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, tankGeo, simpleProgram, 0);
-		init_vertex_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
+		init_render_component_system(*tr_render, "Tank", tankGeo, simpleProgram, 0);
+		init_color_system(*tr_render, 0.5f, 0.0f, 0.5f, 1.0f);
 	}
 
 	//Input Declaration
@@ -182,6 +181,7 @@ int main(int, char**) {
 		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
+		imgui_transform_system(e, w);
 
 		w.render();
 
