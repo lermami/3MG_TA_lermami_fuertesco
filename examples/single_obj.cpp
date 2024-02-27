@@ -72,12 +72,14 @@ int main(int, char**) {
 	unsigned wallTex = resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 																						"../assets/wall.jpg");
 
+	resourceM.createVertexBuffer("LaboonVAO", &laboon_geo.vertex_[0].pos.x, laboon_geo.vertex_.size() * sizeof(Vertex));
+
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
 	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
 
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Laboon", laboon_geo, simpleProgram, laboonTex);
+	init_render_component_system(*tr_render, "Laboon", "LaboonVAO", 0, laboon_geo, simpleProgram, laboonTex);
 	
   //Light
 	size_t light_entity[4];

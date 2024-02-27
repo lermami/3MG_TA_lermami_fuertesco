@@ -82,7 +82,8 @@ struct Geometry {
 
 struct RenderComponent {
 	std::string name_;
-	std::shared_ptr<Buffer> elements_buffer_;
+	std::string elements_buffer_;
+	//unsigned elements_buffer_;
 	std::shared_ptr<Buffer> order_buffer_;
 	unsigned int program_ = -1;
 	unsigned int texture_ = -1;

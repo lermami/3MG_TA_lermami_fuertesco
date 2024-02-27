@@ -29,3 +29,21 @@ protected:
   const void* data_;
 
 }; 
+
+class VertexBuffer {
+  friend class ResourceManager;
+public:
+  ~VertexBuffer();
+
+  void bind() const;
+  void unbind() const;
+  unsigned get() const;
+  unsigned getCount() const;
+
+  void uploadFloatAttribute(unsigned int id, int size, int stride, void* offset);
+
+private:
+  VertexBuffer(float* vertices, unsigned size);
+  unsigned handle_;
+  unsigned count_;
+};

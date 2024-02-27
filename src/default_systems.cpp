@@ -12,15 +12,18 @@
 #include "Engine.hpp"
 #include <vector>
 
-void init_render_component_system(RenderComponent& render, const char* name, Geometry& geometry, unsigned int program, unsigned int texture) {
+void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, unsigned orderBuffer, Geometry& geometry, unsigned int program, unsigned int texture) {
 	render.name_ = name;
 
 	unsigned vertex_struct_size = (unsigned) sizeof(geometry.vertex_[0]);
 	unsigned vertex_buffer_size = geometry.vertex_.size();
 
+	/*
 	render.elements_buffer_ = std::make_shared<Buffer>();
 	render.elements_buffer_.get()->init(vertex_struct_size * vertex_buffer_size);
 	render.elements_buffer_.get()->uploadData(&geometry.vertex_[0], vertex_struct_size * vertex_buffer_size);
+	*/
+	render.elements_buffer_ = vertexBuffer;
 
 	render.order_buffer_ = std::make_shared<Buffer>();
 	render.order_buffer_.get()->init((unsigned)geometry.indices_.size());

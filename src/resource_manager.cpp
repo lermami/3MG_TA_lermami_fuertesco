@@ -1,6 +1,7 @@
 #include "resource_manager.hpp"
 #include <tiny_obj_loader.h>
 #include "default_components.hpp"
+#include "buffer.hpp"
 
 
 ResourceManager::ResourceManager() {
@@ -9,6 +10,9 @@ ResourceManager::ResourceManager() {
 
 ResourceManager::~ResourceManager() {
   //TODO: handle 
+	for (auto& [name, buffer] : vertexBuffers_) {
+		delete buffer;
+	}
 }
 
 unsigned ResourceManager::loadTexture(const char* name, Texture tex, const char* path) {
@@ -138,4 +142,25 @@ std::vector<unsigned>& ResourceManager::getTextureList(){
 
 std::vector<std::string>& ResourceManager::getTextureNamesList() {
   return texture_names_;
+}
+
+bool ResourceManager::createVertexBuffer(std::string nameID, float* vertices, unsigned size)
+{
+	if (vertexBuffers_.count(nameID) > 0) {
+		printf("ERROR. VERTEX BUFFER NAMED '%s' ALREADY EXISTS", nameID.c_str());
+		return false;
+	}
+
+	vertexBuffers_[nameID] = new VertexBuffer(vertices, size);
+
+	return true;
+}
+
+VertexBuffer* ResourceManager::getVertexBuffer(std::string nameID) {
+	if (vertexBuffers_.count(nameID) == 0) {
+		printf("ERROR. VERTEX BUFFER '%s' NOT FOUND", nameID.c_str());
+		return nullptr;
+	}
+
+	return vertexBuffers_.at(nameID);
 }

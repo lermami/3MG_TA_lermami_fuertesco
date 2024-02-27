@@ -374,6 +374,7 @@ void Window::renderLights() {
 
 void Window::render() {
 	auto& componentM = engine_.getComponentManager();
+	auto& resourceM = engine_.getResourceManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>(); 
 
@@ -438,8 +439,40 @@ void Window::render() {
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
 		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
-		render.elements_buffer_.get()->bind(kTarget_VertexData);
+
 		unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
+		VertexBuffer* vao = resourceM.getVertexBuffer(render.elements_buffer_);
+		vao->bind();
+		//Vertices
+		vao->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+		//Normals
+		vao->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+		//Uv
+		vao->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+		//Color
+		vao->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+		/*
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)0);
+		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
+		glEnableVertexAttribArray(0);
+
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)(3 * sizeof(float)));
+		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
+		glEnableVertexAttribArray(3);
+
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)(6 * sizeof(float)));
+		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
+		glEnableVertexAttribArray(1);
+
+		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, vertex_struct_size, (void*)(8 * sizeof(float)));
+		glBindBuffer(GL_ARRAY_BUFFER, vao->get());
+		glEnableVertexAttribArray(2);
+		*/
+
+
+		/*
+		render.elements_buffer_.get()->bind(kTarget_VertexData);
 
 		//Vertices
 		render.elements_buffer_.get()->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
@@ -449,6 +482,7 @@ void Window::render() {
 		render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 		//Color
 		render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+		*/
 
 		auto order_buffer = render.order_buffer_.get();
 		order_buffer->bind(kTarget_Elements);
@@ -458,6 +492,7 @@ void Window::render() {
 
 void Window::renderShadowMap(unsigned int program) {
 	auto& componentM = engine_.getComponentManager();
+	auto& resourceM = engine_.getResourceManager();
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>();
 
@@ -488,6 +523,20 @@ void Window::renderShadowMap(unsigned int program) {
 			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
 			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
 			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
+
+			unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
+			VertexBuffer* vao = resourceM.getVertexBuffer(render.elements_buffer_);
+			vao->bind();
+			//Vertices
+			vao->uploadFloatAttribute(0, 3, vertex_struct_size, (void*)0);
+			//Normals
+			vao->uploadFloatAttribute(3, 3, vertex_struct_size, (void*)(3 * sizeof(float)));
+			//Uv
+			vao->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
+			//Color
+			vao->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+
+			/*
 			render.elements_buffer_.get()->bind(kTarget_VertexData);
 
 			unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
@@ -500,6 +549,7 @@ void Window::renderShadowMap(unsigned int program) {
 			render.elements_buffer_.get()->uploadFloatAttribute(1, 2, vertex_struct_size, (void*)(6 * sizeof(float)));
 			//Color
 			render.elements_buffer_.get()->uploadFloatAttribute(2, 4, vertex_struct_size, (void*)(8 * sizeof(float)));
+			*/
 
 			auto order_buffer = render.order_buffer_.get();
 			order_buffer->bind(kTarget_Elements);
