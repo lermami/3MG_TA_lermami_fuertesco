@@ -88,9 +88,9 @@ int main(int, char**) {
 	size_t light_entity[4];
 
 		//Ambient Light
-	tr_pos = Vec3(0.0f, 0.0f, -80.0f);
+	tr_pos = Vec3(0.0f, 0.0f, 80.0f);
 
-	light_entity[0] = component_manager.add_entity();
+	/*light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
 	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
 
@@ -113,16 +113,16 @@ int main(int, char**) {
 	tr_transform = component_manager.create_component<TransformComponent>(light_entity[2]);
 
 	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);*/
 
 		//Spot Light
 	tr_pos = Vec3(0.0f, 3.0f, -6.0f);
 
 	light_entity[3] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
+	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
 	tr_transform = component_manager.create_component<TransformComponent>(light_entity[3]);
 
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
+	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f,	0.5f);
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	
   //Camera

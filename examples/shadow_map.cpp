@@ -85,9 +85,11 @@ int main(int, char**) {
 	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
 	//Cubes
-	Vec3 tr_pos(-6.0f, 6.0f, -20.0f);
-	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(2.0f, 10.0f, 10.0f);
+
+		//Cube 1
+	Vec3 tr_pos(0.0f, 0.0f, -200.0f);
+	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
+	Vec3 obj_size(100.0f, 100.0f, 5.0f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -96,9 +98,10 @@ int main(int, char**) {
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
 	
-	tr_pos = Vec3(0.25f, 5.5f, -5.75f);
+		//Cube 2
+	tr_pos = Vec3(25.0f, 55.0f, -150.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.8f, 1.8f, 1.8f);
+	obj_size = Vec3(18.0f, 18.0f, 18.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -107,10 +110,10 @@ int main(int, char**) {
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
 
-
-	tr_pos = Vec3(-11.5f, 0.25f, -8.75f);
+		//Cube 3
+	tr_pos = Vec3(-10.0f, 2.5f, -140.5f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(3.0f, 3.0f, 3.0f);
+	obj_size = Vec3(20.0f, 10.0f, 20.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -120,7 +123,7 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 3", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
 
 	//Floor
-	tr_pos = Vec3(0.0f, -3.0f, -110.0f);
+	tr_pos = Vec3(0.0f, -3.0f, -250.0f);
 	obj_rot = Vec3(3.14f/2.0f, 0.0f, 0.0f);
 	obj_size = Vec3(200.0f, 100.0f, 200.0f);
 
@@ -135,7 +138,7 @@ int main(int, char**) {
 	size_t light_entity[2];
 		
 		//Directional
-	tr_pos = Vec3(0.0f, 0.0f, -80.0f);
+	tr_pos = Vec3(0.0f, 0.0f, 80.0f);
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);

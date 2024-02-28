@@ -23,6 +23,7 @@ private:
   Window& window_;
 
   bool renderShadows_;
+  unsigned int shadow_resolution_;
   unsigned depthmap_;
   unsigned depthmapFBO_;
   unsigned shadowProgram_;

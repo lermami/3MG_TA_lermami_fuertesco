@@ -88,9 +88,9 @@ int main(int, char**) {
 
 	//Cubes
 		//1
-	Vec3 tr_pos(-3.0f, 2.0f, -8.0f);
+	Vec3 tr_pos(-30.0f, 20.0f, -80.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(1.0f, 1.0f, 1.0f);
+	Vec3 obj_size(10.0f, 10.0f, 10.0f);
 
 	size_t new_e = component_manager.add_entity();
 	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -100,9 +100,9 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", texture_shader, wall_handle);
 
 		//2
-	tr_pos = Vec3(0.0f, 2.0f, -8.0f);
+	tr_pos = Vec3(0.0f, 20.0f, -80.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+	obj_size = Vec3(10.0f, 10.0f, 10.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -112,9 +112,9 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", texture_light_shader, wall_handle);
 
 		//3
-	tr_pos = Vec3(3.0f, 2.0f, -8.0f);
+	tr_pos = Vec3(30.0f, 20.0f, -80.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+	obj_size = Vec3(10.0f, 10.0f, 10.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -124,9 +124,9 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_handle);
 
 		//4
-	tr_pos = Vec3(-3.0f, -2.0f, -8.0f);
+	tr_pos = Vec3(-30.0f, -20.0f, -80.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+	obj_size = Vec3(10.0f, 10.0f, 10.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -138,9 +138,9 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 3", "CubeVertices", "CubeIndices", color_shader, 0);
 
 		//5
-	tr_pos = Vec3(0.0f, -2.0f, -8.0f);
+	tr_pos = Vec3(0.0f, -20.0f, -80.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+	obj_size = Vec3(10.0f, 10.0f, 10.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -152,9 +152,9 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 4", "CubeVertices", "CubeIndices", color_light_shader, 0);
 
 		//6
-	tr_pos = Vec3(3.0f, -2.0f, -8.0f);
+	tr_pos = Vec3(30.0f, -20.0f, -80.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(1.0f, 1.0f, 1.0f);
+	obj_size = Vec3(10.0f, 10.0f, 10.0f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -166,9 +166,9 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 5", "CubeVertices", "CubeIndices", color_light_shadow_shader, 0);
 
 	//Back Wall
-	tr_pos = Vec3(0.0f, 0.0f, -12.0f);
+	tr_pos = Vec3(0.0f, 0.0f, -120.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(5.0f, 5.0f, 0.5f);
+	obj_size = Vec3(50.0f, 50.0f, 00.5f);
 
 	new_e = component_manager.add_entity();
 	tr_render = component_manager.create_component<RenderComponent>(new_e);
@@ -181,7 +181,7 @@ int main(int, char**) {
 		//Directional
 	size_t light_entity[2];
 
-	tr_pos = Vec3(0.0f, 0.0f, -80.0f);
+	tr_pos = Vec3(0.0f, 0.0f, 80.0f);
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);

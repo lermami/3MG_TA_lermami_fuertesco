@@ -9,7 +9,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-Renderer::Renderer(Engine& e, Window& w) : engine_{e}, window_{w}
+Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 {
 	//Add flags
 	renderShadows_ = true;
@@ -24,7 +24,14 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{e}, window_{w}
 		Texture depthMapTex(TextureTarget::kTexture_2D, TextureFormat::kDepthComponent, TextureType::kFloat);
 		depthMapTex.set_min_filter(TextureFiltering::kNearest);
 		depthMapTex.set_mag_filter(TextureFiltering::kNearest);
-		depthmap_ = depthMapTex.LoadTexture(1024, 1024);
+		depthMapTex.set_wrap_s(TextureWrap::kClampToBorder);
+		depthMapTex.set_wrap_t(TextureWrap::kClampToBorder);
+		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+		
+
+		shadow_resolution_ = 2048;
+		depthmap_ = depthMapTex.LoadTexture(shadow_resolution_, shadow_resolution_);
 
 		//Attach the framebuffer's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
@@ -176,10 +183,18 @@ void Renderer::render()
 	renderLights();
 
 	if (renderShadows_) {
-		glViewport(0, 0, 1024, 1024);
+		glViewport(0, 0, shadow_resolution_, shadow_resolution_);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
 		glClear(GL_DEPTH_BUFFER_BIT);
+
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CCW);
 		renderShadowMap(shadowProgram_);
+		glFrontFace(GL_CW);
+		glCullFace(GL_FRONT);
+		
+
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		window_.resetViewport();
