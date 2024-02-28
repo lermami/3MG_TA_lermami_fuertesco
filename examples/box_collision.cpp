@@ -14,6 +14,7 @@
 #include "component_manager.hpp"
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "Renderer.hpp"
 #include "Input.hpp"
 #include "shader_management.hpp"
 #include "buffer.hpp"
@@ -40,6 +41,8 @@ int main(int, char**) {
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
+
+	Renderer renderer(e, w);
 
 	auto color_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/Color.vs", "../assets/BasicShader/BasicColor/Color.fs");
 
@@ -174,7 +177,7 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(e, w);
 
-		w.render();
+		renderer.render();
 
 		w.swap();
 

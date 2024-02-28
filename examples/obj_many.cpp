@@ -8,6 +8,7 @@
 #include<iostream>
 
 #include "Window.hpp"
+#include "Renderer.hpp"
 #include "component_manager.hpp"
 #include "Engine.hpp"
 #include "Input.hpp"
@@ -34,6 +35,8 @@ int main(int, char**) {
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
+
+	Renderer renderer(e, w);
 
 	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
 
@@ -185,7 +188,7 @@ int main(int, char**) {
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
 		imgui_transform_system(e, w);
 
-		w.render();
+		renderer.render();
 
 		w.swap();
 

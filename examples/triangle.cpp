@@ -5,6 +5,7 @@
 
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "Renderer.hpp"
 #include "shader_management.hpp"
 #include "buffer.hpp"
 #include "default_systems.hpp"
@@ -22,6 +23,8 @@ int main(int, char**) {
 
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
+
+  Renderer renderer(e, w);
 
   Geometry triangleGeo;
 
@@ -60,7 +63,7 @@ int main(int, char**) {
     input_map.updateInputs();
 
     // Draw triangle
-    w.render();
+    renderer.render();
 
     w.swap();
 
