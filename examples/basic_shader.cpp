@@ -198,6 +198,15 @@ int main(int, char**) {
 	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 
+		//Point
+	light_entity[1] = component_manager.add_entity();
+	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
+
+	tr_pos = Vec3(0.25f, 0.0f, -8.25f);
+	init_point_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f);
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+
 	//Camera
 	size_t main_camera = component_manager.add_entity();
 	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
@@ -208,7 +217,7 @@ int main(int, char**) {
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
-	while (!w.is_done()) {
+	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();
