@@ -42,12 +42,13 @@ Renderer::~Renderer()
 
 }
 
-void Renderer::renderLights()
-{
+void Renderer::renderLights() {
 	auto& componentM = engine_.getComponentManager();
 	auto lights = componentM.get_component_list<LightComponent>();
+	auto transforms = componentM.get_component_list<TransformComponent>();
 
-	for (int i = 0; i < window_.getProgramListSize();i++) {
+
+	for (int i = 0; i < window_.getProgramListSize(); i++) {
 		unsigned program = window_.getProgram(i);
 
 		unsigned int ambient_iterator = 0;
@@ -56,13 +57,23 @@ void Renderer::renderLights()
 		unsigned int spot_iterator = 0;
 
 		glUseProgram(program);
-		for (auto l = lights->begin(); l != lights->end(); l++) {
-			if (!l->has_value()) continue;
+
+		auto l = lights->begin();
+		auto t = transforms->begin();
+
+		for (; l != lights->end(); l++, t++) {
+			if (!l->has_value() || !t->has_value()) continue;
+
 			auto& light = l->value();
+			auto& transform = t->value();
+
 			char name[64];
 
 			//Ambient
 			if (light.target_ == LightType::kAmbient) {
+				sprintf_s(name, "u_ambient_light[%d].pos_", point_iterator);
+				SetVector3(program, name, transform.pos_);
+
 				sprintf_s(name, "u_ambient_light[%d].color_", ambient_iterator);
 				SetVector3(program, name, light.color_);
 
@@ -71,6 +82,9 @@ void Renderer::renderLights()
 
 			//Directional
 			if (light.target_ == LightType::kDirectional) {
+				sprintf_s(name, "u_directional_light[%d].pos_", point_iterator);
+				SetVector3(program, name, transform.pos_);
+
 				sprintf_s(name, "u_directional_light[%d].color_", directional_iterator);
 				SetVector3(program, name, light.color_);
 
@@ -86,7 +100,7 @@ void Renderer::renderLights()
 			//Point
 			if (light.target_ == LightType::kPoint) {
 				sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
-				SetVector3(program, name, light.pos_);
+				SetVector3(program, name, transform.pos_);
 
 				sprintf_s(name, "u_point_light[%d].color_", point_iterator);
 				SetVector3(program, name, light.color_);
@@ -112,7 +126,7 @@ void Renderer::renderLights()
 			//Spot
 			if (light.target_ == LightType::kSpot) {
 				sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
-				SetVector3(program, name, light.pos_);
+				SetVector3(program, name, transform.pos_);
 
 				sprintf_s(name, "u_spot_light[%d].color_", spot_iterator);
 				SetVector3(program, name, light.color_);
@@ -211,7 +225,7 @@ void Renderer::render()
 			glUniform4f(uniform_color, color.color_.x, color.color_.y, color.color_.z, color.color_.w);
 		}
 
-		glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+		glm::mat4 shadow_mat = ConfigureShadowMatrix();
 		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
 		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
@@ -252,7 +266,7 @@ void Renderer::renderShadowMap(unsigned int program)
 	glUseProgram(program);
 
 	for (; r != renders->end(); r++, t++) {
-		if (!r->has_value() && !t->has_value()) continue;
+		if (!r->has_value() || !t->has_value()) continue;
 		auto& render = r->value();
 		auto& transform = t->value();
 
@@ -270,7 +284,7 @@ void Renderer::renderShadowMap(unsigned int program)
 			glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m.m[0]);
 
 			//Shadows
-			glm::mat4 shadow_mat = ConfigureShaderAndMatrices();
+			glm::mat4 shadow_mat = ConfigureShadowMatrix();
 			GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
 			glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 
@@ -294,7 +308,7 @@ void Renderer::renderShadowMap(unsigned int program)
 	}
 }
 
-glm::mat4 Renderer::ConfigureShaderAndMatrices()
+glm::mat4 Renderer::ConfigureShadowMatrix()
 {
 	glm::mat4 lightProjection = glm::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, 0.01f, 500.0f);
 

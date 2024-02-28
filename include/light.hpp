@@ -15,17 +15,16 @@ public:
   LightComponent(Vec3 direction, Vec3 color, Vec3 specular);
 
   //Point
-  LightComponent(Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic);
+  LightComponent(Vec3 color, Vec3 specular, float constant, float linear, float quadratic);
 
   //Spot
-  LightComponent(Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle);
+  LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle);
 
 
   ~LightComponent();
 
   LightType target_;
 
-  Vec3 pos_;
   Vec3 color_;
   Vec3 spec_color_;
 

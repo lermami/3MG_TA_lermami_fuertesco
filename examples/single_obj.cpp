@@ -86,21 +86,44 @@ int main(int, char**) {
 	
   //Light
 	size_t light_entity[4];
+
+		//Ambient Light
+	tr_pos = Vec3(0.0f, 0.0f, -80.0f);
+
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f));
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
 
+	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f));
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+
+		//Directional Light
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
+
 	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+
+		//Point Light
+	tr_pos = Vec3(0.0f, 0.0f, -4.5f);
 
 	light_entity[2] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[2]);
-	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[2]);
+
+	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+
+		//Spot Light
+	tr_pos = Vec3(0.0f, 3.0f, -6.0f);
 
 	light_entity[3] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[3]);
+
+	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	
   //Camera
 	size_t main_camera = component_manager.add_entity();

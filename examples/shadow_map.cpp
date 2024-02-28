@@ -85,7 +85,7 @@ int main(int, char**) {
 	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
 
 	//Cubes
-	Vec3 tr_pos(-6.0f, 6.0f, -6.0f);
+	Vec3 tr_pos(-6.0f, 6.0f, -20.0f);
 	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
 	Vec3 obj_size(2.0f, 10.0f, 10.0f);
 
@@ -96,7 +96,7 @@ int main(int, char**) {
 	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
 	
-	tr_pos = Vec3(0.25f, 5.5f, 5.75f);
+	tr_pos = Vec3(0.25f, 5.5f, -5.75f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(1.8f, 1.8f, 1.8f);
 
@@ -108,7 +108,7 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
 
 
-	tr_pos = Vec3(-11.5f, 0.25f, 8.75f);
+	tr_pos = Vec3(-11.5f, 0.25f, -8.75f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(3.0f, 3.0f, 3.0f);
 
@@ -133,14 +133,24 @@ int main(int, char**) {
 
   //Light
 	size_t light_entity[2];
+		
+		//Directional
+	tr_pos = Vec3(0.0f, 0.0f, -80.0f);
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
 
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+
+		//Ambient
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
+
 	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
   
   //Camera
 	size_t main_camera = component_manager.add_entity();

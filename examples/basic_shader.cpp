@@ -178,15 +178,25 @@ int main(int, char**) {
 	init_render_component_system(*tr_render, "Wall", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_handle);
 
 	//Light
+		//Directional
 	size_t light_entity[2];
+
+	tr_pos = Vec3(0.0f, 0.0f, -80.0f);
 
 	light_entity[0] = component_manager.add_entity();
 	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
 
+	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+
+		//Ambiental
 	light_entity[1] = component_manager.add_entity();
 	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
+	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
+
 	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
+	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
 
 	//Camera
 	size_t main_camera = component_manager.add_entity();

@@ -14,7 +14,7 @@ public:
   void render();
   void renderShadowMap(unsigned int program);
 
-  glm::mat4 ConfigureShaderAndMatrices();
+  glm::mat4 ConfigureShadowMatrix();
 
 private:
   void renderImgui();

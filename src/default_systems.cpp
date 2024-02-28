@@ -57,7 +57,6 @@ void change_color_system(Engine& e, size_t entity, float r, float g, float b, fl
 
 void init_ambient_light_system(LightComponent& light, Vec3 color) {
 	light.direction_ = Vec3{ 0,0,0 };
-	light.pos_ = Vec3{ 0,0,0 };
 	light.color_ = color;
 	light.spec_color_ = Vec3{ 0,0,0 };
 	light.constant_ = 0.0f;
@@ -70,7 +69,6 @@ void init_ambient_light_system(LightComponent& light, Vec3 color) {
 
 void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
 	light.direction_ = direction;
-	light.pos_ = Vec3{ 0,0,0 };
 	light.color_ = color;
 	light.spec_color_ = specular;
 	light.constant_ = 0.0f;
@@ -81,9 +79,8 @@ void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 c
 	light.target_ = LightType::kDirectional;
 }
 
-void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
+void init_point_light_system(LightComponent& light, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
 	light.direction_ = Vec3{ 0,0,0 };
-	light.pos_ = position;
 	light.color_ = color;
 	light.spec_color_ = specular;
 	light.constant_ = constant;
@@ -94,9 +91,8 @@ void init_point_light_system(LightComponent& light, Vec3 position, Vec3 color, V
 	light.target_ = LightType::kPoint;
 }
 
-void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 position, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
+void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
 	light.direction_ = direction;
-	light.pos_ = position;
 	light.color_ = color;
 	light.spec_color_ = specular;
 	light.constant_ = constant;
@@ -298,7 +294,7 @@ void imgui_transform_system(Engine& e, Window& w) {
 		ImGui::BeginTabBar("Tabs");
 		if (ImGui::BeginTabItem("Components")) {
 			for (; tr != transformList->end(); tr++, r++) {
-				if (!tr->has_value() && !r->has_value()) continue;
+				if (!tr->has_value() || !r->has_value()) continue;
 				auto& transform = tr->value();
 				auto& render = r->value();
 
@@ -372,10 +368,10 @@ void imgui_transform_system(Engine& e, Window& w) {
 						}
 						*/
 
-						Vec3 aux_pos = light.pos_;
+						/*/Vec3 aux_pos = light.pos_;
 						if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
 							light.pos_ = aux_pos;
-						}
+						}*/
 
 						Vec3 aux_color = light.color_;
 						if (ImGui::ColorPicker3("Color", &aux_color.x)) {

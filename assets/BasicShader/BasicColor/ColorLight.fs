@@ -3,10 +3,12 @@
 struct AmbientLight
 {
   vec3 color_;
+  vec3 pos_;
 };
 
 struct DirectionalLight
 {
+  vec3 pos_;
   vec3 color_;
   vec3 spec_color_;
 
