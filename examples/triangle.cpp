@@ -42,7 +42,7 @@ int main(int, char**) {
   Vec3 tr_size(10.0f, 10.0f, 0.0f);
   Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
-  size_t triangle = component_manager.add_entity();
+  size_t triangle = component_manager.add_entity(RenderComponent());
 
   auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 
@@ -52,7 +52,7 @@ int main(int, char**) {
   init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
 
   //Camera
-  size_t main_camera = component_manager.add_entity();
+  size_t main_camera = component_manager.add_entity(RenderComponent());
   auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
   w.setCurrentCam(main_camera);
 

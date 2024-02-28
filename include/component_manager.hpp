@@ -21,8 +21,9 @@ struct ComponentManager {
 	template<typename T> T* create_component(size_t e);
 	template<typename T> T* get_component(size_t e);
 	template<typename T> std::vector < std::optional<T>>* get_component_list();
-	
-	size_t add_entity();
+
+	//template<class ... T> size_t add_entity(T... test);
+	template<typename T> size_t add_entity(T test);
 	void remove_entity(size_t id);
 
 };
@@ -66,4 +67,26 @@ template<typename T> std::vector < std::optional<T>>* ComponentManager::get_comp
 	return &component_opt;
 }
 
+template<typename T> size_t ComponentManager::add_entity(T test) {
+	if (deleted_components_.size() > 0) {
+		size_t id = deleted_components_.back();
+		deleted_components_.pop_back();
 
+		for (auto& [key, value] : component_classes_) {
+			value->add_component((int)id);
+		}
+		return id;
+	}
+
+	size_t size = 0;
+
+
+	for (auto& [key, value] : component_classes_) {
+		if (key == typeid(test).hash_code()) {
+			value->add_component();
+			size = value->size();
+		}
+	}
+
+	return size;
+}
