@@ -46,20 +46,16 @@ public:
   unsigned getProgram(int n);
   int getProgramListSize();
 
-  void renderLights();
-  void render();
-  void renderShadowMap(unsigned int program);
-
   bool getImguiStatus();
 
   void setCurrentCam(size_t cam);
   size_t getCurrentCam();
 
-  glm::mat4 ConfigureShaderAndMatrices();
+  void resetViewport();
+
 
 private:
   Window(Engine& e, int w, int h, const char* title, bool imgui);
-  void renderImgui();
 
   GLFWwindow* handle_;
   clock_t  currentTime_;
@@ -74,9 +70,6 @@ private:
   std::vector<unsigned> program_list_;
   Engine& engine_;
 
-  bool renderShadows_;
-  unsigned depthmap_;
-  unsigned depthmapFBO_;
-  unsigned shadowProgram_;
+
 };
 

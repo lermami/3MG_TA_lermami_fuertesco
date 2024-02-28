@@ -13,6 +13,7 @@
 #include "component_manager.hpp"
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "Renderer.hpp"
 #include "Input.hpp"
 #include "shader_management.hpp"
 #include "buffer.hpp"
@@ -29,11 +30,13 @@ int main(int, char**) {
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", false);
 	if (!maybe_w) return -1;
 
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
+
+	Renderer renderer(e, w);
 
 	//Camera
 	size_t main_camera = component_manager.add_entity();
@@ -130,7 +133,7 @@ int main(int, char**) {
 
 		imgui_transform_system(e, w);
 
-		w.render();
+		renderer.render();
 
 		w.swap();
 

@@ -3,6 +3,7 @@
 
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "Renderer.hpp"
 #include "input.hpp"
 
 int main(int, char**) {
@@ -13,6 +14,8 @@ int main(int, char**) {
 
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
+
+  Renderer renderer(e, w);
 
   Input input_map(w);
 

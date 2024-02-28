@@ -12,6 +12,7 @@
 #include <unordered_map>
 
 #include "component_manager.hpp"
+#include "Renderer.hpp"
 #include "Window.hpp"
 #include "Engine.hpp"
 #include "Input.hpp"
@@ -50,6 +51,8 @@ int main(int, char**) {
 	w.enableDepthTest(true);
 	w.setDepthTestMode(DepthTestMode::kLess);
 	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
+
+	Renderer renderer(e, w);
 
 	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
 	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
@@ -237,7 +240,7 @@ int main(int, char**) {
 
 		imgui_transform_system(e, w);
 
-		w.render();
+		renderer.render();
 
 		w.swap();
 

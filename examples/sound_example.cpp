@@ -6,6 +6,7 @@
 #include "Window.hpp"
 #include "Engine.hpp"
 #include "shader_management.hpp"
+#include "Renderer.hpp"
 #include "buffer.hpp"
 #include "default_systems.hpp"
 #include "component_manager.hpp"
@@ -26,6 +27,8 @@ int main(int, char**) {
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
   w.initSoundContext();
+
+  Renderer renderer(e, w);
 
   Geometry triangleGeo;
 
@@ -91,7 +94,7 @@ int main(int, char**) {
     // Draw triangle
     imgui_transform_system(e, w);
 
-    w.render();
+    renderer.render();
     w.swap();
 
     w.calculateCurrentTime();

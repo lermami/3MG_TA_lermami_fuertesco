@@ -5,6 +5,7 @@
 
 #include "Window.hpp"
 #include "Engine.hpp"
+#include "Renderer.hpp"
 #include "shader_management.hpp"
 #include "buffer.hpp"
 #include "default_systems.hpp"
@@ -22,6 +23,8 @@ int main(int, char**) {
 
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
+
+  Renderer renderer(e, w);
 
   Geometry triangleGeo;
 
@@ -93,7 +96,7 @@ int main(int, char**) {
     move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
     rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, 0.0f, rotate));
 
-    w.render();
+    renderer.render();
 
     w.swap();
     w.calculateCurrentTime();
