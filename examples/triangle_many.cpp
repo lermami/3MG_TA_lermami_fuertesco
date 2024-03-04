@@ -39,8 +39,7 @@ int main(int, char**) {
 	Renderer renderer(e, w);
 
 	//Camera
-	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	size_t main_camera = component_manager.add_entity(CameraComponent());
 	w.setCurrentCam(main_camera);
 
 	auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
@@ -69,11 +68,8 @@ int main(int, char**) {
 		Vec3 tr_size(0.3f, 0.3f, 0.0f);
 		Vec3 tr_rot(0.0f, 0.0f, 0.0f);
 
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-		init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-		init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3(((rand() % 200) - 100) / 100.0f, ((rand() % 200) - 100) / 100.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.3f, 0.3f, 0.3f)),
+			RenderComponent("Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, 0));
 	}
 
 	//Input Declaration
