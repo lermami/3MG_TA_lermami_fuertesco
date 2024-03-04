@@ -63,8 +63,6 @@ int main(int, char**) {
 
 	Geometry laboon_geo = objs[0].get();
 
-	unsigned n_obj = 1000;
-	
 	unsigned laboonTex = resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 																						 "../assets/laboon/laboon.png");
 
@@ -79,29 +77,22 @@ int main(int, char**) {
   //Light
 	size_t light_entity[4];
 
-	//Ambient Light
+		//Ambient Light
 	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		                                             LightComponent(Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f)));
-
-	/*
+	
 		//Directional Light
-	light_entity[1] = component_manager.add_entity(TransformComponent(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f))));
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
-
-	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																								LightComponent(Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f)));
 
 		//Point Light
-	light_entity[2] = component_manager.add_entity(TransformComponent(TransformComponent(Vec3(0.0f, 0.0f, -4.5f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f))));
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[2]);
-
-	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
+	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f));
 
 		//Spot Light
-	light_entity[3] = component_manager.add_entity(TransformComponent(TransformComponent(Vec3(0.0f, 3.0f, -6.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f))));
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
+	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																								LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.9f);
 
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f, 0.9f);
-	*/
 
   //Camera
 	size_t main_camera = component_manager.add_entity(TransformComponent(), CameraComponent());

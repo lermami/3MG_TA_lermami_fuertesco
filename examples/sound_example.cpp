@@ -40,46 +40,24 @@ int main(int, char**) {
 
   triangleGeo.indices_= { 0, 1, 2 };
 
-  Vec3 tr_pos(-0.5f, 0.0f, 0.0f);
-  Vec3 tr_size(10.0f, 10.0f, 0.0f);
-  Vec3 tr_rot(0.0f, 0.0f, 0.0f);
-
   auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
-
-  size_t triangle = component_manager.add_entity();
-
-  auto tr_render = component_manager.create_component<RenderComponent>(triangle);
-  auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
-  auto tr_audio = component_manager.create_component<AudioComponent>(triangle);
-
   resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
 
-
-  init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, "Triangle 1", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
-
+  SoundBuffer testBuffer = SoundBuffer::MakeBuffer("../assets/test.wav").value();
   ALfloat pos[3] = { 0,0,0 };
   ALfloat vel[3] = { 0,0,0 };
 
-  SoundBuffer b = SoundBuffer::MakeBuffer("../assets/test.wav").value();
-  init_audio_system(*tr_audio, b, "Test1", pos, vel, 1.0f, 1.0f, true);
+  size_t triangle = component_manager.add_entity(TransformComponent(Vec3(-0.5f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
+    RenderComponent("Triangle 1", "TriangleVertices", "TriangleIndices", simpleProgram, 0),
+    AudioComponent(testBuffer, "Test1", pos, vel, 1.0f, 1.0f, true));
 
-  size_t triangle2 = component_manager.add_entity();
-  Vec3 tr_pos2(0.5f, 0.0f, 0.0f);
-
-  auto tr_render2 = component_manager.create_component<RenderComponent>(triangle2);
-  auto tr_transform2 = component_manager.create_component<TransformComponent>(triangle2);
-  auto tr_audio2 = component_manager.create_component<AudioComponent>(triangle2);
-
-  init_transform_system(*tr_transform2, tr_pos2, tr_rot, tr_size);
-  init_render_component_system(*tr_render2, "Triangle 2", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
-
-  SoundBuffer b2 = SoundBuffer::MakeBuffer("../assets/test2.wav").value();
-  init_audio_system(*tr_audio2, b2, "Test2", pos, vel, 1.0f, 1.0f, false);
+  SoundBuffer testBuffer2 = SoundBuffer::MakeBuffer("../assets/test2.wav").value();
+  size_t triangle2 = component_manager.add_entity(TransformComponent(Vec3(0.5f, 0.0f, 0.0), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
+    RenderComponent("Triangle 2", "TriangleVertices", "TriangleIndices", simpleProgram, 0),
+    AudioComponent(testBuffer2, "Test2", pos, vel, 1.0f, 1.0f, false));
 
   //Camera
-  size_t main_camera = component_manager.add_entity();
-  auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+  size_t main_camera = component_manager.add_entity(CameraComponent());
   w.setCurrentCam(main_camera);
 
   Input input_map(w);

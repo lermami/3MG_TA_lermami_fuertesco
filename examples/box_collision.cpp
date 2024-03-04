@@ -69,41 +69,19 @@ int main(int, char**) {
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 
 	//Cube 1
-	Vec3 tr_pos(-2.0f, 0.0f, -6.0f);
-	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-	Vec3 obj_size(1.0f, 1.0f, 1.0f);
-
-	size_t cube1 = component_manager.add_entity();
-	auto tr_render = component_manager.create_component<RenderComponent>(cube1);
-	auto tr_transform = component_manager.create_component<TransformComponent>(cube1);
-	auto tr_color = component_manager.create_component<ColorComponent>(cube1);
-	auto tr_collider = component_manager.create_component<BoxColliderComponent>(cube1);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", color_shader, laboon_handle);
-	init_box_collider_system(*tr_collider, Vec3(1, 1, 1));
-	init_color_system(*tr_color, 0.5f, 0.5f, 0.75f, 1.0f);
+	size_t cube1 = component_manager.add_entity(TransformComponent(Vec3(-2.0f, 0.0f, -6.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", color_shader, laboon_handle),
+		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)),
+		BoxColliderComponent(Vec3(1.0f, 1.0f, 1.0f)));
 
 	//Cube 2
-	 tr_pos = Vec3(2.0f, 0.0f, -6.0f);
-	 obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	 obj_size = Vec3(1.0f, 1.0f, 1.0f);
-
-	 size_t cube2 = component_manager.add_entity();
-	 tr_render = component_manager.create_component<RenderComponent>(cube2);
-	 tr_transform = component_manager.create_component<TransformComponent>(cube2);
-	 tr_color = component_manager.create_component<ColorComponent>(cube2);
-	 tr_collider = component_manager.create_component<BoxColliderComponent>(cube2);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", color_shader, laboon_handle);
-	init_box_collider_system(*tr_collider, Vec3(1, 1, 1));
-	init_color_system(*tr_color, 0.8f, 0.8f, 0.8f, 1.0f);
-	
+	 size_t cube2 = component_manager.add_entity(TransformComponent(Vec3(2.0f, 0.0f, -6.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		 RenderComponent("Cube 2", "CubeVertices", "CubeIndices", color_shader, laboon_handle),
+		 ColorComponent(Vec4(0.8f, 0.8f, 0.8f, 1.0f)),
+		 BoxColliderComponent(Vec3(1.0f, 1.0f, 1.0f)));
 
   //Camera
-	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	size_t main_camera = component_manager.add_entity(CameraComponent());
 	w.setCurrentCam(main_camera);
 
 	//Input Declaration

@@ -81,12 +81,22 @@ struct TransformComponent {
 
 struct ColorComponent {
 	Vec4 color_;
+
+	ColorComponent() = default;
+	ColorComponent(Vec4 color) {
+		color_ = color;
+	}
 };
 
 struct AudioComponent {
-	AudioComponent(std::string name, ALfloat pos[3],
-		ALfloat speed[3], float gain = 1.0f, float pitch = 1.0f)
-		: sound_source_(name, pos, speed, gain, pitch) {}
+	AudioComponent(SoundBuffer& buff, std::string name, ALfloat pos[3],
+		ALfloat speed[3], float gain = 1.0f, float pitch = 1.0f, bool play = false)
+		: sound_source_(name, pos, speed, gain, pitch) {
+
+		sound_source_.addSound(&buff);
+		if (play)
+			sound_source_.Play();
+	}
 
 	AudioComponent() = default;
 	AudioComponent& operator=(const AudioComponent& o) = default;
@@ -97,6 +107,12 @@ struct AudioComponent {
 struct BoxColliderComponent {
 	Vec3 extent_;
 	Vec3 center_offset_;
+
+	BoxColliderComponent() = default;
+	BoxColliderComponent(Vec3 extent, Vec3 center_offset = Vec3(0.0f, 0.0f, 0.0f)) {
+		extent_ = extent;
+		center_offset_ = center_offset;
+	}
 };
 
 struct Geometry {
