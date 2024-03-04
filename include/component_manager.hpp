@@ -18,12 +18,11 @@ struct ComponentManager {
 	~ComponentManager() = default;
 
 	template<typename T> void add_component_class();
-	template<typename T> T* create_component(size_t e);
+	template<typename T> void create_component(int position, T& component);
 	template<typename T> T* get_component(size_t e);
 	template<typename T> std::vector < std::optional<T>>* get_component_list();
 
-	//template<class ... T> size_t add_entity(T... test);
-	template<typename T> size_t add_entity(T test);
+	template<class ... T> size_t add_entity(T... components);
 	void remove_entity(size_t id);
 
 };
@@ -45,18 +44,10 @@ template<typename T> T* ComponentManager::get_component(size_t e) {
 	return &component_opt.value();
 }
 
-template<typename T> T* ComponentManager::create_component(size_t e) {
-	assert(component_classes_.size());
-	assert(e != 0);
-	//Entities start on 1
-	e = e - 1;
-	auto& component_l = *static_cast<component_list<T>*>(component_classes_.find(typeid(T).hash_code())->second.get());
-	assert(e < component_l.size());
-	auto& component_opt = component_l.components_.at(e);
-
-	component_opt = T();
-
-	return &component_opt.value();
+template<typename T> void ComponentManager::create_component(int position, T& component) {
+	//Cast to the specific component list and add the components
+	component_list<T>* list = dynamic_cast<component_list<T>*>(component_classes_[typeid(T).hash_code()].get());
+	list->add_component_at(position, component);
 }
 
 template<typename T> std::vector < std::optional<T>>* ComponentManager::get_component_list(){
@@ -67,7 +58,7 @@ template<typename T> std::vector < std::optional<T>>* ComponentManager::get_comp
 	return &component_opt;
 }
 
-template<typename T> size_t ComponentManager::add_entity(T test) {
+template<class ... T> size_t ComponentManager::add_entity(T... components){
 	if (deleted_components_.size() > 0) {
 		size_t id = deleted_components_.back();
 		deleted_components_.pop_back();
@@ -80,13 +71,15 @@ template<typename T> size_t ComponentManager::add_entity(T test) {
 
 	size_t size = 0;
 
-
+	//Add nullopt to components that not matches with the parameters
 	for (auto& [key, value] : component_classes_) {
-		if (key == typeid(test).hash_code()) {
-			value->add_component();
-			size = value->size();
-		}
+		value->add_component();
+		size = value->size();
 	}
 
+	//Fold expression to iterate in parameters pack (components)
+	(create_component(size, components), ...);
+
+	//Return entity value
 	return size;
 }

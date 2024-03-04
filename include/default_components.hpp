@@ -34,6 +34,13 @@ struct component_list : component_base {
 		components_[(size_t)position - 1] = a;
 	}
 
+	void add_component_at(int position, T& component) {
+		assert(components_[(size_t)position - 1] == std::nullopt);
+
+		components_[(size_t)position - 1] = component;
+
+	}
+
 	virtual size_t size() override {
 		return components_.size();
 	}
@@ -62,6 +69,14 @@ struct TransformComponent {
 	Vec3 pos_;
 	Vec3 rot_;
 	Vec3 size_;
+
+	TransformComponent() = default;
+
+	TransformComponent(Vec3 pos, Vec3 rot, Vec3 size) {
+		pos_ = pos;
+		rot_ = rot;
+		size_ = size;
+	}
 };
 
 struct ColorComponent {
@@ -95,6 +110,16 @@ struct RenderComponent {
 	std::string order_buffer_;
 	unsigned int program_ = -1;
 	unsigned int texture_ = -1;
+
+	RenderComponent() = default;
+
+	RenderComponent(const char* name, const char* elements, const char* order, unsigned program, unsigned texture) {
+		name_ = name;
+		elements_buffer_ = elements;
+		order_buffer_ = order;
+		program_ = program;
+		texture_ = texture;
+	}
 };
 
 struct CameraComponent {
