@@ -71,7 +71,7 @@ int main(int, char**) {
 
 	resourceM.createBuffersWithGeometry(laboon_geo, "LaboonVertices", "LaboonIndices");
 
-	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -6.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, laboonTex));
 	
   //Light
@@ -79,21 +79,20 @@ int main(int, char**) {
 
 		//Ambient Light
 
-	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                             LightComponent(Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f)));
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		                                             LightComponent(Vec3(0.33f, 0.33f, 0.33f)));
 	
 		//Directional Light
-	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -120.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 																								LightComponent(Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f)));
 
 		//Point Light
-
-	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f));
+	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 25.0f, -100.0f), Vec3(0.0f, 60.0f, 75.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.007f, 0.0002f));
 
 		//Spot Light
-	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																								LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.9f);
+	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(50.0f, 0.0f, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																								LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.75f));
 
 
   //Camera
