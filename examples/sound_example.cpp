@@ -41,7 +41,7 @@ int main(int, char**) {
   triangleGeo.indices_= { 0, 1, 2 };
 
   auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
-  resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+  resourceM.createBuffersWithGeometry(&triangleGeo, "TriangleVertices", "TriangleIndices");
 
   SoundBuffer testBuffer = SoundBuffer::MakeBuffer("../assets/test.wav").value();
   ALfloat pos[3] = { 0,0,0 };

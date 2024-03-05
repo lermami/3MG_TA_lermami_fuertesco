@@ -22,7 +22,7 @@
 
 int main(int, char**) {
 	Engine e;
-	ThreadManager thread_manager;
+	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
 
@@ -38,32 +38,18 @@ int main(int, char**) {
 
 	Renderer renderer(e, w);
 
-	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
-
-	std::vector<std::string> obj_paths;
-	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/Suzanne.obj");
-	obj_paths.emplace_back("../assets/wolf/Wolf_obj.obj");
-	obj_paths.emplace_back("../assets/gun/Gun.obj");
-
-	//Create obj entity
-	for (auto& path : obj_paths) {
-		std::function<Geometry()> loadobj_func = [&]() { return resourceM.LoadObj("A", path.c_str()); };
-
-		std::future<Geometry> future = thread_manager.add(loadobj_func);
-
-		objs.push_back(std::move(future));
-	}
-
-	Geometry suzanneGeo = objs[0].get();
-	Geometry wolfGeo = objs[1].get();
-	Geometry tankGeo = objs[2].get();
-
 	unsigned n_obj = 1000;
 
-	resourceM.createBuffersWithGeometry(suzanneGeo, "SuzanneVertices", "SuzanneIndices");
-	resourceM.createBuffersWithGeometry(wolfGeo, "WolfVertices", "WolfIndices");
-	resourceM.createBuffersWithGeometry(tankGeo, "TankVertices", "TankIndices");
+	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+
+	resourceM.LoadObj(e, "Suzanne", "../assets/Suzanne.obj");
+	resourceM.LoadObj(e, "Wolf", "../assets/wolf/Wolf_obj.obj");
+	resourceM.LoadObj(e, "Gun", "../assets/gun/Gun.obj");
+	resourceM.WaitResources();
+
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Suzanne"), "SuzanneVertices", "SuzanneIndices");
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Wolf"), "WolfVertices", "WolfIndices");
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Gun"), "TankVertices", "TankIndices");
 
 	for (unsigned i = 0; i < n_obj / 3; i++) {
 		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 150) - 75, (rand() % 150) - 75, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),

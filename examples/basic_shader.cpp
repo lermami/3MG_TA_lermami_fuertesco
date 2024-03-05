@@ -38,7 +38,7 @@ void check_GL(const std::string& text, const char* file, int line) {
 
 int main(int, char**) {
 	Engine e;
-	ThreadManager thread_manager;
+	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
 
@@ -62,42 +62,27 @@ int main(int, char**) {
 	auto color_light_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLight.vs", "../assets/BasicShader/BasicColor/ColorLight.fs");
 	auto color_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLightShadow.vs", "../assets/BasicShader/BasicColor/ColorLightshadow.fs");
 
-
-	std::vector<std::string> obj_paths;
-	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/obj_test.obj");
-	obj_paths.emplace_back("../assets/square.obj");
-
-	//Create obj entity
-	for (auto& path : obj_paths) {
-		std::function<Geometry()> mycall_vertex = [&]() { return resourceM.LoadObj("A", path.c_str()); };
-
-		std::future<Geometry> future = thread_manager.add(mycall_vertex);
-
-		objs.push_back(std::move(future));
-	}
-
-	Geometry cube_geo = objs[0].get();
-
-	resourceM.createBuffersWithGeometry(cube_geo, "CubeVertices", "CubeIndices");
+	resourceM.LoadObj(e, "Cube", "../assets/obj_test.obj");
+	resourceM.WaitResources();
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Cube"), "CubeVertices", "CubeIndices");
 
 	unsigned n_obj = 1000;
 
-	unsigned wall_texture = resourceM.loadTexture("Wall", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
+	resourceM.loadTexture("Wall", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 		"../assets/wall.jpg");
 
 	//Cubes
 		//1
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-3.0f, 2.0f, -8.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)), 
-		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", texture_shader, wall_texture));
+		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", texture_shader, resourceM.getTexture("Wall")));
 
 		//2
 	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", texture_light_shader, wall_texture));
+		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", texture_light_shader, resourceM.getTexture("Wall")));
 
 		//3
 	new_e = component_manager.add_entity(TransformComponent(Vec3(3.0f, 2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_texture));
+		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow_shader, resourceM.getTexture("Wall")));
 
 		//4
 	new_e = component_manager.add_entity(TransformComponent(Vec3(-3.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
@@ -116,7 +101,7 @@ int main(int, char**) {
 
 	//Back Wall
 	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -12.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(5.0f, 5.0f, 0.5f)),
-		RenderComponent("Wall", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_texture),
+		RenderComponent("Wall", "CubeVertices", "CubeIndices", texture_light_shadow_shader, resourceM.getTexture("Wall")),
 		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 	//Light
@@ -128,7 +113,7 @@ int main(int, char**) {
 
 		//Ambiental
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		LightComponent(Vec3(0.5f, 0.5f, 0.5f), Vec3(0.5f, 0.5f, 0.5f)));
+		LightComponent(Vec3(0.5f, 0.5f, 0.5f)));
 
 		//Point
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.25f, 0.0f, -8.25f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),

@@ -38,7 +38,7 @@ void check_GL(const std::string& text, const char* file, int line) {
 
 int main(int, char**) {
 	Engine e;
-	ThreadManager thread_manager;
+	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
 
@@ -57,26 +57,12 @@ int main(int, char**) {
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 	auto simpleProgram3 = CreateProgram(w, "../assets/Shader/ShadowMap/depthtest.vs", "../assets/Shader/ShadowMap/depthtest.fs");
 
-	std::vector<std::string> obj_paths;
-	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/obj_test.obj");
-	obj_paths.emplace_back("../assets/square.obj");
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
+	resourceM.LoadObj(e, "Square", "../assets/square.obj");
+	resourceM.LoadObj(e, "Cube", "../assets/obj_test.obj");
+	resourceM.WaitResources();
 
-	//Create obj entity
-	for (auto& path : obj_paths) {
-		std::function<Geometry()> mycall_vertex = [&]() { return resourceM.LoadObj("A", path.c_str()); };
-
-		std::future<Geometry> future = thread_manager.add(mycall_vertex);
-
-		objs.push_back(std::move(future));
-	}
-
-	Geometry square_geo = objs[1].get();
-	Geometry cube_geo = objs[0].get();
-
-	resourceM.createBuffersWithGeometry(square_geo, "SquareVertices", "SquareIndices");
-	resourceM.createBuffersWithGeometry(cube_geo, "CubeVertices", "CubeIndices");
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Square"), "SquareVertices", "SquareIndices");
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Cube"), "CubeVertices", "CubeIndices");
 
 
 	unsigned n_obj = 1000;
@@ -127,7 +113,7 @@ int main(int, char**) {
 
 		//Ambient
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		LightComponent(Vec3(0.5f, 0.5f, 0.5f), Vec3(0.5f, 0.5f, 0.5f)));
+		LightComponent(Vec3(0.5f, 0.5f, 0.5f)));
   
   //Camera
 	size_t main_camera = component_manager.add_entity(CameraComponent());

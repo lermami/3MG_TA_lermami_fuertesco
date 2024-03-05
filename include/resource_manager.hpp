@@ -19,7 +19,6 @@ public:
   void WaitResources();
 
   void LoadObj(Engine& e, const char* name, const char* path);
-  Geometry LoadObj(const char* name, const char* path);
   Geometry* getGeometry(std::string nameID);
 
   void loadTexture(const char* name, Texture tex, const char* path);
@@ -33,6 +32,7 @@ public:
 
   bool createBuffersWithGeometry(Geometry* geo, std::string nameIDVertex, std::string nameIDIndex);
 private:
+  Geometry LoadObj(const char* name, const char* path);
 
   std::unordered_map<std::string, unsigned> textures_;
 
