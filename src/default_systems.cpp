@@ -280,9 +280,9 @@ void imgui_transform_system(Engine& e, Window& w) {
 		auto l = lightList->begin();
 
 		auto& resourceM = e.getResourceManager();
-		std::vector<unsigned>& texList = resourceM.getTextureList();
-		std::vector<std::string>& texNameList = resourceM.getTextureNamesList();
-		std::string vectorStr(texList.begin(), texList.end());
+		//std::vector<unsigned>& texList = resourceM.getTextureList();
+		//std::vector<std::string>& texNameList = resourceM.getTextureNamesList();
+		//std::string vectorStr(texList.begin(), texList.end());
 
 		int num = 0;
 
@@ -321,7 +321,7 @@ void imgui_transform_system(Engine& e, Window& w) {
 							transform.size_ = aux_size;
 						}
 					}
-
+					/*
 					//Render
 					if (ImGui::CollapsingHeader("Render")) {
 						unsigned tex_aux = render.texture_;
@@ -338,6 +338,7 @@ void imgui_transform_system(Engine& e, Window& w) {
 							ImGui::EndCombo();
 						}
 					}
+					*/
 
 				}
 

@@ -29,7 +29,7 @@
 
 int main(int, char**) {
 	Engine e;
-	ThreadManager thread_manager;
+	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
 
@@ -47,53 +47,42 @@ int main(int, char**) {
 
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 
-	std::vector<std::string> obj_paths;
-	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/laboon/laboon.obj");
-	obj_paths.emplace_back("../assets/obj_test.obj");
+	resourceM.LoadObj(e, "LaboonObj", "../assets/laboon/laboon.obj");
+	resourceM.LoadObj(e, "CubeObj", "../assets/obj_test.obj");
+	resourceM.LoadObj(e, "SuzanneObj", "../assets/Suzanne.obj");
 
-	//Create obj entity
-	for (auto& path : obj_paths) {
-		std::function<Geometry()> mycall_vertex = [&]() { return resourceM.LoadObj("A", path.c_str()); };
-
-		std::future<Geometry> future = thread_manager.add(mycall_vertex);
-
-		objs.push_back(std::move(future));
-	}
-
-	Geometry laboon_geo = objs[0].get();
-
-	unsigned laboonTex = resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
+	resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 																						 "../assets/laboon/laboon.png");
 
-	unsigned wallTex = resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
+	resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 																						"../assets/wall.jpg");
 
+	resourceM.WaitResources();
+
+	Geometry* laboon_geo = resourceM.getGeometry("SuzanneObj");
 	resourceM.createBuffersWithGeometry(laboon_geo, "LaboonVertices", "LaboonIndices");
 
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -6.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, laboonTex));
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, resourceM.getTexture("Laboon")));
 	
   //Light
 	size_t light_entity[4];
 
 		//Ambient Light
-
 	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                             LightComponent(Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f)));
+		                                             LightComponent(Vec3(0.33f, 0.0f, 0.0f)));
 	
 		//Directional Light
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 																								LightComponent(Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f)));
 
 		//Point Light
-
 	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f));
 
 		//Spot Light
 	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																								LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.9f);
+																								LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.9f));
 
 
   //Camera
