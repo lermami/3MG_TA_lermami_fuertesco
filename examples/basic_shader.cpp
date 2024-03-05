@@ -123,7 +123,7 @@ int main(int, char**) {
 	size_t light_entity[2];
 
 		//Directional
-	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(10.0f, 0.0f, 80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f)));
 
 		//Ambiental

@@ -399,7 +399,7 @@ glm::mat4 Renderer::ConfigureShadowMatrix(float near, float far, Vec3 pos, Vec3 
 	glm::mat4 lightProjection = glm::ortho(-fw, fw, -fh, fh, near, far);
 
 	glm::mat4 lightView = glm::lookAt(glm::vec3(pos.x, pos.y, pos.z),
-		glm::vec3(direction.x, direction.y, direction.z),
+		glm::vec3(pos.x, pos.y, pos.z) - glm::vec3(direction.x, direction.y, direction.z),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 lightSpaceMatrix = lightProjection * lightView;

@@ -56,6 +56,7 @@ int main(int, char**) {
 
 	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
 	auto simpleProgram3 = CreateProgram(w, "../assets/Shader/ShadowMap/depthtest.vs", "../assets/Shader/ShadowMap/depthtest.fs");
+	auto texture_light_shadow = CreateProgram(w, "../assets/BasicShader/Texture/TextureLightShadow.vs", "../assets/BasicShader/Texture/TextureLightShadow.fs");
 
 	std::vector<std::string> obj_paths;
 	std::vector<std::future<Geometry>> objs;
@@ -82,32 +83,32 @@ int main(int, char**) {
 	unsigned n_obj = 1000;
 	
 	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
-	unsigned laboon_handle = laboon.LoadTexture("../assets/wall.jpg");
+	unsigned wall_texture = laboon.LoadTexture("../assets/wall.jpg");
 
 	//Cubes
 
 		//Cube 1
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -300.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(100.0f, 100.0f, 5.0f)),
-		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle));
+		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", texture_light_shadow, wall_texture));
 	
 		//Cube 2
 	new_e = component_manager.add_entity(TransformComponent(Vec3(25.0f, -20.0f, -250.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(18.0f, 18.0f, 18.0f)),
-		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle));
+		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", texture_light_shadow, wall_texture));
 
 	//Cube 3
 	new_e = component_manager.add_entity(TransformComponent(Vec3(20.0f, 10.0f, -190.0f), Vec3(0.0f, 0.0f, 1.57f), Vec3(20.0f, 10.0f, 20.0f)),
-		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle));
+		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow, wall_texture));
 
 	//Floor
 	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -3.0f, -350.0), Vec3(1.57f, 0.0f, 0.0f), Vec3(200.0f, 100.0f, 200.0f)),
-		RenderComponent("Wall", "SquareVertices", "SquareIndices", simpleProgram, laboon_handle));
+		RenderComponent("Wall", "SquareVertices", "SquareIndices", texture_light_shadow, wall_texture));
 
   //Light
 	size_t light_entity[2];
 		
-		//Directional
-	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f)));
+	//Directional
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(-20.0f, 0.0f, 80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.1f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f)));
 
 		//Ambient
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
