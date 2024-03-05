@@ -36,24 +36,15 @@ int main(int, char**) {
 
   triangleGeo.indices_ = { 0, 1, 2 };
 
-  Vec3 tr_pos(0.0f, 0.0f, 0.0f);
-  Vec3 tr_size(10.0f, 10.0f, 0.0f);
-  Vec3 tr_rot(0.0f, 0.0f, 0.0f);
-
-  size_t triangle = component_manager.add_entity();
-
   auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
   resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
 
-  auto tr_render = component_manager.create_component<RenderComponent>(triangle);
-  auto tr_transform = component_manager.create_component<TransformComponent>(triangle);
-  init_transform_system(*tr_transform, tr_pos, tr_rot, tr_size);
-  init_render_component_system(*tr_render, "Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, NULL);
+  size_t triangle = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
+    RenderComponent("Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, 0));
 
   Input input_map(w);
 
-  size_t main_camera = component_manager.add_entity();
-  auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+  size_t main_camera = component_manager.add_entity(CameraComponent());
   w.setCurrentCam(main_camera);
 
   while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {

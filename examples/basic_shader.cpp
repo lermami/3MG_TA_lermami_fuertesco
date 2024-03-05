@@ -83,124 +83,59 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 
-	Texture wall(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
-	unsigned wall_handle = wall.LoadTexture("../assets/wall.jpg");
+	unsigned wall_texture = resourceM.loadTexture("Wall", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
+		"../assets/wall.jpg");
 
 	//Cubes
 		//1
-	Vec3 tr_pos(-30.0f, 20.0f, -80.0f);
-	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(10.0f, 10.0f, 10.0f);
-
-	size_t new_e = component_manager.add_entity();
-	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", texture_shader, wall_handle);
+	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-3.0f, 2.0f, -8.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)), 
+		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", texture_shader, wall_texture));
 
 		//2
-	tr_pos = Vec3(0.0f, 20.0f, -80.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(10.0f, 10.0f, 10.0f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", texture_light_shader, wall_handle);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", texture_light_shader, wall_texture));
 
 		//3
-	tr_pos = Vec3(30.0f, 20.0f, -80.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(10.0f, 10.0f, 10.0f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_handle);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(3.0f, 2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_texture));
 
 		//4
-	tr_pos = Vec3(-30.0f, -20.0f, -80.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(10.0f, 10.0f, 10.0f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-	auto color = component_manager.create_component<ColorComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_color_system(*color, 0.5f, 0.5f, 0.75f, 1.0f);
-	init_render_component_system(*tr_render, "Cube 3", "CubeVertices", "CubeIndices", color_shader, 0);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(-3.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		RenderComponent("Cube 4", "CubeVertices", "CubeIndices", color_light_shader, 0),
+		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 		//5
-	tr_pos = Vec3(0.0f, -20.0f, -80.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(10.0f, 10.0f, 10.0f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-	color = component_manager.create_component<ColorComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_color_system(*color, 0.5f, 0.5f, 0.75f, 1.0f);
-	init_render_component_system(*tr_render, "Cube 4", "CubeVertices", "CubeIndices", color_light_shader, 0);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		RenderComponent("Cube 5", "CubeVertices", "CubeIndices", color_shader, 0),
+		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 		//6
-	tr_pos = Vec3(30.0f, -20.0f, -80.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(10.0f, 10.0f, 10.0f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-	color = component_manager.create_component<ColorComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_color_system(*color, 0.5f, 0.5f, 0.75f, 1.0f);
-	init_render_component_system(*tr_render, "Cube 5", "CubeVertices", "CubeIndices", color_light_shadow_shader, 0);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(3.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		RenderComponent("Cube 6", "CubeVertices", "CubeIndices", color_light_shadow_shader, 0),
+		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 	//Back Wall
-	tr_pos = Vec3(0.0f, 0.0f, -120.0f);
-	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
-	obj_size = Vec3(50.0f, 50.0f, 00.5f);
-
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Wall", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_handle);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -12.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(5.0f, 5.0f, 0.5f)),
+		RenderComponent("Wall", "CubeVertices", "CubeIndices", texture_light_shadow_shader, wall_texture),
+		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 	//Light
 		//Directional
 	size_t light_entity[2];
 
-	tr_pos = Vec3(0.0f, 0.0f, 80.0f);
-
-	light_entity[0] = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
-
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f)));
 
 		//Ambiental
-	light_entity[1] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.5f, 0.5f, 0.5f), Vec3(0.5f, 0.5f, 0.5f)));
 
-	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+		//Point
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.25f, 0.0f, -8.25f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f));
 
 	//Camera
-	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	size_t main_camera = component_manager.add_entity(CameraComponent());
 	w.setCurrentCam(main_camera);
 
 	//Input Declaration
@@ -208,7 +143,7 @@ int main(int, char**) {
 	double mouse_x = 0, mouse_y = 0;
 	size_t clicked_e = 0;
 
-	while (!w.is_done()) {
+	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
 		w.calculateLastTime();
 
 		input_map.updateInputs();

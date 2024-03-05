@@ -63,12 +63,6 @@ int main(int, char**) {
 
 	Geometry laboon_geo = objs[0].get();
 
-	unsigned n_obj = 1000;
-	
-	Vec3 tr_pos(0.0f, 0.0f, -6.0f);
-	Vec3 obj_rot(0.0f, 1.57f, 0.0f);
-	Vec3 obj_size(1.0f, 1.0f, 1.0f);
-
 	unsigned laboonTex = resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 																						 "../assets/laboon/laboon.png");
 
@@ -77,57 +71,33 @@ int main(int, char**) {
 
 	resourceM.createBuffersWithGeometry(laboon_geo, "LaboonVertices", "LaboonIndices");
 
-	size_t new_e = component_manager.add_entity();
-	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, laboonTex);
+	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -6.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, laboonTex));
 	
   //Light
 	size_t light_entity[4];
 
 		//Ambient Light
-	tr_pos = Vec3(0.0f, 0.0f, 80.0f);
 
-	/*light_entity[0] = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
-
-	init_ambient_light_system(*ambient_light, Vec3(0.33f, 0.0f, 0.0f));
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		                                             LightComponent(Vec3(0.33f, 0.0f, 0.0f), Vec3(0.33f, 0.0f, 0.0f)));
+	
 		//Directional Light
-	light_entity[1] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
-
-	init_directional_light_system(*ambient_light, Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																								LightComponent(Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f)));
 
 		//Point Light
-	tr_pos = Vec3(0.0f, 0.0f, -4.5f);
 
-	light_entity[2] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[2]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[2]);
-
-	init_point_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f,	0.7f,	1.8f);
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);*/
+	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f));
 
 		//Spot Light
-	tr_pos = Vec3(0.0f, 3.0f, -6.0f);
+	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+																								LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.9f);
 
-	light_entity[3] = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[3]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[3]);
 
-	init_spot_light_system(*ambient_light, Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f,	0.0014f,	0.000007f,	0.5f);
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	
   //Camera
-	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	size_t main_camera = component_manager.add_entity(TransformComponent(), CameraComponent());
 	w.setCurrentCam(main_camera);
 
 	//Input Declaration

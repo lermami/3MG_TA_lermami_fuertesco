@@ -347,42 +347,27 @@ void imgui_transform_system(Engine& e, Window& w) {
 
 			num = 0;
 
-			for (; l != lightList->end(); l++) {
-				if (l->has_value()) {
-					ImGui::PushID(num);
-					auto& light = l->value();
+			tr = transformList->begin();
+			for (; l != lightList->end(); l++, tr++) {
+				if (!l->has_value() || !tr->has_value()) continue;
 
-					if (ImGui::CollapsingHeader("Light")) {
-						/*
-						switch (light.target_) {
-						case LightType::kAmbient:
+				ImGui::PushID(num);
+				auto& light = l->value();
+				auto& transform = tr->value();
 
-							break;
-						case LightType::kDirectional:
-
-							break;
-						case LightType::kPoint:
-
-							break;
-						case LightType::kSpot:
-
-							break;
-						}
-						*/
-
-						/*/Vec3 aux_pos = light.pos_;
-						if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
-							light.pos_ = aux_pos;
-						}*/
-
-						Vec3 aux_color = light.color_;
-						if (ImGui::ColorPicker3("Color", &aux_color.x)) {
-							light.color_ = aux_color;
-						}
+				if (ImGui::CollapsingHeader("Light")) {
+					Vec3 aux_pos = transform.pos_;
+					if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
+						transform.pos_ = aux_pos;
 					}
-					ImGui::PopID();
-					num++;
+
+					Vec3 aux_color = light.color_;
+					if (ImGui::ColorPicker3("Color", &aux_color.x)) {
+						light.color_ = aux_color;
+					}
 				}
+				ImGui::PopID();
+				num++;
 			}
 				ImGui::EndTabItem();
 		}

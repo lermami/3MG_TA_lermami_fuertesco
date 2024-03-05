@@ -66,54 +66,18 @@ int main(int, char**) {
 	resourceM.createBuffersWithGeometry(tankGeo, "TankVertices", "TankIndices");
 
 	for (unsigned i = 0; i < n_obj / 3; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (rand() % 150) - 75;
-		tr_pos.y = (rand() % 150) - 75;
-		tr_pos.z = -100.0f;
-
-		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(2.0f, 2.0f, 2.0f);
-
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, "Suzanne", "SuzanneVertices", "SuzanneIndices", simpleProgram, 0);
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 150) - 75, (rand() % 150) - 75, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
+			RenderComponent("Suzanne", "SuzanneVertices", "SuzanneIndices", simpleProgram, 0));
 	}
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (rand() % 28) - 14;
-		tr_pos.y = (rand() % 28) - 14;
-		tr_pos.z = -20.0f;
-
-		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(1.0f, 1.0f, 1.0f);
-
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, "Wolf", "WolfVertices", "WolfIndices", simpleProgram, 0);
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 28) - 14, (rand() % 28) - 14, -20.0f), Vec3(0.0f,  0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
+			RenderComponent("Wolf", "WolfVertices", "WolfIndices", simpleProgram, 0));
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
-		Vec3 tr_pos;
-		tr_pos.x = (rand() % 100) - 50;
-		tr_pos.y = (rand() % 100) - 50;
-		tr_pos.z = -60.0f;
-
-		Vec3 obj_rot(0.0f, 0.0f, 0.0f);
-		Vec3 obj_size(5.0f, 5.0f, 5.0f);
-
-		size_t new_e = component_manager.add_entity();
-		auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-		auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-		init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-		init_render_component_system(*tr_render, "Tank", "TankVertices", "TankIndices", simpleProgram, 0);
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 100) - 50, (rand() % 100) - 50, -60.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(5.0f, 5.0f, 5.0f)),
+			RenderComponent("Tank", "TankVertices", "TankIndices", simpleProgram, 0));
 	}
 
 	//Input Declaration
@@ -122,8 +86,7 @@ int main(int, char**) {
 	size_t clicked_e = 0;
 
 	//Camera
-	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	size_t main_camera = component_manager.add_entity(CameraComponent());
 	w.setCurrentCam(main_camera);
 
 	while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {

@@ -91,73 +91,46 @@ int main(int, char**) {
 	Vec3 obj_rot(0.0f, 0.0f, 0.0f);
 	Vec3 obj_size(100.0f, 100.0f, 5.0f);
 
-	size_t new_e = component_manager.add_entity();
-	auto tr_render = component_manager.create_component<RenderComponent>(new_e);
-	auto tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 1", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
+	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-6.0f, 6.0f, -20.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(2.0f, 10.0f, 10.0f)),
+		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle));
 	
 		//Cube 2
 	tr_pos = Vec3(25.0f, 55.0f, -150.0f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(18.0f, 18.0f, 18.0f);
 
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.25f, 5.5f, -5.75f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.8f, 1.8f, 1.8f)),
+		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle));
 
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 2", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
+	tr_pos = Vec3(-11.5f, 0.25f, -8.75f);
 
-		//Cube 3
-	tr_pos = Vec3(-10.0f, 2.5f, -140.5f);
 	obj_rot = Vec3(0.0f, 0.0f, 0.0f);
 	obj_size = Vec3(20.0f, 10.0f, 20.0f);
 
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Cube 3", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(-11.5f, 0.25f, -8.75f), Vec3(0.0f, 0.0f, 0.0f), Vec3(3.0f, 3.0f, 3.0f)),
+		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", simpleProgram, laboon_handle));
 
 	//Floor
 	tr_pos = Vec3(0.0f, -3.0f, -250.0f);
 	obj_rot = Vec3(3.14f/2.0f, 0.0f, 0.0f);
 	obj_size = Vec3(200.0f, 100.0f, 200.0f);
 
-	new_e = component_manager.add_entity();
-	tr_render = component_manager.create_component<RenderComponent>(new_e);
-	tr_transform = component_manager.create_component<TransformComponent>(new_e);
-
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
-	init_render_component_system(*tr_render, "Wall", "SquareVertices", "SquareIndices", simpleProgram, laboon_handle);
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -3.0f, -110.0f), Vec3(3.14f / 2.0f, 0.0f, 0.0f), Vec3(200.0f, 100.0f, 200.0f)),
+		RenderComponent("Wall", "SquareVertices", "SquareIndices", simpleProgram, laboon_handle));
 
   //Light
 	size_t light_entity[2];
 		
 		//Directional
-	tr_pos = Vec3(0.0f, 0.0f, 80.0f);
-
-	light_entity[0] = component_manager.add_entity();
-	auto ambient_light = component_manager.create_component<LightComponent>(light_entity[0]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[0]);
-
-	init_directional_light_system(*ambient_light, Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f));
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f)));
 
 		//Ambient
-	light_entity[1] = component_manager.add_entity();
-	ambient_light = component_manager.create_component<LightComponent>(light_entity[1]);
-	tr_transform = component_manager.create_component<TransformComponent>(light_entity[1]);
-
-	init_ambient_light_system(*ambient_light, Vec3(0.5f, 0.5f, 0.5f));
-	init_transform_system(*tr_transform, tr_pos, obj_rot, obj_size);
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.5f, 0.5f, 0.5f), Vec3(0.5f, 0.5f, 0.5f)));
   
   //Camera
-	size_t main_camera = component_manager.add_entity();
-	auto camera_comp = component_manager.create_component<CameraComponent>(main_camera);
+	size_t main_camera = component_manager.add_entity(CameraComponent());
 	w.setCurrentCam(main_camera);
 	
 	//Input Declaration
