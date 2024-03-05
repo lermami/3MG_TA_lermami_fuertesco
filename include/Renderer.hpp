@@ -4,6 +4,7 @@
 
 class Engine;
 class Window;
+class Vec3;
 
 class Renderer {
 public:
@@ -11,10 +12,11 @@ public:
   ~Renderer();
 
   void renderLights();
+  void CalculateShadowsMatrix();
   void render();
   void renderShadowMap(unsigned int program);
 
-  glm::mat4 ConfigureShadowMatrix();
+  glm::mat4 ConfigureShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
 
 private:
   void renderImgui();
@@ -23,6 +25,7 @@ private:
   Window& window_;
 
   bool renderShadows_;
+  unsigned int shadow_resolution_;
   unsigned depthmap_;
   unsigned depthmapFBO_;
   unsigned shadowProgram_;
