@@ -75,6 +75,8 @@ void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 c
 	light.linear_ = 0.0f;
 	light.quadratic_ = 0.0f;
 	light.cutoff_angle_ = 0.0f;
+	light.min_shadow_render_distance_ = 0.01f;
+	light.max_shadow_render_distance_ = 1000.0f;
 
 	light.target_ = LightType::kDirectional;
 }

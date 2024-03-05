@@ -194,7 +194,19 @@ float ShadowProcess(vec4 fragPosLightSpace){
 
   // check whether current frag pos is in shadow
   float bias = 0.005;
-  float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;  
+
+  // PCF
+  float shadow = 0.0;
+  vec2 texelSize = 1.0 / textureSize(u_depth_map, 0);
+  for(int y = -1; y <= 1; ++y)
+  {
+      for(int x = -1; x <= 1; ++x)
+      {
+          float pcfDepth = texture(u_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
+          shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+      }    
+  }
+  shadow /= 9.0; //3x + 3y = 9 
 
   if(projCoords.z > 1.0)
          shadow = 0.0;
