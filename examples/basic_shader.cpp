@@ -73,51 +73,47 @@ int main(int, char**) {
 
 	//Cubes
 		//1
-	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-3.0f, 2.0f, -8.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)), 
+	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-30.0f, 20.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)), 
 		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", texture_shader, resourceM.getTexture("Wall")));
 
 		//2
-	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 20.0f, -80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)),
 		RenderComponent("Cube 2", "CubeVertices", "CubeIndices", texture_light_shader, resourceM.getTexture("Wall")));
 
 		//3
-	new_e = component_manager.add_entity(TransformComponent(Vec3(3.0f, 2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	new_e = component_manager.add_entity(TransformComponent(Vec3(30.0f, 20.0f, -80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)),
 		RenderComponent("Cube 3", "CubeVertices", "CubeIndices", texture_light_shadow_shader, resourceM.getTexture("Wall")));
 
 		//4
-	new_e = component_manager.add_entity(TransformComponent(Vec3(-3.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		RenderComponent("Cube 4", "CubeVertices", "CubeIndices", color_light_shader, 0),
+	new_e = component_manager.add_entity(TransformComponent(Vec3(-30.0f, -20.0f, -80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)),
+		RenderComponent("Cube 4", "CubeVertices", "CubeIndices", color_shader, 0),
 		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 		//5
-	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		RenderComponent("Cube 5", "CubeVertices", "CubeIndices", color_shader, 0),
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -20.0f, -80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)),
+		RenderComponent("Cube 5", "CubeVertices", "CubeIndices", color_light_shader, 0),
 		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 		//6
-	new_e = component_manager.add_entity(TransformComponent(Vec3(3.0f, -2.0f, -8.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	new_e = component_manager.add_entity(TransformComponent(Vec3(30.0f, -20.0f, -80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)),
 		RenderComponent("Cube 6", "CubeVertices", "CubeIndices", color_light_shadow_shader, 0),
 		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 	//Back Wall
-	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -12.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(5.0f, 5.0f, 0.5f)),
+	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -120.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(50.0f, 50.0f, 0.5f)),
 		RenderComponent("Wall", "CubeVertices", "CubeIndices", texture_light_shadow_shader, resourceM.getTexture("Wall")),
 		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 	//Light
-		//Directional
 	size_t light_entity[2];
 
-	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f)));
+		//Directional
+	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f), Vec3(1.0f, 0.0f, 1.0f)));
 
 		//Ambiental
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		LightComponent(Vec3(0.5f, 0.5f, 0.5f)));
-
-		//Point
-	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.25f, 0.0f, -8.25f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		LightComponent(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.7f, 1.8f));
 
 	//Camera
 	size_t main_camera = component_manager.add_entity(CameraComponent());
