@@ -41,6 +41,13 @@ struct SpotLight
   float cutoff_angle_;
 };
 
+in VS_OUT {
+  vec3 FragPos;
+  vec3 Normal;
+  vec2 TexCoords;
+  vec4 FragPosLightSpace;
+} fs_in;
+
 in vec3 pos;
 in vec2 uv;
 in vec3 normal;
@@ -53,7 +60,6 @@ out vec4 frag_colour;
 
 uniform vec4 u_color;
 
-in vec4 frag_pos_light_space;
 
 uniform sampler2D u_texture;
 uniform sampler2D u_depth_map;
@@ -194,9 +200,12 @@ float ShadowProcess(vec4 fragPosLightSpace){
   // get depth of current fragment from light's perspective
   float currentDepth = projCoords.z;
 
-  // check whether current frag pos is in shadow
+  // calculate bias (based on depth map resolution and slope)
+  vec3 normal = normalize(fs_in.Normal);
   float bias = 0.005;
-
+  
+  // check whether current frag pos is in shadow
+  // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
   // PCF
   float shadow = 0.0;
   vec2 texelSize = 1.0 / textureSize(u_depth_map, 0);
@@ -205,14 +214,16 @@ float ShadowProcess(vec4 fragPosLightSpace){
       for(int x = -1; x <= 1; ++x)
       {
           float pcfDepth = texture(u_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
-          shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+          shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
       }    
   }
-  shadow /= 9.0; //3x + 3y = 9 
 
-  if(projCoords.z > 1.0)
-         shadow = 0.0;
+  shadow /= 9.0;
   
+  // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+  if(projCoords.z > 1.0)
+      shadow = 0.0;
+
   return shadow;
 }
 
@@ -222,7 +233,7 @@ void main() {
   vec3 light = LightProcess();
   vec3 ambient = AmbientProcess();
  
-  float shadow = ShadowProcess(frag_pos_light_space);
+  float shadow = ShadowProcess(fs_in.FragPosLightSpace);
 
   vec3 result = (ambient + (1.0 - shadow) * light) * u_color.xyz;
 

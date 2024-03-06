@@ -10,7 +10,7 @@ LightComponent::LightComponent() {
   max_shadow_render_distance_ = 0.0f;
   min_shadow_render_distance_ = 0.0f;
 
-  target_ = LightType::kAmbient;
+  type_ = LightType::kAmbient;
 }
 
 LightComponent::LightComponent(Vec3 color) {
@@ -23,7 +23,7 @@ LightComponent::LightComponent(Vec3 color) {
   max_shadow_render_distance_ = 0.0f;
   min_shadow_render_distance_ = 0.0f;
 
-  target_ = LightType::kAmbient;
+  type_ = LightType::kAmbient;
 }
 
 LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float min_shadow_render_distance, float max_shadow_render_distance) {
@@ -38,7 +38,7 @@ LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float 
   max_shadow_render_distance_ = max_shadow_render_distance;
   min_shadow_render_distance_ = min_shadow_render_distance;
 
-  target_ = LightType::kDirectional;
+  type_ = LightType::kDirectional;
 }
 
 LightComponent::LightComponent(Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float min_shadow_render_distance, float max_shadow_render_distance) {
@@ -53,7 +53,7 @@ LightComponent::LightComponent(Vec3 color, Vec3 specular, float constant, float 
   max_shadow_render_distance_ = max_shadow_render_distance;
   min_shadow_render_distance_ = min_shadow_render_distance;
 
-  target_ = LightType::kPoint;
+  type_ = LightType::kPoint;
 }
 
 LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle, float min_shadow_render_distance, float max_shadow_render_distance) {
@@ -68,7 +68,7 @@ LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float 
   max_shadow_render_distance_ = max_shadow_render_distance;
   min_shadow_render_distance_ = min_shadow_render_distance;
 
-  target_ = LightType::kSpot;
+  type_ = LightType::kSpot;
 }
 
 LightComponent::~LightComponent() {
