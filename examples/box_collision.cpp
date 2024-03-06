@@ -28,7 +28,7 @@
 
 int main(int, char**) {
 	Engine e;
-	ThreadManager thread_manager;
+	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
 
@@ -46,25 +46,11 @@ int main(int, char**) {
 
 	auto color_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/Color.vs", "../assets/BasicShader/BasicColor/Color.fs");
 
-	std::vector<std::string> obj_paths;
-	std::vector<std::future<Geometry>> objs;
-	obj_paths.emplace_back("../assets/obj_test.obj");
+	resourceM.LoadObj(e, "Cube", "../assets/obj_test.obj");
+	resourceM.WaitResources();
 
-	//Create obj entity
-	for (auto& path : obj_paths) {
-		std::function<Geometry()> mycall_vertex = [&]() { return  resourceM.LoadObj("A", path.c_str()); };
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Cube"), "CubeVertices", "CubeIndices");
 
-		std::future<Geometry> future = thread_manager.add(mycall_vertex);
-
-		objs.push_back(std::move(future));
-	}
-
-	Geometry cube_geo = objs[0].get();
-
-	resourceM.createBuffersWithGeometry(cube_geo, "CubeVertices", "CubeIndices");
-
-	unsigned n_obj = 1000;
-	
 	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
 

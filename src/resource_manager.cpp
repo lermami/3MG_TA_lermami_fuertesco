@@ -3,6 +3,8 @@
 #include "default_components.hpp"
 #include "buffer.hpp"
 
+#include "Engine.hpp"
+#include "thread_manager.hpp"
 
 ResourceManager::ResourceManager() {
 
@@ -15,13 +17,24 @@ ResourceManager::~ResourceManager() {
 	}
 }
 
-unsigned ResourceManager::loadTexture(const char* name, Texture tex, const char* path) {
-  unsigned new_tex = tex.LoadTexture(path);
+void ResourceManager::loadTexture(const char* name, Texture tex, const char* path) {
+	textures_[name] = tex.LoadTexture(path);
+}
 
-  textures_.push_back(new_tex);
-  texture_names_.push_back(name);
+void ResourceManager::LoadObj(Engine& e, const char* name, const char* path) {
+	auto& threadM = e.getThreadManager();
 
-  return new_tex;
+	std::function<Geometry()> mycall_vertex = [this, name, path]() { return LoadObj(name, path); };
+	std::future<Geometry> future = std::move(threadM.add(mycall_vertex));
+	geometryFutures_[name] = std::move(future);
+}
+
+void ResourceManager::WaitResources() {
+	for (auto& geometry : geometryFutures_) {
+		if (geometry.second.valid()) {
+			geometries_[geometry.first] = geometry.second.get();
+		}
+	}
 }
 
 Geometry ResourceManager::LoadObj(const char* name, const char* path) {
@@ -100,48 +113,28 @@ Geometry ResourceManager::LoadObj(const char* name, const char* path) {
 		}
 	}
 
-	geometries_.push_back(geometry);
-	geometry_names_.push_back(name);
+	//geometries_.push_back(geometry);
+	//geometry_names_.push_back(name);
 
 	return geometry;
 }
 
+Geometry* ResourceManager::getGeometry(std::string nameID) {
+	if (geometries_.count(nameID) == 0) {
+		printf("ERROR. VERTEX BUFFER '%s' NOT FOUND", nameID.c_str());
+		return nullptr;
+	}
+
+	return &geometries_.at(nameID);
+}
+
 unsigned ResourceManager::getTexture(const char* name) {
-  int it = 0;
-  for (auto& tex_name : texture_names_) {
-    if (tex_name == name) {
-      return textures_[it];
-    }
-    it++;
-  }
+	if (textures_.count(name) == 0) {
+		printf("ERROR. VERTEX BUFFER '%s' NOT FOUND", name);
+		return 0;
+	}
 
-  return 0;
-}
-
-unsigned ResourceManager::getTexture(int index) {
-  if (index > textures_.size() || index < 0) return 0;
-
-  return textures_[index];
-}
-
-std::string ResourceManager::getTextureName(unsigned value) {
-  int it = 0;
-
-  for (auto& tex_value : textures_) {
-    if (tex_value == value) {
-      return texture_names_[it];
-    }
-
-    it++;
-  }
-}
-
-std::vector<unsigned>& ResourceManager::getTextureList(){
-  return textures_;
-}
-
-std::vector<std::string>& ResourceManager::getTextureNamesList() {
-  return texture_names_;
+	return textures_.at(name);
 }
 
 bool ResourceManager::createVertexBuffer(std::string nameID, float* vertices, unsigned size)
@@ -185,7 +178,7 @@ IndexBuffer* ResourceManager::getIndexBuffer(std::string nameID) {
 	return indexBuffers_.at(nameID);
 }
 
-bool ResourceManager::createBuffersWithGeometry(Geometry& geo, std::string nameIDVertex, std::string nameIDIndex) {
+bool ResourceManager::createBuffersWithGeometry(Geometry* geo, std::string nameIDVertex, std::string nameIDIndex) {
 	if (vertexBuffers_.count(nameIDVertex) > 0) {
 		printf("ERROR. VERTEX BUFFER NAMED '%s' ALREADY EXISTS", nameIDVertex.c_str());
 		return false;
@@ -197,8 +190,8 @@ bool ResourceManager::createBuffersWithGeometry(Geometry& geo, std::string nameI
 	}
 
 
-	vertexBuffers_[nameIDVertex] = new VertexBuffer(&geo.vertex_[0].pos.x, geo.vertex_.size() * sizeof(Vertex));
-	indexBuffers_[nameIDIndex] = new IndexBuffer(&geo.indices_[0], geo.indices_.size() * sizeof(unsigned));
+	vertexBuffers_[nameIDVertex] = new VertexBuffer(&geo->vertex_[0].pos.x, geo->vertex_.size() * sizeof(Vertex));
+	indexBuffers_[nameIDIndex] = new IndexBuffer(&geo->indices_[0], geo->indices_.size() * sizeof(unsigned));
 
 	return true;
 }

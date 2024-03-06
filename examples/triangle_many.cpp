@@ -57,7 +57,7 @@ int main(int, char**) {
 
 	triangleGeo.indices_ = { 0, 1, 2 };
 
-	resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+	resourceM.createBuffersWithGeometry(&triangleGeo, "TriangleVertices", "TriangleIndices");
 
 	for (int i = 0; i < n_triangles; i++) {
 		Vec3 tr_pos;

@@ -7,6 +7,7 @@
 
 struct ComponentManager;
 class ResourceManager;
+class ThreadManager;
 
 
 class Engine {
@@ -16,8 +17,10 @@ public:
 
   ComponentManager& getComponentManager();
   ResourceManager& getResourceManager();
+  ThreadManager& getThreadManager();
 
 private:
   std::unique_ptr<ComponentManager> componentM_;
   std::unique_ptr<ResourceManager> resourceM_;
+  std::unique_ptr<ThreadManager> threadM_;
 };

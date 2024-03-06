@@ -36,7 +36,7 @@ int main(int, char**) {
 
   triangleGeo.indices_ = { 0, 1, 2 };
 
-  resourceM.createBuffersWithGeometry(triangleGeo, "TriangleVertices", "TriangleIndices");
+  resourceM.createBuffersWithGeometry(&triangleGeo, "TriangleVertices", "TriangleIndices");
   auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 
   size_t triangle = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
