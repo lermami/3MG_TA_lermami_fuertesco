@@ -22,11 +22,10 @@ uniform mat4 u_light_space_matrix;
 
 uniform vec3 u_camera_pos;
 
+out vec4 color;
 out vec3 pos;
 out vec2 uv;
 out vec3 normal;
-
-out vec4 frag_pos_light_space;
 
 out vec3 world_position;
 out vec3 world_normal;
@@ -47,6 +46,5 @@ void main() {
   color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
   uv = a_uv;
   normal = a_normal;
-  pos = vp;
   pos = vp;
 };

@@ -64,7 +64,7 @@ void init_ambient_light_system(LightComponent& light, Vec3 color) {
 	light.quadratic_ = 0.0f;
 	light.cutoff_angle_ = 0.0f;
 
-	light.target_ = LightType::kAmbient;
+	light.type_ = LightType::kAmbient;
 }
 
 void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
@@ -78,7 +78,7 @@ void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 c
 	light.min_shadow_render_distance_ = 0.01f;
 	light.max_shadow_render_distance_ = 1000.0f;
 
-	light.target_ = LightType::kDirectional;
+	light.type_ = LightType::kDirectional;
 }
 
 void init_point_light_system(LightComponent& light, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
@@ -90,7 +90,7 @@ void init_point_light_system(LightComponent& light, Vec3 color, Vec3 specular, f
 	light.quadratic_ = quadratic;
 	light.cutoff_angle_ = 0.0f;
 
-	light.target_ = LightType::kPoint;
+	light.type_ = LightType::kPoint;
 }
 
 void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
@@ -102,7 +102,7 @@ void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 color, V
 	light.quadratic_ = quadratic;
 	light.cutoff_angle_ = cutoff_angle;
 
-	light.target_ = LightType::kSpot;
+	light.type_ = LightType::kSpot;
 }
 
 void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, float sensitivity) {
@@ -359,6 +359,13 @@ void imgui_transform_system(Engine& e, Window& w) {
 					Vec3 aux_pos = transform.pos_;
 					if (ImGui::DragFloat3("Position", &aux_pos.x, 0.25f, -1000.0f, 1000.0f, "%.3f")) {
 						transform.pos_ = aux_pos;
+					}
+
+					if (light.type_ == LightType::kDirectional || light.type_ == LightType::kSpot) {
+						Vec3 aux_dir = light.direction_;
+						if (ImGui::DragFloat3("Direction", &aux_dir.x, 0.01f, -1.0f, 1.0f, "%.3f")) {
+							light.direction_ = aux_dir;
+						}
 					}
 
 					Vec3 aux_color = light.color_;

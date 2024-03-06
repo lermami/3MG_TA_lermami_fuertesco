@@ -79,7 +79,7 @@ void Renderer::renderLights() {
 			char name[64];
 
 			//Ambient
-			if (light.target_ == LightType::kAmbient) {
+			if (light.type_ == LightType::kAmbient) {
 				sprintf_s(name, "u_ambient_light[%d].pos_", point_iterator);
 				SetVector3(program, name, transform.pos_);
 
@@ -90,7 +90,7 @@ void Renderer::renderLights() {
 			}
 
 			//Directional
-			if (light.target_ == LightType::kDirectional) {
+			if (light.type_ == LightType::kDirectional) {
 				sprintf_s(name, "u_directional_light[%d].pos_", point_iterator);
 				SetVector3(program, name, transform.pos_);
 
@@ -114,7 +114,7 @@ void Renderer::renderLights() {
 			}
 
 			//Point
-			if (light.target_ == LightType::kPoint) {
+			if (light.type_ == LightType::kPoint) {
 				sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
 				SetVector3(program, name, transform.pos_);
 
@@ -140,7 +140,7 @@ void Renderer::renderLights() {
 			}
 
 			//Spot
-			if (light.target_ == LightType::kSpot) {
+			if (light.type_ == LightType::kSpot) {
 				sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
 				SetVector3(program, name, transform.pos_);
 
@@ -201,7 +201,7 @@ void Renderer::CalculateShadowsMatrix() {
 			char name[64];
 
 			//Directional
-			if (light.target_ == LightType::kDirectional) {
+			if (light.type_ == LightType::kDirectional) {
 
 				glm::mat4 shadow_mat = ConfigureShadowMatrix(light.min_shadow_render_distance_, light.max_shadow_render_distance_, transform.pos_, light.direction_);
 
@@ -210,12 +210,12 @@ void Renderer::CalculateShadowsMatrix() {
 			}
 
 			//Point
-			if (light.target_ == LightType::kPoint) {
+			if (light.type_ == LightType::kPoint) {
 				
 			}
 
 			//Spot
-			if (light.target_ == LightType::kSpot) {
+			if (light.type_ == LightType::kSpot) {
 				
 			}
 		}
