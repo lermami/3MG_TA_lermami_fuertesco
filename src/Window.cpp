@@ -44,6 +44,7 @@ Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_
 	currentTime_ = 0;
 	lastTime_ = 0;
 	deltaTime_ = 0;
+	current_cam_ = e.getComponentManager().add_entity(TransformComponent(), CameraComponent("DefaultCamera", 1.0f, 1.0f));
 }
 
 Window::~Window() {
@@ -72,6 +73,7 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	w.imguiInit_ = false;
 
 	program_list_ = w.program_list_;
+	current_cam_ = w.current_cam_;
 }
 
 Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }  {
@@ -90,6 +92,7 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	w.imguiInit_ = false;
 
 	program_list_ = w.program_list_;
+	current_cam_ = w.current_cam_;
 }
 
 void Window::initSoundContext() {

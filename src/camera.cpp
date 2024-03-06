@@ -1,19 +1,20 @@
 #include "camera.hpp"
 #include "Window.hpp"
 #include "input.hpp"
+#include "Engine.hpp"
+#include "default_components.hpp"
+#include "component_manager.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 #include "vector_2.hpp"
+
+
 /*
-Camera::Camera(Window& w, Vec3 pos, float speed, float sensitivity) : window_{ w } {
-  pos_ = pos;
-  speed_ = speed;
-  sensitivity_ = sensitivity;
-  up_ = Vec3(0.0f, 1.0f, 0.0f);
-  forward_ = Vec3(0.0f, 0.0f, -1.0f);
-  projectionMode_ = ProjectionMode::kPerspective;
+Camera::Camera(Engine& e, TransformComponent tr, CameraComponent cam){
+  auto& compM = e.getComponentManager();
+  compM.add_entity(tr, cam);
 }
 
 Camera::~Camera() {
@@ -105,7 +106,6 @@ void Camera::doRender() {
   for (int i = 0; i < window_.getProgramListSize(); i++) {
     unsigned program = window_.getProgram(i);
     glUseProgram(program);
-
     switch (projectionMode_) {
       case ProjectionMode::kPerspective:
         glm::mat4 perspective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
@@ -129,6 +129,5 @@ void Camera::doRender() {
     glUniform1fv(camPosLoc, sizeof(float) * 3, &pos_.x);
   }
 }
-
 
 */

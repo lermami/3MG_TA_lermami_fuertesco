@@ -45,11 +45,11 @@ int main(int, char**) {
 
 	Renderer renderer(e, w);
 
-	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
+	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
 
 	resourceM.LoadObj(e, "LaboonObj", "../assets/laboon/laboon.obj");
 	resourceM.LoadObj(e, "CubeObj", "../assets/obj_test.obj");
-	resourceM.LoadObj(e, "SuzanneObj", "../assets/Suzanne.obj");
+	resourceM.LoadObj(e, "BonClayObj", "../assets/BonClay.obj");
 
 	resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 																						 "../assets/laboon/laboon.png");
@@ -57,13 +57,16 @@ int main(int, char**) {
 	resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 																						"../assets/wall.jpg");
 
+	resourceM.loadTexture("BonClay", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
+		"../assets/BonClay.png");
+
 	resourceM.WaitResources();
 
-	Geometry* laboon_geo = resourceM.getGeometry("SuzanneObj");
+	Geometry* laboon_geo = resourceM.getGeometry("LaboonObj");
 	resourceM.createBuffersWithGeometry(laboon_geo, "LaboonVertices", "LaboonIndices");
 
-	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, resourceM.getTexture("Laboon")));
+	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -50.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_light_shader, resourceM.getTexture("Laboon")));
 	
   //Light
 	size_t light_entity[4];
@@ -86,6 +89,9 @@ int main(int, char**) {
 
 
   //Camera
+	//Camera cam(e, TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f)), 
+	//	CameraComponent("MainCamera", 1.0f, 1.0f));
+
 	size_t main_camera = component_manager.add_entity(TransformComponent(), CameraComponent());
 	w.setCurrentCam(main_camera);
 
@@ -114,8 +120,8 @@ int main(int, char**) {
 		if (input_map.IsKeyPressed('S')) {
 			input.z = -input_velocity;
 		}
-		if (input_map.IsKeyPressed('A')) {
 
+		if (input_map.IsKeyPressed('A')) {
 			input.x = -input_velocity;
 		}
 

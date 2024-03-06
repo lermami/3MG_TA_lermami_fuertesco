@@ -139,7 +139,10 @@ struct RenderComponent {
 };
 
 struct CameraComponent {
+	std::string name_;
+
 	Vec3 pos_;
+
 	Vec3 forward_;
 	Vec3 up_;
 	Vec3 right_;
@@ -150,7 +153,6 @@ struct CameraComponent {
 	ProjectionMode projectionMode_;
 
 	CameraComponent() {
-		pos_ = Vec3(0.0f, 0.0f, 0.0f);
 		right_ = Vec3(0.0f, 0.0f, 0.0f);
 		up_ = Vec3(0.0f, 1.0f, 0.0f);
 		forward_ = Vec3(0.0f, 0.0f, -1.0f);
@@ -159,6 +161,19 @@ struct CameraComponent {
 		sensitivity_ = 1.0f;
 
 		projectionMode_ = ProjectionMode::kPerspective;
+	};
+
+	CameraComponent(std::string name, float speed, float sensitivity, ProjectionMode mode = ProjectionMode::kPerspective) {
+		name_ = name;
+
+		right_ = Vec3(0.0f, 0.0f, 0.0f);
+		up_ = Vec3(0.0f, 1.0f, 0.0f);
+		forward_ = Vec3(0.0f, 0.0f, -1.0f);
+
+		speed_ = speed;
+		sensitivity_ = sensitivity;
+
+		projectionMode_ = mode;
 	}
 
 	void setProjectionMode(ProjectionMode mode) {

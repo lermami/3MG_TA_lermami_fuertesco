@@ -1,23 +1,21 @@
 #pragma once
-/*
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "vector_3.hpp"
 
-enum class ProjectionMode {
-  kPerspective,
-  kOrthogonal,
-};
-
 class Window;
+class Engine;
 class Input;
+struct TransformComponent;
+struct CameraComponent;
 
 class Camera {
 public:
 
-  Camera(Window& w, Vec3 pos = Vec3(0.0f,0.0f,0.0f), float speed = 1.0f, float sensitivity = 1.0f);
+  /*
+  Camera(Engine& e, TransformComponent tr, CameraComponent cam);
   ~Camera();
-
   void setProjectionMode(ProjectionMode mode);
   ProjectionMode getProjectionMode();
 
@@ -32,18 +30,7 @@ public:
   Vec3 getPosition();
 
   void doRender();
+  */
 
 private:
-  Vec3 pos_;
-  Vec3 forward_;
-  Vec3 up_;
-  Vec3 right_;
-
-  float speed_;
-  float sensitivity_;
-
-  ProjectionMode projectionMode_;
-
-  Window& window_;
 };
-*/
