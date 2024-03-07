@@ -57,7 +57,7 @@ int main(int, char**) {
 
 	//[1]. Create and Load the program variable, you can use your own or one of the basics that this engine already have.
 	
-	//These are the basic shaders present in the engine to make basic examples:
+	//These are some of the basic shaders present in the engine to make basic examples:
 
 	//Only a single texture
 	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");

@@ -13,6 +13,8 @@
 #include "Input.hpp"
 #include "component_manager.hpp"
 
+
+//In this example we will see how to introduce a custom geometry
 int main(int, char**) {
   Engine e;
   auto& component_manager = e.getComponentManager();
@@ -26,19 +28,24 @@ int main(int, char**) {
 
   Renderer renderer(e, w);
 
+  //[1]. Create and init the geometry it could be 2D like this example or 3D (Values are on screen coordinates e.g. -1 t +1)
   Geometry triangleGeo;
-
   triangleGeo.vertex_ = {
     {{-0.05f, -0.05f, 0}, {1, 0, 0}, {1, 0}, {1, 0, 0, 0}},
     {{0.05f, -0.05f, 0}, {0, 1, 0}, {1, 0}, {0, 1, 0, 0} },
     {{0.0f, 0.05f, 0}, {0, 0, 1}, {1, 0}, {0, 0, 1, 0} },
   };
 
+  //[2]. Set the index of the triangles that compose the geometry
   triangleGeo.indices_ = { 0, 1, 2 };
 
+  //[3]. Create a buffer to store the geometry
   resourceM.createBuffersWithGeometry(&triangleGeo, "TriangleVertices", "TriangleIndices");
-  auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
 
+  //[4].  Create a program for the geometry (This Shader is one of the basic shaders present on the engine) this shaders uses the color of the vertex
+  auto simpleProgram = CreateProgram(w, "../assets/BasicShader/BasicColor/VertexColor.vs", "../assets/BasicShader/BasicColor/VertexColor.fs");
+
+  //[5]. Add an entity that use the geometry you have created with your program
   size_t triangle = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
     RenderComponent("Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, 0));
 
@@ -52,7 +59,7 @@ int main(int, char**) {
     w.calculateLastTime();
     input_map.updateInputs();
 
-    // Draw triangle
+    //[6]. Render geometry
     renderer.render();
 
     w.swap();
