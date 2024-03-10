@@ -1,0 +1,218 @@
+\doxysection{default\+\_\+components.\+hpp}
+\hypertarget{default__components_8hpp_source}{}\label{default__components_8hpp_source}\index{include/default\_components.hpp@{include/default\_components.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{buffer_8hpp}{buffer.hpp}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}vector\_2.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}vector\_3.hpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}vector\_4.hpp"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}matrix\_4.hpp"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}sound/soundsource.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}light.hpp"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{_window_8hpp}{Window.hpp}}"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glm/gtc/matrix\_transform.hpp"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glm/gtc/type\_ptr.hpp"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcomponent__base}{component\_base}}\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ add\_component()\ =\ 0;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ add\_component(\textcolor{keywordtype}{int}\ position)\ =\ 0;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ delete\_component(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ =\ 0;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ size()\ =\ 0;}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00023\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcomponent__list}{component\_list}}\ :\ \mbox{\hyperlink{structcomponent__base}{component\_base}}\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ std::vector\ <\ std::optional<T>>\ components\_;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ add\_component()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ std::optional<T>\ a;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ components\_.emplace\_back(a);}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ add\_component(\textcolor{keywordtype}{int}\ position)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ T\ a;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{comment}{//-\/1\ because\ position\ refers\ to\ an\ entity\ that\ starts\ in\ 1}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ components\_[(size\_t)position\ -\/\ 1]\ =\ a;}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ add\_component\_at(\textcolor{keywordtype}{int}\ position,\ T\&\ component)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ assert(components\_[(\textcolor{keywordtype}{size\_t})position\ -\/\ 1]\ ==\ std::nullopt);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ components\_[(size\_t)position\ -\/\ 1]\ =\ component;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ size()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ components\_.size();}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ delete\_component(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ assert(\textcolor{keywordtype}{id}\ !=\ 0);}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ components\_[\textcolor{keywordtype}{id}\ -\/\ 1].reset();}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ components\_[\textcolor{keywordtype}{id}\ -\/\ 1]\ =\ std::nullopt;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_vertex}{Vertex}}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ pos;}
+\DoxyCodeLine{00057\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ normal;}
+\DoxyCodeLine{00058\ \ \ \ \ \mbox{\hyperlink{class_vec2}{Vec2}}\ uv;}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ color;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_vertex}{Vertex}}\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pos\ ==\ o.pos\ \&\&\ normal\ ==\ o.normal\ \&\&\ uv\ ==\ o.uv;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_transform_component}{TransformComponent}}\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ model\_matrix\_;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ pos\_;}
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ rot\_;}
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ size\_;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{struct_transform_component}{TransformComponent}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \mbox{\hyperlink{struct_transform_component}{TransformComponent}}(\mbox{\hyperlink{class_vec3}{Vec3}}\ pos,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ rot,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ size)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ pos\_\ =\ pos;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ rot\_\ =\ rot;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ size\_\ =\ size;}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \};}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_color_component}{ColorComponent}}\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ color\_;}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \mbox{\hyperlink{struct_color_component}{ColorComponent}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{struct_color_component}{ColorComponent}}(\mbox{\hyperlink{class_vec4}{Vec4}}\ color)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ color\_\ =\ color;}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_audio_component}{AudioComponent}}\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \mbox{\hyperlink{struct_audio_component}{AudioComponent}}(\mbox{\hyperlink{class_sound_buffer}{SoundBuffer}}\&\ buff,\ std::string\ name,\ ALfloat\ pos[3],}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ ALfloat\ speed[3],\ \textcolor{keywordtype}{float}\ gain\ =\ 1.0f,\ \textcolor{keywordtype}{float}\ pitch\ =\ 1.0f,\ \textcolor{keywordtype}{bool}\ play\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ :\ sound\_source\_(name,\ pos,\ speed,\ gain,\ pitch)\ \{}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ sound\_source\_.addSound(\&buff);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (play)}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ sound\_source\_.Play();}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \mbox{\hyperlink{struct_audio_component}{AudioComponent}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00102\ \ \ \ \ \mbox{\hyperlink{struct_audio_component}{AudioComponent}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_audio_component}{AudioComponent}}\&\ o)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}\ sound\_source\_;}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_box_collider_component}{BoxColliderComponent}}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ extent\_;}
+\DoxyCodeLine{00109\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ center\_offset\_;}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \mbox{\hyperlink{struct_box_collider_component}{BoxColliderComponent}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00112\ \ \ \ \ \mbox{\hyperlink{struct_box_collider_component}{BoxColliderComponent}}(\mbox{\hyperlink{class_vec3}{Vec3}}\ extent,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ center\_offset\ =\ \mbox{\hyperlink{class_vec3}{Vec3}}(0.0f,\ 0.0f,\ 0.0f))\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ extent\_\ =\ extent;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ center\_offset\_\ =\ center\_offset;}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_geometry}{Geometry}}\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ std::vector<Vertex>\ vertex\_;}
+\DoxyCodeLine{00120\ \ \ \ \ std::vector<unsigned>\ indices\_;}
+\DoxyCodeLine{00121\ \};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_render_component}{RenderComponent}}\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ std::string\ name\_;}
+\DoxyCodeLine{00125\ \ \ \ \ std::string\ elements\_buffer\_;}
+\DoxyCodeLine{00126\ \ \ \ \ std::string\ order\_buffer\_;}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ program\_\ =\ -\/1;}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ texture\_\ =\ -\/1;}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \mbox{\hyperlink{struct_render_component}{RenderComponent}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \mbox{\hyperlink{struct_render_component}{RenderComponent}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ elements,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ order,\ \textcolor{keywordtype}{unsigned}\ program,\ \textcolor{keywordtype}{unsigned}\ texture)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ name\_\ =\ name;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ elements\_buffer\_\ =\ elements;}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ order\_buffer\_\ =\ order;}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ program\_\ =\ program;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ texture\_\ =\ texture;}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_camera_component}{CameraComponent}}\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ pos\_;}
+\DoxyCodeLine{00143\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ forward\_;}
+\DoxyCodeLine{00144\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ up\_;}
+\DoxyCodeLine{00145\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ right\_;}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordtype}{float}\ speed\_;}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordtype}{float}\ sensitivity\_;}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ ProjectionMode\ projectionMode\_;}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \mbox{\hyperlink{struct_camera_component}{CameraComponent}}()\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ pos\_\ =\ \mbox{\hyperlink{class_vec3}{Vec3}}(0.0f,\ 0.0f,\ 0.0f);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ right\_\ =\ \mbox{\hyperlink{class_vec3}{Vec3}}(0.0f,\ 0.0f,\ 0.0f);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ up\_\ =\ \mbox{\hyperlink{class_vec3}{Vec3}}(0.0f,\ 1.0f,\ 0.0f);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ forward\_\ =\ \mbox{\hyperlink{class_vec3}{Vec3}}(0.0f,\ 0.0f,\ -\/1.0f);}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ speed\_\ =\ 1.0f;}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ sensitivity\_\ =\ 1.0f;}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ projectionMode\_\ =\ ProjectionMode::kPerspective;}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordtype}{void}\ setProjectionMode(ProjectionMode\ mode)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ projectionMode\_\ =\ mode;}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ ProjectionMode\ getProjectionMode()\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ projectionMode\_;}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ glm::mat4\ getPerspectiveMatrix(\textcolor{keywordtype}{float}\ fov,\ \textcolor{keywordtype}{float}\ aspect,\ \textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ glm::perspective(glm::radians(fov),\ aspect,\ near,\ far);}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ glm::mat4\ getOrthogonalMatrix(\textcolor{keywordtype}{float}\ left,\ \textcolor{keywordtype}{float}\ right,\ \textcolor{keywordtype}{float}\ bottom,\ \textcolor{keywordtype}{float}\ top,\ \textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ glm::ortho(left,\ right,\ bottom,\ top,\ near,\ far);}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ glm::mat4\ getViewMatrix(\mbox{\hyperlink{class_vec3}{Vec3}}\ target,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ up)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ glm::vec3\ c\ =\ \{\ pos\_.x,\ pos\_.y,\ pos\_.z\ \};}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ glm::vec3\ t\ =\ \{\ target.x,\ target.y,\ target.z\ \};}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ glm::vec3\ u\ =\ \{\ up.x,\ up.y,\ up.z\ \};}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ glm::lookAt(c,\ t,\ u);}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordtype}{void}\ doRender(\mbox{\hyperlink{class_window}{Window}}*\ w)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ w-\/>\mbox{\hyperlink{class_window_ac85757190eddc1a42b2ec8dbc67f8387}{getProgramListSize}}();\ i++)\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ program\ =\ w-\/>\mbox{\hyperlink{class_window_a38790f23c50b71ad6c3eae4c5d6e5102}{getProgram}}(i);}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ glUseProgram(program);}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (projectionMode\_)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ProjectionMode::kPerspective:}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm::mat4\ perspective\ =\ getPerspectiveMatrix(60.0f,\ 1024.0f\ /\ 768.0f,\ 0.01f,\ 100000.0f);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glUniformMatrix4fv(glGetUniformLocation(program,\ \textcolor{stringliteral}{"{}u\_p\_matrix"{}}),\ 1,\ GL\_FALSE,\ glm::value\_ptr(perspective));}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ ProjectionMode::kOrthogonal:}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm::mat4\ ortographic\ =\ getOrthogonalMatrix(-\/1.0f,\ 1.0f,\ -\/1.0f,\ 1.0f,\ 0.01f,\ 100000.0f);}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glUniformMatrix4fv(glGetUniformLocation(program,\ \textcolor{stringliteral}{"{}u\_p\_matrix"{}}),\ 1,\ GL\_FALSE,\ glm::value\_ptr(ortographic));}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//View}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ glm::mat4\ view\ =\ getViewMatrix(pos\_\ +\ forward\_,\ up\_);}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ GLint\ viewMatrixLoc\ =\ glGetUniformLocation(program,\ \textcolor{stringliteral}{"{}u\_v\_matrix"{}});}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ glUniformMatrix4fv(viewMatrixLoc,\ 1,\ GL\_FALSE,\ glm::value\_ptr(view));}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Camera\ position}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ GLint\ camPosLoc\ =\ glGetUniformLocation(program,\ \textcolor{stringliteral}{"{}u\_camera\_pos"{}});}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ glUniform3f(camPosLoc,\ pos\_.x,\ pos\_.y,\ pos\_.z);}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,171 @@
+\doxysection{Texture Class Reference}
+\hypertarget{class_texture}{}\label{class_texture}\index{Texture@{Texture}}
+
+
+This class represents a texture object used for rendering.  
+
+
+
+
+{\ttfamily \#include $<$texture.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_texture_a8da1f5173c63dc75bbe4519f0bce0a78}{Texture}} (Texture\+Target target, Texture\+Format format, Texture\+Type type)
+\item 
+\mbox{\hyperlink{class_texture_a09c4bcb7462f64c1d20fa69dba3cee8a}{\texorpdfstring{$\sim$}{\string~}\+Texture}} ()
+\item 
+unsigned \mbox{\hyperlink{class_texture_a9c40276c7a14a22729f2393da30185ae}{Load\+Texture}} (const char \texorpdfstring{$\ast$}{*}path)
+\item 
+unsigned \mbox{\hyperlink{class_texture_a6f541f32ff495696b8f5f50c3bb6df77}{Load\+Texture}} (int w, int h)
+\item 
+void \mbox{\hyperlink{class_texture_a760ae01ca8dd78787b713526dc561814}{set\+\_\+wrap\+\_\+s}} (Texture\+Wrap param)
+\item 
+void \mbox{\hyperlink{class_texture_a0c32bcd9b21d2c2084cbfb610ef621d1}{set\+\_\+wrap\+\_\+t}} (Texture\+Wrap param)
+\item 
+void \mbox{\hyperlink{class_texture_ab7193eb5b28bebebd37a87126827eeb5}{set\+\_\+min\+\_\+filter}} (Texture\+Filtering param)
+\item 
+void \mbox{\hyperlink{class_texture_a3063742c00aad9be2d58a062712d71c7}{set\+\_\+mag\+\_\+filter}} (Texture\+Filtering param)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class represents a texture object used for rendering. 
+
+The \doxylink{class_texture}{Texture} class provides functionality to load and manage textures for use in rendering pipelines. It allows loading textures from files or creating them in memory, and setting various texture parameters like wrapping mode and filtering. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_texture_a8da1f5173c63dc75bbe4519f0bce0a78}\label{class_texture_a8da1f5173c63dc75bbe4519f0bce0a78} 
+\index{Texture@{Texture}!Texture@{Texture}}
+\index{Texture@{Texture}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{Texture()}{Texture()}}
+{\footnotesize\ttfamily Texture\+::\+Texture (\begin{DoxyParamCaption}\item[{Texture\+Target}]{target,  }\item[{Texture\+Format}]{format,  }\item[{Texture\+Type}]{type }\end{DoxyParamCaption})}
+
+Constructor for the \doxylink{class_texture}{Texture} class.
+
+Initializes a \doxylink{class_texture}{Texture} object with the specified target, format, and type.
+
+
+\begin{DoxyParams}{Parameters}
+{\em target} & The target of the texture. \\
+\hline
+{\em format} & The format of the texture data. \\
+\hline
+{\em type} & The type of the texture data. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_texture_a09c4bcb7462f64c1d20fa69dba3cee8a}\label{class_texture_a09c4bcb7462f64c1d20fa69dba3cee8a} 
+\index{Texture@{Texture}!````~Texture@{\texorpdfstring{$\sim$}{\string~}Texture}}
+\index{````~Texture@{\texorpdfstring{$\sim$}{\string~}Texture}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Texture()}{\string~Texture()}}
+{\footnotesize\ttfamily Texture\+::\texorpdfstring{$\sim$}{\string~}\+Texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor for the \doxylink{class_texture}{Texture} class.
+
+Releases resources associated with the texture object. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_texture_a9c40276c7a14a22729f2393da30185ae}\label{class_texture_a9c40276c7a14a22729f2393da30185ae} 
+\index{Texture@{Texture}!LoadTexture@{LoadTexture}}
+\index{LoadTexture@{LoadTexture}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{LoadTexture()}{LoadTexture()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily unsigned Texture\+::\+Load\+Texture (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{path }\end{DoxyParamCaption})}
+
+Loads a texture from a file path.
+
+Loads image data from the specified file path and creates a texture object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The path to the image file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The ID of the loaded texture, or 0 if loading failed. 
+\end{DoxyReturn}
+\Hypertarget{class_texture_a6f541f32ff495696b8f5f50c3bb6df77}\label{class_texture_a6f541f32ff495696b8f5f50c3bb6df77} 
+\index{Texture@{Texture}!LoadTexture@{LoadTexture}}
+\index{LoadTexture@{LoadTexture}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{LoadTexture()}{LoadTexture()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily unsigned Texture\+::\+Load\+Texture (\begin{DoxyParamCaption}\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})}
+
+Loads a texture in memory.
+
+Creates a texture object with the specified width, height, and format. The caller is responsible for providing the pixel data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em w} & Width of the texture in pixels. \\
+\hline
+{\em h} & Height of the texture in pixels. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The ID of the loaded texture, or 0 if creation failed. 
+\end{DoxyReturn}
+\Hypertarget{class_texture_a3063742c00aad9be2d58a062712d71c7}\label{class_texture_a3063742c00aad9be2d58a062712d71c7} 
+\index{Texture@{Texture}!set\_mag\_filter@{set\_mag\_filter}}
+\index{set\_mag\_filter@{set\_mag\_filter}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{set\_mag\_filter()}{set\_mag\_filter()}}
+{\footnotesize\ttfamily void Texture\+::set\+\_\+mag\+\_\+filter (\begin{DoxyParamCaption}\item[{Texture\+Filtering}]{param }\end{DoxyParamCaption})}
+
+Sets the magnification filter for the texture.
+
+The magnification filter determines how the texture is sampled when it\textquotesingle{}s being magnified.
+
+
+\begin{DoxyParams}{Parameters}
+{\em param} & The magnification filter to use. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_texture_ab7193eb5b28bebebd37a87126827eeb5}\label{class_texture_ab7193eb5b28bebebd37a87126827eeb5} 
+\index{Texture@{Texture}!set\_min\_filter@{set\_min\_filter}}
+\index{set\_min\_filter@{set\_min\_filter}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{set\_min\_filter()}{set\_min\_filter()}}
+{\footnotesize\ttfamily void Texture\+::set\+\_\+min\+\_\+filter (\begin{DoxyParamCaption}\item[{Texture\+Filtering}]{param }\end{DoxyParamCaption})}
+
+Sets the minification filter for the texture.
+
+The minification filter determines how the texture is sampled when it\textquotesingle{}s being shrunk.
+
+
+\begin{DoxyParams}{Parameters}
+{\em param} & The minification filter to use. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_texture_a760ae01ca8dd78787b713526dc561814}\label{class_texture_a760ae01ca8dd78787b713526dc561814} 
+\index{Texture@{Texture}!set\_wrap\_s@{set\_wrap\_s}}
+\index{set\_wrap\_s@{set\_wrap\_s}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{set\_wrap\_s()}{set\_wrap\_s()}}
+{\footnotesize\ttfamily void Texture\+::set\+\_\+wrap\+\_\+s (\begin{DoxyParamCaption}\item[{Texture\+Wrap}]{param }\end{DoxyParamCaption})}
+
+Sets the wrap mode for the S coordinate of the texture.
+
+The wrap mode determines how texture coordinates outside the \mbox{[}0, 1\mbox{]} range are handled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em param} & The wrap mode to use. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_texture_a0c32bcd9b21d2c2084cbfb610ef621d1}\label{class_texture_a0c32bcd9b21d2c2084cbfb610ef621d1} 
+\index{Texture@{Texture}!set\_wrap\_t@{set\_wrap\_t}}
+\index{set\_wrap\_t@{set\_wrap\_t}!Texture@{Texture}}
+\doxysubsubsection{\texorpdfstring{set\_wrap\_t()}{set\_wrap\_t()}}
+{\footnotesize\ttfamily void Texture\+::set\+\_\+wrap\+\_\+t (\begin{DoxyParamCaption}\item[{Texture\+Wrap}]{param }\end{DoxyParamCaption})}
+
+Sets the wrap mode for the T coordinate of the texture.
+
+The wrap mode determines how texture coordinates outside the \mbox{[}0, 1\mbox{]} range are handled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em param} & The wrap mode to use. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{texture_8hpp}{texture.\+hpp}}\end{DoxyCompactItemize}

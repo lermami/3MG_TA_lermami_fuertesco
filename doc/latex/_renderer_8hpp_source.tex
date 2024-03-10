@@ -1,0 +1,38 @@
+\doxysection{Renderer.\+hpp}
+\hypertarget{_renderer_8hpp_source}{}\label{_renderer_8hpp_source}\index{include/Renderer.hpp@{include/Renderer.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}glm/glm.hpp"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_engine}{Engine}};}
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_window}{Window}};}
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_vec3}{Vec3}};}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_renderer}{Renderer}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \mbox{\hyperlink{class_renderer}{Renderer}}(\mbox{\hyperlink{class_engine}{Engine}}\&\ e,\ \mbox{\hyperlink{class_window}{Window}}\&\ w);}
+\DoxyCodeLine{00012\ \ \ \mbox{\hyperlink{class_renderer}{\string~Renderer}}();}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \textcolor{keywordtype}{void}\ renderLights();}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{void}\ CalculateShadowsMatrix();}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{void}\ render();}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{void}\ renderShadowMap(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ program);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ glm::mat4\ ConfigureShadowMatrix(\textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ pos,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ direction);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ renderImgui();}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{class_engine}{Engine}}\&\ engine\_;}
+\DoxyCodeLine{00025\ \ \ \mbox{\hyperlink{class_window}{Window}}\&\ window\_;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ renderShadows\_;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ shadow\_resolution\_;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{unsigned}\ depthmap\_;}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{unsigned}\ depthmapFBO\_;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{unsigned}\ shadowProgram\_;}
+\DoxyCodeLine{00032\ \};}
+
+\end{DoxyCode}

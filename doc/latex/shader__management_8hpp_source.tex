@@ -1,0 +1,22 @@
+\doxysection{shader\+\_\+management.\+hpp}
+\hypertarget{shader__management_8hpp_source}{}\label{shader__management_8hpp_source}\index{include/shader\_management.hpp@{include/shader\_management.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}vector\_3.hpp"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_window}{Window}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00022\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ CreateShader(\textcolor{keywordtype}{int}\ type);}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00032\ \textcolor{keywordtype}{void}\ CompileShader(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00045\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ CreateProgram(\mbox{\hyperlink{class_window}{Window}}\&\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ vs,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fs);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00055\ std::string\ ReadFiles(\textcolor{keyword}{const}\ std::string\&\ file);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00067\ \textcolor{keywordtype}{void}\ SetVector3(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ program,\ \textcolor{keywordtype}{char}*\ name,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ vector);}
+
+\end{DoxyCode}

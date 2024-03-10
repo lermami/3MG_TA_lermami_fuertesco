@@ -1,0 +1,554 @@
+\doxysection{matrix\+\_\+4.\+hpp}
+\hypertarget{matrix__4_8hpp_source}{}\label{matrix__4_8hpp_source}\index{include/math\_library/matrix\_4.hpp@{include/math\_library/matrix\_4.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}vector\_3.hpp"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}vector\_4.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}matrix\_3.hpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}stdio.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_mat4}{Mat4}}\ \{}
+\DoxyCodeLine{00010\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}();}
+\DoxyCodeLine{00013\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}(\textcolor{keywordtype}{float}\ a[16]);}
+\DoxyCodeLine{00014\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00015\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ copy);}
+\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{class_mat4}{\string~Mat4}}();}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Identity();}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ Multiply(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{float}\ Determinant()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00022\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ Adjoint()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{bool}\ GetInverse(\mbox{\hyperlink{class_mat4}{Mat4}}*\ out)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{bool}\ Inverse();}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ Transpose()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Translate(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ distance);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Translate(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ scale);}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Scale(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ RotateX(\textcolor{keywordtype}{float}\ radians);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ RotateY(\textcolor{keywordtype}{float}\ radians);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ RotateZ(\textcolor{keywordtype}{float}\ radians);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ GetTransform(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ translate,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ scale,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ rotateX,\ \textcolor{keywordtype}{float}\ rotateY,\ \textcolor{keywordtype}{float}\ rotateZ);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ GetTransform(\textcolor{keywordtype}{float}\ trans\_x,\ \textcolor{keywordtype}{float}\ trans\_y,\ \textcolor{keywordtype}{float}\ trans\_z,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ scale\_x,\ \textcolor{keywordtype}{float}\ scale\_y,\ \textcolor{keywordtype}{float}\ scale\_Z,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ rotateX,\ \textcolor{keywordtype}{float}\ rotateY,\ \textcolor{keywordtype}{float}\ rotateZ);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ Transform\_Mat4\_Vec4(\mbox{\hyperlink{class_mat4}{Mat4}}\ mat,\mbox{\hyperlink{class_vec4}{Vec4}}\ vec);}
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ Transform\_Mat4\_Vec3(\mbox{\hyperlink{class_mat4}{Mat4}}\ mat,\mbox{\hyperlink{class_vec3}{Vec3}}\ vec);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ PerspectiveMatrix(\textcolor{keywordtype}{float}\ fov,\ \textcolor{keywordtype}{float}\ aspect,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ OrthoMatrix(\textcolor{keywordtype}{float}\ right,\ \textcolor{keywordtype}{float}\ left,\ \textcolor{keywordtype}{float}\ top,\ \textcolor{keywordtype}{float}\ valueottom,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ GetColum(\textcolor{keywordtype}{int}\ colum)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ GetLine(\textcolor{keywordtype}{int}\ line)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00058\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other);}
+\DoxyCodeLine{00059\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ operator+(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00060\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ operator+=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other);}
+\DoxyCodeLine{00063\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ operator-\/(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ operator-\/=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00065\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ operator*=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ operator*(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ operator/=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ operator/(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other);}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{float}\ m[16];}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Identity()\ \{}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{float}\ idn[16]\ =\ \{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1\};}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat4}{Mat4}}(idn);}
+\DoxyCodeLine{00080\ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Multiply(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\textcolor{keyword}{const\ \ }\{}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ res.m[0]\ =\ \ m[0]\ *\ other.m[0]\ +\ m[1]\ *\ other.m[4]\ +\ m[2]\ *\ other.m[8]\ +\ m[3]\ *\ other.m[12];}
+\DoxyCodeLine{00086\ \ \ res.m[1]\ =\ \ m[0]\ *\ other.m[1]\ +\ m[1]\ *\ other.m[5]\ +\ m[2]\ *\ other.m[9]\ +\ m[3]\ *\ other.m[13];}
+\DoxyCodeLine{00087\ \ \ res.m[2]\ =\ \ m[0]\ *\ other.m[2]\ +\ m[1]\ *\ other.m[6]\ +\ m[2]\ *\ other.m[10]\ +\ m[3]\ *\ other.m[14];}
+\DoxyCodeLine{00088\ \ \ res.m[3]\ =\ \ m[0]\ *\ other.m[3]\ +\ m[1]\ *\ other.m[7]\ +\ m[2]\ *\ other.m[11]\ +\ m[3]\ *\ other.m[15];}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ res.m[4]\ =\ \ m[4]\ *\ other.m[0]\ +\ m[5]\ *\ other.m[4]\ +\ m[6]\ *\ other.m[8]\ +\ m[7]\ *\ other.m[12];}
+\DoxyCodeLine{00091\ \ \ res.m[5]\ =\ \ m[4]\ *\ other.m[1]\ +\ m[5]\ *\ other.m[5]\ +\ m[6]\ *\ other.m[9]\ +\ m[7]\ *\ other.m[13];}
+\DoxyCodeLine{00092\ \ \ res.m[6]\ =\ \ m[4]\ *\ other.m[2]\ +\ m[5]\ *\ other.m[6]\ +\ m[6]\ *\ other.m[10]\ +\ m[7]\ *\ other.m[14];}
+\DoxyCodeLine{00093\ \ \ res.m[7]\ =\ \ m[4]\ *\ other.m[3]\ +\ m[5]\ *\ other.m[7]\ +\ m[6]\ *\ other.m[11]\ +\ m[7]\ *\ other.m[15];}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ res.m[8]\ =\ \ m[8]\ *\ other.m[0]\ +\ m[9]\ *\ other.m[4]\ +\ m[10]\ *\ other.m[8]\ +\ m[11]\ *\ other.m[12];}
+\DoxyCodeLine{00096\ \ \ res.m[9]\ =\ \ m[8]\ *\ other.m[1]\ +\ m[9]\ *\ other.m[5]\ +\ m[10]\ *\ other.m[9]\ +\ m[11]\ *\ other.m[13];}
+\DoxyCodeLine{00097\ \ \ res.m[10]\ =\ m[8]\ *\ other.m[2]\ +\ m[9]\ *\ other.m[6]\ +\ m[10]\ *\ other.m[10]\ +\ m[11]\ *\ other.m[14];}
+\DoxyCodeLine{00098\ \ \ res.m[11]\ =\ m[8]\ *\ other.m[3]\ +\ m[9]\ *\ other.m[7]\ +\ m[10]\ *\ other.m[11]\ +\ m[11]\ *\ other.m[15];}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ res.m[12]\ =\ m[12]\ *\ other.m[0]\ +\ m[13]\ *\ other.m[4]\ +\ m[14]\ *\ other.m[8]\ +\ m[15]\ *\ other.m[12];}
+\DoxyCodeLine{00101\ \ \ res.m[13]\ =\ m[12]\ *\ other.m[1]\ +\ m[13]\ *\ other.m[5]\ +\ m[14]\ *\ other.m[9]\ +\ m[15]\ *\ other.m[13];}
+\DoxyCodeLine{00102\ \ \ res.m[14]\ =\ m[12]\ *\ other.m[2]\ +\ m[13]\ *\ other.m[6]\ +\ m[14]\ *\ other.m[10]\ +\ m[15]\ *\ other.m[14];}
+\DoxyCodeLine{00103\ \ \ res.m[15]\ =\ m[12]\ *\ other.m[3]\ +\ m[13]\ *\ other.m[7]\ +\ m[14]\ *\ other.m[11]\ +\ m[15]\ *\ other.m[15];}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00106\ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Mat4::Determinant()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00109\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ mat\_aux(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{bool}\ change\_sign\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{float}\ aux\ =\ 0;}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[4]\ !=\ 0)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ aux\ =\ mat\_aux.m[4]\ /\ mat\_aux.m[0];}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ mat\_aux.m[i\ +\ 4]\ -\/=\ aux\ *\ mat\_aux.m[i];}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[8]\ !=\ 0)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ aux\ =\ mat\_aux.m[8]\ /\ mat\_aux.m[0];}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ mat\_aux.m[i\ +\ 8]\ -\/=\ aux\ *\ mat\_aux.m[i];}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[12]\ !=\ 0)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ aux\ =\ mat\_aux.m[12]\ /\ mat\_aux.m[0];}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ mat\_aux.m[i\ +\ 12]\ -\/=\ aux\ *\ mat\_aux.m[i];}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[5]\ ==\ 0)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[9]\ ==\ 0\ \&\&\ mat\_aux.m[13]\ ==\ 0)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;\ }
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(mat\_aux.m[9]\ !=\ 0)\{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ row\_aux(GetLine(1));}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ mat\_aux.m[5]\ =\ mat\_aux.m[9];}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ mat\_aux.m[6]\ =\ mat\_aux.m[10];}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ mat\_aux.m[7]\ =\ mat\_aux.m[11];}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ mat\_aux.m[9]\ =\ row\_aux.y;}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ mat\_aux.m[10]\ =\ row\_aux.z;}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ mat\_aux.m[11]\ =\ row\_aux.w;}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ change\_sign\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (mat\_aux.m[13]\ !=\ 0)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ row\_aux(GetLine(1));;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ mat\_aux.m[5]\ =\ mat\_aux.m[13];}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ mat\_aux.m[6]\ =\ mat\_aux.m[14];}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ mat\_aux.m[7]\ =\ mat\_aux.m[15];}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ mat\_aux.m[13]\ =\ row\_aux.y;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ mat\_aux.m[14]\ =\ row\_aux.z;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ mat\_aux.m[15]\ =\ row\_aux.w;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ change\_sign\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[9]\ !=\ 0)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ aux\ =\ mat\_aux.m[9]\ /\ mat\_aux.m[5];}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 5;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ mat\_aux.m[i\ +\ 4]\ -\/=\ aux\ *\ mat\_aux.m[i];}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[13]\ !=\ 0)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ aux\ =\ mat\_aux.m[13]\ /\ mat\_aux.m[5];}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 5;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ mat\_aux.m[i\ +\ 8]\ -\/=\ aux\ *\ mat\_aux.m[i];}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordflow}{if}\ (mat\_aux.m[14]\ !=\ 0)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ aux\ =\ mat\_aux.m[14]\ /\ mat\_aux.m[10];}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 10;\ i\ <\ 12;\ i++)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ mat\_aux.m[i\ +\ 4]\ -\/=\ aux\ *\ mat\_aux.m[i];}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordflow}{if}\ (change\_sign)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{return}\ -\/(mat\_aux.m[0]\ *\ mat\_aux.m[5]\ *\ mat\_aux.m[10]\ *\ mat\_aux.m[15]);}
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ mat\_aux.m[0]\ *\ mat\_aux.m[5]\ *\ mat\_aux.m[10]\ *\ mat\_aux.m[15];}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Adjoint()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00192\ \ \ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ result;}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ result.m[0]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[5],\ m[6],\ m[7],}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[9],\ m[10],\ m[11],}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[13],\ m[14],\ m[15]).Determinant();}
+\DoxyCodeLine{00197\ \ \ result.m[1]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[4],\ m[6],\ m[7],}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[10],\ m[11],}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[14],\ m[15]).Determinant();}
+\DoxyCodeLine{00200\ \ \ result.m[2]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[4],\ m[5],\ m[7],}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[9],\ m[11],}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[13],\ m[15]).Determinant();}
+\DoxyCodeLine{00203\ \ \ result.m[3]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[4],\ m[5],\ m[6],}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[9],\ m[10],}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[13],\ m[14]).Determinant();}
+\DoxyCodeLine{00206\ \ \ result.m[4]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[1],\ m[2],\ m[3],}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[9],\ m[10],\ m[11],}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[13],\ m[14],\ m[15]).Determinant();}
+\DoxyCodeLine{00209\ \ \ result.m[5]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[2],\ m[3],}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[10],\ m[11],}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[14],\ m[15]).Determinant();}
+\DoxyCodeLine{00212\ \ \ result.m[6]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[1],\ m[3],}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[9],\ m[11],}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[13],\ m[15]).Determinant();}
+\DoxyCodeLine{00215\ \ \ result.m[7]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[1],\ m[2],}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[9],\ m[10],}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[13],\ m[14]).Determinant();}
+\DoxyCodeLine{00218\ \ \ result.m[8]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[1],\ m[2],\ m[3],}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[5],\ m[6],\ m[7],}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[13],\ m[14],\ m[15]).Determinant();}
+\DoxyCodeLine{00221\ \ \ result.m[9]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[2],\ m[3],}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[4],\ m[6],\ m[7],}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[14],\ m[15]).Determinant();}
+\DoxyCodeLine{00224\ \ \ result.m[10]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[1],\ m[3],}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[4],\ m[5],\ m[7],}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[13],\ m[15]).Determinant();}
+\DoxyCodeLine{00227\ \ \ result.m[11]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[1],\ m[2],}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[4],\ m[5],\ m[6],}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[12],\ m[13],\ m[14]).Determinant();}
+\DoxyCodeLine{00230\ \ \ result.m[12]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[1],\ m[2],\ m[3],}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[5],\ m[6],\ m[7],}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[9],\ m[10],\ m[11]).Determinant();}
+\DoxyCodeLine{00233\ \ \ result.m[13]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[2],\ m[3],}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[4],\ m[6],\ m[7],}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[10],\ m[11]).Determinant();}
+\DoxyCodeLine{00236\ \ \ result.m[14]\ =\ -\/\mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[1],\ m[3],}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[4],\ m[5],\ m[7],}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[9],\ m[11]).Determinant();}
+\DoxyCodeLine{00239\ \ \ result.m[15]\ =\ \mbox{\hyperlink{class_mat3}{Mat3}}(m[0],\ m[1],\ m[2],}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[4],\ m[5],\ m[6],}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[8],\ m[9],\ m[10]).Determinant();}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00245\ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat4::Inverse()\ \{}
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordflow}{if}\ (Determinant()\ ==\ 0)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInverse(\textcolor{keyword}{this});}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat4::GetInverse(\mbox{\hyperlink{class_mat4}{Mat4}}*\ out)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00257\ \ \ *out\ =\ Adjoint().Transpose()\ /\ Determinant();}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00259\ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Transpose()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00262\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ t;}
+\DoxyCodeLine{00263\ \ \ t.m[0]\ =\ m[0];}
+\DoxyCodeLine{00264\ \ \ t.m[1]\ =\ m[4];}
+\DoxyCodeLine{00265\ \ \ t.m[2]\ =\ m[8];}
+\DoxyCodeLine{00266\ \ \ t.m[3]\ =\ m[12];}
+\DoxyCodeLine{00267\ \ \ t.m[4]\ =\ m[1];}
+\DoxyCodeLine{00268\ \ \ t.m[5]\ =\ m[5];}
+\DoxyCodeLine{00269\ \ \ t.m[6]\ =\ m[9];}
+\DoxyCodeLine{00270\ \ \ t.m[7]\ =\ m[13];}
+\DoxyCodeLine{00271\ \ \ t.m[8]\ =\ m[2];}
+\DoxyCodeLine{00272\ \ \ t.m[9]\ =\ m[6];}
+\DoxyCodeLine{00273\ \ \ t.m[10]\ =\ m[10];}
+\DoxyCodeLine{00274\ \ \ t.m[11]\ =\ m[14];}
+\DoxyCodeLine{00275\ \ \ t.m[12]\ =\ m[3];}
+\DoxyCodeLine{00276\ \ \ t.m[13]\ =\ m[7];}
+\DoxyCodeLine{00277\ \ \ t.m[14]\ =\ m[11];}
+\DoxyCodeLine{00278\ \ \ t.m[15]\ =\ m[15];}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordflow}{return}\ t;}
+\DoxyCodeLine{00280\ \}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Translate(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ distance)\{}
+\DoxyCodeLine{00283\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00284\ \ \ res.m[0]\ =\ 1;\ \ res.m[1]\ =\ 0;\ \ res.m[2]\ =\ 0;\ \ res.m[3]\ =\ distance.x;}
+\DoxyCodeLine{00285\ \ \ res.m[4]\ =\ 0;\ \ res.m[5]\ =\ 1;\ \ res.m[6]\ =\ 0;\ \ res.m[7]\ =\ distance.y;}
+\DoxyCodeLine{00286\ \ \ res.m[8]\ =\ 0;\ \ res.m[9]\ =\ 0;\ \ res.m[10]\ =\ 1;\ res.m[11]\ =\ distance.z;}
+\DoxyCodeLine{00287\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00289\ \}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Translate(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\{}
+\DoxyCodeLine{00292\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00293\ \ \ res.m[0]\ =\ 1;\ \ res.m[1]\ =\ 0;\ \ res.m[2]\ =\ 0;\ \ res.m[3]\ =\ x;}
+\DoxyCodeLine{00294\ \ \ res.m[4]\ =\ 0;\ \ res.m[5]\ =\ 1;\ \ res.m[6]\ =\ 0;\ \ res.m[7]\ =\ y;}
+\DoxyCodeLine{00295\ \ \ res.m[8]\ =\ 0;\ \ res.m[9]\ =\ 0;\ \ res.m[10]\ =\ 1;\ res.m[11]\ =\ z;}
+\DoxyCodeLine{00296\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00298\ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ scale)\{}
+\DoxyCodeLine{00301\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00302\ \ \ res.m[0]\ =\ scale.x;\ \ res.m[1]\ =\ 0;\ \ res.m[2]\ =\ 0;\ \ res.m[3]\ =\ 0;}
+\DoxyCodeLine{00303\ \ \ res.m[4]\ =\ 0;\ \ res.m[5]\ =\ scale.y;\ \ res.m[6]\ =\ 0;\ \ res.m[7]\ =\ 0;}
+\DoxyCodeLine{00304\ \ \ res.m[8]\ =\ 0;\ \ res.m[9]\ =\ 0;\ \ res.m[10]\ =\ scale.z;\ res.m[11]\ =\ 0;}
+\DoxyCodeLine{00305\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00307\ \}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::Scale(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\{}
+\DoxyCodeLine{00310\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00311\ \ \ res.m[0]\ =\ x;\ \ res.m[1]\ =\ 0;\ \ res.m[2]\ =\ 0;\ \ res.m[3]\ =\ 0;}
+\DoxyCodeLine{00312\ \ \ res.m[4]\ =\ 0;\ \ res.m[5]\ =\ y;\ \ res.m[6]\ =\ 0;\ \ res.m[7]\ =\ 0;}
+\DoxyCodeLine{00313\ \ \ res.m[8]\ =\ 0;\ \ res.m[9]\ =\ 0;\ \ res.m[10]\ =\ z;\ res.m[11]\ =\ 0;}
+\DoxyCodeLine{00314\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00315\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00316\ \}}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::RotateX(\textcolor{keywordtype}{float}\ radians)\{}
+\DoxyCodeLine{00319\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00320\ \ \ res.m[0]\ =\ 1;\ \ res.m[1]\ =\ 0;\ \ res.m[2]\ =\ 0;\ \ res.m[3]\ =\ 0;}
+\DoxyCodeLine{00321\ \ \ res.m[4]\ =\ 0;\ \ res.m[5]\ =\ (float)cos(radians);\ \ res.m[6]\ =\ (float)-\/sin(radians);\ \ res.m[7]\ =\ 0;}
+\DoxyCodeLine{00322\ \ \ res.m[8]\ =\ 0;\ \ res.m[9]\ =\ (float)sin(radians);\ \ res.m[10]\ =\ (float)cos(radians);\ res.m[11]\ =\ 0;}
+\DoxyCodeLine{00323\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00324\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \}}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::RotateY(\textcolor{keywordtype}{float}\ radians)\{}
+\DoxyCodeLine{00329\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00330\ \ \ res.m[0]\ =\ (float)cos(radians);\ \ res.m[1]\ =\ 0;\ \ res.m[2]\ =\ (float)sin(radians);\ \ res.m[3]\ =\ 0;}
+\DoxyCodeLine{00331\ \ \ res.m[4]\ =\ 0;\ \ res.m[5]\ =\ 1;\ \ res.m[6]\ =0;\ \ res.m[7]\ =\ 0;}
+\DoxyCodeLine{00332\ \ \ res.m[8]\ =\ (float)-\/sin(radians);\ \ res.m[9]\ =\ 0;\ \ res.m[10]\ =\ (float)cos(radians);\ res.m[11]\ =\ 0;}
+\DoxyCodeLine{00333\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00334\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00335\ \}}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::RotateZ(\textcolor{keywordtype}{float}\ radians)\ \{}
+\DoxyCodeLine{00338\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00339\ \ \ res.m[0]\ =\ (float)cos(radians);\ \ res.m[1]\ =\ (float)-\/sin(radians);\ \ res.m[2]\ =\ 0;\ \ res.m[3]\ =\ 0;}
+\DoxyCodeLine{00340\ \ \ res.m[4]\ =\ (float)sin(radians);\ \ res.m[5]\ =\ (float)cos(radians);\ \ res.m[6]\ =\ 0;\ \ res.m[7]\ =\ 0;}
+\DoxyCodeLine{00341\ \ \ res.m[8]\ =\ 0;\ \ res.m[9]\ =\ 0;\ \ res.m[10]\ =\ 1;\ res.m[11]\ =\ 0;}
+\DoxyCodeLine{00342\ \ \ res.m[12]\ =\ 0;\ res.m[13]\ =\ 0;\ res.m[14]\ =\ 0;\ res.m[15]\ =\ 1;}
+\DoxyCodeLine{00343\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00344\ \}}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::GetTransform(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ translate,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ scale,}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ rotateX,\ \textcolor{keywordtype}{float}\ rotateY,\ \textcolor{keywordtype}{float}\ rotateZ)\{}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ result\ =\ result.RotateX(rotateX).Multiply(}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.RotateY(rotateY).Multiply(}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.RotateZ(rotateZ)));}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \ \ result\ =\ result.Translate(translate).Multiply(}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ result.Multiply(result.Scale(scale)));}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00357\ \}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::GetTransform(\textcolor{keywordtype}{float}\ trans\_x,\ \textcolor{keywordtype}{float}\ trans\_y,\ \textcolor{keywordtype}{float}\ trans\_z,}
+\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keywordtype}{float}\ scale\_x,\ \textcolor{keywordtype}{float}\ scale\_y,\ \textcolor{keywordtype}{float}\ scale\_Z,}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordtype}{float}\ rotateX,\ \textcolor{keywordtype}{float}\ rotateY,\ \textcolor{keywordtype}{float}\ rotateZ)\ \ \{}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ result\ =\ result.RotateX(rotateX).Multiply(}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.RotateY(rotateY).Multiply(}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.RotateZ(rotateZ)));}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ \ \ result\ =\ result.Translate(trans\_x,\ trans\_y,\ trans\_z).Multiply(}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ result.Multiply(result.Scale(scale\_x,\ scale\_y,\ scale\_Z)));}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \}}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec4}{Vec4}}\ Mat4::Transform\_Mat4\_Vec4(\mbox{\hyperlink{class_mat4}{Mat4}}\ mat,\ \mbox{\hyperlink{class_vec4}{Vec4}}\ vec)\{}
+\DoxyCodeLine{00375\ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ New\_vec;}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \ \ New\_vec.x\ =\ (mat.m[0]*vec.x)\ +\ (mat.m[1]\ *\ vec.y)\ +\ (mat.m[2]*vec.z)\ +\ (mat.m[3]*vec.w);}
+\DoxyCodeLine{00378\ \ \ New\_vec.y\ =\ (mat.m[4]*vec.x)\ +\ (mat.m[5]\ *\ vec.y)\ +\ (mat.m[6]*vec.z)\ +\ (mat.m[7]*vec.w);}
+\DoxyCodeLine{00379\ \ \ New\_vec.z\ =\ (mat.m[8]*vec.x)\ +\ (mat.m[9]\ *\ vec.y)\ +\ (mat.m[10]*vec.z)\ +\ (mat.m[11]*vec.w);}
+\DoxyCodeLine{00380\ \ \ New\_vec.w\ =\ (mat.m[12]*vec.x)\ +\ (mat.m[13]\ *\ vec.y)\ +\ (mat.m[14]*vec.z)\ +\ (mat.m[15]*vec.w);}
+\DoxyCodeLine{00381\ }
+\DoxyCodeLine{00382\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec4}{Vec4}}(New\_vec);}
+\DoxyCodeLine{00383\ \}}
+\DoxyCodeLine{00384\ }
+\DoxyCodeLine{00385\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Mat4::Transform\_Mat4\_Vec3(\mbox{\hyperlink{class_mat4}{Mat4}}\ mat,\mbox{\hyperlink{class_vec3}{Vec3}}\ vec)\{}
+\DoxyCodeLine{00386\ \ \ \mbox{\hyperlink{class_vec4}{Vec4}}\ new\_vec\ =\ \mbox{\hyperlink{class_vec4}{Vec4}}(vec.x,\ vec.y,\ vec.z,\ 1.0f);}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ new\_vec\ =\ Transform\_Mat4\_Vec4(mat,\ new\_vec);}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(new\_vec.x,\ new\_vec.y,\ new\_vec.z);}
+\DoxyCodeLine{00391\ \}}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec4}{Vec4}}\ Mat4::GetColum(\textcolor{keywordtype}{int}\ colum)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec4}{Vec4}}(m[4\ *\ colum],\ m[4\ +\ 4*colum],\ m[8\ +\ 4\ *\ colum],\ m[12\ +\ 4\ *\ colum]);}
+\DoxyCodeLine{00395\ \}}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec4}{Vec4}}\ Mat4::GetLine(\textcolor{keywordtype}{int}\ line)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00398\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec4}{Vec4}}(m[4\ *\ line],\ m[1\ +\ 4\ *\ line],\ m[2\ +\ 4\ *\ line],\ m[3\ +\ 4\ *\ line]);}
+\DoxyCodeLine{00399\ \}}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::PerspectiveMatrix(\textcolor{keywordtype}{float}\ fov,\ \textcolor{keywordtype}{float}\ aspect,}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00405\ \ \ res.m[0]\ =\ aspect\ *\ (float)(1\ /\ tan(fov\ /\ 2));}
+\DoxyCodeLine{00406\ \ \ res.m[5]\ =\ 1\ /\ (float)tan(fov\ /\ 2);}
+\DoxyCodeLine{00407\ \ \ res.m[10]\ =\ far\ /\ (far\ -\/\ near);}
+\DoxyCodeLine{00408\ \ \ res.m[11]\ =\ (-\/far\ *\ near)\ /\ (far\ -\/\ near);}
+\DoxyCodeLine{00409\ \ \ res.m[14]\ =\ 1.0f;}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00412\ \}}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \textcolor{comment}{//TODO:\ implement\ function}}
+\DoxyCodeLine{00415\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::OrthoMatrix(\textcolor{keywordtype}{float}\ right,\ \textcolor{keywordtype}{float}\ left,\ \textcolor{keywordtype}{float}\ top,\ \textcolor{keywordtype}{float}\ valueottom,}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00417\ \ \ right;\ left;\ top;\ valueottom;\ near;\ far;}
+\DoxyCodeLine{00418\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat4}{Mat4}}();}
+\DoxyCodeLine{00419\ \}}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00422\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00425\ \ \ \ \ res.m[i]\ =\ m[i]\ +\ other.m[i];}
+\DoxyCodeLine{00426\ \ \ \}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00429\ \}}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ Mat4::operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \{}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00434\ \ \ \ \ m[i]\ +=\ other.m[i];}
+\DoxyCodeLine{00435\ \ \ \}}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00438\ \}}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::operator+(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00441\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00444\ \ \ \ \ res.m[i]\ =\ m[i]\ +\ value;}
+\DoxyCodeLine{00445\ \ \ \}}
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00447\ \}}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ Mat4::operator+=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00450\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00451\ \ \ \ \ m[i]\ +=\ value;}
+\DoxyCodeLine{00452\ \ \ \}}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00455\ \}}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00458\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00459\ }
+\DoxyCodeLine{00460\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00461\ \ \ \ \ res.m[i]\ =\ m[i]\ -\/\ other.m[i];}
+\DoxyCodeLine{00462\ \ \ \}}
+\DoxyCodeLine{00463\ }
+\DoxyCodeLine{00464\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00465\ \}}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ Mat4::operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \{}
+\DoxyCodeLine{00468\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00469\ \ \ \ \ m[i]\ -\/=\ other.m[i];}
+\DoxyCodeLine{00470\ \ \ \}}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00473\ \}}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::operator-\/(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00476\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00479\ \ \ \ \ res.m[i]\ =\ m[i]\ -\/\ value;}
+\DoxyCodeLine{00480\ \ \ \}}
+\DoxyCodeLine{00481\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00482\ \}}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ Mat4::operator-\/=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00485\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00486\ \ \ \ \ m[i]\ -\/=\ value;}
+\DoxyCodeLine{00487\ \ \ \}}
+\DoxyCodeLine{00488\ }
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00490\ \}}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ Mat4::operator*=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00493\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00494\ \ \ \ \ m[i]\ *=\ value;}
+\DoxyCodeLine{00495\ \ \ \}}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00498\ \}}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00500\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::operator*(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00501\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00502\ }
+\DoxyCodeLine{00503\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00504\ \ \ \ \ res.m[i]\ =\ m[i]\ *\ value;}
+\DoxyCodeLine{00505\ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00507\ \}}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00509\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ Mat4::operator/=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00510\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00511\ \ \ \ \ m[i]\ /=\ value;}
+\DoxyCodeLine{00512\ \ \ \}}
+\DoxyCodeLine{00513\ }
+\DoxyCodeLine{00514\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00515\ \}}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00517\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat4}{Mat4}}\ Mat4::operator/(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00518\ \ \ \mbox{\hyperlink{class_mat4}{Mat4}}\ res;}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00521\ \ \ \ \ res.m[i]\ =\ m[i]\ /\ value;}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00525\ \}}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat4::operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \{}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00530\ \ \ \ \ \textcolor{keywordflow}{return}\ m[0]\ ==\ other.m[0]\ \&\&\ m[1]\ ==\ other.m[1]\ \&\&\ m[2]\ ==\ other.m[2]\ \&\&\ m[3]\ ==\ other.m[3]\ \&\&}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ m[4]\ ==\ other.m[4]\ \&\&\ m[5]\ ==\ other.m[5]\ \&\&\ m[6]\ ==\ other.m[6]\ \&\&\ m[7]\ ==\ other.m[7]\ \&\&}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \ m[8]\ ==\ other.m[8]\ \&\&\ m[9]\ ==\ other.m[9]\ \&\&\ m[10]\ ==\ other.m[10]\ \&\&\ m[11]\ ==\ other.m[11]\ \&\&}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ m[12]\ ==\ other.m[12]\ \&\&\ m[13]\ ==\ other.m[13]\ \&\&\ m[14]\ ==\ other.m[14]\ \&\&\ m[15]\ ==\ other.m[15];}
+\DoxyCodeLine{00534\ \}}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat4::operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \{}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \ \ \textcolor{keywordflow}{return}\ m[0]\ !=\ other.m[0]\ ||\ m[1]\ !=\ other.m[1]\ ||\ m[2]\ !=\ other.m[2]\ ||\ m[3]\ !=\ other.m[3]\ ||}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ \ m[4]\ !=\ other.m[4]\ ||\ m[5]\ !=\ other.m[5]\ ||\ m[6]\ !=\ other.m[6]\ ||\ m[7]\ !=\ other.m[7]\ ||}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \ m[8]\ !=\ other.m[8]\ ||\ m[9]\ !=\ other.m[9]\ ||\ m[10]\ !=\ other.m[10]\ ||\ m[11]\ !=\ other.m[11]\ ||}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \ m[12]\ !=\ other.m[12]\ ||\ m[13]\ !=\ other.m[13]\ ||\ m[14]\ !=\ other.m[14]\ ||\ m[15]\ !=\ other.m[15];}
+\DoxyCodeLine{00542\ \}}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Mat4::operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat4}{Mat4}}\&\ other)\ \{}
+\DoxyCodeLine{00545\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;i<16;i++)\{}
+\DoxyCodeLine{00546\ \ \ \ \ m[i]\ =\ other.m[i];}
+\DoxyCodeLine{00547\ \ \ \}}
+\DoxyCodeLine{00548\ \}}
+
+\end{DoxyCode}

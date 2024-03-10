@@ -1,0 +1,139 @@
+\doxysection{Mat4 Class Reference}
+\hypertarget{class_mat4}{}\label{class_mat4}\index{Mat4@{Mat4}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_mat4_a166f621e305affe447a28305b7f8b988}\label{class_mat4_a166f621e305affe447a28305b7f8b988} 
+{\bfseries Mat4} (float a\mbox{[}16\mbox{]})
+\item 
+\Hypertarget{class_mat4_a79e0a1f731e89e56a230b6bc0d711489}\label{class_mat4_a79e0a1f731e89e56a230b6bc0d711489} 
+{\bfseries Mat4} (float value)
+\item 
+\Hypertarget{class_mat4_a67ddcbb4713bb335042aef3b14324456}\label{class_mat4_a67ddcbb4713bb335042aef3b14324456} 
+{\bfseries Mat4} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&copy)
+\item 
+\Hypertarget{class_mat4_a653e52f1a22ce8c1060a9c9968be25b2}\label{class_mat4_a653e52f1a22ce8c1060a9c9968be25b2} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Multiply} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other) const
+\item 
+\Hypertarget{class_mat4_a1bbeecd8297d42a722e60e41feb4a2bc}\label{class_mat4_a1bbeecd8297d42a722e60e41feb4a2bc} 
+float {\bfseries Determinant} () const
+\item 
+\Hypertarget{class_mat4_a1067e4236139d376197237f101ca89e8}\label{class_mat4_a1067e4236139d376197237f101ca89e8} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Adjoint} () const
+\item 
+\Hypertarget{class_mat4_ab888740aba9b17b901fadc35a0c6d38b}\label{class_mat4_ab888740aba9b17b901fadc35a0c6d38b} 
+bool {\bfseries Get\+Inverse} (\mbox{\hyperlink{class_mat4}{Mat4}} \texorpdfstring{$\ast$}{*}out) const
+\item 
+\Hypertarget{class_mat4_abfeb033c991d3b1e1718d5fec93f53a6}\label{class_mat4_abfeb033c991d3b1e1718d5fec93f53a6} 
+bool {\bfseries Inverse} ()
+\item 
+\Hypertarget{class_mat4_aee21d1b09b364243d53f75667570738f}\label{class_mat4_aee21d1b09b364243d53f75667570738f} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Transpose} () const
+\item 
+\Hypertarget{class_mat4_a136a62dc8b049ebd6169c2b4e4af26dd}\label{class_mat4_a136a62dc8b049ebd6169c2b4e4af26dd} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Get\+Transform} (const \mbox{\hyperlink{class_vec3}{Vec3}} \&translate, const \mbox{\hyperlink{class_vec3}{Vec3}} \&scale, float rotateX, float rotateY, float rotateZ)
+\item 
+\Hypertarget{class_mat4_a702f0341f45a215417a2e505c37cfe56}\label{class_mat4_a702f0341f45a215417a2e505c37cfe56} 
+\mbox{\hyperlink{class_vec4}{Vec4}} {\bfseries Transform\+\_\+\+Mat4\+\_\+\+Vec4} (\mbox{\hyperlink{class_mat4}{Mat4}} mat, \mbox{\hyperlink{class_vec4}{Vec4}} vec)
+\item 
+\Hypertarget{class_mat4_a3ffe9db9144aaf1c7ca113ea8a7fc995}\label{class_mat4_a3ffe9db9144aaf1c7ca113ea8a7fc995} 
+\mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries Transform\+\_\+\+Mat4\+\_\+\+Vec3} (\mbox{\hyperlink{class_mat4}{Mat4}} mat, \mbox{\hyperlink{class_vec3}{Vec3}} vec)
+\item 
+\Hypertarget{class_mat4_afcc32bb40aaf4a8df21ca6bf4d2636e0}\label{class_mat4_afcc32bb40aaf4a8df21ca6bf4d2636e0} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Perspective\+Matrix} (float fov, float aspect, float near, float far) const
+\item 
+\Hypertarget{class_mat4_a5e0a762886b55d5c61104df9d2dc9a6a}\label{class_mat4_a5e0a762886b55d5c61104df9d2dc9a6a} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Ortho\+Matrix} (float right, float left, float top, float valueottom, float near, float far) const
+\item 
+\Hypertarget{class_mat4_a02829103bf1a456cdcbbaa6f54998c66}\label{class_mat4_a02829103bf1a456cdcbbaa6f54998c66} 
+\mbox{\hyperlink{class_vec4}{Vec4}} {\bfseries Get\+Colum} (int colum) const
+\item 
+\Hypertarget{class_mat4_a9527b78a096300dd37d2dd16686c99d2}\label{class_mat4_a9527b78a096300dd37d2dd16686c99d2} 
+\mbox{\hyperlink{class_vec4}{Vec4}} {\bfseries Get\+Line} (int line) const
+\item 
+\Hypertarget{class_mat4_ab5e89b45113983750675f4a25a1ff44e}\label{class_mat4_ab5e89b45113983750675f4a25a1ff44e} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator+} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other) const
+\item 
+\Hypertarget{class_mat4_a56ac0e72d81b46d28feed90aa1836fb5}\label{class_mat4_a56ac0e72d81b46d28feed90aa1836fb5} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator+=} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\item 
+\Hypertarget{class_mat4_ab2fa2036d6210d3364fbc01338915d5a}\label{class_mat4_ab2fa2036d6210d3364fbc01338915d5a} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator+} (float value) const
+\item 
+\Hypertarget{class_mat4_a500317a08754567c85c9d4b6682d2474}\label{class_mat4_a500317a08754567c85c9d4b6682d2474} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator+=} (float value)
+\item 
+\Hypertarget{class_mat4_a2da23e3bc4843924dfe86a4b40fc84dc}\label{class_mat4_a2da23e3bc4843924dfe86a4b40fc84dc} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator-\/} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other) const
+\item 
+\Hypertarget{class_mat4_a2ee75d8e62acea22a7c53a951e4ccfd4}\label{class_mat4_a2ee75d8e62acea22a7c53a951e4ccfd4} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator-\/=} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\item 
+\Hypertarget{class_mat4_a8dc176e96014c603fffc5b9c504dac06}\label{class_mat4_a8dc176e96014c603fffc5b9c504dac06} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator-\/} (float value) const
+\item 
+\Hypertarget{class_mat4_a51c484badefe76d9db9f5577e3d85ed9}\label{class_mat4_a51c484badefe76d9db9f5577e3d85ed9} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator-\/=} (float value)
+\item 
+\Hypertarget{class_mat4_ad38eb3d2462e629621f89e4de6017cba}\label{class_mat4_ad38eb3d2462e629621f89e4de6017cba} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (float value)
+\item 
+\Hypertarget{class_mat4_afd3ac361a0d6f3cd29efc6785467f25d}\label{class_mat4_afd3ac361a0d6f3cd29efc6785467f25d} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator\texorpdfstring{$\ast$}{*}} (float value) const
+\item 
+\Hypertarget{class_mat4_a6f1bf29f0c664bf7c75a3274575ccba2}\label{class_mat4_a6f1bf29f0c664bf7c75a3274575ccba2} 
+\mbox{\hyperlink{class_mat4}{Mat4}} \& {\bfseries operator/=} (float value)
+\item 
+\Hypertarget{class_mat4_adba3bb8e6e2267358a6f8746991a1a08}\label{class_mat4_adba3bb8e6e2267358a6f8746991a1a08} 
+\mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries operator/} (float value) const
+\item 
+\Hypertarget{class_mat4_acbb6be5ae994cc4df685c419a4d46c10}\label{class_mat4_acbb6be5ae994cc4df685c419a4d46c10} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\item 
+\Hypertarget{class_mat4_a550ea369a20a6bc173dbae6d393992f7}\label{class_mat4_a550ea369a20a6bc173dbae6d393992f7} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\item 
+\Hypertarget{class_mat4_a74973cd649179184e67ebc8eca1d3908}\label{class_mat4_a74973cd649179184e67ebc8eca1d3908} 
+void {\bfseries operator=} (const \mbox{\hyperlink{class_mat4}{Mat4}} \&other)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_mat4_a11f9f72ca1f8abe52a30e14d3eacdad8}\label{class_mat4_a11f9f72ca1f8abe52a30e14d3eacdad8} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Identity} ()
+\item 
+\Hypertarget{class_mat4_afbae9fc3863b3cd605a3fdee4045c5bc}\label{class_mat4_afbae9fc3863b3cd605a3fdee4045c5bc} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Translate} (const \mbox{\hyperlink{class_vec3}{Vec3}} \&distance)
+\item 
+\Hypertarget{class_mat4_a90614216beda42700d1824919f3f1672}\label{class_mat4_a90614216beda42700d1824919f3f1672} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Translate} (float x, float y, float z)
+\item 
+\Hypertarget{class_mat4_a9f8e1500e3db93e52969523517904e65}\label{class_mat4_a9f8e1500e3db93e52969523517904e65} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Scale} (const \mbox{\hyperlink{class_vec3}{Vec3}} \&scale)
+\item 
+\Hypertarget{class_mat4_af41470ebca07c29f11d2578c5f4f7c52}\label{class_mat4_af41470ebca07c29f11d2578c5f4f7c52} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Scale} (float x, float y, float z)
+\item 
+\Hypertarget{class_mat4_a4004008e2fed49712164b08cfa002573}\label{class_mat4_a4004008e2fed49712164b08cfa002573} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries RotateX} (float radians)
+\item 
+\Hypertarget{class_mat4_ac72315e74e58c544927ba6bbfd39fc60}\label{class_mat4_ac72315e74e58c544927ba6bbfd39fc60} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries RotateY} (float radians)
+\item 
+\Hypertarget{class_mat4_ac827caeb07caf4e09eb4f60c3bf15efe}\label{class_mat4_ac827caeb07caf4e09eb4f60c3bf15efe} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries RotateZ} (float radians)
+\item 
+\Hypertarget{class_mat4_a4dff5459a7ba322838507cc462526a30}\label{class_mat4_a4dff5459a7ba322838507cc462526a30} 
+static \mbox{\hyperlink{class_mat4}{Mat4}} {\bfseries Get\+Transform} (float trans\+\_\+x, float trans\+\_\+y, float trans\+\_\+z, float scale\+\_\+x, float scale\+\_\+y, float scale\+\_\+Z, float rotateX, float rotateY, float rotateZ)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_mat4_ad475f9d364516e86058ed2784530a05d}\label{class_mat4_ad475f9d364516e86058ed2784530a05d} 
+float {\bfseries m} \mbox{[}16\mbox{]}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/math\+\_\+library/matrix\+\_\+4.\+hpp\end{DoxyCompactItemize}

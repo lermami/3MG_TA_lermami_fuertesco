@@ -1,0 +1,192 @@
+\doxysection{enum.\+hpp}
+\hypertarget{enum_8hpp_source}{}\label{enum_8hpp_source}\index{include/enum.hpp@{include/enum.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{comment}{//Render\ options}}
+\DoxyCodeLine{00004\ \textcolor{keyword}{enum\ class}\ FrontFace\ \{}
+\DoxyCodeLine{00005\ \ \ kClockWise,}
+\DoxyCodeLine{00006\ \ \ kCounterClockWise}
+\DoxyCodeLine{00007\ \};}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{enum\ class}\ CullingMode\ \{}
+\DoxyCodeLine{00010\ \ \ kFrontLeft,}
+\DoxyCodeLine{00011\ \ \ kFrontRight,}
+\DoxyCodeLine{00012\ \ \ kBackLeft,}
+\DoxyCodeLine{00013\ \ \ kBackRight,}
+\DoxyCodeLine{00014\ \ \ kFront,}
+\DoxyCodeLine{00015\ \ \ kBack,}
+\DoxyCodeLine{00016\ \ \ kLeft,}
+\DoxyCodeLine{00017\ \ \ kRight,}
+\DoxyCodeLine{00018\ \ \ kFrontAndBack,}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{enum\ class}\ DepthTestMode\ \{}
+\DoxyCodeLine{00022\ \ \ kNever,}
+\DoxyCodeLine{00023\ \ \ kLess,}
+\DoxyCodeLine{00024\ \ \ kEqual,}
+\DoxyCodeLine{00025\ \ \ kGreater,}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{enum\ class}\ ProjectionMode\ \{}
+\DoxyCodeLine{00029\ \ \ kPerspective,}
+\DoxyCodeLine{00030\ \ \ kOrthogonal,}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{//Texture\ options}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{enum\ class}\ TextureTarget\ \{}
+\DoxyCodeLine{00035\ \ \ kTexture\_1D,}
+\DoxyCodeLine{00036\ \ \ kTexture\_2D,}
+\DoxyCodeLine{00037\ \ \ kTexture\_3D,}
+\DoxyCodeLine{00038\ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{enum\ class}\ TextureType\ \{}
+\DoxyCodeLine{00041\ \ \ kUnsignedByte,}
+\DoxyCodeLine{00042\ \ \ kFloat,}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{enum\ class}\ TextureFormat\ \{}
+\DoxyCodeLine{00046\ \ \ kRGB,}
+\DoxyCodeLine{00047\ \ \ kRGBA,}
+\DoxyCodeLine{00048\ \ \ kDepthComponent,}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{enum\ class}\ TextureFiltering\ \{}
+\DoxyCodeLine{00052\ \ \ kNearest,}
+\DoxyCodeLine{00053\ \ \ kLinear,}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{enum\ class}\ TextureWrap\{}
+\DoxyCodeLine{00057\ \ \ kRepeat,}
+\DoxyCodeLine{00058\ \ \ kMirroredRepeat,}
+\DoxyCodeLine{00059\ \ \ kClampToEdge,}
+\DoxyCodeLine{00060\ \ \ kClampToBorder,}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{comment}{//Light}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{enum\ class}\ LightType\ \{}
+\DoxyCodeLine{00065\ \ \ kAmbient\ =\ 0,}
+\DoxyCodeLine{00066\ \ \ kDirectional\ =\ 1,}
+\DoxyCodeLine{00067\ \ \ kPoint\ =\ 2,}
+\DoxyCodeLine{00068\ \ \ kSpot\ =\ 3,}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{comment}{//Input}}
+\DoxyCodeLine{00072\ \textcolor{keyword}{enum}\ KeyEnum\ \{}
+\DoxyCodeLine{00073\ \ \ kKey\_LeftClick\ =\ 0,}
+\DoxyCodeLine{00074\ \ \ kKey\_RightClick,}
+\DoxyCodeLine{00075\ \ \ kKey\_MiddleClick,}
+\DoxyCodeLine{00076\ \ \ kKey\_AditionalMouseButton1,}
+\DoxyCodeLine{00077\ \ \ kKey\_AditionalMouseButton2,}
+\DoxyCodeLine{00078\ \ \ kKey\_AditionalMouseButton3,}
+\DoxyCodeLine{00079\ \ \ kKey\_AditionalMouseButton4,}
+\DoxyCodeLine{00080\ \ \ kKey\_Space\ =\ 32,}
+\DoxyCodeLine{00081\ \ \ kKey\_Aphostrophe\ =\ 39,}
+\DoxyCodeLine{00082\ \ \ kKey\_Coma\ =\ 44,}
+\DoxyCodeLine{00083\ \ \ kKey\_Dot,}
+\DoxyCodeLine{00084\ \ \ kKey\_Slash\ =\ 47,}
+\DoxyCodeLine{00085\ \ \ kKey\_0,}
+\DoxyCodeLine{00086\ \ \ kKey\_1,}
+\DoxyCodeLine{00087\ \ \ kKey\_2,}
+\DoxyCodeLine{00088\ \ \ kKey\_3,}
+\DoxyCodeLine{00089\ \ \ kKey\_4,}
+\DoxyCodeLine{00090\ \ \ kKey\_5,}
+\DoxyCodeLine{00091\ \ \ kKey\_6,}
+\DoxyCodeLine{00092\ \ \ kKey\_7,}
+\DoxyCodeLine{00093\ \ \ kKey\_8,}
+\DoxyCodeLine{00094\ \ \ kKey\_9,}
+\DoxyCodeLine{00095\ \ \ kKey\_A\ =\ 65,}
+\DoxyCodeLine{00096\ \ \ kKey\_B,}
+\DoxyCodeLine{00097\ \ \ kKey\_C,}
+\DoxyCodeLine{00098\ \ \ kKey\_D,}
+\DoxyCodeLine{00099\ \ \ kKey\_E,}
+\DoxyCodeLine{00100\ \ \ kKey\_F,}
+\DoxyCodeLine{00101\ \ \ kKey\_G,}
+\DoxyCodeLine{00102\ \ \ kKey\_H,}
+\DoxyCodeLine{00103\ \ \ kKey\_I,}
+\DoxyCodeLine{00104\ \ \ kKey\_J,}
+\DoxyCodeLine{00105\ \ \ kKey\_K,}
+\DoxyCodeLine{00106\ \ \ kKey\_L,}
+\DoxyCodeLine{00107\ \ \ kKey\_M,}
+\DoxyCodeLine{00108\ \ \ kKey\_N,}
+\DoxyCodeLine{00109\ \ \ kKey\_O,}
+\DoxyCodeLine{00110\ \ \ kKey\_P,}
+\DoxyCodeLine{00111\ \ \ kKey\_Q,}
+\DoxyCodeLine{00112\ \ \ kKey\_R,}
+\DoxyCodeLine{00113\ \ \ kKey\_S,}
+\DoxyCodeLine{00114\ \ \ kKey\_T,}
+\DoxyCodeLine{00115\ \ \ kKey\_U,}
+\DoxyCodeLine{00116\ \ \ kKey\_V,}
+\DoxyCodeLine{00117\ \ \ kKey\_W,}
+\DoxyCodeLine{00118\ \ \ kKey\_X,}
+\DoxyCodeLine{00119\ \ \ kKey\_Y,}
+\DoxyCodeLine{00120\ \ \ kKey\_Z,}
+\DoxyCodeLine{00121\ \ \ kKey\_LeftBracket\ =\ 91,}
+\DoxyCodeLine{00122\ \ \ kKey\_RightBracket\ =\ 93,}
+\DoxyCodeLine{00123\ \ \ kKey\_Escape\ =\ 256,}
+\DoxyCodeLine{00124\ \ \ kKey\_Enter,}
+\DoxyCodeLine{00125\ \ \ kKey\_Tab,}
+\DoxyCodeLine{00126\ \ \ kKey\_BackSpace,}
+\DoxyCodeLine{00127\ \ \ kKey\_Insert,}
+\DoxyCodeLine{00128\ \ \ kKey\_Delete,}
+\DoxyCodeLine{00129\ \ \ kKey\_Right,}
+\DoxyCodeLine{00130\ \ \ kKey\_Left,}
+\DoxyCodeLine{00131\ \ \ kKey\_Down,}
+\DoxyCodeLine{00132\ \ \ kKey\_Up,}
+\DoxyCodeLine{00133\ \ \ kKey\_PageUp,}
+\DoxyCodeLine{00134\ \ \ kKey\_PageDown,}
+\DoxyCodeLine{00135\ \ \ kKey\_Start,}
+\DoxyCodeLine{00136\ \ \ kKey\_End,}
+\DoxyCodeLine{00137\ \ \ kKey\_CapsLock\ =\ 280,}
+\DoxyCodeLine{00138\ \ \ kKey\_ScrollLock,}
+\DoxyCodeLine{00139\ \ \ kKey\_NumLock,}
+\DoxyCodeLine{00140\ \ \ kKey\_Pause\ =\ 284,}
+\DoxyCodeLine{00141\ \ \ kKey\_F1\ =\ 290,}
+\DoxyCodeLine{00142\ \ \ kKey\_F2,}
+\DoxyCodeLine{00143\ \ \ kKey\_F3,}
+\DoxyCodeLine{00144\ \ \ kKey\_F4,}
+\DoxyCodeLine{00145\ \ \ kKey\_F5,}
+\DoxyCodeLine{00146\ \ \ kKey\_F6,}
+\DoxyCodeLine{00147\ \ \ kKey\_F7,}
+\DoxyCodeLine{00148\ \ \ kKey\_F8,}
+\DoxyCodeLine{00149\ \ \ kKey\_F9,}
+\DoxyCodeLine{00150\ \ \ kKey\_F10,}
+\DoxyCodeLine{00151\ \ \ kKey\_F11,}
+\DoxyCodeLine{00152\ \ \ kKey\_F12,}
+\DoxyCodeLine{00153\ \ \ kKey\_LeftShift\ =\ 340,}
+\DoxyCodeLine{00154\ \ \ kKey\_LeftControl,}
+\DoxyCodeLine{00155\ \ \ kKey\_LeftAlt,}
+\DoxyCodeLine{00156\ \ \ kKey\_LeftSuper,}
+\DoxyCodeLine{00157\ \ \ kKey\_RightShift,}
+\DoxyCodeLine{00158\ \ \ kKey\_RightControl,}
+\DoxyCodeLine{00159\ \ \ kKey\_RightAlt,}
+\DoxyCodeLine{00160\ \ \ kKey\_RightSuper,}
+\DoxyCodeLine{00161\ \ \ kKey\_Menu,}
+\DoxyCodeLine{00162\ \};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{keyword}{enum}\ InputState\ \{}
+\DoxyCodeLine{00165\ \ \ kInactive,}
+\DoxyCodeLine{00166\ \ \ kDown,}
+\DoxyCodeLine{00167\ \ \ kPressed,}
+\DoxyCodeLine{00168\ \ \ kUp,}
+\DoxyCodeLine{00169\ \};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{comment}{//OpenGL\ API}}
+\DoxyCodeLine{00172\ \textcolor{keyword}{enum}\ Target\ \{}
+\DoxyCodeLine{00173\ \ \ kTarget\_VertexData,}
+\DoxyCodeLine{00174\ \ \ kTarget\_Elements,}
+\DoxyCodeLine{00175\ \};}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \textcolor{comment}{//Basic\ Shader\ enum}}
+\DoxyCodeLine{00178\ \textcolor{keyword}{enum}\ ShaderType\ \{}
+\DoxyCodeLine{00179\ \ \ kCustom,}
+\DoxyCodeLine{00180\ \ \ kTexture,}
+\DoxyCodeLine{00181\ \ \ kTextureLight,}
+\DoxyCodeLine{00182\ \ \ kTextureLightShadow,}
+\DoxyCodeLine{00183\ \ \ kColor,}
+\DoxyCodeLine{00184\ \ \ kColorLight,}
+\DoxyCodeLine{00185\ \ \ kColorLightShadow,}
+\DoxyCodeLine{00186\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,354 @@
+\doxysection{matrix\+\_\+3.\+hpp}
+\hypertarget{matrix__3_8hpp_source}{}\label{matrix__3_8hpp_source}\index{include/math\_library/matrix\_3.hpp@{include/math\_library/matrix\_3.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\///}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ \ Math\ Library}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \ Matrix\ 3\ Class\ Definition.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\///}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \ \ m0\ m1\ m2}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \ \ m3\ m4\ m5}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \ \ m6\ m7\ m8}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\///}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}vector\_2.hpp"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}vector\_3.hpp"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_mat3}{Mat3}}\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}();}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}(\textcolor{keywordtype}{float}\ *values\_array);}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}(\mbox{\hyperlink{class_vec3}{Vec3}}\ a,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ b,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ c);}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}(\textcolor{keywordtype}{float}\ v1,\ \textcolor{keywordtype}{float}\ v2,\ \textcolor{keywordtype}{float}\ v3,\ \textcolor{keywordtype}{float}\ v4,\ \textcolor{keywordtype}{float}\ v5,\ \textcolor{keywordtype}{float}\ v6,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ v7,\ \textcolor{keywordtype}{float}\ v8,\ \textcolor{keywordtype}{float}\ v9);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ copy);}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{class_mat3}{\string~Mat3}}();}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Identity();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ Multiply(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{float}\ Determinant()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ Adjoint()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{bool}\ GetInverse(\mbox{\hyperlink{class_mat3}{Mat3}}\&\ out)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ Inverse();}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ Transpose()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Translate(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec2}{Vec2}}\&\ position);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Translate(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Rotate(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec2}{Vec2}}\&\ scale);}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Scale(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ Transform\_Mat3\_Vec3(\mbox{\hyperlink{class_mat3}{Mat3}}\ mat,\mbox{\hyperlink{class_vec3}{Vec3}}\ vec);}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{class_vec2}{Vec2}}\ Transform\_Mat3\_Vec2(\mbox{\hyperlink{class_mat3}{Mat3}}\ mat,\mbox{\hyperlink{class_vec2}{Vec2}}\ vec);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ GetColum(\textcolor{keywordtype}{int}\ colum)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ GetLine(\textcolor{keywordtype}{int}\ line)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other);}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ operator+(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ operator+=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ operator-\/(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ operator-\/=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ operator*(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ operator*=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ operator/(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ operator/=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{float}\ m[9];}
+\DoxyCodeLine{00070\ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ aux[0]\ =\ m[0]\ +\ other.m[0];\ aux[1]\ =\ m[1]\ +\ other.m[1];\ aux[2]\ =\ m[2]\ +\ other.m[2];}
+\DoxyCodeLine{00077\ \ \ \ \ aux[3]\ =\ m[3]\ +\ other.m[3];\ aux[4]\ =\ m[4]\ +\ other.m[4];\ aux[5]\ =\ m[5]\ +\ other.m[5];}
+\DoxyCodeLine{00078\ \ \ \ \ aux[6]\ =\ m[6]\ +\ other.m[6];\ aux[7]\ =\ m[7]\ +\ other.m[7];\ aux[8]\ =\ m[8]\ +\ other.m[8];}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00081\ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ Mat3::operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \{}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ m[0]\ +=\ other.m[0];\ m[1]\ +=\ other.m[1];\ m[2]\ +=\ other.m[2];}
+\DoxyCodeLine{00086\ \ \ \ \ m[3]\ +=\ other.m[3];\ m[4]\ +=\ other.m[4];\ m[5]\ +=\ other.m[5];}
+\DoxyCodeLine{00087\ \ \ \ \ m[6]\ +=\ other.m[6];\ m[7]\ +=\ other.m[7];\ m[8]\ +=\ other.m[8];}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00090\ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::operator+(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00094\ \ \ \ \ aux[0]\ =\ m[0]\ +\ value;\ aux[1]\ =\ m[1]\ +\ value;\ aux[2]\ =\ m[2]\ +\ value;}
+\DoxyCodeLine{00095\ \ \ \ \ aux[3]\ =\ m[3]\ +\ value;\ aux[4]\ =\ m[4]\ +\ value;\ aux[5]\ =\ m[5]\ +\ value;}
+\DoxyCodeLine{00096\ \ \ \ \ aux[6]\ =\ m[6]\ +\ value;\ aux[7]\ =\ m[7]\ +\ value;\ aux[8]\ =\ m[8]\ +\ value;}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00098\ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ Mat3::operator+=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ m[0]\ +=\ value;\ m[1]\ +=\ value;\ m[2]\ +=\ value;}
+\DoxyCodeLine{00102\ \ \ \ \ m[3]\ +=\ value;\ m[4]\ +=\ value;\ m[5]\ +=\ value;}
+\DoxyCodeLine{00103\ \ \ \ \ m[6]\ +=\ value;\ m[7]\ +=\ value;\ m[8]\ +=\ value;}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00105\ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ aux[0]\ =\ m[0]\ -\/\ other.m[0];\ aux[1]\ =\ m[1]\ -\/\ other.m[1];\ aux[2]\ =\ m[2]\ -\/\ other.m[2];}
+\DoxyCodeLine{00111\ \ \ \ \ aux[3]\ =\ m[3]\ -\/\ other.m[3];\ aux[4]\ =\ m[4]\ -\/\ other.m[4];\ aux[5]\ =\ m[5]\ -\/\ other.m[5];}
+\DoxyCodeLine{00112\ \ \ \ \ aux[6]\ =\ m[6]\ -\/\ other.m[6];\ aux[7]\ =\ m[7]\ -\/\ other.m[7];\ aux[8]\ =\ m[8]\ -\/\ other.m[8];}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00115\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ Mat3::operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ m[0]\ -\/=\ other.m[0];\ m[1]\ -\/=\ other.m[1];\ m[2]\ -\/=\ other.m[2];}
+\DoxyCodeLine{00119\ \ \ \ \ m[3]\ -\/=\ other.m[3];\ m[4]\ -\/=\ other.m[4];\ m[5]\ -\/=\ other.m[5];}
+\DoxyCodeLine{00120\ \ \ \ \ m[6]\ -\/=\ other.m[6];\ m[7]\ -\/=\ other.m[7];\ m[8]\ -\/=\ other.m[8];}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00122\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::operator-\/(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00126\ \ \ \ \ aux[0]\ =\ m[0]\ -\/\ value;\ aux[1]\ =\ m[1]\ -\/\ value;\ aux[2]\ =\ m[2]\ -\/\ value;}
+\DoxyCodeLine{00127\ \ \ \ \ aux[3]\ =\ m[3]\ -\/\ value;\ aux[4]\ =\ m[4]\ -\/\ value;\ aux[5]\ =\ m[5]\ -\/\ value;}
+\DoxyCodeLine{00128\ \ \ \ \ aux[6]\ =\ m[6]\ -\/\ value;\ aux[7]\ =\ m[7]\ -\/\ value;\ aux[8]\ =\ m[8]\ -\/\ value;}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00130\ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ Mat3::operator-\/=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ m[0]\ -\/=\ value;\ m[1]\ -\/=\ value;\ m[2]\ -\/=\ value;}
+\DoxyCodeLine{00134\ \ \ \ \ m[3]\ -\/=\ value;\ m[4]\ -\/=\ value;\ m[5]\ -\/=\ value;}
+\DoxyCodeLine{00135\ \ \ \ \ m[6]\ -\/=\ value;\ m[7]\ -\/=\ value;\ m[8]\ -\/=\ value;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00137\ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::operator*(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00141\ \ \ \ \ aux[0]\ =\ m[0]\ *\ value;\ aux[1]\ =\ m[1]\ *\ value;\ aux[2]\ =\ m[2]\ *\ value;}
+\DoxyCodeLine{00142\ \ \ \ \ aux[3]\ =\ m[3]\ *\ value;\ aux[4]\ =\ m[4]\ *\ value;\ aux[5]\ =\ m[5]\ *\ value;}
+\DoxyCodeLine{00143\ \ \ \ \ aux[6]\ =\ m[6]\ *\ value;\ aux[7]\ =\ m[7]\ *\ value;\ aux[8]\ =\ m[8]\ *\ value;}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00145\ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ Mat3::operator*=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ m[0]\ *=\ value;\ m[1]\ *=\ value;\ m[2]\ *=\ value;}
+\DoxyCodeLine{00149\ \ \ \ \ m[3]\ *=\ value;\ m[4]\ *=\ value;\ m[5]\ *=\ value;}
+\DoxyCodeLine{00150\ \ \ \ \ m[6]\ *=\ value;\ m[7]\ *=\ value;\ m[8]\ *=\ value;}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::operator/(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00156\ \ \ \ \ aux[0]\ =\ m[0]\ /\ value;\ aux[1]\ =\ m[1]\ /\ value;\ aux[2]\ =\ m[2]\ /\ value;}
+\DoxyCodeLine{00157\ \ \ \ \ aux[3]\ =\ m[3]\ /\ value;\ aux[4]\ =\ m[4]\ /\ value;\ aux[5]\ =\ m[5]\ /\ value;}
+\DoxyCodeLine{00158\ \ \ \ \ aux[6]\ =\ m[6]\ /\ value;\ aux[7]\ =\ m[7]\ /\ value;\ aux[8]\ =\ m[8]\ /\ value;}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00160\ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ Mat3::operator/=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ m[0]\ /=\ value;\ m[1]\ /=\ value;\ m[2]\ /=\ value;}
+\DoxyCodeLine{00164\ \ \ \ \ m[3]\ /=\ value;\ m[4]\ /=\ value;\ m[5]\ /=\ value;}
+\DoxyCodeLine{00165\ \ \ \ \ m[6]\ /=\ value;\ m[7]\ /=\ value;\ m[8]\ /=\ value;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this});}
+\DoxyCodeLine{00167\ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat3::operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00170\ \ \textcolor{keywordtype}{int}\ cont=0;}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;i<9;i++)\{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m[i]==other.m[i])\{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ cont++;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{if}(cont==9)\{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00179\ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat3::operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordtype}{int}\ cont=0;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;i<9;i++)\{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m[i]==other.m[i])\{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ cont++;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \textcolor{keywordflow}{if}(cont!=9)\{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00195\ \ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00197\ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Mat3::operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ m[0]\ =\ other.m[0];\ m[1]\ =\ other.m[1];\ m[2]\ =\ other.m[2];}
+\DoxyCodeLine{00202\ \ \ \ \ m[3]\ =\ other.m[3];\ m[4]\ =\ other.m[4];\ m[5]\ =\ other.m[5];}
+\DoxyCodeLine{00203\ \ \ \ \ m[6]\ =\ other.m[6];\ m[7]\ =\ other.m[7];\ m[8]\ =\ other.m[8];}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Identity()\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ aux;}
+\DoxyCodeLine{00208\ \ \ \ \ aux.m[0]\ =\ 1.0f;\ aux.m[1]\ =\ 0.0f;\ aux.m[2]\ =\ 0.0f;}
+\DoxyCodeLine{00209\ \ \ \ \ aux.m[3]\ =\ 0.0f;\ aux.m[4]\ =\ 1.0f;\ aux.m[5]\ =\ 0.0f;}
+\DoxyCodeLine{00210\ \ \ \ \ aux.m[6]\ =\ 0.0f;\ aux.m[7]\ =\ 0.0f;\ aux.m[8]\ =\ 1.0f;}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ aux;}
+\DoxyCodeLine{00213\ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Mat3::Determinant()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordflow}{return}\ m[0]*m[4]*m[8]\ +\ m[1]*m[5]*m[6]\ +}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[3]*m[7]*m[2]\ -\/\ m[2]*m[4]*m[6]\ -\/}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m[0]*m[5]*m[7]\ -\/\ m[1]*m[3]*m[8];}
+\DoxyCodeLine{00221\ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat3::GetInverse(\mbox{\hyperlink{class_mat3}{Mat3}}\&\ out)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \ \ out\ =\ Adjoint().Transpose()\ /\ Determinant();}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00227\ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Mat3::Inverse()\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{if}(Determinant()\ ==\ 0)\{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00232\ \ \ \ \ \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInverse((*\textcolor{keyword}{this}));}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \}}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Translate(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec2}{Vec2}}\&\ mov\_vector)\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ aux;}
+\DoxyCodeLine{00240\ \ \ \ \ aux.m[0]\ =\ 1.0f;\ aux.m[1]\ =\ 0;\ aux.m[2]\ =\ mov\_vector.x;}
+\DoxyCodeLine{00241\ \ \ \ \ aux.m[3]\ =\ 0;\ aux.m[4]\ =\ 1.0f;\ aux.m[5]\ =\ mov\_vector.y;}
+\DoxyCodeLine{00242\ \ \ \ \ aux.m[6]\ =\ 0;\ aux.m[7]\ =\ 0;\ aux.m[8]\ =\ 1.0f;}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00245\ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Translate(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ aux;}
+\DoxyCodeLine{00249\ \ \ \ \ aux.m[0]\ =\ 1.0f;\ aux.m[1]\ =\ 0;\ aux.m[2]\ =\ x;}
+\DoxyCodeLine{00250\ \ \ \ \ aux.m[3]\ =\ 0;\ aux.m[4]\ =\ 1.0f;\ aux.m[5]\ =\ y;}
+\DoxyCodeLine{00251\ \ \ \ \ aux.m[6]\ =\ 0;\ aux.m[7]\ =\ 0;\ aux.m[8]\ =\ 1.0f;}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00253\ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Rotate(\textcolor{keywordtype}{float}\ angle)\{}
+\DoxyCodeLine{00256\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ aux;}
+\DoxyCodeLine{00257\ \ \ \ \ aux.m[0]\ =\ (float)cos(angle);\ aux.m[1]\ =\ (float)-\/sin(angle);\ aux.m[2]\ =\ 0;}
+\DoxyCodeLine{00258\ \ \ \ \ aux.m[3]\ =\ (float)sin(angle);\ aux.m[4]\ =\ (float)cos(angle);\ aux.m[5]\ =\ 0;}
+\DoxyCodeLine{00259\ \ \ \ \ aux.m[6]\ =\ 0;\ aux.m[7]\ =\ 0;\ aux.m[8]\ =\ 1.0f;}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00261\ \}}
+\DoxyCodeLine{00262\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec2}{Vec2}}\&\ scale)\{}
+\DoxyCodeLine{00263\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ aux;}
+\DoxyCodeLine{00264\ \ \ \ \ aux.m[0]\ =\ scale.x;\ aux.m[1]\ =\ 0;\ aux.m[2]\ =\ 0;}
+\DoxyCodeLine{00265\ \ \ \ \ aux.m[3]\ =\ 0;\ aux.m[4]\ =\ scale.y;\ aux.m[5]\ =\ 0;}
+\DoxyCodeLine{00266\ \ \ \ \ aux.m[6]\ =\ 0;\ aux.m[7]\ =\ 0;\ aux.m[8]\ =\ 1.0f;}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00268\ \}}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Scale(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y)\{}
+\DoxyCodeLine{00271\ \ \ \ \ \mbox{\hyperlink{class_mat3}{Mat3}}\ aux;}
+\DoxyCodeLine{00272\ \ \ \ \ aux.m[0]\ =\ x;\ aux.m[1]\ =\ 0;\ aux.m[2]\ =\ 0;}
+\DoxyCodeLine{00273\ \ \ \ \ aux.m[3]\ =\ 0;\ aux.m[4]\ =\ y;\ aux.m[5]\ =\ 0;}
+\DoxyCodeLine{00274\ \ \ \ \ aux.m[6]\ =\ 0;\ aux.m[7]\ =\ 0;\ aux.m[8]\ =\ 1.0f;}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00276\ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Mat3::Transform\_Mat3\_Vec3(\mbox{\hyperlink{class_mat3}{Mat3}}\ mat,\mbox{\hyperlink{class_vec3}{Vec3}}\ vec)\{}
+\DoxyCodeLine{00279\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ New\_vec;}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \ \ New\_vec.x\ =\ (mat.m[0]*vec.x)\ +\ (mat.m[1]\ *\ vec.y)\ +\ (mat.m[2]*vec.z);}
+\DoxyCodeLine{00282\ \ \ \ \ New\_vec.y\ =\ (mat.m[3]*vec.x)\ +\ (mat.m[4]\ *\ vec.y)\ +\ (mat.m[5]*vec.z);}
+\DoxyCodeLine{00283\ \ \ \ \ New\_vec.z\ =\ (mat.m[6]*vec.x)\ +\ (mat.m[7]\ *\ vec.y)\ +\ (mat.m[8]*vec.z);}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(New\_vec);}
+\DoxyCodeLine{00286\ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec2}{Vec2}}\ Mat3::Transform\_Mat3\_Vec2(\mbox{\hyperlink{class_mat3}{Mat3}}\ mat,\mbox{\hyperlink{class_vec2}{Vec2}}\ vec)\{}
+\DoxyCodeLine{00289\ \ \ \ \ \mbox{\hyperlink{class_vec2}{Vec2}}\ New\_vec;}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \ \ \ \ New\_vec.x\ =\ (mat.m[0]*vec.x)\ +\ (mat.m[1]\ *\ vec.y)\ +\ (mat.m[2]*1);}
+\DoxyCodeLine{00292\ \ \ \ \ New\_vec.y\ =\ (mat.m[3]*vec.x)\ +\ (mat.m[4]\ *\ vec.y)\ +\ (mat.m[5]*1);;}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec2}{Vec2}}(New\_vec);}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \}}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Multiply(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_mat3}{Mat3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \ \ aux[0]\ =\ (m[0]\ *\ other.m[0])\ +\ (m[1]\ *\ other.m[3])\ +\ (m[2]\ *\ other.m[6]);}
+\DoxyCodeLine{00302\ \ \ \ \ aux[1]\ =\ (m[0]\ *\ other.m[1])\ +\ (m[1]\ *\ other.m[4])\ +\ (m[2]\ *\ other.m[7]);}
+\DoxyCodeLine{00303\ \ \ \ \ aux[2]\ =\ (m[0]\ *\ other.m[2])\ +\ (m[1]\ *\ other.m[5])\ +\ (m[2]\ *\ other.m[8]);}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \ \ \ \ aux[3]\ =\ (m[3]\ *\ other.m[0])\ +\ (m[4]\ *\ other.m[3])\ +\ (m[5]\ *\ other.m[6]);}
+\DoxyCodeLine{00306\ \ \ \ \ aux[4]\ =\ (m[3]\ *\ other.m[1])\ +\ (m[4]\ *\ other.m[4])\ +\ (m[5]\ *\ other.m[7]);}
+\DoxyCodeLine{00307\ \ \ \ \ aux[5]\ =\ (m[3]\ *\ other.m[2])\ +\ (m[4]\ *\ other.m[5])\ +\ (m[5]\ *\ other.m[8]);}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \ \ \ \ aux[6]\ =\ (m[6]\ *\ other.m[0])\ +\ (m[7]\ *\ other.m[3])\ +\ (m[8]\ *\ other.m[6]);}
+\DoxyCodeLine{00310\ \ \ \ \ aux[7]\ =\ (m[6]\ *\ other.m[1])\ +\ (m[7]\ *\ other.m[4])\ +\ (m[8]\ *\ other.m[7]);}
+\DoxyCodeLine{00311\ \ \ \ \ aux[8]\ =\ (m[6]\ *\ other.m[2])\ +\ (m[7]\ *\ other.m[5])\ +\ (m[8]\ *\ other.m[8]);}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00314\ \}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Adjoint()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00318\ \ \ \ \ aux[0]\ =\ m[4]*m[8]\ -\/\ (m[7]*m[5]);\ aux[1]\ =\ -\/(m[3]*m[8]\ -\/\ (m[6]*m[5]));\ aux[2]\ =\ m[3]*m[7]\ -\/\ (m[6]*m[4]);}
+\DoxyCodeLine{00319\ \ \ \ \ aux[3]\ =\ -\/(m[1]*m[8]\ -\/\ (m[7]*m[2]));\ aux[4]\ =\ m[0]*m[8]\ -\/\ (m[6]*m[2]);\ aux[5]\ =\ -\/(m[0]*m[7]\ -\/\ (m[6]*m[1]));}
+\DoxyCodeLine{00320\ \ \ \ \ aux[6]\ =\ m[1]*m[5]\ -\/\ (m[4]*m[2]);\ aux[7]\ =\ -\/(m[0]*m[5]\ -\/\ (m[3]*m[2]));\ aux[8]\ =\ m[0]*m[4]\ -\/\ (m[3]*m[1]);}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00322\ \}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_mat3}{Mat3}}\ Mat3::Transpose()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keywordtype}{float}\ aux[9];}
+\DoxyCodeLine{00326\ \ \ \ \ aux[0]\ =\ m[0];\ aux[1]\ =\ m[3];\ aux[2]\ =\ m[6];}
+\DoxyCodeLine{00327\ \ \ \ \ aux[3]\ =\ m[1];\ aux[4]\ =\ m[4];\ aux[5]\ =\ m[7];}
+\DoxyCodeLine{00328\ \ \ \ \ aux[6]\ =\ m[2];\ aux[7]\ =\ m[5];\ aux[8]\ =\ m[8];}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_mat3}{Mat3}}(aux);}
+\DoxyCodeLine{00331\ \}}
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00333\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Mat3::GetColum(\textcolor{keywordtype}{int}\ colum)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordtype}{float}\ x,y,z;}
+\DoxyCodeLine{00335\ \ \ \ \ x\ =\ m[colum];}
+\DoxyCodeLine{00336\ \ \ \ \ y\ =\ m[colum+3];}
+\DoxyCodeLine{00337\ \ \ \ \ z\ =\ m[colum+6];}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x,y,z);}
+\DoxyCodeLine{00339\ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Mat3::GetLine(\textcolor{keywordtype}{int}\ line)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordtype}{float}\ x,y,z;}
+\DoxyCodeLine{00343\ \ \ \ \ x\ =\ m[line*3];}
+\DoxyCodeLine{00344\ \ \ \ \ y\ =\ m[line*3+1];}
+\DoxyCodeLine{00345\ \ \ \ \ z\ =\ m[line*3+2];}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x,y,z);}
+\DoxyCodeLine{00348\ \}}
+
+\end{DoxyCode}

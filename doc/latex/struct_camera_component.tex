@@ -1,0 +1,52 @@
+\doxysection{Camera\+Component Struct Reference}
+\hypertarget{struct_camera_component}{}\label{struct_camera_component}\index{CameraComponent@{CameraComponent}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_camera_component_a9462160b1dd86417e959f1df406a914c}\label{struct_camera_component_a9462160b1dd86417e959f1df406a914c} 
+void {\bfseries set\+Projection\+Mode} (Projection\+Mode mode)
+\item 
+\Hypertarget{struct_camera_component_a05791a72db3c172ad254f851c210c875}\label{struct_camera_component_a05791a72db3c172ad254f851c210c875} 
+Projection\+Mode {\bfseries get\+Projection\+Mode} ()
+\item 
+\Hypertarget{struct_camera_component_ad1fc3d9063e496b0879aca4f674eace8}\label{struct_camera_component_ad1fc3d9063e496b0879aca4f674eace8} 
+glm\+::mat4 {\bfseries get\+Perspective\+Matrix} (float fov, float aspect, float near, float far)
+\item 
+\Hypertarget{struct_camera_component_aa55e0bef9f03b7a42d23b2bb0bfe47b2}\label{struct_camera_component_aa55e0bef9f03b7a42d23b2bb0bfe47b2} 
+glm\+::mat4 {\bfseries get\+Orthogonal\+Matrix} (float left, float right, float bottom, float top, float near, float far)
+\item 
+\Hypertarget{struct_camera_component_ac88a32272026dc4294da63a9f90e937d}\label{struct_camera_component_ac88a32272026dc4294da63a9f90e937d} 
+glm\+::mat4 {\bfseries get\+View\+Matrix} (\mbox{\hyperlink{class_vec3}{Vec3}} target, \mbox{\hyperlink{class_vec3}{Vec3}} up)
+\item 
+\Hypertarget{struct_camera_component_af6679df18878833a0aa7e6b0a5a20810}\label{struct_camera_component_af6679df18878833a0aa7e6b0a5a20810} 
+void {\bfseries do\+Render} (\mbox{\hyperlink{class_window}{Window}} \texorpdfstring{$\ast$}{*}w)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_camera_component_aa0da21e1494dd3124a99d3b7c9038123}\label{struct_camera_component_aa0da21e1494dd3124a99d3b7c9038123} 
+\mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries pos\+\_\+}
+\item 
+\Hypertarget{struct_camera_component_a390fe763a94fd9cc3e539011e4698a20}\label{struct_camera_component_a390fe763a94fd9cc3e539011e4698a20} 
+\mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries forward\+\_\+}
+\item 
+\Hypertarget{struct_camera_component_ab227bd2f2ccca3b27c3bd93b049c1622}\label{struct_camera_component_ab227bd2f2ccca3b27c3bd93b049c1622} 
+\mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries up\+\_\+}
+\item 
+\Hypertarget{struct_camera_component_ab9f9f6f3537e000b234a2c4454662ec2}\label{struct_camera_component_ab9f9f6f3537e000b234a2c4454662ec2} 
+\mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries right\+\_\+}
+\item 
+\Hypertarget{struct_camera_component_ab34db79c9fe0ff77f27accb55dd114a0}\label{struct_camera_component_ab34db79c9fe0ff77f27accb55dd114a0} 
+float {\bfseries speed\+\_\+}
+\item 
+\Hypertarget{struct_camera_component_ae11036968513046290c380630f931793}\label{struct_camera_component_ae11036968513046290c380630f931793} 
+float {\bfseries sensitivity\+\_\+}
+\item 
+\Hypertarget{struct_camera_component_af37d4f8b72179225eee5a174d57ddf47}\label{struct_camera_component_af37d4f8b72179225eee5a174d57ddf47} 
+Projection\+Mode {\bfseries projection\+Mode\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}

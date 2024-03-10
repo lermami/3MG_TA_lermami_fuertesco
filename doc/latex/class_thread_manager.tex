@@ -1,0 +1,142 @@
+\doxysection{Thread\+Manager Class Reference}
+\hypertarget{class_thread_manager}{}\label{class_thread_manager}\index{ThreadManager@{ThreadManager}}
+
+
+This class manages a pool of threads that can be used to execute tasks concurrently.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+manager.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_thread_manager_a613b13ebf45502e4d86c2f9317ec5871}{Thread\+Manager}} ()
+\item 
+\mbox{\hyperlink{class_thread_manager_a18eb12d3d752075318c3672c8efffd5b}{\texorpdfstring{$\sim$}{\string~}\+Thread\+Manager}} ()
+\item 
+void \mbox{\hyperlink{class_thread_manager_ac210d42e1a0bbcc54f4db87db470d77e}{set\+Stop}} (bool stop)
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::future$<$ T $>$ \mbox{\hyperlink{class_thread_manager_a8be0653f81eff803ed4ba631810d6078}{add}} (const std\+::function$<$ T()$>$ \&f)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{class_thread_manager_a7e49d8be3d9f356bb72f50ed075630eb}{check\+Future}} (const std\+::future$<$ T $>$ \&f)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{class_thread_manager_a9bc68345756eae2ff672afebddb3fe38}{wait\+Future}} (const std\+::future$<$ T $>$ \&f)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class manages a pool of threads that can be used to execute tasks concurrently. 
+
+The \doxylink{class_thread_manager}{Thread\+Manager} class provides functionality to add tasks to a queue, spawn worker threads, and manage their execution. It allows adding functions as tasks, checking the status of futures, and waiting for them to complete. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_thread_manager_a613b13ebf45502e4d86c2f9317ec5871}\label{class_thread_manager_a613b13ebf45502e4d86c2f9317ec5871} 
+\index{ThreadManager@{ThreadManager}!ThreadManager@{ThreadManager}}
+\index{ThreadManager@{ThreadManager}!ThreadManager@{ThreadManager}}
+\doxysubsubsection{\texorpdfstring{ThreadManager()}{ThreadManager()}}
+{\footnotesize\ttfamily Thread\+Manager\+::\+Thread\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor for the \doxylink{class_thread_manager}{Thread\+Manager} class.
+
+Creates a \doxylink{class_thread_manager}{Thread\+Manager} object and start all the threads of the device. \Hypertarget{class_thread_manager_a18eb12d3d752075318c3672c8efffd5b}\label{class_thread_manager_a18eb12d3d752075318c3672c8efffd5b} 
+\index{ThreadManager@{ThreadManager}!````~ThreadManager@{\texorpdfstring{$\sim$}{\string~}ThreadManager}}
+\index{````~ThreadManager@{\texorpdfstring{$\sim$}{\string~}ThreadManager}!ThreadManager@{ThreadManager}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}ThreadManager()}{\string~ThreadManager()}}
+{\footnotesize\ttfamily Thread\+Manager\+::\texorpdfstring{$\sim$}{\string~}\+Thread\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor for the \doxylink{class_thread_manager}{Thread\+Manager} class.
+
+Waits for all worker threads to finish their tasks and releases resources. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_thread_manager_a8be0653f81eff803ed4ba631810d6078}\label{class_thread_manager_a8be0653f81eff803ed4ba631810d6078} 
+\index{ThreadManager@{ThreadManager}!add@{add}}
+\index{add@{add}!ThreadManager@{ThreadManager}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::future$<$ T $>$ Thread\+Manager\+::add (\begin{DoxyParamCaption}\item[{const std\+::function$<$ T()$>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Template method to add a task to the queue and return a future object.
+
+This template method allows adding a function object to the task queue. It creates a std\+::packaged\+\_\+task, associates it with the function, and returns a future object that represents the eventual result of the task.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The return type of the function object (task). \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The function object to be executed as a task. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A std\+::future object representing the eventual result of the task. 
+\end{DoxyReturn}
+\Hypertarget{class_thread_manager_a7e49d8be3d9f356bb72f50ed075630eb}\label{class_thread_manager_a7e49d8be3d9f356bb72f50ed075630eb} 
+\index{ThreadManager@{ThreadManager}!checkFuture@{checkFuture}}
+\index{checkFuture@{checkFuture}!ThreadManager@{ThreadManager}}
+\doxysubsubsection{\texorpdfstring{checkFuture()}{checkFuture()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool Thread\+Manager\+::check\+Future (\begin{DoxyParamCaption}\item[{const std\+::future$<$ T $>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Template method to check the status of a future object.
+
+This template method checks the status of a std\+::future object using std\+::future\+\_\+status. It returns true if the future is ready, false otherwise (deferred or timed out).
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of the value stored in the future. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The future object to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the future is ready, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_thread_manager_ac210d42e1a0bbcc54f4db87db470d77e}\label{class_thread_manager_ac210d42e1a0bbcc54f4db87db470d77e} 
+\index{ThreadManager@{ThreadManager}!setStop@{setStop}}
+\index{setStop@{setStop}!ThreadManager@{ThreadManager}}
+\doxysubsubsection{\texorpdfstring{setStop()}{setStop()}}
+{\footnotesize\ttfamily void Thread\+Manager\+::set\+Stop (\begin{DoxyParamCaption}\item[{bool}]{stop }\end{DoxyParamCaption})}
+
+Signals the worker threads to stop processing new tasks.
+
+This method sets an internal flag to stop processing new tasks, allowing existing tasks to finish before exiting.
+
+
+\begin{DoxyParams}{Parameters}
+{\em stop} & Flag indicating whether to stop processing new tasks (true) or resume (false). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_thread_manager_a9bc68345756eae2ff672afebddb3fe38}\label{class_thread_manager_a9bc68345756eae2ff672afebddb3fe38} 
+\index{ThreadManager@{ThreadManager}!waitFuture@{waitFuture}}
+\index{waitFuture@{waitFuture}!ThreadManager@{ThreadManager}}
+\doxysubsubsection{\texorpdfstring{waitFuture()}{waitFuture()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void Thread\+Manager\+::wait\+Future (\begin{DoxyParamCaption}\item[{const std\+::future$<$ T $>$ \&}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Template method to wait for a future object to complete.
+
+This template method repeatedly calls std\+::future\+\_\+status\+::wait\+\_\+for on the provided future object until it reaches a ready state.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of the value stored in the future. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The future object to wait for. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/thread\+\_\+manager.\+hpp\end{DoxyCompactItemize}

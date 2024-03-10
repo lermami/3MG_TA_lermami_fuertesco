@@ -1,0 +1,236 @@
+\doxysection{Resource\+Manager Class Reference}
+\hypertarget{class_resource_manager}{}\label{class_resource_manager}\index{ResourceManager@{ResourceManager}}
+
+
+This class manages the loading and access of various resources for the engine.  
+
+
+
+
+{\ttfamily \#include $<$resource\+\_\+manager.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_resource_manager_a3b32babd2e81909bbd90d7f2d566fadb}{Resource\+Manager}} ()
+\item 
+\mbox{\hyperlink{class_resource_manager_a671c186e4630599e7e36d000c53eaf80}{\texorpdfstring{$\sim$}{\string~}\+Resource\+Manager}} ()
+\item 
+void \mbox{\hyperlink{class_resource_manager_ae78675d9d52250f3c955aeb04b27b9f4}{Wait\+Resources}} ()
+\item 
+void \mbox{\hyperlink{class_resource_manager_a008479bf951cc01de4319b9faed39fa7}{Load\+Obj}} (\mbox{\hyperlink{class_engine}{Engine}} \&e, const char \texorpdfstring{$\ast$}{*}name, const char \texorpdfstring{$\ast$}{*}path)
+\item 
+\mbox{\hyperlink{struct_geometry}{Geometry}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_resource_manager_ad6d0c19962db3ce603234e456f090064}{get\+Geometry}} (std\+::string name\+ID)
+\item 
+void \mbox{\hyperlink{class_resource_manager_a89bc8b011cfcae1b362328b1e5f70798}{load\+Texture}} (const char \texorpdfstring{$\ast$}{*}name, \mbox{\hyperlink{class_texture}{Texture}} tex, const char \texorpdfstring{$\ast$}{*}path)
+\item 
+unsigned \mbox{\hyperlink{class_resource_manager_ac442aad264143450a71f943ec391c61f}{get\+Texture}} (const char \texorpdfstring{$\ast$}{*}name)
+\item 
+bool \mbox{\hyperlink{class_resource_manager_a7ff961e016c10001d0ffb8f1d949f745}{create\+Vertex\+Buffer}} (std\+::string name\+ID, float \texorpdfstring{$\ast$}{*}vertices, unsigned size)
+\item 
+\mbox{\hyperlink{class_vertex_buffer}{Vertex\+Buffer}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_resource_manager_a36ddbb87fbc7d11940ab1bd5c4b1dd49}{get\+Vertex\+Buffer}} (std\+::string name\+ID)
+\item 
+bool \mbox{\hyperlink{class_resource_manager_a62c1da386e17992155e7fe790a15c00f}{create\+Index\+Buffer}} (std\+::string name\+ID, unsigned \texorpdfstring{$\ast$}{*}indices, unsigned size)
+\item 
+\mbox{\hyperlink{class_index_buffer}{Index\+Buffer}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_resource_manager_aea1083714cf43e2f2774246e6acc535e}{get\+Index\+Buffer}} (std\+::string name\+ID)
+\item 
+bool \mbox{\hyperlink{class_resource_manager_a34288ecd52e54950940c31bed221f939}{create\+Buffers\+With\+Geometry}} (\mbox{\hyperlink{struct_geometry}{Geometry}} \texorpdfstring{$\ast$}{*}geo, std\+::string name\+IDVertex, std\+::string name\+IDIndex)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class manages the loading and access of various resources for the engine. 
+
+The \doxylink{class_resource_manager}{Resource\+Manager} class provides a central system for loading textures, geometries, vertex buffers, and index buffers. It allows asynchronous loading, waiting for resources to be ready, and retrieval of resources by name. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_resource_manager_a3b32babd2e81909bbd90d7f2d566fadb}\label{class_resource_manager_a3b32babd2e81909bbd90d7f2d566fadb} 
+\index{ResourceManager@{ResourceManager}!ResourceManager@{ResourceManager}}
+\index{ResourceManager@{ResourceManager}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{ResourceManager()}{ResourceManager()}}
+{\footnotesize\ttfamily Resource\+Manager\+::\+Resource\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor for the \doxylink{class_resource_manager}{Resource\+Manager} class. \Hypertarget{class_resource_manager_a671c186e4630599e7e36d000c53eaf80}\label{class_resource_manager_a671c186e4630599e7e36d000c53eaf80} 
+\index{ResourceManager@{ResourceManager}!````~ResourceManager@{\texorpdfstring{$\sim$}{\string~}ResourceManager}}
+\index{````~ResourceManager@{\texorpdfstring{$\sim$}{\string~}ResourceManager}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}ResourceManager()}{\string~ResourceManager()}}
+{\footnotesize\ttfamily Resource\+Manager\+::\texorpdfstring{$\sim$}{\string~}\+Resource\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor for the \doxylink{class_resource_manager}{Resource\+Manager} class.
+
+Releases resources and cleans up internal data. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_resource_manager_a34288ecd52e54950940c31bed221f939}\label{class_resource_manager_a34288ecd52e54950940c31bed221f939} 
+\index{ResourceManager@{ResourceManager}!createBuffersWithGeometry@{createBuffersWithGeometry}}
+\index{createBuffersWithGeometry@{createBuffersWithGeometry}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{createBuffersWithGeometry()}{createBuffersWithGeometry()}}
+{\footnotesize\ttfamily bool Resource\+Manager\+::create\+Buffers\+With\+Geometry (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_geometry}{Geometry}} \texorpdfstring{$\ast$}{*}}]{geo,  }\item[{std\+::string}]{name\+IDVertex,  }\item[{std\+::string}]{name\+IDIndex }\end{DoxyParamCaption})}
+
+Creates vertex and index buffers from a loaded \doxylink{struct_geometry}{Geometry} object.
+
+This function creates vertex and index buffers from the data stored in a \doxylink{struct_geometry}{Geometry} object. It assigns the provided names to the created buffers.
+
+
+\begin{DoxyParams}{Parameters}
+{\em geo} & A pointer to the \doxylink{struct_geometry}{Geometry} object containing the data. \\
+\hline
+{\em name\+IDVertex} & The name to associate with the vertex buffer. \\
+\hline
+{\em name\+IDIndex} & The name to associate with the index buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if both buffers were created successfully, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_a62c1da386e17992155e7fe790a15c00f}\label{class_resource_manager_a62c1da386e17992155e7fe790a15c00f} 
+\index{ResourceManager@{ResourceManager}!createIndexBuffer@{createIndexBuffer}}
+\index{createIndexBuffer@{createIndexBuffer}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{createIndexBuffer()}{createIndexBuffer()}}
+{\footnotesize\ttfamily bool Resource\+Manager\+::create\+Index\+Buffer (\begin{DoxyParamCaption}\item[{std\+::string}]{name\+ID,  }\item[{unsigned \texorpdfstring{$\ast$}{*}}]{indices,  }\item[{unsigned}]{size }\end{DoxyParamCaption})}
+
+Creates an index buffer with the given data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+ID} & The name to associate with the index buffer. \\
+\hline
+{\em indices} & A pointer to the index data. \\
+\hline
+{\em size} & The size of the index data in bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the index buffer was created successfully, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_a7ff961e016c10001d0ffb8f1d949f745}\label{class_resource_manager_a7ff961e016c10001d0ffb8f1d949f745} 
+\index{ResourceManager@{ResourceManager}!createVertexBuffer@{createVertexBuffer}}
+\index{createVertexBuffer@{createVertexBuffer}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{createVertexBuffer()}{createVertexBuffer()}}
+{\footnotesize\ttfamily bool Resource\+Manager\+::create\+Vertex\+Buffer (\begin{DoxyParamCaption}\item[{std\+::string}]{name\+ID,  }\item[{float \texorpdfstring{$\ast$}{*}}]{vertices,  }\item[{unsigned}]{size }\end{DoxyParamCaption})}
+
+Creates a vertex buffer with the given data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+ID} & The name to associate with the vertex buffer. \\
+\hline
+{\em vertices} & A pointer to the vertex data. \\
+\hline
+{\em size} & The size of the vertex data in bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the vertex buffer was created successfully, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_ad6d0c19962db3ce603234e456f090064}\label{class_resource_manager_ad6d0c19962db3ce603234e456f090064} 
+\index{ResourceManager@{ResourceManager}!getGeometry@{getGeometry}}
+\index{getGeometry@{getGeometry}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{getGeometry()}{getGeometry()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_geometry}{Geometry}} \texorpdfstring{$\ast$}{*} Resource\+Manager\+::get\+Geometry (\begin{DoxyParamCaption}\item[{std\+::string}]{name\+ID }\end{DoxyParamCaption})}
+
+Retrieves a previously loaded geometry by name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+ID} & The name associated with the geometry to retrieve. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the geometry object, or nullptr if not found. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_aea1083714cf43e2f2774246e6acc535e}\label{class_resource_manager_aea1083714cf43e2f2774246e6acc535e} 
+\index{ResourceManager@{ResourceManager}!getIndexBuffer@{getIndexBuffer}}
+\index{getIndexBuffer@{getIndexBuffer}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{getIndexBuffer()}{getIndexBuffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_index_buffer}{Index\+Buffer}} \texorpdfstring{$\ast$}{*} Resource\+Manager\+::get\+Index\+Buffer (\begin{DoxyParamCaption}\item[{std\+::string}]{name\+ID }\end{DoxyParamCaption})}
+
+Retrieves a previously created index buffer by name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+ID} & The name associated with the index buffer to retrieve. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the index buffer object, or nullptr if not found. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_ac442aad264143450a71f943ec391c61f}\label{class_resource_manager_ac442aad264143450a71f943ec391c61f} 
+\index{ResourceManager@{ResourceManager}!getTexture@{getTexture}}
+\index{getTexture@{getTexture}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{getTexture()}{getTexture()}}
+{\footnotesize\ttfamily unsigned Resource\+Manager\+::get\+Texture (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{name }\end{DoxyParamCaption})}
+
+Retrieves a previously loaded texture by name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name associated with the texture to retrieve. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The ID of the texture, or 0 if not found. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_a36ddbb87fbc7d11940ab1bd5c4b1dd49}\label{class_resource_manager_a36ddbb87fbc7d11940ab1bd5c4b1dd49} 
+\index{ResourceManager@{ResourceManager}!getVertexBuffer@{getVertexBuffer}}
+\index{getVertexBuffer@{getVertexBuffer}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{getVertexBuffer()}{getVertexBuffer()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_vertex_buffer}{Vertex\+Buffer}} \texorpdfstring{$\ast$}{*} Resource\+Manager\+::get\+Vertex\+Buffer (\begin{DoxyParamCaption}\item[{std\+::string}]{name\+ID }\end{DoxyParamCaption})}
+
+Retrieves a previously created vertex buffer by name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+ID} & The name associated with the vertex buffer to retrieve. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the vertex buffer object, or nullptr if not found. 
+\end{DoxyReturn}
+\Hypertarget{class_resource_manager_a008479bf951cc01de4319b9faed39fa7}\label{class_resource_manager_a008479bf951cc01de4319b9faed39fa7} 
+\index{ResourceManager@{ResourceManager}!LoadObj@{LoadObj}}
+\index{LoadObj@{LoadObj}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{LoadObj()}{LoadObj()}}
+{\footnotesize\ttfamily void Resource\+Manager\+::\+Load\+Obj (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_engine}{Engine}} \&}]{e,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{name,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{path }\end{DoxyParamCaption})}
+
+Loads an OBJ geometry file asynchronously.
+
+This function queues a loading task for an OBJ file, associating it with the provided name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & Reference to the \doxylink{class_engine}{Engine} object. \\
+\hline
+{\em name} & The name to associate with the loaded geometry. \\
+\hline
+{\em path} & The path to the OBJ file to load. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_resource_manager_a89bc8b011cfcae1b362328b1e5f70798}\label{class_resource_manager_a89bc8b011cfcae1b362328b1e5f70798} 
+\index{ResourceManager@{ResourceManager}!loadTexture@{loadTexture}}
+\index{loadTexture@{loadTexture}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{loadTexture()}{loadTexture()}}
+{\footnotesize\ttfamily void Resource\+Manager\+::load\+Texture (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{name,  }\item[{\mbox{\hyperlink{class_texture}{Texture}}}]{tex,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{path }\end{DoxyParamCaption})}
+
+Loads a texture from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name to associate with the loaded texture. \\
+\hline
+{\em tex} & An existing \doxylink{class_texture}{Texture} object to load the texture data into. \\
+\hline
+{\em path} & The path to the texture file to load. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_resource_manager_ae78675d9d52250f3c955aeb04b27b9f4}\label{class_resource_manager_ae78675d9d52250f3c955aeb04b27b9f4} 
+\index{ResourceManager@{ResourceManager}!WaitResources@{WaitResources}}
+\index{WaitResources@{WaitResources}!ResourceManager@{ResourceManager}}
+\doxysubsubsection{\texorpdfstring{WaitResources()}{WaitResources()}}
+{\footnotesize\ttfamily void Resource\+Manager\+::\+Wait\+Resources (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Blocks execution until all pending resource loading tasks are finished. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/resource\+\_\+manager.\+hpp\end{DoxyCompactItemize}
