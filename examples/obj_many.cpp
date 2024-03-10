@@ -20,8 +20,13 @@
 
 #include "matrix_4.hpp"
 
+//In this example we will se how to add diverse objects to the engine
 int main(int, char**) {
+
+	//[1]. Init the engine
 	Engine e;
+
+	//[2]. Get component and resource and thread manager
 	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
@@ -40,17 +45,28 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 
-	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
-
+	//[3]. Load OBJ
 	resourceM.LoadObj(e, "Suzanne", "../assets/Suzanne.obj");
 	resourceM.LoadObj(e, "Wolf", "../assets/wolf/Wolf_obj.obj");
 	resourceM.LoadObj(e, "Gun", "../assets/gun/Gun.obj");
+
+	//[4]. Load obj textures if necesary
+	resourceM.loadTexture("WolfTex", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
+		"../assets/wolf/texture/Wolf_Body.jpg");
+
+	//[5]. Add a shader for the object 
+	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
+	auto simpleProgram = CreateProgram(w, "../assets/test_shader/test.vs", "../assets/test_shader/test.fs");
+
+	//[6]. Wait for resourcess to load
 	resourceM.WaitResources();
 
+	//[7]. Set a buffer to store your geometry
 	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Suzanne"), "SuzanneVertices", "SuzanneIndices");
 	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Wolf"), "WolfVertices", "WolfIndices");
 	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Gun"), "TankVertices", "TankIndices");
 
+	//[8]. Add entites of your geometries
 	for (unsigned i = 0; i < n_obj / 3; i++) {
 		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 150) - 75, (rand() % 150) - 75, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
 			RenderComponent("Suzanne", "SuzanneVertices", "SuzanneIndices", simpleProgram, 0));
@@ -58,7 +74,7 @@ int main(int, char**) {
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
 		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 28) - 14, (rand() % 28) - 14, -20.0f), Vec3(0.0f,  0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
-			RenderComponent("Wolf", "WolfVertices", "WolfIndices", simpleProgram, 0));
+			RenderComponent("Wolf", "WolfVertices", "WolfIndices", texture_shader, resourceM.getTexture("WolfTex")));
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
@@ -137,6 +153,7 @@ int main(int, char**) {
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
 		imgui_transform_system(e, w);
 
+		//[9]. Render
 		renderer.render();
 
 		w.swap();
