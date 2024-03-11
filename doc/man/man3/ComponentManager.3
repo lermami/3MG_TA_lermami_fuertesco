@@ -1,0 +1,161 @@
+.TH "ComponentManager" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ComponentManager \- This class manages the components attached to entities in the game world\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <component_manager\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBComponentManager\fP ()"
+.br
+.ti -1c
+.RI "\fB~ComponentManager\fP ()=default"
+.br
+.ti -1c
+.RI "template<typename T > void \fBadd_component_class\fP ()"
+.br
+.ti -1c
+.RI "template<typename T > void \fBcreate_component\fP (int position, T &component)"
+.br
+.ti -1c
+.RI "template<typename T > T * \fBget_component\fP (size_t e)"
+.br
+.ti -1c
+.RI "template<typename T > std::vector< std::optional< T > > * \fBget_component_list\fP ()"
+.br
+.ti -1c
+.RI "template<class \&.\&.\&. T> size_t \fBadd_entity\fP (T\&.\&.\&. components)"
+.br
+.ti -1c
+.RI "void \fBremove_entity\fP (size_t id)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::unordered_map< std::size_t, std::unique_ptr< \fBcomponent_base\fP > > \fBcomponent_classes_\fP"
+.br
+.ti -1c
+.RI "std::vector< size_t > \fBdeleted_components_\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class manages the components attached to entities in the game world\&. 
+
+The \fBComponentManager\fP class provides functionality to register component types, create and access components for entities, and add/remove entities\&. It uses an entity-component-system (ECS) approach for managing game objects\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "ComponentManager::ComponentManager ()"
+Constructor for the \fBComponentManager\fP class\&.
+.PP
+Adds default components\&. 
+.SS "ComponentManager::~ComponentManager ()\fR [default]\fP"
+Destructor for the \fBComponentManager\fP class\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename T > void ComponentManager::add_component_class ()"
+Template method to register a component class with the manager\&.
+.PP
+This template method allows registering a specific component type with the manager\&. It internally creates a component list to store instances of that type\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of the component to register\&. 
+.RE
+.PP
+
+.SS "template<class \&.\&.\&. T> size_t ComponentManager::add_entity (T\&.\&.\&. components)"
+Template method to create a new entity with optional components\&.
+.PP
+This template method creates a new entity and optionally adds components of the specified types\&. It takes a variadic template parameter pack to represent the component types\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fI\&.\&.\&.\fP Ts Additional component types to add to the entity (variadic template parameter pack)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The ID of the newly created entity\&. 
+.RE
+.PP
+
+.SS "template<typename T > void ComponentManager::create_component (int position, T & component)"
+Template method to create a component of a specific type for an entity\&.
+.PP
+This template method creates a component of the specified type and associates it with an entity\&. It takes the entity ID and a reference to the component data as arguments\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of the component to create\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIposition\fP Index at which to insert the component in the entity's component list (optional)\&. 
+.br
+\fIcomponent\fP Reference to the component data to create\&. 
+.RE
+.PP
+
+.SS "template<typename T > T * ComponentManager::get_component (size_t e)"
+Template method to retrieve a component of a specific type for an entity\&.
+.PP
+This template method retrieves a component of the specified type for an entity identified by ID\&. It returns a pointer to the component data if it exists, or nullptr otherwise\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of the component to retrieve\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIe\fP The ID of the entity to retrieve the component from\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the component data, or nullptr if not found\&. 
+.RE
+.PP
+
+.SS "template<typename T > std::vector< std::optional< T > > * ComponentManager::get_component_list ()"
+Template method to retrieve a list of optional components of a specific type for all entities\&.
+.PP
+This template method retrieves a reference to a vector containing std::optional objects for components of the specified type\&. Each element in the vector corresponds to an entity, and the optional object holds the component data if it exists for that entity\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of the component to retrieve\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A reference to the vector containing std::optional objects for the components\&. 
+.RE
+.PP
+
+.SS "void ComponentManager::remove_entity (size_t id)"
+Method to remove an entity from the manager\&.
+.PP
+This method removes an entity identified by ID from the manager\&. It marks the entity's components for potential reuse and updates internal data structures\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The ID of the entity to remove\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

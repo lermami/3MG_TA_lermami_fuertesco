@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['remove_5fentity_0',['remove_entity',['../struct_component_manager.html#aa7d480d067073ccf3191cce94ec63648',1,'ComponentManager']]],
-  ['resetviewport_1',['resetViewport',['../class_window.html#ab887d8b5d28b45f2f9fbd4f2a67b17d8',1,'Window']]],
-  ['resourcemanager_2',['ResourceManager',['../class_resource_manager.html#a3b32babd2e81909bbd90d7f2d566fadb',1,'ResourceManager']]]
+  ['lightcomponent_0',['LightComponent',['../struct_light_component.html#af0969ffa9e9110a82b0d94ab48f211cb',1,'LightComponent::LightComponent()'],['../struct_light_component.html#a77068dbd9567f7e16d720f57ad12eeec',1,'LightComponent::LightComponent(Vec3 color)'],['../struct_light_component.html#a5246a837d76c5461a1e4977eacc524f1',1,'LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)'],['../struct_light_component.html#a8efb08189415c571169a064810146960',1,'LightComponent::LightComponent(Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)'],['../struct_light_component.html#ab2624ad1d6083042306e86e75185b6e8',1,'LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)']]],
+  ['loadobj_1',['LoadObj',['../class_resource_manager.html#a008479bf951cc01de4319b9faed39fa7',1,'ResourceManager']]],
+  ['loadtexture_2',['loadTexture',['../class_resource_manager.html#a89bc8b011cfcae1b362328b1e5f70798',1,'ResourceManager']]],
+  ['loadtexture_3',['LoadTexture',['../class_texture.html#a9c40276c7a14a22729f2393da30185ae',1,'Texture::LoadTexture(const char *path)'],['../class_texture.html#a6f541f32ff495696b8f5f50c3bb6df77',1,'Texture::LoadTexture(int w, int h)']]]
 ];

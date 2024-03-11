@@ -1,0 +1,48 @@
+.TH "SoundBuffer" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+SoundBuffer
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSoundBuffer\fP (\fBSoundBuffer\fP &&b)"
+.br
+.ti -1c
+.RI "\fBSoundBuffer\fP (const \fBSoundBuffer\fP &b)=default"
+.br
+.ti -1c
+.RI "ALuint \fBgetBuffer\fP ()"
+.br
+.ti -1c
+.RI "int \fBFequency\fP ()"
+.br
+.ti -1c
+.RI "int \fBSize\fP ()"
+.br
+.ti -1c
+.RI "int \fBFormat\fP ()"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static std::optional< \fBSoundBuffer\fP > \fBMakeBuffer\fP (const std::string filename)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "bool \fBactive_\fP"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

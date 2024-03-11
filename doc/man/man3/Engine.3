@@ -1,0 +1,77 @@
+.TH "Engine" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Engine \- Main class representing the game engine, managing core subsystems\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <Engine\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBEngine\fP ()"
+.br
+.RI "Constructs the \fBEngine\fP object, initializing all subsystems\&. "
+.ti -1c
+.RI "\fB~Engine\fP ()"
+.br
+.RI "Destructs the \fBEngine\fP object, cleaning up resources\&. "
+.ti -1c
+.RI "\fBComponentManager\fP & \fBgetComponentManager\fP ()"
+.br
+.RI "Retrieves a reference to the \fBComponentManager\fP for accessing components\&. "
+.ti -1c
+.RI "\fBResourceManager\fP & \fBgetResourceManager\fP ()"
+.br
+.RI "Retrieves a reference to the \fBResourceManager\fP for managing resources\&. "
+.ti -1c
+.RI "\fBThreadManager\fP & \fBgetThreadManager\fP ()"
+.br
+.RI "Retrieves a reference to the \fBThreadManager\fP for managing threads\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Main class representing the game engine, managing core subsystems\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBComponentManager\fP & Engine::getComponentManager ()"
+
+.PP
+Retrieves a reference to the \fBComponentManager\fP for accessing components\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Reference to the \fBComponentManager\fP\&. 
+.RE
+.PP
+
+.SS "\fBResourceManager\fP & Engine::getResourceManager ()"
+
+.PP
+Retrieves a reference to the \fBResourceManager\fP for managing resources\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Reference to the \fBResourceManager\fP\&. 
+.RE
+.PP
+
+.SS "\fBThreadManager\fP & Engine::getThreadManager ()"
+
+.PP
+Retrieves a reference to the \fBThreadManager\fP for managing threads\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Reference to the \fBThreadManager\fP\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

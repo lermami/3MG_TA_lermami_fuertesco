@@ -78,24 +78,69 @@ $(function() {
   <div class="headertitle"><div class="title">BoxColliderComponent Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Struct representing a box collider attached to an entity.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="default__components_8hpp_source.html">default_components.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae9b185418f12359be12cdf209e9e1a90" id="r_ae9b185418f12359be12cdf209e9e1a90"><td class="memItemLeft" align="right" valign="top"><a id="ae9b185418f12359be12cdf209e9e1a90" name="ae9b185418f12359be12cdf209e9e1a90"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BoxColliderComponent</b> (<a class="el" href="class_vec3.html">Vec3</a> extent, <a class="el" href="class_vec3.html">Vec3</a> center_offset=<a class="el" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f))</td></tr>
+<tr class="memitem:a24386a9c812364d191460f729ab738ed" id="r_a24386a9c812364d191460f729ab738ed"><td class="memItemLeft" align="right" valign="top"><a id="a24386a9c812364d191460f729ab738ed" name="a24386a9c812364d191460f729ab738ed"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BoxColliderComponent</b> ()=default</td></tr>
+<tr class="memdesc:a24386a9c812364d191460f729ab738ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor that initializes the box collider with zero extent and no offset. <br /></td></tr>
+<tr class="separator:a24386a9c812364d191460f729ab738ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9b185418f12359be12cdf209e9e1a90" id="r_ae9b185418f12359be12cdf209e9e1a90"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9b185418f12359be12cdf209e9e1a90">BoxColliderComponent</a> (<a class="el" href="class_vec3.html">Vec3</a> extent, <a class="el" href="class_vec3.html">Vec3</a> center_offset=<a class="el" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f))</td></tr>
+<tr class="memdesc:ae9b185418f12359be12cdf209e9e1a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that initializes the extent and center offset of the box collider.  <br /></td></tr>
 <tr class="separator:ae9b185418f12359be12cdf209e9e1a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a495271eb5cb37418359e1d4cfb837653" id="r_a495271eb5cb37418359e1d4cfb837653"><td class="memItemLeft" align="right" valign="top"><a id="a495271eb5cb37418359e1d4cfb837653" name="a495271eb5cb37418359e1d4cfb837653"></a>
 <a class="el" href="class_vec3.html">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>extent_</b></td></tr>
+<tr class="memdesc:a495271eb5cb37418359e1d4cfb837653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Half-extents of the box collider along each axis (X, Y, Z). <br /></td></tr>
 <tr class="separator:a495271eb5cb37418359e1d4cfb837653"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57427cdd37fd76930eee62b82e64bba" id="r_aa57427cdd37fd76930eee62b82e64bba"><td class="memItemLeft" align="right" valign="top"><a id="aa57427cdd37fd76930eee62b82e64bba" name="aa57427cdd37fd76930eee62b82e64bba"></a>
 <a class="el" href="class_vec3.html">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>center_offset_</b></td></tr>
+<tr class="memdesc:aa57427cdd37fd76930eee62b82e64bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the bounding box from the entity's center. <br /></td></tr>
 <tr class="separator:aa57427cdd37fd76930eee62b82e64bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Struct representing a box collider attached to an entity. </p>
+<p>This struct defines a bounding box for collision detection purposes. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae9b185418f12359be12cdf209e9e1a90" name="ae9b185418f12359be12cdf209e9e1a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9b185418f12359be12cdf209e9e1a90">&#9670;&#160;</a></span>BoxColliderComponent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BoxColliderComponent::BoxColliderComponent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>extent</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>center_offset</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="class_vec3.html">Vec3</a>(0.0f,&#160;0.0f,&#160;0.0f)</span></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor that initializes the extent and center offset of the box collider. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">extent</td><td>Half-extents of the box collider along each axis (X, Y, Z). </td></tr>
+    <tr><td class="paramname">center_offset</td><td>Offset of the bounding box from the entity's center. Defaults to (0, 0, 0). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/<a class="el" href="default__components_8hpp_source.html">default_components.hpp</a></li>
+<li>C:/Users/lermami/Documents/3MG_TA_lermami_fuertesco/include/<a class="el" href="default__components_8hpp_source.html">default_components.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

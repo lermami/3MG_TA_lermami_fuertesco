@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['manager_0',['Manager',['../group___entity_manager.html',1,'Entity Manager'],['../group___resource_manager.html',1,'Resource Manager']]],
-  ['manager_20class_1',['Thread Manager class',['../group___thread_manager.html',1,'']]],
-  ['mat3_2',['Mat3',['../class_mat3.html',1,'']]],
-  ['mat4_3',['Mat4',['../class_mat4.html',1,'']]],
-  ['max_5fshadow_5frender_5fdistance_5f_4',['max_shadow_render_distance_',['../struct_light_component.html#aaa13470ef68ee8e8e63c7a039e3daa21',1,'LightComponent']]],
-  ['min_5fshadow_5frender_5fdistance_5f_5',['min_shadow_render_distance_',['../struct_light_component.html#a645be0ed66600aca8048fd11881b6361',1,'LightComponent']]]
+  ['light_2ehpp_0',['light.hpp',['../light_8hpp.html',1,'']]],
+  ['lightcomponent_1',['LightComponent',['../struct_light_component.html',1,'LightComponent'],['../struct_light_component.html#af0969ffa9e9110a82b0d94ab48f211cb',1,'LightComponent::LightComponent()'],['../struct_light_component.html#a77068dbd9567f7e16d720f57ad12eeec',1,'LightComponent::LightComponent(Vec3 color)'],['../struct_light_component.html#a5246a837d76c5461a1e4977eacc524f1',1,'LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)'],['../struct_light_component.html#a8efb08189415c571169a064810146960',1,'LightComponent::LightComponent(Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)'],['../struct_light_component.html#ab2624ad1d6083042306e86e75185b6e8',1,'LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)']]],
+  ['lightcomponent_20class_2',['LightComponent class',['../group___light_component.html',1,'']]],
+  ['linear_5f_3',['linear_',['../struct_light_component.html#ac3cb1dc7b165415929c644b1f8908233',1,'LightComponent']]],
+  ['loader_4',['Shader Loader',['../group___shader_loader.html',1,'']]],
+  ['loadobj_5',['LoadObj',['../class_resource_manager.html#a008479bf951cc01de4319b9faed39fa7',1,'ResourceManager']]],
+  ['loadtexture_6',['loadTexture',['../class_resource_manager.html#a89bc8b011cfcae1b362328b1e5f70798',1,'ResourceManager']]],
+  ['loadtexture_7',['LoadTexture',['../class_texture.html#a9c40276c7a14a22729f2393da30185ae',1,'Texture::LoadTexture(const char *path)'],['../class_texture.html#a6f541f32ff495696b8f5f50c3bb6df77',1,'Texture::LoadTexture(int w, int h)']]]
 ];

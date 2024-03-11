@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['vertex_20and_20index_20buffers_0',['Vertex and Index Buffers',['../group___buffers.html',1,'']]]
+  ['texture_20class_0',['Texture class',['../group___texture.html',1,'']]],
+  ['thread_20manager_20class_1',['Thread Manager class',['../group___thread_manager.html',1,'']]]
 ];

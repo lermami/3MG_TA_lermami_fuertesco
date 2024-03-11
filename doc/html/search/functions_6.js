@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['lightcomponent_0',['LightComponent',['../struct_light_component.html#af0969ffa9e9110a82b0d94ab48f211cb',1,'LightComponent::LightComponent()'],['../struct_light_component.html#a77068dbd9567f7e16d720f57ad12eeec',1,'LightComponent::LightComponent(Vec3 color)'],['../struct_light_component.html#a5246a837d76c5461a1e4977eacc524f1',1,'LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)'],['../struct_light_component.html#a8efb08189415c571169a064810146960',1,'LightComponent::LightComponent(Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)'],['../struct_light_component.html#ab2624ad1d6083042306e86e75185b6e8',1,'LightComponent::LightComponent(Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle, float min_shadow_render_distance=0.01f, float max_shadow_render_distance=1000)']]],
-  ['loadobj_1',['LoadObj',['../class_resource_manager.html#a008479bf951cc01de4319b9faed39fa7',1,'ResourceManager']]],
-  ['loadtexture_2',['loadTexture',['../class_resource_manager.html#a89bc8b011cfcae1b362328b1e5f70798',1,'ResourceManager']]],
-  ['loadtexture_3',['LoadTexture',['../class_texture.html#a9c40276c7a14a22729f2393da30185ae',1,'Texture::LoadTexture(const char *path)'],['../class_texture.html#a6f541f32ff495696b8f5f50c3bb6df77',1,'Texture::LoadTexture(int w, int h)']]]
+  ['initsoundcontext_0',['initSoundContext',['../class_window.html#af9cbad768f6f2b031cc4f6cc4e25e97b',1,'Window']]],
+  ['input_1',['Input',['../class_input.html#a00d09752dc3308af8c22b5cc0bf49c77',1,'Input']]],
+  ['is_5fdone_2',['is_done',['../class_window.html#aad597f259f7b530ead120f0bb7552760',1,'Window']]],
+  ['iskeydown_3',['IsKeyDown',['../class_input.html#aebd61a28b07314b866e56ac4931c3661',1,'Input::IsKeyDown(char key)'],['../class_input.html#a71e978e3628a1188ef07a12ebd05df31',1,'Input::IsKeyDown(int key)']]],
+  ['iskeypressed_4',['IsKeyPressed',['../class_input.html#affbc74812c8c5f3f5e9236d2f6c9c418',1,'Input::IsKeyPressed(char key)'],['../class_input.html#abd1025a27b7e444542fa35d9f2a1b9e3',1,'Input::IsKeyPressed(int key)']]],
+  ['iskeyup_5',['IsKeyUp',['../class_input.html#a2927c56366d6188682fa53c2872a2932',1,'Input::IsKeyUp(char key)'],['../class_input.html#acdb64de533496a446e52c9f06383e271',1,'Input::IsKeyUp(int key)']]]
 ];

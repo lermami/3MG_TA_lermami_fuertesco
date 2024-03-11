@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Aguados Engine: include/default_components.hpp Source File</title>
+<title>Aguados Engine: C:/Users/lermami/Documents/3MG_TA_lermami_fuertesco/include/default_components.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,237 +83,284 @@ $(function() { codefold.init(0); });
   <div class="headertitle"><div class="title">default_components.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="buffer_8hpp.html">buffer.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;vector_2.hpp&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;vector_3.hpp&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;vector_4.hpp&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;matrix_4.hpp&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;sound/soundsource.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;light.hpp&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="_window_8hpp.html">Window.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;glm/gtc/matrix_transform.hpp&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;glm/gtc/type_ptr.hpp&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structcomponent__base.html">   15</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcomponent__base.html">component_base</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_component() = 0;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_component(<span class="keywordtype">int</span> position) = 0;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> delete_component(<span class="keywordtype">size_t</span> <span class="keywordtype">id</span>) = 0;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> size() = 0;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
-</div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="buffer_8hpp.html">buffer.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;vector_2.hpp&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;vector_3.hpp&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;vector_4.hpp&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;matrix_4.hpp&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;sound/soundsource.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="light_8hpp.html">light.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_window_8hpp.html">Window.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;glm/gtc/matrix_transform.hpp&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;glm/gtc/type_ptr.hpp&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="structcomponent__list.html">   23</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcomponent__list.html">component_list</a> : <a class="code hl_struct" href="structcomponent__base.html">component_base</a> {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    std::vector &lt; std::optional&lt;T&gt;&gt; components_;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_component()<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        std::optional&lt;T&gt; a;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        components_.emplace_back(a);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    }</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_component(<span class="keywordtype">int</span> position)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        T a;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment">//-1 because position refers to an entity that starts in 1</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        components_[(size_t)position - 1] = a;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> add_component_at(<span class="keywordtype">int</span> position, T&amp; component) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        assert(components_[(<span class="keywordtype">size_t</span>)position - 1] == std::nullopt);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        components_[(size_t)position - 1] = component;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> size()<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> components_.size();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> delete_component(<span class="keywordtype">size_t</span> <span class="keywordtype">id</span>)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        assert(<span class="keywordtype">id</span> != 0);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        components_[<span class="keywordtype">id</span> - 1].reset();</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        components_[<span class="keywordtype">id</span> - 1] = std::nullopt;</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structcomponent__base.html">   27</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcomponent__base.html">component_base</a> {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_component() = 0;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> add_component(<span class="keywordtype">int</span> position) = 0;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> delete_component(<span class="keywordtype">size_t</span> <span class="keywordtype">id</span>) = 0;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> size() = 0;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="};">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="structcomponent__list.html">   41</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structcomponent__list.html">component_list</a> : <a class="code hl_struct" href="structcomponent__base.html">component_base</a> {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">   42</a></span>    std::vector &lt; std::optional&lt;T&gt;&gt; <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>; </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structcomponent__list.html#abe4a355b19f4bb0afe80f871f3f9fd0d">   49</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structcomponent__list.html#abe4a355b19f4bb0afe80f871f3f9fd0d">add_component</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        std::optional&lt;T&gt; a;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>.emplace_back(a);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>};</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="struct_vertex.html">   55</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_vertex.html">Vertex</a> {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> pos;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> normal;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <a class="code hl_class" href="class_vec2.html">Vec2</a> uv;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <a class="code hl_class" href="class_vec4.html">Vec4</a> color;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code hl_struct" href="struct_vertex.html">Vertex</a>&amp; o)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordflow">return</span> pos == o.pos &amp;&amp; normal == o.normal &amp;&amp; uv == o.uv;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="structcomponent__list.html#aae9a8e4d0b8118987c9f12a9ca3a06e0">   63</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structcomponent__list.html#aae9a8e4d0b8118987c9f12a9ca3a06e0">add_component</a>(<span class="keywordtype">int</span> position)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        T a;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="comment">//-1 because position refers to an entity that starts in 1</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>[(size_t)position - 1] = a;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
 </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="foldopen" id="foldopen00066" data-start="{" data-end="};">
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="struct_transform_component.html">   66</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_transform_component.html">TransformComponent</a> {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_class" href="class_mat4.html">Mat4</a> model_matrix_;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> pos_;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> rot_;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> size_;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_struct" href="struct_transform_component.html">TransformComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <a class="code hl_struct" href="struct_transform_component.html">TransformComponent</a>(<a class="code hl_class" href="class_vec3.html">Vec3</a> pos, <a class="code hl_class" href="class_vec3.html">Vec3</a> rot, <a class="code hl_class" href="class_vec3.html">Vec3</a> size) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        pos_ = pos;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        rot_ = rot;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        size_ = size;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>};</div>
+<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="structcomponent__list.html#a7b0f7cc326ea9c8500a28e315533a2fb">   75</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structcomponent__list.html#a7b0f7cc326ea9c8500a28e315533a2fb">add_component_at</a>(<span class="keywordtype">int</span> position, T&amp; component) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        assert(<a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>[(<span class="keywordtype">size_t</span>)position - 1] == std::nullopt);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>[(size_t)position - 1] = component;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
 </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="foldopen" id="foldopen00082" data-start="{" data-end="};">
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="struct_color_component.html">   82</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_color_component.html">ColorComponent</a> {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_class" href="class_vec4.html">Vec4</a> color_;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <a class="code hl_struct" href="struct_color_component.html">ColorComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <a class="code hl_struct" href="struct_color_component.html">ColorComponent</a>(<a class="code hl_class" href="class_vec4.html">Vec4</a> color) {</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        color_ = color;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>};</div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structcomponent__list.html#ae4e9157e9244015949ca3cc1d7c9a7ae">   89</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="structcomponent__list.html#ae4e9157e9244015949ca3cc1d7c9a7ae">size</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>.size();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
 </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="foldopen" id="foldopen00091" data-start="{" data-end="};">
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="struct_audio_component.html">   91</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a> {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a>(<a class="code hl_class" href="class_sound_buffer.html">SoundBuffer</a>&amp; buff, std::string name, ALfloat pos[3],</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        ALfloat speed[3], <span class="keywordtype">float</span> gain = 1.0f, <span class="keywordtype">float</span> pitch = 1.0f, <span class="keywordtype">bool</span> play = <span class="keyword">false</span>)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        : sound_source_(name, pos, speed, gain, pitch) {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        sound_source_.addSound(&amp;buff);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordflow">if</span> (play)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            sound_source_.Play();</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a>&amp; o) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <a class="code hl_class" href="class_sound_source.html">SoundSource</a> sound_source_;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>};</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="structcomponent__list.html#af6bf4d3ac6cb8d3deed85c27e4772856">  102</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="structcomponent__list.html#af6bf4d3ac6cb8d3deed85c27e4772856">delete_component</a>(<span class="keywordtype">size_t</span> <span class="keywordtype">id</span>)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        assert(<span class="keywordtype">id</span> != 0);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>[<span class="keywordtype">id</span> - 1].reset();</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <a class="code hl_variable" href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">components_</a>[<span class="keywordtype">id</span> - 1] = std::nullopt;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="foldopen" id="foldopen00107" data-start="{" data-end="};">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="struct_box_collider_component.html">  107</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_box_collider_component.html">BoxColliderComponent</a> {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> extent_;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> center_offset_;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <a class="code hl_struct" href="struct_box_collider_component.html">BoxColliderComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <a class="code hl_struct" href="struct_box_collider_component.html">BoxColliderComponent</a>(<a class="code hl_class" href="class_vec3.html">Vec3</a> extent, <a class="code hl_class" href="class_vec3.html">Vec3</a> center_offset = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f)) {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        extent_ = extent;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        center_offset_ = center_offset;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>};</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>};</div>
 </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="foldopen" id="foldopen00118" data-start="{" data-end="};">
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="struct_geometry.html">  118</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_geometry.html">Geometry</a> {</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    std::vector&lt;Vertex&gt; vertex_;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    std::vector&lt;unsigned&gt; indices_;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>};</div>
-</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="foldopen" id="foldopen00123" data-start="{" data-end="};">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="struct_render_component.html">  123</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_render_component.html">RenderComponent</a> {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    std::string name_;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    std::string elements_buffer_;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    std::string order_buffer_;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> program_ = -1;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texture_ = -1;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00114" data-start="{" data-end="};">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="struct_vertex.html">  114</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_vertex.html">Vertex</a> {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="struct_vertex.html#a30295542f79b0f77a6707a0518f10bbf">  118</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_vertex.html#a30295542f79b0f77a6707a0518f10bbf">pos</a>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="struct_vertex.html#aa32d0bb692fe376bd9310225930293f3">  123</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_vertex.html#aa32d0bb692fe376bd9310225930293f3">normal</a>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="struct_vertex.html#a2a3830895358c4775d801bca6cfd1c72">  128</a></span>    <a class="code hl_class" href="class_vec2.html">Vec2</a> <a class="code hl_variable" href="struct_vertex.html#a2a3830895358c4775d801bca6cfd1c72">uv</a>;</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <a class="code hl_struct" href="struct_render_component.html">RenderComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <a class="code hl_struct" href="struct_render_component.html">RenderComponent</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* elements, <span class="keyword">const</span> <span class="keywordtype">char</span>* order, <span class="keywordtype">unsigned</span> program, <span class="keywordtype">unsigned</span> texture) {</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        name_ = name;</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        elements_buffer_ = elements;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        order_buffer_ = order;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        program_ = program;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        texture_ = texture;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    }</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="struct_vertex.html#a71964362efa4b758e509e7c8ad80b1e4">  133</a></span>    <a class="code hl_class" href="class_vec4.html">Vec4</a> <a class="code hl_variable" href="struct_vertex.html#a71964362efa4b758e509e7c8ad80b1e4">color</a>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="foldopen" id="foldopen00144" data-start="{" data-end="}">
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="struct_vertex.html#a4c98a6527a2c0e4bbb920e26a1799443">  144</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="struct_vertex.html#a4c98a6527a2c0e4bbb920e26a1799443">operator==</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_vertex.html">Vertex</a>&amp; o)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="struct_vertex.html#a30295542f79b0f77a6707a0518f10bbf">pos</a> == o.<a class="code hl_variable" href="struct_vertex.html#a30295542f79b0f77a6707a0518f10bbf">pos</a> &amp;&amp; <a class="code hl_variable" href="struct_vertex.html#aa32d0bb692fe376bd9310225930293f3">normal</a> == o.<a class="code hl_variable" href="struct_vertex.html#aa32d0bb692fe376bd9310225930293f3">normal</a> &amp;&amp; <a class="code hl_variable" href="struct_vertex.html#a2a3830895358c4775d801bca6cfd1c72">uv</a> == o.<a class="code hl_variable" href="struct_vertex.html#a2a3830895358c4775d801bca6cfd1c72">uv</a>;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    }</div>
 </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="foldopen" id="foldopen00141" data-start="{" data-end="};">
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="struct_camera_component.html">  141</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_camera_component.html">CameraComponent</a> {</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> pos_;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> forward_;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> up_;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> right_;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordtype">float</span> speed_;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordtype">float</span> sensitivity_;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    ProjectionMode projectionMode_;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <a class="code hl_struct" href="struct_camera_component.html">CameraComponent</a>() {</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        pos_ = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        right_ = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f);</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        up_ = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 1.0f, 0.0f);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        forward_ = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, -1.0f);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        speed_ = 1.0f;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        sensitivity_ = 1.0f;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        projectionMode_ = ProjectionMode::kPerspective;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    }</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordtype">void</span> setProjectionMode(ProjectionMode mode) {</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        projectionMode_ = mode;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    }</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    ProjectionMode getProjectionMode() {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> projectionMode_;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    glm::mat4 getPerspectiveMatrix(<span class="keywordtype">float</span> fov, <span class="keywordtype">float</span> aspect, <span class="keywordtype">float</span> near, <span class="keywordtype">float</span> far) {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">return</span> glm::perspective(glm::radians(fov), aspect, near, far);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    glm::mat4 getOrthogonalMatrix(<span class="keywordtype">float</span> left, <span class="keywordtype">float</span> right, <span class="keywordtype">float</span> bottom, <span class="keywordtype">float</span> top, <span class="keywordtype">float</span> near, <span class="keywordtype">float</span> far) {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordflow">return</span> glm::ortho(left, right, bottom, top, near, far);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    glm::mat4 getViewMatrix(<a class="code hl_class" href="class_vec3.html">Vec3</a> target, <a class="code hl_class" href="class_vec3.html">Vec3</a> up) {</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        glm::vec3 c = { pos_.x, pos_.y, pos_.z };</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        glm::vec3 t = { target.x, target.y, target.z };</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        glm::vec3 u = { up.x, up.y, up.z };</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">return</span> glm::lookAt(c, t, u);</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordtype">void</span> doRender(<a class="code hl_class" href="class_window.html">Window</a>* w) {</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; w-&gt;<a class="code hl_function" href="class_window.html#ac85757190eddc1a42b2ec8dbc67f8387">getProgramListSize</a>(); i++) {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            <span class="keywordtype">unsigned</span> program = w-&gt;<a class="code hl_function" href="class_window.html#a38790f23c50b71ad6c3eae4c5d6e5102">getProgram</a>(i);</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            glUseProgram(program);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            <span class="keywordflow">switch</span> (projectionMode_) {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            <span class="keywordflow">case</span> ProjectionMode::kPerspective:</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                glm::mat4 perspective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>};</div>
+</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="};">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="struct_transform_component.html">  154</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_transform_component.html">TransformComponent</a> {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="struct_transform_component.html#a5fe4f28abaaadcc3d6d86d136ceab800">  158</a></span>    <a class="code hl_class" href="class_mat4.html">Mat4</a> <a class="code hl_variable" href="struct_transform_component.html#a5fe4f28abaaadcc3d6d86d136ceab800">model_matrix_</a>;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="struct_transform_component.html#a9eb4fc3cc8be65464f11d0a379972dff">  163</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_transform_component.html#a9eb4fc3cc8be65464f11d0a379972dff">pos_</a>;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="struct_transform_component.html#ac5bc92417b5b7490ed88124f41fa14f4">  168</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_transform_component.html#ac5bc92417b5b7490ed88124f41fa14f4">rot_</a>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="struct_transform_component.html#ac165689f32a46e00aa3a64ab2198ef42">  173</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_transform_component.html#ac165689f32a46e00aa3a64ab2198ef42">size_</a>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="struct_transform_component.html#a9ebae0ee187d4ba8a7d708d66fe0c303">  178</a></span>    <a class="code hl_function" href="struct_transform_component.html#a9ebae0ee187d4ba8a7d708d66fe0c303">TransformComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="foldopen" id="foldopen00187" data-start="{" data-end="}">
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="struct_transform_component.html#aadc127cd167bfa2482ffcbb6b93a098b">  187</a></span>    <a class="code hl_function" href="struct_transform_component.html#aadc127cd167bfa2482ffcbb6b93a098b">TransformComponent</a>(<a class="code hl_class" href="class_vec3.html">Vec3</a> pos, <a class="code hl_class" href="class_vec3.html">Vec3</a> rot, <a class="code hl_class" href="class_vec3.html">Vec3</a> size) {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <a class="code hl_variable" href="struct_transform_component.html#a9eb4fc3cc8be65464f11d0a379972dff">pos_</a> = pos;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        <a class="code hl_variable" href="struct_transform_component.html#ac5bc92417b5b7490ed88124f41fa14f4">rot_</a> = rot;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <a class="code hl_variable" href="struct_transform_component.html#ac165689f32a46e00aa3a64ab2198ef42">size_</a> = size;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    }</div>
+</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>};</div>
+</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;u_p_matrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(perspective));</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            <span class="keywordflow">case</span> ProjectionMode::kOrthogonal:</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;u_p_matrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(ortographic));</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            }</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <span class="comment">//View</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            glm::mat4 view = getViewMatrix(pos_ + forward_, up_);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            GLint viewMatrixLoc = glGetUniformLocation(program, <span class="stringliteral">&quot;u_v_matrix&quot;</span>);</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            <span class="comment">//Camera position</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            GLint camPosLoc = glGetUniformLocation(program, <span class="stringliteral">&quot;u_camera_pos&quot;</span>);</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            glUniform3f(camPosLoc, pos_.x, pos_.y, pos_.z);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        }</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    }</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>};</div>
+<div class="foldopen" id="foldopen00199" data-start="{" data-end="};">
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a class="line" href="struct_color_component.html">  199</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_color_component.html">ColorComponent</a> {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="struct_color_component.html#ac78e5a9c10571e90106588f27d280343">  203</a></span>    <a class="code hl_class" href="class_vec4.html">Vec4</a> <a class="code hl_variable" href="struct_color_component.html#ac78e5a9c10571e90106588f27d280343">color_</a>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="struct_color_component.html#a902cefa143c204e8d247973c7fe74273">  208</a></span>    <a class="code hl_function" href="struct_color_component.html#a902cefa143c204e8d247973c7fe74273">ColorComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="struct_color_component.html#a54606eef592dc6d54a8ba929a1e3d4dd">  215</a></span>    <a class="code hl_function" href="struct_color_component.html#a54606eef592dc6d54a8ba929a1e3d4dd">ColorComponent</a>(<a class="code hl_class" href="class_vec4.html">Vec4</a> color);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>};</div>
+</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
+<div class="foldopen" id="foldopen00223" data-start="{" data-end="};">
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="struct_audio_component.html">  223</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a> {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="struct_audio_component.html#aca6797b4f8426f5b1f531d6290b4e558">  227</a></span>    <a class="code hl_class" href="class_sound_source.html">SoundSource</a> <a class="code hl_variable" href="struct_audio_component.html#aca6797b4f8426f5b1f531d6290b4e558">sound_source_</a>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="foldopen" id="foldopen00243" data-start="{" data-end="}">
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="struct_audio_component.html#ae0ce1fa7eabd2eea45be5f1e072a7813">  243</a></span>    <a class="code hl_function" href="struct_audio_component.html#ae0ce1fa7eabd2eea45be5f1e072a7813">AudioComponent</a>(<a class="code hl_class" href="class_sound_buffer.html">SoundBuffer</a>&amp; buff, std::string name, ALfloat pos[3],</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        ALfloat speed[3], <span class="keywordtype">float</span> gain = 1.0f, <span class="keywordtype">float</span> pitch = 1.0f, <span class="keywordtype">bool</span> play = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        : <a class="code hl_variable" href="struct_audio_component.html#aca6797b4f8426f5b1f531d6290b4e558">sound_source_</a>(name, pos, speed, gain, pitch) {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <a class="code hl_variable" href="struct_audio_component.html#aca6797b4f8426f5b1f531d6290b4e558">sound_source_</a>.addSound(&amp;buff);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keywordflow">if</span> (play)</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <a class="code hl_variable" href="struct_audio_component.html#aca6797b4f8426f5b1f531d6290b4e558">sound_source_</a>.Play();</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    }</div>
+</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="struct_audio_component.html#a5054f863e0268f9838d183985585d676">  254</a></span>    <a class="code hl_function" href="struct_audio_component.html#a5054f863e0268f9838d183985585d676">AudioComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno"><a class="line" href="struct_audio_component.html#a42e07b0e0e3663daad7753c2ddbdf950">  259</a></span>    <a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a>&amp; <a class="code hl_function" href="struct_audio_component.html#a42e07b0e0e3663daad7753c2ddbdf950">operator=</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_audio_component.html">AudioComponent</a>&amp; o) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>};</div>
+</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="foldopen" id="foldopen00267" data-start="{" data-end="};">
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="struct_box_collider_component.html">  267</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_box_collider_component.html">BoxColliderComponent</a> {</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="struct_box_collider_component.html#a495271eb5cb37418359e1d4cfb837653">  271</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_box_collider_component.html#a495271eb5cb37418359e1d4cfb837653">extent_</a>;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno"><a class="line" href="struct_box_collider_component.html#aa57427cdd37fd76930eee62b82e64bba">  276</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_box_collider_component.html#aa57427cdd37fd76930eee62b82e64bba">center_offset_</a>;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="struct_box_collider_component.html#a24386a9c812364d191460f729ab738ed">  281</a></span>    <a class="code hl_function" href="struct_box_collider_component.html#a24386a9c812364d191460f729ab738ed">BoxColliderComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="struct_box_collider_component.html#ae9b185418f12359be12cdf209e9e1a90">  289</a></span>    <a class="code hl_function" href="struct_box_collider_component.html#ae9b185418f12359be12cdf209e9e1a90">BoxColliderComponent</a>(<a class="code hl_class" href="class_vec3.html">Vec3</a> extent, <a class="code hl_class" href="class_vec3.html">Vec3</a> center_offset = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f));</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>};</div>
+</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="foldopen" id="foldopen00297" data-start="{" data-end="};">
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="struct_geometry.html">  297</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_geometry.html">Geometry</a> {</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno"><a class="line" href="struct_geometry.html#a063052285027458dd8c5fd93ae936fad">  301</a></span>    std::vector&lt;Vertex&gt; <a class="code hl_variable" href="struct_geometry.html#a063052285027458dd8c5fd93ae936fad">vertex_</a>;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno"><a class="line" href="struct_geometry.html#a9d1f3b764b26cfc49367b3a0b2b014ed">  306</a></span>    std::vector&lt;unsigned&gt; <a class="code hl_variable" href="struct_geometry.html#a9d1f3b764b26cfc49367b3a0b2b014ed">indices_</a>;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>};</div>
+</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="foldopen" id="foldopen00314" data-start="{" data-end="};">
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="struct_render_component.html">  314</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_render_component.html">RenderComponent</a> {</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="struct_render_component.html#a7d33a66a3334ebe6e6a1c5a264b0e6a0">  318</a></span>    std::string <a class="code hl_variable" href="struct_render_component.html#a7d33a66a3334ebe6e6a1c5a264b0e6a0">name_</a>;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="struct_render_component.html#a9ba134a1e5e44a84468356fc88f32494">  323</a></span>    std::string <a class="code hl_variable" href="struct_render_component.html#a9ba134a1e5e44a84468356fc88f32494">elements_buffer_</a>;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno"><a class="line" href="struct_render_component.html#a9dd3ade39e4ff5a6bab9d50d419257ce">  328</a></span>    std::string <a class="code hl_variable" href="struct_render_component.html#a9dd3ade39e4ff5a6bab9d50d419257ce">order_buffer_</a>;</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="struct_render_component.html#abca5f0db929d43a14c56fc6db15761ab">  333</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_render_component.html#abca5f0db929d43a14c56fc6db15761ab">program_</a>;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno"><a class="line" href="struct_render_component.html#ab76c1189f38d708cc96c84518a7e5e44">  338</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_render_component.html#ab76c1189f38d708cc96c84518a7e5e44">texture_</a>;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="struct_render_component.html#a4b8bf46241e09c6091e73c1688f25dbb">  343</a></span>    <a class="code hl_function" href="struct_render_component.html#a4b8bf46241e09c6091e73c1688f25dbb">RenderComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
+<div class="foldopen" id="foldopen00354" data-start="{" data-end="}">
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno"><a class="line" href="struct_render_component.html#a9562f807781a9ec34e8e256619dcb6ab">  354</a></span>    <a class="code hl_function" href="struct_render_component.html#a9562f807781a9ec34e8e256619dcb6ab">RenderComponent</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* elements, <span class="keyword">const</span> <span class="keywordtype">char</span>* order, <span class="keywordtype">unsigned</span> program, <span class="keywordtype">unsigned</span> texture) {</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        <a class="code hl_variable" href="struct_render_component.html#a7d33a66a3334ebe6e6a1c5a264b0e6a0">name_</a> = name;</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        <a class="code hl_variable" href="struct_render_component.html#a9ba134a1e5e44a84468356fc88f32494">elements_buffer_</a> = elements;</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>        <a class="code hl_variable" href="struct_render_component.html#a9dd3ade39e4ff5a6bab9d50d419257ce">order_buffer_</a> = order;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>        <a class="code hl_variable" href="struct_render_component.html#abca5f0db929d43a14c56fc6db15761ab">program_</a> = program;</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        <a class="code hl_variable" href="struct_render_component.html#ab76c1189f38d708cc96c84518a7e5e44">texture_</a> = texture;</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    }</div>
+</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>};</div>
+</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
+<div class="foldopen" id="foldopen00368" data-start="{" data-end="};">
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno"><a class="line" href="struct_camera_component.html">  368</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_camera_component.html">CameraComponent</a> {</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">  372</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>;</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno"><a class="line" href="struct_camera_component.html#a390fe763a94fd9cc3e539011e4698a20">  377</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_camera_component.html#a390fe763a94fd9cc3e539011e4698a20">forward_</a>;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno"><a class="line" href="struct_camera_component.html#ab227bd2f2ccca3b27c3bd93b049c1622">  382</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_camera_component.html#ab227bd2f2ccca3b27c3bd93b049c1622">up_</a>;</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno"><a class="line" href="struct_camera_component.html#ab9f9f6f3537e000b234a2c4454662ec2">  387</a></span>    <a class="code hl_class" href="class_vec3.html">Vec3</a> <a class="code hl_variable" href="struct_camera_component.html#ab9f9f6f3537e000b234a2c4454662ec2">right_</a>;</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno"><a class="line" href="struct_camera_component.html#ab34db79c9fe0ff77f27accb55dd114a0">  392</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="struct_camera_component.html#ab34db79c9fe0ff77f27accb55dd114a0">speed_</a>;</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno"><a class="line" href="struct_camera_component.html#ae11036968513046290c380630f931793">  397</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="struct_camera_component.html#ae11036968513046290c380630f931793">sensitivity_</a>;</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno"><a class="line" href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">  402</a></span>    ProjectionMode <a class="code hl_variable" href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">projectionMode_</a>;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
+<div class="foldopen" id="foldopen00407" data-start="{" data-end="}">
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno"><a class="line" href="struct_camera_component.html#a6f14fb3dfa5ca8cfbaae2936413837d8">  407</a></span>    <a class="code hl_function" href="struct_camera_component.html#a6f14fb3dfa5ca8cfbaae2936413837d8">CameraComponent</a>() {</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>        <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a> = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f);</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        <a class="code hl_variable" href="struct_camera_component.html#ab9f9f6f3537e000b234a2c4454662ec2">right_</a> = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, 0.0f);</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        <a class="code hl_variable" href="struct_camera_component.html#ab227bd2f2ccca3b27c3bd93b049c1622">up_</a> = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 1.0f, 0.0f);</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        <a class="code hl_variable" href="struct_camera_component.html#a390fe763a94fd9cc3e539011e4698a20">forward_</a> = <a class="code hl_class" href="class_vec3.html">Vec3</a>(0.0f, 0.0f, -1.0f);</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>        <a class="code hl_variable" href="struct_camera_component.html#ab34db79c9fe0ff77f27accb55dd114a0">speed_</a> = 1.0f;</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        <a class="code hl_variable" href="struct_camera_component.html#ae11036968513046290c380630f931793">sensitivity_</a> = 1.0f;</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        <a class="code hl_variable" href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">projectionMode_</a> = ProjectionMode::kPerspective;</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    }</div>
+</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
+<div class="foldopen" id="foldopen00424" data-start="{" data-end="}">
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno"><a class="line" href="struct_camera_component.html#a9462160b1dd86417e959f1df406a914c">  424</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="struct_camera_component.html#a9462160b1dd86417e959f1df406a914c">setProjectionMode</a>(ProjectionMode mode) {</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>        <a class="code hl_variable" href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">projectionMode_</a> = mode;</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    }</div>
+</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
+<div class="foldopen" id="foldopen00433" data-start="{" data-end="}">
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno"><a class="line" href="struct_camera_component.html#a05791a72db3c172ad254f851c210c875">  433</a></span>    ProjectionMode <a class="code hl_function" href="struct_camera_component.html#a05791a72db3c172ad254f851c210c875">getProjectionMode</a>() {</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">projectionMode_</a>;</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    }</div>
+</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span> </div>
+<div class="foldopen" id="foldopen00449" data-start="{" data-end="}">
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno"><a class="line" href="struct_camera_component.html#ad1fc3d9063e496b0879aca4f674eace8">  449</a></span>    glm::mat4 <a class="code hl_function" href="struct_camera_component.html#ad1fc3d9063e496b0879aca4f674eace8">getPerspectiveMatrix</a>(<span class="keywordtype">float</span> fov, <span class="keywordtype">float</span> aspect, <span class="keywordtype">float</span> near, <span class="keywordtype">float</span> far) {</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>        <span class="keywordflow">return</span> glm::perspective(glm::radians(fov), aspect, near, far);</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    }</div>
+</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span> </div>
+<div class="foldopen" id="foldopen00467" data-start="{" data-end="}">
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno"><a class="line" href="struct_camera_component.html#aa55e0bef9f03b7a42d23b2bb0bfe47b2">  467</a></span>    glm::mat4 <a class="code hl_function" href="struct_camera_component.html#aa55e0bef9f03b7a42d23b2bb0bfe47b2">getOrthogonalMatrix</a>(<span class="keywordtype">float</span> left, <span class="keywordtype">float</span> right, <span class="keywordtype">float</span> bottom, <span class="keywordtype">float</span> top, <span class="keywordtype">float</span> near, <span class="keywordtype">float</span> far) {</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>        <span class="keywordflow">return</span> glm::ortho(left, right, bottom, top, near, far);</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>    }</div>
+</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span> </div>
+<div class="foldopen" id="foldopen00481" data-start="{" data-end="}">
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno"><a class="line" href="struct_camera_component.html#ac88a32272026dc4294da63a9f90e937d">  481</a></span>    glm::mat4 <a class="code hl_function" href="struct_camera_component.html#ac88a32272026dc4294da63a9f90e937d">getViewMatrix</a>(<a class="code hl_class" href="class_vec3.html">Vec3</a> target, <a class="code hl_class" href="class_vec3.html">Vec3</a> up) {</div>
+<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>        glm::vec3 c = { <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>.x, <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>.y, <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>.z };</div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>        glm::vec3 t = { target.x, target.y, target.z };</div>
+<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>        glm::vec3 u = { up.x, up.y, up.z };</div>
+<div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span> </div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>        <span class="keywordflow">return</span> glm::lookAt(c, t, u);</div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>    }</div>
+</div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span> </div>
+<div class="foldopen" id="foldopen00496" data-start="{" data-end="}">
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno"><a class="line" href="struct_camera_component.html#af6679df18878833a0aa7e6b0a5a20810">  496</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="struct_camera_component.html#af6679df18878833a0aa7e6b0a5a20810">doRender</a>(<a class="code hl_class" href="class_window.html">Window</a>* w) {</div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; w-&gt;<a class="code hl_function" href="class_window.html#ac85757190eddc1a42b2ec8dbc67f8387">getProgramListSize</a>(); i++) {</div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>            <span class="keywordtype">unsigned</span> program = w-&gt;<a class="code hl_function" href="class_window.html#a38790f23c50b71ad6c3eae4c5d6e5102">getProgram</a>(i);</div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>            glUseProgram(program);</div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span> </div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>            <span class="keywordflow">switch</span> (<a class="code hl_variable" href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">projectionMode_</a>) {</div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>            <span class="keywordflow">case</span> ProjectionMode::kPerspective:</div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                glm::mat4 perspective = <a class="code hl_function" href="struct_camera_component.html#ad1fc3d9063e496b0879aca4f674eace8">getPerspectiveMatrix</a>(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);</div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span> </div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>                glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;u_p_matrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(perspective));</div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>            <span class="keywordflow">case</span> ProjectionMode::kOrthogonal:</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>                glm::mat4 ortographic = <a class="code hl_function" href="struct_camera_component.html#aa55e0bef9f03b7a42d23b2bb0bfe47b2">getOrthogonalMatrix</a>(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span> </div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>                glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;u_p_matrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(ortographic));</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>            }</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>            <span class="comment">//View</span></div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>            glm::mat4 view = <a class="code hl_function" href="struct_camera_component.html#ac88a32272026dc4294da63a9f90e937d">getViewMatrix</a>(<a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a> + <a class="code hl_variable" href="struct_camera_component.html#a390fe763a94fd9cc3e539011e4698a20">forward_</a>, <a class="code hl_variable" href="struct_camera_component.html#ab227bd2f2ccca3b27c3bd93b049c1622">up_</a>);</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>            GLint viewMatrixLoc = glGetUniformLocation(program, <span class="stringliteral">&quot;u_v_matrix&quot;</span>);</div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>            glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span> </div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>            <span class="comment">//Camera position</span></div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>            GLint camPosLoc = glGetUniformLocation(program, <span class="stringliteral">&quot;u_camera_pos&quot;</span>);</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>            glUniform3f(camPosLoc, <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>.x, <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>.y, <a class="code hl_variable" href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">pos_</a>.z);</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>        }</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>    }</div>
+</div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>};</div>
 </div>
 <div class="ttc" id="a_window_8hpp_html"><div class="ttname"><a href="_window_8hpp.html">Window.hpp</a></div><div class="ttdoc">Header file for the Window class.</div></div>
 <div class="ttc" id="abuffer_8hpp_html"><div class="ttname"><a href="buffer_8hpp.html">buffer.hpp</a></div><div class="ttdoc">Header file for the VertexBuffer and IndexBuffer classes.</div></div>
@@ -326,16 +373,68 @@ $(function() { codefold.init(0); });
 <div class="ttc" id="aclass_window_html"><div class="ttname"><a href="class_window.html">Window</a></div><div class="ttdoc">This class represents a window for the application.</div><div class="ttdef"><b>Definition</b> Window.hpp:33</div></div>
 <div class="ttc" id="aclass_window_html_a38790f23c50b71ad6c3eae4c5d6e5102"><div class="ttname"><a href="class_window.html#a38790f23c50b71ad6c3eae4c5d6e5102">Window::getProgram</a></div><div class="ttdeci">unsigned getProgram(int n)</div></div>
 <div class="ttc" id="aclass_window_html_ac85757190eddc1a42b2ec8dbc67f8387"><div class="ttname"><a href="class_window.html#ac85757190eddc1a42b2ec8dbc67f8387">Window::getProgramListSize</a></div><div class="ttdeci">int getProgramListSize()</div></div>
-<div class="ttc" id="astruct_audio_component_html"><div class="ttname"><a href="struct_audio_component.html">AudioComponent</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:91</div></div>
-<div class="ttc" id="astruct_box_collider_component_html"><div class="ttname"><a href="struct_box_collider_component.html">BoxColliderComponent</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:107</div></div>
-<div class="ttc" id="astruct_camera_component_html"><div class="ttname"><a href="struct_camera_component.html">CameraComponent</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:141</div></div>
-<div class="ttc" id="astruct_color_component_html"><div class="ttname"><a href="struct_color_component.html">ColorComponent</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:82</div></div>
-<div class="ttc" id="astruct_geometry_html"><div class="ttname"><a href="struct_geometry.html">Geometry</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:118</div></div>
-<div class="ttc" id="astruct_render_component_html"><div class="ttname"><a href="struct_render_component.html">RenderComponent</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:123</div></div>
-<div class="ttc" id="astruct_transform_component_html"><div class="ttname"><a href="struct_transform_component.html">TransformComponent</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:66</div></div>
-<div class="ttc" id="astruct_vertex_html"><div class="ttname"><a href="struct_vertex.html">Vertex</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:55</div></div>
-<div class="ttc" id="astructcomponent__base_html"><div class="ttname"><a href="structcomponent__base.html">component_base</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:15</div></div>
-<div class="ttc" id="astructcomponent__list_html"><div class="ttname"><a href="structcomponent__list.html">component_list</a></div><div class="ttdef"><b>Definition</b> default_components.hpp:23</div></div>
+<div class="ttc" id="alight_8hpp_html"><div class="ttname"><a href="light_8hpp.html">light.hpp</a></div><div class="ttdoc">Header file for the LightComponent class.</div></div>
+<div class="ttc" id="astruct_audio_component_html"><div class="ttname"><a href="struct_audio_component.html">AudioComponent</a></div><div class="ttdoc">Struct representing an audio component attached to an entity.</div><div class="ttdef"><b>Definition</b> default_components.hpp:223</div></div>
+<div class="ttc" id="astruct_audio_component_html_a42e07b0e0e3663daad7753c2ddbdf950"><div class="ttname"><a href="struct_audio_component.html#a42e07b0e0e3663daad7753c2ddbdf950">AudioComponent::operator=</a></div><div class="ttdeci">AudioComponent &amp; operator=(const AudioComponent &amp;o)=default</div><div class="ttdoc">Copy assignment operator (default behavior is sufficient).</div></div>
+<div class="ttc" id="astruct_audio_component_html_a5054f863e0268f9838d183985585d676"><div class="ttname"><a href="struct_audio_component.html#a5054f863e0268f9838d183985585d676">AudioComponent::AudioComponent</a></div><div class="ttdeci">AudioComponent()=default</div><div class="ttdoc">Default constructor that initializes an empty AudioComponent.</div></div>
+<div class="ttc" id="astruct_audio_component_html_aca6797b4f8426f5b1f531d6290b4e558"><div class="ttname"><a href="struct_audio_component.html#aca6797b4f8426f5b1f531d6290b4e558">AudioComponent::sound_source_</a></div><div class="ttdeci">SoundSource sound_source_</div><div class="ttdoc">Internal sound source object used for audio playback.</div><div class="ttdef"><b>Definition</b> default_components.hpp:227</div></div>
+<div class="ttc" id="astruct_audio_component_html_ae0ce1fa7eabd2eea45be5f1e072a7813"><div class="ttname"><a href="struct_audio_component.html#ae0ce1fa7eabd2eea45be5f1e072a7813">AudioComponent::AudioComponent</a></div><div class="ttdeci">AudioComponent(SoundBuffer &amp;buff, std::string name, ALfloat pos[3], ALfloat speed[3], float gain=1.0f, float pitch=1.0f, bool play=false)</div><div class="ttdoc">Constructor that creates an AudioComponent with a sound source and optionally plays it.</div><div class="ttdef"><b>Definition</b> default_components.hpp:243</div></div>
+<div class="ttc" id="astruct_box_collider_component_html"><div class="ttname"><a href="struct_box_collider_component.html">BoxColliderComponent</a></div><div class="ttdoc">Struct representing a box collider attached to an entity.</div><div class="ttdef"><b>Definition</b> default_components.hpp:267</div></div>
+<div class="ttc" id="astruct_box_collider_component_html_a24386a9c812364d191460f729ab738ed"><div class="ttname"><a href="struct_box_collider_component.html#a24386a9c812364d191460f729ab738ed">BoxColliderComponent::BoxColliderComponent</a></div><div class="ttdeci">BoxColliderComponent()=default</div><div class="ttdoc">Default constructor that initializes the box collider with zero extent and no offset.</div></div>
+<div class="ttc" id="astruct_box_collider_component_html_a495271eb5cb37418359e1d4cfb837653"><div class="ttname"><a href="struct_box_collider_component.html#a495271eb5cb37418359e1d4cfb837653">BoxColliderComponent::extent_</a></div><div class="ttdeci">Vec3 extent_</div><div class="ttdoc">Half-extents of the box collider along each axis (X, Y, Z).</div><div class="ttdef"><b>Definition</b> default_components.hpp:271</div></div>
+<div class="ttc" id="astruct_box_collider_component_html_aa57427cdd37fd76930eee62b82e64bba"><div class="ttname"><a href="struct_box_collider_component.html#aa57427cdd37fd76930eee62b82e64bba">BoxColliderComponent::center_offset_</a></div><div class="ttdeci">Vec3 center_offset_</div><div class="ttdoc">Offset of the bounding box from the entity's center.</div><div class="ttdef"><b>Definition</b> default_components.hpp:276</div></div>
+<div class="ttc" id="astruct_box_collider_component_html_ae9b185418f12359be12cdf209e9e1a90"><div class="ttname"><a href="struct_box_collider_component.html#ae9b185418f12359be12cdf209e9e1a90">BoxColliderComponent::BoxColliderComponent</a></div><div class="ttdeci">BoxColliderComponent(Vec3 extent, Vec3 center_offset=Vec3(0.0f, 0.0f, 0.0f))</div><div class="ttdoc">Constructor that initializes the extent and center offset of the box collider.</div></div>
+<div class="ttc" id="astruct_camera_component_html"><div class="ttname"><a href="struct_camera_component.html">CameraComponent</a></div><div class="ttdoc">Struct representing a camera component attached to an entity.</div><div class="ttdef"><b>Definition</b> default_components.hpp:368</div></div>
+<div class="ttc" id="astruct_camera_component_html_a05791a72db3c172ad254f851c210c875"><div class="ttname"><a href="struct_camera_component.html#a05791a72db3c172ad254f851c210c875">CameraComponent::getProjectionMode</a></div><div class="ttdeci">ProjectionMode getProjectionMode()</div><div class="ttdoc">Gets the current projection mode used by the camera.</div><div class="ttdef"><b>Definition</b> default_components.hpp:433</div></div>
+<div class="ttc" id="astruct_camera_component_html_a390fe763a94fd9cc3e539011e4698a20"><div class="ttname"><a href="struct_camera_component.html#a390fe763a94fd9cc3e539011e4698a20">CameraComponent::forward_</a></div><div class="ttdeci">Vec3 forward_</div><div class="ttdoc">Forward direction of the camera.</div><div class="ttdef"><b>Definition</b> default_components.hpp:377</div></div>
+<div class="ttc" id="astruct_camera_component_html_a6f14fb3dfa5ca8cfbaae2936413837d8"><div class="ttname"><a href="struct_camera_component.html#a6f14fb3dfa5ca8cfbaae2936413837d8">CameraComponent::CameraComponent</a></div><div class="ttdeci">CameraComponent()</div><div class="ttdoc">Default constructor that initializes the camera with common values.</div><div class="ttdef"><b>Definition</b> default_components.hpp:407</div></div>
+<div class="ttc" id="astruct_camera_component_html_a9462160b1dd86417e959f1df406a914c"><div class="ttname"><a href="struct_camera_component.html#a9462160b1dd86417e959f1df406a914c">CameraComponent::setProjectionMode</a></div><div class="ttdeci">void setProjectionMode(ProjectionMode mode)</div><div class="ttdoc">Sets the projection mode used by the camera (perspective or orthographic).</div><div class="ttdef"><b>Definition</b> default_components.hpp:424</div></div>
+<div class="ttc" id="astruct_camera_component_html_aa0da21e1494dd3124a99d3b7c9038123"><div class="ttname"><a href="struct_camera_component.html#aa0da21e1494dd3124a99d3b7c9038123">CameraComponent::pos_</a></div><div class="ttdeci">Vec3 pos_</div><div class="ttdoc">Position of the camera in 3D space.</div><div class="ttdef"><b>Definition</b> default_components.hpp:372</div></div>
+<div class="ttc" id="astruct_camera_component_html_aa55e0bef9f03b7a42d23b2bb0bfe47b2"><div class="ttname"><a href="struct_camera_component.html#aa55e0bef9f03b7a42d23b2bb0bfe47b2">CameraComponent::getOrthogonalMatrix</a></div><div class="ttdeci">glm::mat4 getOrthogonalMatrix(float left, float right, float bottom, float top, float near, float far)</div><div class="ttdoc">Calculates and returns the orthographic projection matrix.</div><div class="ttdef"><b>Definition</b> default_components.hpp:467</div></div>
+<div class="ttc" id="astruct_camera_component_html_ab227bd2f2ccca3b27c3bd93b049c1622"><div class="ttname"><a href="struct_camera_component.html#ab227bd2f2ccca3b27c3bd93b049c1622">CameraComponent::up_</a></div><div class="ttdeci">Vec3 up_</div><div class="ttdoc">Up direction of the camera (usually Y-axis).</div><div class="ttdef"><b>Definition</b> default_components.hpp:382</div></div>
+<div class="ttc" id="astruct_camera_component_html_ab34db79c9fe0ff77f27accb55dd114a0"><div class="ttname"><a href="struct_camera_component.html#ab34db79c9fe0ff77f27accb55dd114a0">CameraComponent::speed_</a></div><div class="ttdeci">float speed_</div><div class="ttdoc">Movement speed of the camera.</div><div class="ttdef"><b>Definition</b> default_components.hpp:392</div></div>
+<div class="ttc" id="astruct_camera_component_html_ab9f9f6f3537e000b234a2c4454662ec2"><div class="ttname"><a href="struct_camera_component.html#ab9f9f6f3537e000b234a2c4454662ec2">CameraComponent::right_</a></div><div class="ttdeci">Vec3 right_</div><div class="ttdoc">Right direction of the camera (orthogonal to forward and up).</div><div class="ttdef"><b>Definition</b> default_components.hpp:387</div></div>
+<div class="ttc" id="astruct_camera_component_html_ac88a32272026dc4294da63a9f90e937d"><div class="ttname"><a href="struct_camera_component.html#ac88a32272026dc4294da63a9f90e937d">CameraComponent::getViewMatrix</a></div><div class="ttdeci">glm::mat4 getViewMatrix(Vec3 target, Vec3 up)</div><div class="ttdoc">Calculates and returns the view matrix based on the camera's position and orientation.</div><div class="ttdef"><b>Definition</b> default_components.hpp:481</div></div>
+<div class="ttc" id="astruct_camera_component_html_ad1fc3d9063e496b0879aca4f674eace8"><div class="ttname"><a href="struct_camera_component.html#ad1fc3d9063e496b0879aca4f674eace8">CameraComponent::getPerspectiveMatrix</a></div><div class="ttdeci">glm::mat4 getPerspectiveMatrix(float fov, float aspect, float near, float far)</div><div class="ttdoc">Calculates and returns the perspective projection matrix.</div><div class="ttdef"><b>Definition</b> default_components.hpp:449</div></div>
+<div class="ttc" id="astruct_camera_component_html_ae11036968513046290c380630f931793"><div class="ttname"><a href="struct_camera_component.html#ae11036968513046290c380630f931793">CameraComponent::sensitivity_</a></div><div class="ttdeci">float sensitivity_</div><div class="ttdoc">Mouse sensitivity for camera rotation.</div><div class="ttdef"><b>Definition</b> default_components.hpp:397</div></div>
+<div class="ttc" id="astruct_camera_component_html_af37d4f8b72179225eee5a174d57ddf47"><div class="ttname"><a href="struct_camera_component.html#af37d4f8b72179225eee5a174d57ddf47">CameraComponent::projectionMode_</a></div><div class="ttdeci">ProjectionMode projectionMode_</div><div class="ttdoc">Current projection mode used by the camera.</div><div class="ttdef"><b>Definition</b> default_components.hpp:402</div></div>
+<div class="ttc" id="astruct_camera_component_html_af6679df18878833a0aa7e6b0a5a20810"><div class="ttname"><a href="struct_camera_component.html#af6679df18878833a0aa7e6b0a5a20810">CameraComponent::doRender</a></div><div class="ttdeci">void doRender(Window *w)</div><div class="ttdoc">Sets up projection and view matrices for all shaders in a window.</div><div class="ttdef"><b>Definition</b> default_components.hpp:496</div></div>
+<div class="ttc" id="astruct_color_component_html"><div class="ttname"><a href="struct_color_component.html">ColorComponent</a></div><div class="ttdoc">Struct representing an entity's color information.</div><div class="ttdef"><b>Definition</b> default_components.hpp:199</div></div>
+<div class="ttc" id="astruct_color_component_html_a54606eef592dc6d54a8ba929a1e3d4dd"><div class="ttname"><a href="struct_color_component.html#a54606eef592dc6d54a8ba929a1e3d4dd">ColorComponent::ColorComponent</a></div><div class="ttdeci">ColorComponent(Vec4 color)</div><div class="ttdoc">Constructor that initializes the color of the entity.</div></div>
+<div class="ttc" id="astruct_color_component_html_a902cefa143c204e8d247973c7fe74273"><div class="ttname"><a href="struct_color_component.html#a902cefa143c204e8d247973c7fe74273">ColorComponent::ColorComponent</a></div><div class="ttdeci">ColorComponent()=default</div><div class="ttdoc">Default constructor that initializes the color to black (0, 0, 0, 1).</div></div>
+<div class="ttc" id="astruct_color_component_html_ac78e5a9c10571e90106588f27d280343"><div class="ttname"><a href="struct_color_component.html#ac78e5a9c10571e90106588f27d280343">ColorComponent::color_</a></div><div class="ttdeci">Vec4 color_</div><div class="ttdoc">RGBA color of the entity.</div><div class="ttdef"><b>Definition</b> default_components.hpp:203</div></div>
+<div class="ttc" id="astruct_geometry_html"><div class="ttname"><a href="struct_geometry.html">Geometry</a></div><div class="ttdoc">Struct representing geometric data for rendering.</div><div class="ttdef"><b>Definition</b> default_components.hpp:297</div></div>
+<div class="ttc" id="astruct_geometry_html_a063052285027458dd8c5fd93ae936fad"><div class="ttname"><a href="struct_geometry.html#a063052285027458dd8c5fd93ae936fad">Geometry::vertex_</a></div><div class="ttdeci">std::vector&lt; Vertex &gt; vertex_</div><div class="ttdoc">List of vertices that define the geometry.</div><div class="ttdef"><b>Definition</b> default_components.hpp:301</div></div>
+<div class="ttc" id="astruct_geometry_html_a9d1f3b764b26cfc49367b3a0b2b014ed"><div class="ttname"><a href="struct_geometry.html#a9d1f3b764b26cfc49367b3a0b2b014ed">Geometry::indices_</a></div><div class="ttdeci">std::vector&lt; unsigned &gt; indices_</div><div class="ttdoc">List of indices that specify the order of vertices to form triangles.</div><div class="ttdef"><b>Definition</b> default_components.hpp:306</div></div>
+<div class="ttc" id="astruct_render_component_html"><div class="ttname"><a href="struct_render_component.html">RenderComponent</a></div><div class="ttdoc">Struct representing a component for rendering an entity.</div><div class="ttdef"><b>Definition</b> default_components.hpp:314</div></div>
+<div class="ttc" id="astruct_render_component_html_a4b8bf46241e09c6091e73c1688f25dbb"><div class="ttname"><a href="struct_render_component.html#a4b8bf46241e09c6091e73c1688f25dbb">RenderComponent::RenderComponent</a></div><div class="ttdeci">RenderComponent()=default</div><div class="ttdoc">Default constructor that initializes all members with default values.</div></div>
+<div class="ttc" id="astruct_render_component_html_a7d33a66a3334ebe6e6a1c5a264b0e6a0"><div class="ttname"><a href="struct_render_component.html#a7d33a66a3334ebe6e6a1c5a264b0e6a0">RenderComponent::name_</a></div><div class="ttdeci">std::string name_</div><div class="ttdoc">Name of the render component.</div><div class="ttdef"><b>Definition</b> default_components.hpp:318</div></div>
+<div class="ttc" id="astruct_render_component_html_a9562f807781a9ec34e8e256619dcb6ab"><div class="ttname"><a href="struct_render_component.html#a9562f807781a9ec34e8e256619dcb6ab">RenderComponent::RenderComponent</a></div><div class="ttdeci">RenderComponent(const char *name, const char *elements, const char *order, unsigned program, unsigned texture)</div><div class="ttdoc">Constructor that initializes all members of the render component.</div><div class="ttdef"><b>Definition</b> default_components.hpp:354</div></div>
+<div class="ttc" id="astruct_render_component_html_a9ba134a1e5e44a84468356fc88f32494"><div class="ttname"><a href="struct_render_component.html#a9ba134a1e5e44a84468356fc88f32494">RenderComponent::elements_buffer_</a></div><div class="ttdeci">std::string elements_buffer_</div><div class="ttdoc">Name of the vertex elements buffer used for rendering.</div><div class="ttdef"><b>Definition</b> default_components.hpp:323</div></div>
+<div class="ttc" id="astruct_render_component_html_a9dd3ade39e4ff5a6bab9d50d419257ce"><div class="ttname"><a href="struct_render_component.html#a9dd3ade39e4ff5a6bab9d50d419257ce">RenderComponent::order_buffer_</a></div><div class="ttdeci">std::string order_buffer_</div><div class="ttdoc">Name of the vertex order buffer (indices) used for rendering.</div><div class="ttdef"><b>Definition</b> default_components.hpp:328</div></div>
+<div class="ttc" id="astruct_render_component_html_ab76c1189f38d708cc96c84518a7e5e44"><div class="ttname"><a href="struct_render_component.html#ab76c1189f38d708cc96c84518a7e5e44">RenderComponent::texture_</a></div><div class="ttdeci">unsigned int texture_</div><div class="ttdoc">ID of the texture used for rendering this component (optional).</div><div class="ttdef"><b>Definition</b> default_components.hpp:338</div></div>
+<div class="ttc" id="astruct_render_component_html_abca5f0db929d43a14c56fc6db15761ab"><div class="ttname"><a href="struct_render_component.html#abca5f0db929d43a14c56fc6db15761ab">RenderComponent::program_</a></div><div class="ttdeci">unsigned int program_</div><div class="ttdoc">ID of the shader program used for rendering this component.</div><div class="ttdef"><b>Definition</b> default_components.hpp:333</div></div>
+<div class="ttc" id="astruct_transform_component_html"><div class="ttname"><a href="struct_transform_component.html">TransformComponent</a></div><div class="ttdoc">Struct representing an entity's transform data.</div><div class="ttdef"><b>Definition</b> default_components.hpp:154</div></div>
+<div class="ttc" id="astruct_transform_component_html_a5fe4f28abaaadcc3d6d86d136ceab800"><div class="ttname"><a href="struct_transform_component.html#a5fe4f28abaaadcc3d6d86d136ceab800">TransformComponent::model_matrix_</a></div><div class="ttdeci">Mat4 model_matrix_</div><div class="ttdoc">Model matrix of the entity, used for transforming the entity in 3D space.</div><div class="ttdef"><b>Definition</b> default_components.hpp:158</div></div>
+<div class="ttc" id="astruct_transform_component_html_a9eb4fc3cc8be65464f11d0a379972dff"><div class="ttname"><a href="struct_transform_component.html#a9eb4fc3cc8be65464f11d0a379972dff">TransformComponent::pos_</a></div><div class="ttdeci">Vec3 pos_</div><div class="ttdoc">Position of the entity in 3D space.</div><div class="ttdef"><b>Definition</b> default_components.hpp:163</div></div>
+<div class="ttc" id="astruct_transform_component_html_a9ebae0ee187d4ba8a7d708d66fe0c303"><div class="ttname"><a href="struct_transform_component.html#a9ebae0ee187d4ba8a7d708d66fe0c303">TransformComponent::TransformComponent</a></div><div class="ttdeci">TransformComponent()=default</div><div class="ttdoc">Default constructor that initializes all members to zero.</div></div>
+<div class="ttc" id="astruct_transform_component_html_aadc127cd167bfa2482ffcbb6b93a098b"><div class="ttname"><a href="struct_transform_component.html#aadc127cd167bfa2482ffcbb6b93a098b">TransformComponent::TransformComponent</a></div><div class="ttdeci">TransformComponent(Vec3 pos, Vec3 rot, Vec3 size)</div><div class="ttdoc">Constructor that initializes the position, rotation, and scale of the entity.</div><div class="ttdef"><b>Definition</b> default_components.hpp:187</div></div>
+<div class="ttc" id="astruct_transform_component_html_ac165689f32a46e00aa3a64ab2198ef42"><div class="ttname"><a href="struct_transform_component.html#ac165689f32a46e00aa3a64ab2198ef42">TransformComponent::size_</a></div><div class="ttdeci">Vec3 size_</div><div class="ttdoc">Scale of the entity, used to modify its size.</div><div class="ttdef"><b>Definition</b> default_components.hpp:173</div></div>
+<div class="ttc" id="astruct_transform_component_html_ac5bc92417b5b7490ed88124f41fa14f4"><div class="ttname"><a href="struct_transform_component.html#ac5bc92417b5b7490ed88124f41fa14f4">TransformComponent::rot_</a></div><div class="ttdeci">Vec3 rot_</div><div class="ttdoc">Rotation of the entity, typically stored in Euler angles (degrees).</div><div class="ttdef"><b>Definition</b> default_components.hpp:168</div></div>
+<div class="ttc" id="astruct_vertex_html"><div class="ttname"><a href="struct_vertex.html">Vertex</a></div><div class="ttdoc">Struct representing a vertex in 3D space.</div><div class="ttdef"><b>Definition</b> default_components.hpp:114</div></div>
+<div class="ttc" id="astruct_vertex_html_a2a3830895358c4775d801bca6cfd1c72"><div class="ttname"><a href="struct_vertex.html#a2a3830895358c4775d801bca6cfd1c72">Vertex::uv</a></div><div class="ttdeci">Vec2 uv</div><div class="ttdoc">UV coordinates for texture mapping.</div><div class="ttdef"><b>Definition</b> default_components.hpp:128</div></div>
+<div class="ttc" id="astruct_vertex_html_a30295542f79b0f77a6707a0518f10bbf"><div class="ttname"><a href="struct_vertex.html#a30295542f79b0f77a6707a0518f10bbf">Vertex::pos</a></div><div class="ttdeci">Vec3 pos</div><div class="ttdoc">Position of the vertex in 3D space.</div><div class="ttdef"><b>Definition</b> default_components.hpp:118</div></div>
+<div class="ttc" id="astruct_vertex_html_a4c98a6527a2c0e4bbb920e26a1799443"><div class="ttname"><a href="struct_vertex.html#a4c98a6527a2c0e4bbb920e26a1799443">Vertex::operator==</a></div><div class="ttdeci">bool operator==(const Vertex &amp;o) const</div><div class="ttdoc">Compares two vertices for equality.</div><div class="ttdef"><b>Definition</b> default_components.hpp:144</div></div>
+<div class="ttc" id="astruct_vertex_html_a71964362efa4b758e509e7c8ad80b1e4"><div class="ttname"><a href="struct_vertex.html#a71964362efa4b758e509e7c8ad80b1e4">Vertex::color</a></div><div class="ttdeci">Vec4 color</div><div class="ttdoc">Color of the vertex.</div><div class="ttdef"><b>Definition</b> default_components.hpp:133</div></div>
+<div class="ttc" id="astruct_vertex_html_aa32d0bb692fe376bd9310225930293f3"><div class="ttname"><a href="struct_vertex.html#aa32d0bb692fe376bd9310225930293f3">Vertex::normal</a></div><div class="ttdeci">Vec3 normal</div><div class="ttdoc">Normal vector of the vertex, used for lighting calculations.</div><div class="ttdef"><b>Definition</b> default_components.hpp:123</div></div>
+<div class="ttc" id="astructcomponent__base_html"><div class="ttname"><a href="structcomponent__base.html">component_base</a></div><div class="ttdoc">Abstract base class for components attached to entities.</div><div class="ttdef"><b>Definition</b> default_components.hpp:27</div></div>
+<div class="ttc" id="astructcomponent__list_html"><div class="ttname"><a href="structcomponent__list.html">component_list</a></div><div class="ttdoc">Template class that manages a list of components of type T.</div><div class="ttdef"><b>Definition</b> default_components.hpp:41</div></div>
+<div class="ttc" id="astructcomponent__list_html_a7b0f7cc326ea9c8500a28e315533a2fb"><div class="ttname"><a href="structcomponent__list.html#a7b0f7cc326ea9c8500a28e315533a2fb">component_list::add_component_at</a></div><div class="ttdeci">void add_component_at(int position, T &amp;component)</div><div class="ttdoc">Adds a component of type T at a specific position in the list.</div><div class="ttdef"><b>Definition</b> default_components.hpp:75</div></div>
+<div class="ttc" id="astructcomponent__list_html_aae9a8e4d0b8118987c9f12a9ca3a06e0"><div class="ttname"><a href="structcomponent__list.html#aae9a8e4d0b8118987c9f12a9ca3a06e0">component_list::add_component</a></div><div class="ttdeci">virtual void add_component(int position) override</div><div class="ttdoc">Adds a new component of type T at a specific position in the list.</div><div class="ttdef"><b>Definition</b> default_components.hpp:63</div></div>
+<div class="ttc" id="astructcomponent__list_html_abe4a355b19f4bb0afe80f871f3f9fd0d"><div class="ttname"><a href="structcomponent__list.html#abe4a355b19f4bb0afe80f871f3f9fd0d">component_list::add_component</a></div><div class="ttdeci">virtual void add_component() override</div><div class="ttdoc">Adds a new empty component of type T to the list.</div><div class="ttdef"><b>Definition</b> default_components.hpp:49</div></div>
+<div class="ttc" id="astructcomponent__list_html_ac7166815622f1dad168aaf1cc32bee2b"><div class="ttname"><a href="structcomponent__list.html#ac7166815622f1dad168aaf1cc32bee2b">component_list::components_</a></div><div class="ttdeci">std::vector&lt; std::optional&lt; T &gt; &gt; components_</div><div class="ttdef"><b>Definition</b> default_components.hpp:42</div></div>
+<div class="ttc" id="astructcomponent__list_html_ae4e9157e9244015949ca3cc1d7c9a7ae"><div class="ttname"><a href="structcomponent__list.html#ae4e9157e9244015949ca3cc1d7c9a7ae">component_list::size</a></div><div class="ttdeci">virtual size_t size() override</div><div class="ttdoc">Gets the number of components currently stored in the list.</div><div class="ttdef"><b>Definition</b> default_components.hpp:89</div></div>
+<div class="ttc" id="astructcomponent__list_html_af6bf4d3ac6cb8d3deed85c27e4772856"><div class="ttname"><a href="structcomponent__list.html#af6bf4d3ac6cb8d3deed85c27e4772856">component_list::delete_component</a></div><div class="ttdeci">virtual void delete_component(size_t id) override</div><div class="ttdoc">Removes a component from the list by its ID (0-based indexing).</div><div class="ttdef"><b>Definition</b> default_components.hpp:102</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

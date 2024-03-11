@@ -1,5 +1,5 @@
 \doxysection{component\+\_\+manager.\+hpp}
-\hypertarget{component__manager_8hpp_source}{}\label{component__manager_8hpp_source}\index{include/component\_manager.hpp@{include/component\_manager.hpp}}
+\hypertarget{component__manager_8hpp_source}{}\label{component__manager_8hpp_source}\index{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/component\_manager.hpp@{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/component\_manager.hpp}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ }
@@ -57,13 +57,13 @@
 \DoxyCodeLine{00133\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_component_manager_a521786de6462f9c39d4ffd4d0b195438}{ComponentManager::create\_component}}(\textcolor{keywordtype}{int}\ position,\ T\&\ component)\ \{}
 \DoxyCodeLine{00134\ \ \ \ \ \textcolor{comment}{//Cast\ to\ the\ specific\ component\ list\ and\ add\ the\ components}}
 \DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{structcomponent__list}{component\_list<T>}}*\ list\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{structcomponent__list}{component\_list<T>}}*\textcolor{keyword}{>}(component\_classes\_[\textcolor{keyword}{typeid}(T).hash\_code()].get());}
-\DoxyCodeLine{00136\ \ \ \ \ list-\/>add\_component\_at(position,\ component);}
+\DoxyCodeLine{00136\ \ \ \ \ list-\/>\mbox{\hyperlink{structcomponent__list_a7b0f7cc326ea9c8500a28e315533a2fb}{add\_component\_at}}(position,\ component);}
 \DoxyCodeLine{00137\ \}}
 \DoxyCodeLine{00138\ }
 \DoxyCodeLine{00139\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ std::vector\ <\ std::optional<T>>*\ \mbox{\hyperlink{struct_component_manager_af3a282b6dc1c1c5bdeb2c4b62f1f7059}{ComponentManager::get\_component\_list}}()\{}
 \DoxyCodeLine{00140\ \ \ \ \ assert(component\_classes\_.size());}
 \DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{auto}\&\ component\_l\ =\ *\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structcomponent__list}{component\_list<T>}}*\textcolor{keyword}{>}(component\_classes\_.find(\textcolor{keyword}{typeid}(T).hash\_code())-\/>second.get());}
-\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{auto}\&\ component\_opt\ =\ component\_l.components\_;}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{auto}\&\ component\_opt\ =\ component\_l.\mbox{\hyperlink{structcomponent__list_ac7166815622f1dad168aaf1cc32bee2b}{components\_}};}
 \DoxyCodeLine{00143\ }
 \DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ \&component\_opt;}
 \DoxyCodeLine{00145\ \}}

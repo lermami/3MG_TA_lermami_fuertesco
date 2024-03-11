@@ -1,0 +1,77 @@
+.TH "RenderComponent" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RenderComponent \- Struct representing a component for rendering an entity\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <default_components\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRenderComponent\fP ()=default"
+.br
+.RI "Default constructor that initializes all members with default values\&. "
+.ti -1c
+.RI "\fBRenderComponent\fP (const char *name, const char *elements, const char *order, unsigned program, unsigned texture)"
+.br
+.RI "Constructor that initializes all members of the render component\&. "
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBname_\fP"
+.br
+.RI "Name of the render component\&. "
+.ti -1c
+.RI "std::string \fBelements_buffer_\fP"
+.br
+.RI "Name of the vertex elements buffer used for rendering\&. "
+.ti -1c
+.RI "std::string \fBorder_buffer_\fP"
+.br
+.RI "Name of the vertex order buffer (indices) used for rendering\&. "
+.ti -1c
+.RI "unsigned int \fBprogram_\fP"
+.br
+.RI "ID of the shader program used for rendering this component\&. "
+.ti -1c
+.RI "unsigned int \fBtexture_\fP"
+.br
+.RI "ID of the texture used for rendering this component (optional)\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a component for rendering an entity\&. 
+
+This struct stores information about the visual representation of an entity, including its name, buffers, program, and texture\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RenderComponent::RenderComponent (const char * name, const char * elements, const char * order, unsigned program, unsigned texture)\fR [inline]\fP"
+
+.PP
+Constructor that initializes all members of the render component\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Name of the render component\&. 
+.br
+\fIelements\fP Name of the vertex elements buffer\&. 
+.br
+\fIorder\fP Name of the vertex order buffer (indices)\&. 
+.br
+\fIprogram\fP ID of the shader program used for rendering\&. 
+.br
+\fItexture\fP ID of the texture used for rendering (optional, can be -1)\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

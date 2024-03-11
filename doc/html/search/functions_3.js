@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['enableculling_0',['enableCulling',['../class_window.html#abaefc33138062a2353f278851f4b6842',1,'Window']]],
-  ['enabledepthtest_1',['enableDepthTest',['../class_window.html#a2141471790fab9ee97e17a00f052b0db',1,'Window']]]
+  ['delete_5fcomponent_0',['delete_component',['../structcomponent__list.html#af6bf4d3ac6cb8d3deed85c27e4772856',1,'component_list']]],
+  ['dorender_1',['doRender',['../struct_camera_component.html#af6679df18878833a0aa7e6b0a5a20810',1,'CameraComponent']]]
 ];

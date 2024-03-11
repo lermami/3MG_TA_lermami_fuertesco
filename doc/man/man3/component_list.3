@@ -1,0 +1,137 @@
+.TH "component_list< T >" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+component_list< T > \- Template class that manages a list of components of type T\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <default_components\&.hpp>\fP
+.PP
+Inherits \fBcomponent_base\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual void \fBadd_component\fP () override"
+.br
+.RI "Adds a new empty component of type T to the list\&. "
+.ti -1c
+.RI "virtual void \fBadd_component\fP (int position) override"
+.br
+.RI "Adds a new component of type T at a specific position in the list\&. "
+.ti -1c
+.RI "void \fBadd_component_at\fP (int position, T &component)"
+.br
+.RI "Adds a component of type T at a specific position in the list\&. "
+.ti -1c
+.RI "virtual size_t \fBsize\fP () override"
+.br
+.RI "Gets the number of components currently stored in the list\&. "
+.ti -1c
+.RI "virtual void \fBdelete_component\fP (size_t id) override"
+.br
+.RI "Removes a component from the list by its ID (0-based indexing)\&. "
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::vector< std::optional< T > > \fBcomponents_\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SS "template<typename T>
+.br
+struct component_list< T >"Template class that manages a list of components of type T\&. 
+
+
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of component to store in the list\&. 
+.RE
+.PP
+Inherits from \fBcomponent_base\fP and provides functionality for adding, removing, and accessing components\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename T > virtual void \fBcomponent_list\fP< T >::add_component ()\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Adds a new empty component of type T to the list\&. This function creates a new \fRstd::optional<T>\fP object with a null value and adds it to the end of the \fRcomponents_\fP list\&. 
+.PP
+Implements \fBcomponent_base\fP\&.
+.SS "template<typename T > virtual void \fBcomponent_list\fP< T >::add_component (int position)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Adds a new component of type T at a specific position in the list\&. This function creates a new instance of type T and assigns it to the specified position (1-based indexing) in the \fRcomponents_\fP list\&.
+.PP
+\fBExceptions\fP
+.RS 4
+\fIstd::out_of_range\fP If the specified position is out of bounds\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The position argument is 1-based because entities typically start with ID 1\&. This function internally adjusts the index to 0-based for the \fRcomponents_\fP vector\&. 
+.RE
+.PP
+
+.PP
+Implements \fBcomponent_base\fP\&.
+.SS "template<typename T > void \fBcomponent_list\fP< T >::add_component_at (int position, T & component)\fR [inline]\fP"
+
+.PP
+Adds a component of type T at a specific position in the list\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIposition\fP The position where to add the component (1-based indexing)\&. 
+.br
+\fIcomponent\fP The component to add\&. 
+.RE
+.PP
+
+.SS "template<typename T > virtual void \fBcomponent_list\fP< T >::delete_component (size_t id)\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Removes a component from the list by its ID (0-based indexing)\&. This function removes the component at the specified ID from the \fRcomponents_\fP list\&. It asserts that the ID is not 0 (trying to remove the first element, which might be special) and then resets the corresponding \fRstd::optional<T>\fP object to null, effectively removing the component\&.
+.PP
+\fBExceptions\fP
+.RS 4
+\fIstd::out_of_range\fP If the specified ID is out of bounds\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The ID of the component to remove\&. 
+.RE
+.PP
+
+.PP
+Implements \fBcomponent_base\fP\&.
+.SS "template<typename T > virtual size_t \fBcomponent_list\fP< T >::size ()\fR [inline]\fP, \fR [override]\fP, \fR [virtual]\fP"
+
+.PP
+Gets the number of components currently stored in the list\&. This function returns the size of the \fRcomponents_\fP vector, which represents the number of components attached to the entity\&.
+.PP
+\fBReturns\fP
+.RS 4
+The number of components in the list\&. 
+.RE
+.PP
+
+.PP
+Implements \fBcomponent_base\fP\&.
+.SH "Member Data Documentation"
+.PP 
+.SS "template<typename T > std::vector< std::optional<T> > \fBcomponent_list\fP< T >::components_"
+List of components of type T\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

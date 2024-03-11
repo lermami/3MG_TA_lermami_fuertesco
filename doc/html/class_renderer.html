@@ -77,30 +77,144 @@ $(function() {
   <div class="headertitle"><div class="title">Renderer Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_renderer_8hpp_source.html">Renderer.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aec84243762c45c556439f34570c8f01d" id="r_aec84243762c45c556439f34570c8f01d"><td class="memItemLeft" align="right" valign="top"><a id="aec84243762c45c556439f34570c8f01d" name="aec84243762c45c556439f34570c8f01d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Renderer</b> (<a class="el" href="class_engine.html">Engine</a> &amp;e, <a class="el" href="class_window.html">Window</a> &amp;w)</td></tr>
+<tr class="memitem:aec84243762c45c556439f34570c8f01d" id="r_aec84243762c45c556439f34570c8f01d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec84243762c45c556439f34570c8f01d">Renderer</a> (<a class="el" href="class_engine.html">Engine</a> &amp;e, <a class="el" href="class_window.html">Window</a> &amp;w)</td></tr>
+<tr class="memdesc:aec84243762c45c556439f34570c8f01d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="class_renderer.html" title="Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry.">Renderer</a> class. Takes references to the <a class="el" href="class_engine.html" title="Main class representing the game engine, managing core subsystems.">Engine</a> and <a class="el" href="class_window.html" title="This class represents a window for the application.">Window</a> objects for interaction.  <br /></td></tr>
 <tr class="separator:aec84243762c45c556439f34570c8f01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeee408862d5bd6255a6882d47e6d5cd" id="r_afeee408862d5bd6255a6882d47e6d5cd"><td class="memItemLeft" align="right" valign="top"><a id="afeee408862d5bd6255a6882d47e6d5cd" name="afeee408862d5bd6255a6882d47e6d5cd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Renderer</b> ()</td></tr>
+<tr class="memdesc:afeee408862d5bd6255a6882d47e6d5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for <a class="el" href="class_renderer.html" title="Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry.">Renderer</a> class. Performs any necessary cleanup for the rendering resources. <br /></td></tr>
+<tr class="separator:afeee408862d5bd6255a6882d47e6d5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cd0fb961c7f0f37d64398d68f6d5a6" id="r_aa1cd0fb961c7f0f37d64398d68f6d5a6"><td class="memItemLeft" align="right" valign="top"><a id="aa1cd0fb961c7f0f37d64398d68f6d5a6" name="aa1cd0fb961c7f0f37d64398d68f6d5a6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>renderLights</b> ()</td></tr>
+<tr class="memdesc:aa1cd0fb961c7f0f37d64398d68f6d5a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ads to rendering all lights in the scene. This function sets up shader light uniforms. <br /></td></tr>
 <tr class="separator:aa1cd0fb961c7f0f37d64398d68f6d5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8e77b15963a181de929e558dbdf2322" id="r_aa8e77b15963a181de929e558dbdf2322"><td class="memItemLeft" align="right" valign="top"><a id="aa8e77b15963a181de929e558dbdf2322" name="aa8e77b15963a181de929e558dbdf2322"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateShadowsMatrix</b> ()</td></tr>
+<tr class="memdesc:aa8e77b15963a181de929e558dbdf2322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the shadow matrices for all lights with shadows enabled. This function involves using the light position and direction to calculate the projection and view matrices for shadow mapping. <br /></td></tr>
 <tr class="separator:aa8e77b15963a181de929e558dbdf2322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e5f8f68742f198e315fb4683a605a4" id="r_af7e5f8f68742f198e315fb4683a605a4"><td class="memItemLeft" align="right" valign="top"><a id="af7e5f8f68742f198e315fb4683a605a4" name="af7e5f8f68742f198e315fb4683a605a4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> ()</td></tr>
+<tr class="memdesc:af7e5f8f68742f198e315fb4683a605a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the entire scene. This function involves setting up shader uniforms, drawing scene geometry, and potentially post-processing effects. <br /></td></tr>
 <tr class="separator:af7e5f8f68742f198e315fb4683a605a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2c70e4157abe0b5045ae35f1cdf9ba8" id="r_ac2c70e4157abe0b5045ae35f1cdf9ba8"><td class="memItemLeft" align="right" valign="top"><a id="ac2c70e4157abe0b5045ae35f1cdf9ba8" name="ac2c70e4157abe0b5045ae35f1cdf9ba8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>renderShadowMap</b> (unsigned int program)</td></tr>
+<tr class="memitem:ac2c70e4157abe0b5045ae35f1cdf9ba8" id="r_ac2c70e4157abe0b5045ae35f1cdf9ba8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2c70e4157abe0b5045ae35f1cdf9ba8">renderShadowMap</a> (unsigned int program)</td></tr>
+<tr class="memdesc:ac2c70e4157abe0b5045ae35f1cdf9ba8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the shadow map for a specific shader program.  <br /></td></tr>
 <tr class="separator:ac2c70e4157abe0b5045ae35f1cdf9ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49b3a568f14898a73e254c70eb6ad1c1" id="r_a49b3a568f14898a73e254c70eb6ad1c1"><td class="memItemLeft" align="right" valign="top"><a id="a49b3a568f14898a73e254c70eb6ad1c1" name="a49b3a568f14898a73e254c70eb6ad1c1"></a>
-glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigureShadowMatrix</b> (float near, float far, <a class="el" href="class_vec3.html">Vec3</a> pos, <a class="el" href="class_vec3.html">Vec3</a> direction)</td></tr>
+<tr class="memitem:a49b3a568f14898a73e254c70eb6ad1c1" id="r_a49b3a568f14898a73e254c70eb6ad1c1"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49b3a568f14898a73e254c70eb6ad1c1">ConfigureShadowMatrix</a> (float near, float far, <a class="el" href="class_vec3.html">Vec3</a> pos, <a class="el" href="class_vec3.html">Vec3</a> direction)</td></tr>
+<tr class="memdesc:a49b3a568f14898a73e254c70eb6ad1c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the shadow matrix based on near and far planes, light position, and direction.  <br /></td></tr>
 <tr class="separator:a49b3a568f14898a73e254c70eb6ad1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aec84243762c45c556439f34570c8f01d" name="aec84243762c45c556439f34570c8f01d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec84243762c45c556439f34570c8f01d">&#9670;&#160;</a></span>Renderer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Renderer::Renderer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_engine.html">Engine</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>e</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_window.html">Window</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>w</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor for <a class="el" href="class_renderer.html" title="Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry.">Renderer</a> class. Takes references to the <a class="el" href="class_engine.html" title="Main class representing the game engine, managing core subsystems.">Engine</a> and <a class="el" href="class_window.html" title="This class represents a window for the application.">Window</a> objects for interaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">e</td><td>Reference to the <a class="el" href="class_engine.html" title="Main class representing the game engine, managing core subsystems.">Engine</a> object. </td></tr>
+    <tr><td class="paramname">w</td><td>Reference to the <a class="el" href="class_window.html" title="This class represents a window for the application.">Window</a> object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a49b3a568f14898a73e254c70eb6ad1c1" name="a49b3a568f14898a73e254c70eb6ad1c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49b3a568f14898a73e254c70eb6ad1c1">&#9670;&#160;</a></span>ConfigureShadowMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::mat4 Renderer::ConfigureShadowMatrix </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>near</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>far</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>pos</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>direction</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configures the shadow matrix based on near and far planes, light position, and direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">near</td><td>The near plane distance for the shadow frustum. </td></tr>
+    <tr><td class="paramname">far</td><td>The far plane distance for the shadow frustum. </td></tr>
+    <tr><td class="paramname">pos</td><td>The position of the light source. </td></tr>
+    <tr><td class="paramname">direction</td><td>The direction of the light. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The calculated shadow matrix. </dd></dl>
+
+</div>
+</div>
+<a id="ac2c70e4157abe0b5045ae35f1cdf9ba8" name="ac2c70e4157abe0b5045ae35f1cdf9ba8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2c70e4157abe0b5045ae35f1cdf9ba8">&#9670;&#160;</a></span>renderShadowMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Renderer::renderShadowMap </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>program</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Renders the shadow map for a specific shader program. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">program</td><td>The shader program to use for rendering the shadow map. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/<a class="el" href="_renderer_8hpp_source.html">Renderer.hpp</a></li>
+<li>C:/Users/lermami/Documents/3MG_TA_lermami_fuertesco/include/<a class="el" href="_renderer_8hpp_source.html">Renderer.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

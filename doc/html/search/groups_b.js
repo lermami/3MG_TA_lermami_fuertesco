@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['window_20class_0',['Window class',['../group___window.html',1,'']]]
+  ['vertex_20and_20index_20buffers_0',['Vertex and Index Buffers',['../group___buffers.html',1,'']]]
 ];

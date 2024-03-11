@@ -1,38 +1,44 @@
 \doxysection{Renderer.\+hpp}
-\hypertarget{_renderer_8hpp_source}{}\label{_renderer_8hpp_source}\index{include/Renderer.hpp@{include/Renderer.hpp}}
-
+\hypertarget{_renderer_8hpp_source}{}\label{_renderer_8hpp_source}\index{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/Renderer.hpp@{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/Renderer.hpp}}
+\mbox{\hyperlink{_renderer_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
-\DoxyCodeLine{00002\ }
-\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}glm/glm.hpp"{}}}
-\DoxyCodeLine{00004\ }
-\DoxyCodeLine{00005\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_engine}{Engine}};}
-\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_window}{Window}};}
-\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_vec3}{Vec3}};}
-\DoxyCodeLine{00008\ }
-\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_renderer}{Renderer}}\ \{}
-\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00011\ \ \ \mbox{\hyperlink{class_renderer}{Renderer}}(\mbox{\hyperlink{class_engine}{Engine}}\&\ e,\ \mbox{\hyperlink{class_window}{Window}}\&\ w);}
-\DoxyCodeLine{00012\ \ \ \mbox{\hyperlink{class_renderer}{\string~Renderer}}();}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \ \ \textcolor{keywordtype}{void}\ renderLights();}
-\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{void}\ CalculateShadowsMatrix();}
-\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{void}\ render();}
-\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{void}\ renderShadowMap(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ program);}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \ \ glm::mat4\ ConfigureShadowMatrix(\textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ pos,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ direction);}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ renderImgui();}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{class_engine}{Engine}}\&\ engine\_;}
-\DoxyCodeLine{00025\ \ \ \mbox{\hyperlink{class_window}{Window}}\&\ window\_;}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ renderShadows\_;}
-\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ shadow\_resolution\_;}
-\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{unsigned}\ depthmap\_;}
-\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{unsigned}\ depthmapFBO\_;}
-\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{unsigned}\ shadowProgram\_;}
-\DoxyCodeLine{00032\ \};}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}glm/glm.hpp"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_engine}{Engine}};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_window}{Window}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_vec3}{Vec3}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_renderer}{Renderer}}\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{class_renderer_aec84243762c45c556439f34570c8f01d}{Renderer}}(\mbox{\hyperlink{class_engine}{Engine}}\&\ e,\ \mbox{\hyperlink{class_window}{Window}}\&\ w);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{class_renderer_afeee408862d5bd6255a6882d47e6d5cd}{\string~Renderer}}();}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_renderer_aa1cd0fb961c7f0f37d64398d68f6d5a6}{renderLights}}();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_renderer_aa8e77b15963a181de929e558dbdf2322}{CalculateShadowsMatrix}}();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_renderer_af7e5f8f68742f198e315fb4683a605a4}{render}}();}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_renderer_ac2c70e4157abe0b5045ae35f1cdf9ba8}{renderShadowMap}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ program);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00071\ \ \ glm::mat4\ \mbox{\hyperlink{class_renderer_a49b3a568f14898a73e254c70eb6ad1c1}{ConfigureShadowMatrix}}(\textcolor{keywordtype}{float}\ near,\ \textcolor{keywordtype}{float}\ far,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ pos,\ \mbox{\hyperlink{class_vec3}{Vec3}}\ direction);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{void}\ renderImgui();}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \mbox{\hyperlink{class_engine}{Engine}}\&\ engine\_;\ }
+\DoxyCodeLine{00081\ \ \ \mbox{\hyperlink{class_window}{Window}}\&\ window\_;\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{bool}\ renderShadows\_;\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ shadow\_resolution\_;\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{unsigned}\ depthmap\_;\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{unsigned}\ depthmapFBO\_;\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{unsigned}\ shadowProgram\_;\ }
+\DoxyCodeLine{00088\ \};}
 
 \end{DoxyCode}

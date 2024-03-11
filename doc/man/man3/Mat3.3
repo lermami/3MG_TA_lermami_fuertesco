@@ -1,0 +1,135 @@
+.TH "Mat3" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Mat3
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMat3\fP (float *values_array)"
+.br
+.ti -1c
+.RI "\fBMat3\fP (float value)"
+.br
+.ti -1c
+.RI "\fBMat3\fP (\fBVec3\fP a, \fBVec3\fP b, \fBVec3\fP c)"
+.br
+.ti -1c
+.RI "\fBMat3\fP (float v1, float v2, float v3, float v4, float v5, float v6, float v7, float v8, float v9)"
+.br
+.ti -1c
+.RI "\fBMat3\fP (const \fBMat3\fP &copy)"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBMultiply\fP (const \fBMat3\fP &other) const"
+.br
+.ti -1c
+.RI "float \fBDeterminant\fP () const"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBAdjoint\fP () const"
+.br
+.ti -1c
+.RI "bool \fBGetInverse\fP (\fBMat3\fP &out) const"
+.br
+.ti -1c
+.RI "bool \fBInverse\fP ()"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBTranspose\fP () const"
+.br
+.ti -1c
+.RI "\fBVec3\fP \fBTransform_Mat3_Vec3\fP (\fBMat3\fP mat, \fBVec3\fP vec)"
+.br
+.ti -1c
+.RI "\fBVec2\fP \fBTransform_Mat3_Vec2\fP (\fBMat3\fP mat, \fBVec2\fP vec)"
+.br
+.ti -1c
+.RI "\fBVec3\fP \fBGetColum\fP (int colum) const"
+.br
+.ti -1c
+.RI "\fBVec3\fP \fBGetLine\fP (int line) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBoperator+\fP (const \fBMat3\fP &other) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP & \fBoperator+=\fP (const \fBMat3\fP &other)"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBoperator+\fP (float value) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP & \fBoperator+=\fP (float value)"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBoperator\-\fP (const \fBMat3\fP &other) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP & \fBoperator\-=\fP (const \fBMat3\fP &other)"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBoperator\-\fP (float value) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP & \fBoperator\-=\fP (float value)"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBoperator*\fP (float value) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP & \fBoperator*=\fP (float value)"
+.br
+.ti -1c
+.RI "\fBMat3\fP \fBoperator/\fP (float value) const"
+.br
+.ti -1c
+.RI "\fBMat3\fP & \fBoperator/=\fP (float value)"
+.br
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBMat3\fP &other) const"
+.br
+.ti -1c
+.RI "bool \fBoperator!=\fP (const \fBMat3\fP &other) const"
+.br
+.ti -1c
+.RI "void \fBoperator=\fP (const \fBMat3\fP &other)"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static \fBMat3\fP \fBIdentity\fP ()"
+.br
+.ti -1c
+.RI "static \fBMat3\fP \fBTranslate\fP (const \fBVec2\fP &position)"
+.br
+.ti -1c
+.RI "static \fBMat3\fP \fBTranslate\fP (float x, float y)"
+.br
+.ti -1c
+.RI "static \fBMat3\fP \fBRotate\fP (float angle)"
+.br
+.ti -1c
+.RI "static \fBMat3\fP \fBScale\fP (const \fBVec2\fP &scale)"
+.br
+.ti -1c
+.RI "static \fBMat3\fP \fBScale\fP (float x, float y)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "float \fBm\fP [9]"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

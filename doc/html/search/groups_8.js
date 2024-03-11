@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['shader_20loader_0',['Shader Loader',['../group___shader_loader.html',1,'']]]
+  ['renderer_20class_0',['Renderer class',['../group___renderer.html',1,'']]],
+  ['resource_20manager_1',['Resource Manager',['../group___resource_manager.html',1,'']]]
 ];

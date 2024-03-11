@@ -1,31 +1,73 @@
 \doxysection{Render\+Component Struct Reference}
 \hypertarget{struct_render_component}{}\label{struct_render_component}\index{RenderComponent@{RenderComponent}}
+
+
+Struct representing a component for rendering an entity.  
+
+
+
+
+{\ttfamily \#include $<$default\+\_\+components.\+hpp$>$}
+
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{struct_render_component_a9562f807781a9ec34e8e256619dcb6ab}\label{struct_render_component_a9562f807781a9ec34e8e256619dcb6ab} 
-{\bfseries Render\+Component} (const char \texorpdfstring{$\ast$}{*}name, const char \texorpdfstring{$\ast$}{*}elements, const char \texorpdfstring{$\ast$}{*}order, unsigned program, unsigned texture)
-\end{DoxyCompactItemize}
+\Hypertarget{struct_render_component_a4b8bf46241e09c6091e73c1688f25dbb}\label{struct_render_component_a4b8bf46241e09c6091e73c1688f25dbb} 
+{\bfseries Render\+Component} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes all members with default values. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_render_component_a9562f807781a9ec34e8e256619dcb6ab}{Render\+Component}} (const char \texorpdfstring{$\ast$}{*}name, const char \texorpdfstring{$\ast$}{*}elements, const char \texorpdfstring{$\ast$}{*}order, unsigned program, unsigned texture)
+\begin{DoxyCompactList}\small\item\em Constructor that initializes all members of the render component. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{struct_render_component_a7d33a66a3334ebe6e6a1c5a264b0e6a0}\label{struct_render_component_a7d33a66a3334ebe6e6a1c5a264b0e6a0} 
 std\+::string {\bfseries name\+\_\+}
-\item 
+\begin{DoxyCompactList}\small\item\em Name of the render component. \end{DoxyCompactList}\item 
 \Hypertarget{struct_render_component_a9ba134a1e5e44a84468356fc88f32494}\label{struct_render_component_a9ba134a1e5e44a84468356fc88f32494} 
 std\+::string {\bfseries elements\+\_\+buffer\+\_\+}
-\item 
+\begin{DoxyCompactList}\small\item\em Name of the vertex elements buffer used for rendering. \end{DoxyCompactList}\item 
 \Hypertarget{struct_render_component_a9dd3ade39e4ff5a6bab9d50d419257ce}\label{struct_render_component_a9dd3ade39e4ff5a6bab9d50d419257ce} 
 std\+::string {\bfseries order\+\_\+buffer\+\_\+}
-\item 
+\begin{DoxyCompactList}\small\item\em Name of the vertex order buffer (indices) used for rendering. \end{DoxyCompactList}\item 
 \Hypertarget{struct_render_component_abca5f0db929d43a14c56fc6db15761ab}\label{struct_render_component_abca5f0db929d43a14c56fc6db15761ab} 
-unsigned int {\bfseries program\+\_\+} = -\/1
-\item 
+unsigned int {\bfseries program\+\_\+}
+\begin{DoxyCompactList}\small\item\em ID of the shader program used for rendering this component. \end{DoxyCompactList}\item 
 \Hypertarget{struct_render_component_ab76c1189f38d708cc96c84518a7e5e44}\label{struct_render_component_ab76c1189f38d708cc96c84518a7e5e44} 
-unsigned int {\bfseries texture\+\_\+} = -\/1
-\end{DoxyCompactItemize}
+unsigned int {\bfseries texture\+\_\+}
+\begin{DoxyCompactList}\small\item\em ID of the texture used for rendering this component (optional). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing a component for rendering an entity. 
+
+This struct stores information about the visual representation of an entity, including its name, buffers, program, and texture. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{struct_render_component_a9562f807781a9ec34e8e256619dcb6ab}\label{struct_render_component_a9562f807781a9ec34e8e256619dcb6ab} 
+\index{RenderComponent@{RenderComponent}!RenderComponent@{RenderComponent}}
+\index{RenderComponent@{RenderComponent}!RenderComponent@{RenderComponent}}
+\doxysubsubsection{\texorpdfstring{RenderComponent()}{RenderComponent()}}
+{\footnotesize\ttfamily Render\+Component\+::\+Render\+Component (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{name,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{elements,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{order,  }\item[{unsigned}]{program,  }\item[{unsigned}]{texture }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes all members of the render component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the render component. \\
+\hline
+{\em elements} & Name of the vertex elements buffer. \\
+\hline
+{\em order} & Name of the vertex order buffer (indices). \\
+\hline
+{\em program} & ID of the shader program used for rendering. \\
+\hline
+{\em texture} & ID of the texture used for rendering (optional, can be -\/1). \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}
+C\+:/\+Users/lermami/\+Documents/3\+MG\+\_\+\+TA\+\_\+lermami\+\_\+fuertesco/include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}

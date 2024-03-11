@@ -1,0 +1,56 @@
+.TH "component_base" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+component_base \- Abstract base class for components attached to entities\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <default_components\&.hpp>\fP
+.PP
+Inherited by \fBcomponent_list< T >\fP\&.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "virtual void \fBadd_component\fP ()=0"
+.br
+.ti -1c
+.RI "virtual void \fBadd_component\fP (int position)=0"
+.br
+.ti -1c
+.RI "virtual void \fBdelete_component\fP (size_t id)=0"
+.br
+.ti -1c
+.RI "virtual size_t \fBsize\fP ()=0"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Abstract base class for components attached to entities\&. 
+
+Defines virtual functions for adding, removing, and getting the number of components attached to an entity\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual void component_base::add_component ()\fR [pure virtual]\fP"
+
+.PP
+Implemented in \fBcomponent_list< T >\fP\&.
+.SS "virtual void component_base::add_component (int position)\fR [pure virtual]\fP"
+
+.PP
+Implemented in \fBcomponent_list< T >\fP\&.
+.SS "virtual void component_base::delete_component (size_t id)\fR [pure virtual]\fP"
+
+.PP
+Implemented in \fBcomponent_list< T >\fP\&.
+.SS "virtual size_t component_base::size ()\fR [pure virtual]\fP"
+
+.PP
+Implemented in \fBcomponent_list< T >\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

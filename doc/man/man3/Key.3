@@ -1,0 +1,95 @@
+.TH "Key" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Key \- Represents a key and its input state\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <input\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB~Key\fP ()=default"
+.br
+.RI "Default destructor for \fBKey\fP\&. "
+.ti -1c
+.RI "void \fBsetState\fP (InputState state)"
+.br
+.RI "Sets the state of the key\&. "
+.ti -1c
+.RI "InputState \fBgetState\fP () const"
+.br
+.RI "Gets the current state of the key\&. "
+.ti -1c
+.RI "void \fBsetKey\fP (int key)"
+.br
+.RI "Sets the key code for this \fBKey\fP object\&. "
+.ti -1c
+.RI "int \fBgetKey\fP () const"
+.br
+.RI "Gets the key code associated with this \fBKey\fP object\&. "
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBInput\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Represents a key and its input state\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "int Key::getKey () const"
+
+.PP
+Gets the key code associated with this \fBKey\fP object\&. 
+.PP
+\fBReturns\fP
+.RS 4
+The key code\&. 
+.RE
+.PP
+
+.SS "InputState Key::getState () const"
+
+.PP
+Gets the current state of the key\&. 
+.PP
+\fBReturns\fP
+.RS 4
+The current state of the key\&. 
+.RE
+.PP
+
+.SS "void Key::setKey (int key)"
+
+.PP
+Sets the key code for this \fBKey\fP object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The key code to set\&. 
+.RE
+.PP
+
+.SS "void Key::setState (InputState state)"
+
+.PP
+Sets the state of the key\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIstate\fP The new state of the key\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

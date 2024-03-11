@@ -1,0 +1,76 @@
+.TH "IndexBuffer" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+IndexBuffer \- This class represents an index buffer object (IBO) in OpenGL\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <buffer\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB~IndexBuffer\fP ()"
+.br
+.ti -1c
+.RI "void \fBbind\fP () const"
+.br
+.ti -1c
+.RI "void \fBunbind\fP () const"
+.br
+.ti -1c
+.RI "unsigned \fBget\fP () const"
+.br
+.ti -1c
+.RI "unsigned \fBgetCount\fP () const"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBResourceManager\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class represents an index buffer object (IBO) in OpenGL\&. 
+
+The \fBIndexBuffer\fP class encapsulates the creation, binding, and data usage of an index buffer object (IBO) in OpenGL\&. It's primarily used by the \fBResourceManager\fP\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "IndexBuffer::~IndexBuffer ()"
+Destructor for the \fBIndexBuffer\fP class\&.
+.PP
+Releases the underlying OpenGL index buffer object\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "void IndexBuffer::bind () const"
+Binds the index buffer object for use in rendering\&. 
+.SS "unsigned IndexBuffer::get () const"
+Retrieves the handle of the underlying OpenGL index buffer object\&.
+.PP
+\fBReturns\fP
+.RS 4
+The unsigned integer handle representing the IBO\&. 
+.RE
+.PP
+
+.SS "unsigned IndexBuffer::getCount () const"
+Retrieves the number of indices stored in the index buffer\&.
+.PP
+\fBReturns\fP
+.RS 4
+The count of indices in the IBO\&. 
+.RE
+.PP
+
+.SS "void IndexBuffer::unbind () const"
+Unbinds the index buffer object, disabling its use in rendering\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

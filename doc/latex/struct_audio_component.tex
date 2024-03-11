@@ -1,22 +1,68 @@
 \doxysection{Audio\+Component Struct Reference}
 \hypertarget{struct_audio_component}{}\label{struct_audio_component}\index{AudioComponent@{AudioComponent}}
+
+
+Struct representing an audio component attached to an entity.  
+
+
+
+
+{\ttfamily \#include $<$default\+\_\+components.\+hpp$>$}
+
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{struct_audio_component_ae0ce1fa7eabd2eea45be5f1e072a7813}\label{struct_audio_component_ae0ce1fa7eabd2eea45be5f1e072a7813} 
-{\bfseries Audio\+Component} (\mbox{\hyperlink{class_sound_buffer}{Sound\+Buffer}} \&buff, std\+::string name, ALfloat pos\mbox{[}3\mbox{]}, ALfloat speed\mbox{[}3\mbox{]}, float gain=1.\+0f, float pitch=1.\+0f, bool play=false)
-\item 
+\mbox{\hyperlink{struct_audio_component_ae0ce1fa7eabd2eea45be5f1e072a7813}{Audio\+Component}} (\mbox{\hyperlink{class_sound_buffer}{Sound\+Buffer}} \&buff, std\+::string name, ALfloat pos\mbox{[}3\mbox{]}, ALfloat speed\mbox{[}3\mbox{]}, float gain=1.\+0f, float pitch=1.\+0f, bool play=false)
+\begin{DoxyCompactList}\small\item\em Constructor that creates an \doxylink{struct_audio_component}{Audio\+Component} with a sound source and optionally plays it. \end{DoxyCompactList}\item 
+\Hypertarget{struct_audio_component_a5054f863e0268f9838d183985585d676}\label{struct_audio_component_a5054f863e0268f9838d183985585d676} 
+{\bfseries Audio\+Component} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes an empty \doxylink{struct_audio_component}{Audio\+Component}. \end{DoxyCompactList}\item 
 \Hypertarget{struct_audio_component_a42e07b0e0e3663daad7753c2ddbdf950}\label{struct_audio_component_a42e07b0e0e3663daad7753c2ddbdf950} 
 \mbox{\hyperlink{struct_audio_component}{Audio\+Component}} \& {\bfseries operator=} (const \mbox{\hyperlink{struct_audio_component}{Audio\+Component}} \&o)=default
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Copy assignment operator (default behavior is sufficient). \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{struct_audio_component_aca6797b4f8426f5b1f531d6290b4e558}\label{struct_audio_component_aca6797b4f8426f5b1f531d6290b4e558} 
 \mbox{\hyperlink{class_sound_source}{Sound\+Source}} {\bfseries sound\+\_\+source\+\_\+}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Internal sound source object used for audio playback. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Struct representing an audio component attached to an entity. 
+
+This struct manages a sound source object and allows attaching a sound buffer to it for playback. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{struct_audio_component_ae0ce1fa7eabd2eea45be5f1e072a7813}\label{struct_audio_component_ae0ce1fa7eabd2eea45be5f1e072a7813} 
+\index{AudioComponent@{AudioComponent}!AudioComponent@{AudioComponent}}
+\index{AudioComponent@{AudioComponent}!AudioComponent@{AudioComponent}}
+\doxysubsubsection{\texorpdfstring{AudioComponent()}{AudioComponent()}}
+{\footnotesize\ttfamily Audio\+Component\+::\+Audio\+Component (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_sound_buffer}{Sound\+Buffer}} \&}]{buff,  }\item[{std\+::string}]{name,  }\item[{ALfloat}]{pos\mbox{[}3\mbox{]},  }\item[{ALfloat}]{speed\mbox{[}3\mbox{]},  }\item[{float}]{gain = {\ttfamily 1.0f},  }\item[{float}]{pitch = {\ttfamily 1.0f},  }\item[{bool}]{play = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that creates an \doxylink{struct_audio_component}{Audio\+Component} with a sound source and optionally plays it. 
+
+This constructor takes various arguments to initialize the sound source\+: 
+\begin{DoxyParams}{Parameters}
+{\em buff} & Reference to a {\ttfamily \doxylink{class_sound_buffer}{Sound\+Buffer}} object containing the audio data. \\
+\hline
+{\em name} & A name for the sound source (for debugging purposes). \\
+\hline
+{\em pos} & Position of the sound source in 3D space (ALfloat array of length 3). \\
+\hline
+{\em speed} & Velocity of the sound source (ALfloat array of length 3). \\
+\hline
+{\em gain} & Gain of the sound source (volume amplification). Defaults to 1.\+0f. \\
+\hline
+{\em pitch} & Pitch of the sound source (alters playback speed). Defaults to 1.\+0f. \\
+\hline
+{\em play} & If true, starts playing the sound after creation. Defaults to false.\\
+\hline
+\end{DoxyParams}
+After setting up the sound source, it adds the provided sound buffer using the {\ttfamily add\+Sound} function and optionally starts playback using the {\ttfamily Play} function. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}
+C\+:/\+Users/lermami/\+Documents/3\+MG\+\_\+\+TA\+\_\+lermami\+\_\+fuertesco/include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}

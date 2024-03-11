@@ -78,30 +78,91 @@ $(function() {
   <div class="headertitle"><div class="title">TransformComponent Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Struct representing an entity's transform data.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="default__components_8hpp_source.html">default_components.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aadc127cd167bfa2482ffcbb6b93a098b" id="r_aadc127cd167bfa2482ffcbb6b93a098b"><td class="memItemLeft" align="right" valign="top"><a id="aadc127cd167bfa2482ffcbb6b93a098b" name="aadc127cd167bfa2482ffcbb6b93a098b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TransformComponent</b> (<a class="el" href="class_vec3.html">Vec3</a> pos, <a class="el" href="class_vec3.html">Vec3</a> rot, <a class="el" href="class_vec3.html">Vec3</a> size)</td></tr>
+<tr class="memitem:a9ebae0ee187d4ba8a7d708d66fe0c303" id="r_a9ebae0ee187d4ba8a7d708d66fe0c303"><td class="memItemLeft" align="right" valign="top"><a id="a9ebae0ee187d4ba8a7d708d66fe0c303" name="a9ebae0ee187d4ba8a7d708d66fe0c303"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TransformComponent</b> ()=default</td></tr>
+<tr class="memdesc:a9ebae0ee187d4ba8a7d708d66fe0c303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor that initializes all members to zero. <br /></td></tr>
+<tr class="separator:a9ebae0ee187d4ba8a7d708d66fe0c303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadc127cd167bfa2482ffcbb6b93a098b" id="r_aadc127cd167bfa2482ffcbb6b93a098b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadc127cd167bfa2482ffcbb6b93a098b">TransformComponent</a> (<a class="el" href="class_vec3.html">Vec3</a> pos, <a class="el" href="class_vec3.html">Vec3</a> rot, <a class="el" href="class_vec3.html">Vec3</a> size)</td></tr>
+<tr class="memdesc:aadc127cd167bfa2482ffcbb6b93a098b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that initializes the position, rotation, and scale of the entity.  <br /></td></tr>
 <tr class="separator:aadc127cd167bfa2482ffcbb6b93a098b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a5fe4f28abaaadcc3d6d86d136ceab800" id="r_a5fe4f28abaaadcc3d6d86d136ceab800"><td class="memItemLeft" align="right" valign="top"><a id="a5fe4f28abaaadcc3d6d86d136ceab800" name="a5fe4f28abaaadcc3d6d86d136ceab800"></a>
 <a class="el" href="class_mat4.html">Mat4</a>&#160;</td><td class="memItemRight" valign="bottom"><b>model_matrix_</b></td></tr>
+<tr class="memdesc:a5fe4f28abaaadcc3d6d86d136ceab800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model matrix of the entity, used for transforming the entity in 3D space. <br /></td></tr>
 <tr class="separator:a5fe4f28abaaadcc3d6d86d136ceab800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eb4fc3cc8be65464f11d0a379972dff" id="r_a9eb4fc3cc8be65464f11d0a379972dff"><td class="memItemLeft" align="right" valign="top"><a id="a9eb4fc3cc8be65464f11d0a379972dff" name="a9eb4fc3cc8be65464f11d0a379972dff"></a>
 <a class="el" href="class_vec3.html">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pos_</b></td></tr>
+<tr class="memdesc:a9eb4fc3cc8be65464f11d0a379972dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position of the entity in 3D space. <br /></td></tr>
 <tr class="separator:a9eb4fc3cc8be65464f11d0a379972dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5bc92417b5b7490ed88124f41fa14f4" id="r_ac5bc92417b5b7490ed88124f41fa14f4"><td class="memItemLeft" align="right" valign="top"><a id="ac5bc92417b5b7490ed88124f41fa14f4" name="ac5bc92417b5b7490ed88124f41fa14f4"></a>
 <a class="el" href="class_vec3.html">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rot_</b></td></tr>
+<tr class="memdesc:ac5bc92417b5b7490ed88124f41fa14f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotation of the entity, typically stored in Euler angles (degrees). <br /></td></tr>
 <tr class="separator:ac5bc92417b5b7490ed88124f41fa14f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac165689f32a46e00aa3a64ab2198ef42" id="r_ac165689f32a46e00aa3a64ab2198ef42"><td class="memItemLeft" align="right" valign="top"><a id="ac165689f32a46e00aa3a64ab2198ef42" name="ac165689f32a46e00aa3a64ab2198ef42"></a>
 <a class="el" href="class_vec3.html">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>size_</b></td></tr>
+<tr class="memdesc:ac165689f32a46e00aa3a64ab2198ef42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale of the entity, used to modify its size. <br /></td></tr>
 <tr class="separator:ac165689f32a46e00aa3a64ab2198ef42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Struct representing an entity's transform data. </p>
+<p>This struct stores information about an entity's position, rotation, scale, and its model matrix. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aadc127cd167bfa2482ffcbb6b93a098b" name="aadc127cd167bfa2482ffcbb6b93a098b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadc127cd167bfa2482ffcbb6b93a098b">&#9670;&#160;</a></span>TransformComponent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TransformComponent::TransformComponent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>pos</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>rot</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_vec3.html">Vec3</a></td>          <td class="paramname"><span class="paramname"><em>size</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor that initializes the position, rotation, and scale of the entity. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>The initial position of the entity. </td></tr>
+    <tr><td class="paramname">rot</td><td>The initial rotation of the entity. </td></tr>
+    <tr><td class="paramname">size</td><td>The initial scale of the entity. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/<a class="el" href="default__components_8hpp_source.html">default_components.hpp</a></li>
+<li>C:/Users/lermami/Documents/3MG_TA_lermami_fuertesco/include/<a class="el" href="default__components_8hpp_source.html">default_components.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

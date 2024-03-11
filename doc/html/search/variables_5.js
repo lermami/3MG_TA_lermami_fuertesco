@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['spec_5fcolor_5f_0',['spec_color_',['../struct_light_component.html#a383ee502ee93a1f168f1f65a4fd056d9',1,'LightComponent']]]
+  ['linear_5f_0',['linear_',['../struct_light_component.html#ac3cb1dc7b165415929c644b1f8908233',1,'LightComponent']]]
 ];

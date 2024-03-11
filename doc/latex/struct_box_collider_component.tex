@@ -1,22 +1,58 @@
 \doxysection{Box\+Collider\+Component Struct Reference}
 \hypertarget{struct_box_collider_component}{}\label{struct_box_collider_component}\index{BoxColliderComponent@{BoxColliderComponent}}
+
+
+Struct representing a box collider attached to an entity.  
+
+
+
+
+{\ttfamily \#include $<$default\+\_\+components.\+hpp$>$}
+
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{struct_box_collider_component_ae9b185418f12359be12cdf209e9e1a90}\label{struct_box_collider_component_ae9b185418f12359be12cdf209e9e1a90} 
-{\bfseries Box\+Collider\+Component} (\mbox{\hyperlink{class_vec3}{Vec3}} extent, \mbox{\hyperlink{class_vec3}{Vec3}} center\+\_\+offset=\mbox{\hyperlink{class_vec3}{Vec3}}(0.\+0f, 0.\+0f, 0.\+0f))
-\end{DoxyCompactItemize}
+\Hypertarget{struct_box_collider_component_a24386a9c812364d191460f729ab738ed}\label{struct_box_collider_component_a24386a9c812364d191460f729ab738ed} 
+{\bfseries Box\+Collider\+Component} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes the box collider with zero extent and no offset. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_box_collider_component_ae9b185418f12359be12cdf209e9e1a90}{Box\+Collider\+Component}} (\mbox{\hyperlink{class_vec3}{Vec3}} extent, \mbox{\hyperlink{class_vec3}{Vec3}} center\+\_\+offset=\mbox{\hyperlink{class_vec3}{Vec3}}(0.\+0f, 0.\+0f, 0.\+0f))
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the extent and center offset of the box collider. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{struct_box_collider_component_a495271eb5cb37418359e1d4cfb837653}\label{struct_box_collider_component_a495271eb5cb37418359e1d4cfb837653} 
 \mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries extent\+\_\+}
-\item 
+\begin{DoxyCompactList}\small\item\em Half-\/extents of the box collider along each axis (X, Y, Z). \end{DoxyCompactList}\item 
 \Hypertarget{struct_box_collider_component_aa57427cdd37fd76930eee62b82e64bba}\label{struct_box_collider_component_aa57427cdd37fd76930eee62b82e64bba} 
 \mbox{\hyperlink{class_vec3}{Vec3}} {\bfseries center\+\_\+offset\+\_\+}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Offset of the bounding box from the entity\textquotesingle{}s center. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing a box collider attached to an entity. 
+
+This struct defines a bounding box for collision detection purposes. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{struct_box_collider_component_ae9b185418f12359be12cdf209e9e1a90}\label{struct_box_collider_component_ae9b185418f12359be12cdf209e9e1a90} 
+\index{BoxColliderComponent@{BoxColliderComponent}!BoxColliderComponent@{BoxColliderComponent}}
+\index{BoxColliderComponent@{BoxColliderComponent}!BoxColliderComponent@{BoxColliderComponent}}
+\doxysubsubsection{\texorpdfstring{BoxColliderComponent()}{BoxColliderComponent()}}
+{\footnotesize\ttfamily Box\+Collider\+Component\+::\+Box\+Collider\+Component (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vec3}{Vec3}}}]{extent,  }\item[{\mbox{\hyperlink{class_vec3}{Vec3}}}]{center\+\_\+offset = {\ttfamily \mbox{\hyperlink{class_vec3}{Vec3}}(0.0f,~0.0f,~0.0f)} }\end{DoxyParamCaption})}
+
+
+
+Constructor that initializes the extent and center offset of the box collider. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em extent} & Half-\/extents of the box collider along each axis (X, Y, Z). \\
+\hline
+{\em center\+\_\+offset} & Offset of the bounding box from the entity\textquotesingle{}s center. Defaults to (0, 0, 0). \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}
+C\+:/\+Users/lermami/\+Documents/3\+MG\+\_\+\+TA\+\_\+lermami\+\_\+fuertesco/include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}
