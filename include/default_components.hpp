@@ -72,7 +72,7 @@ struct TransformComponent {
 
 	TransformComponent() = default;
 
-	TransformComponent(Vec3 pos, Vec3 rot, Vec3 size) {
+	TransformComponent(Vec3 pos, Vec3 rot = Vec3(0.0f, 0.0f, 0.0f), Vec3 size = Vec3(1.0f, 1.0f, 1.0f)) {
 		pos_ = pos;
 		rot_ = rot;
 		size_ = size;
@@ -152,6 +152,9 @@ struct CameraComponent {
 
 	ProjectionMode projectionMode_;
 
+	float last_alpha;
+	float last_omega;
+
 	CameraComponent() {
 		right_ = Vec3(0.0f, 0.0f, 0.0f);
 		up_ = Vec3(0.0f, 1.0f, 0.0f);
@@ -161,6 +164,9 @@ struct CameraComponent {
 		sensitivity_ = 1.0f;
 
 		projectionMode_ = ProjectionMode::kPerspective;
+
+		last_alpha = -1.57f;
+		last_omega = 0.0f;
 	};
 
 	CameraComponent(std::string name, float speed, float sensitivity, ProjectionMode mode = ProjectionMode::kPerspective) {
@@ -174,54 +180,8 @@ struct CameraComponent {
 		sensitivity_ = sensitivity;
 
 		projectionMode_ = mode;
-	}
 
-	void setProjectionMode(ProjectionMode mode) {
-		projectionMode_ = mode;
-	}
-	ProjectionMode getProjectionMode() {
-		return projectionMode_;
-	}
-
-	glm::mat4 getPerspectiveMatrix(float fov, float aspect, float near, float far) {
-		return glm::perspective(glm::radians(fov), aspect, near, far);
-	}
-	glm::mat4 getOrthogonalMatrix(float left, float right, float bottom, float top, float near, float far) {
-		return glm::ortho(left, right, bottom, top, near, far);
-	}
-	glm::mat4 getViewMatrix(Vec3 target, Vec3 up) {
-		glm::vec3 c = { pos_.x, pos_.y, pos_.z };
-		glm::vec3 t = { target.x, target.y, target.z };
-		glm::vec3 u = { up.x, up.y, up.z };
-
-		return glm::lookAt(c, t, u);
-	}
-
-	void doRender(Window* w) {
-		for (int i = 0; i < w->getProgramListSize(); i++) {
-			unsigned program = w->getProgram(i);
-			glUseProgram(program);
-
-			switch (projectionMode_) {
-			case ProjectionMode::kPerspective:
-				glm::mat4 perspective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
-
-				glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(perspective));
-				break;
-			case ProjectionMode::kOrthogonal:
-				glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
-
-				glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(ortographic));
-				break;
-			}
-			//View
-			glm::mat4 view = getViewMatrix(pos_ + forward_, up_);
-			GLint viewMatrixLoc = glGetUniformLocation(program, "u_v_matrix");
-			glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-			//Camera position
-			GLint camPosLoc = glGetUniformLocation(program, "u_camera_pos");
-			glUniform3f(camPosLoc, pos_.x, pos_.y, pos_.z);
-		}
+		last_alpha = -1.57f;
+		last_omega = 0.0f;
 	}
 };

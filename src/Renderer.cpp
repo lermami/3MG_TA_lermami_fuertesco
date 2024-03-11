@@ -2,6 +2,7 @@
 #include "Window.hpp"
 #include "Engine.hpp"
 #include "component_manager.hpp"
+#include "camera.hpp"
 #include "texture.hpp"
 #include "shader_management.hpp"
 
@@ -227,6 +228,9 @@ void Renderer::render()
 {
 	auto& componentM = engine_.getComponentManager();
 	auto& resourceM = engine_.getResourceManager();
+	auto& cameraM = engine_.getCameraManager();
+
+
 	auto renders = componentM.get_component_list<RenderComponent>();
 	auto transforms = componentM.get_component_list<TransformComponent>();
 	auto colors = componentM.get_component_list<ColorComponent>();
@@ -235,9 +239,7 @@ void Renderer::render()
 	auto t = transforms->begin();
 	auto c = colors->begin();
 
-	auto current_cam = componentM.get_component<CameraComponent>(window_.getCurrentCam());
-	current_cam->doRender(&window_);
-	
+	cameraM.doRender(&window_);
 
 	if (renderShadows_) {
 		glViewport(0, 0, shadow_resolution_, shadow_resolution_);
@@ -249,8 +251,6 @@ void Renderer::render()
 		renderShadowMap(shadowProgram_);
 		glFrontFace(GL_CW);
 		glCullFace(GL_FRONT);
-		
-
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -284,12 +284,6 @@ void Renderer::render()
 
 		GLuint uniform_loc = glGetUniformLocation(render.program_, "u_texture");
 		glUniform1i(uniform_loc, 0);
-		/*
-		//Shadows
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, depthmap_);
-		uniform_loc = glGetUniformLocation(render.program_, "u_depth_map");
-		glUniform1i(uniform_loc, 1);*/
 
 		//Color
 		if (c->has_value()) {
@@ -298,11 +292,6 @@ void Renderer::render()
 			GLuint uniform_color = glGetUniformLocation(render.program_, "u_color");
 			glUniform4f(uniform_color, color.color_.x, color.color_.y, color.color_.z, color.color_.w);
 		}
-		/*
-		glm::mat4 shadow_mat = ConfigureShadowMatrix();
-		GLuint shadow = glGetUniformLocation(render.program_, "u_light_space_matrix");
-		glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));*/
-
 
 		unsigned vertex_struct_size = (unsigned)sizeof(Vertex);
 		VertexBuffer* vao = resourceM.getVertexBuffer(render.elements_buffer_);

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "vector_3.hpp"
+#include "enum.hpp"
 
 class Window;
 class Engine;
@@ -10,12 +11,12 @@ class Input;
 struct TransformComponent;
 struct CameraComponent;
 
-class Camera {
+class CameraManager {
 public:
 
-  /*
-  Camera(Engine& e, TransformComponent tr, CameraComponent cam);
-  ~Camera();
+  CameraManager(Engine& e);
+  ~CameraManager();
+
   void setProjectionMode(ProjectionMode mode);
   ProjectionMode getProjectionMode();
 
@@ -29,8 +30,14 @@ public:
   void move(Vec3 vel);
   Vec3 getPosition();
 
-  void doRender();
-  */
+  void doRender(Window* w);
 
+  void setCurrentCam(size_t cam);
+  size_t getCurrentCam();
+
+  void mouseRotate(Input& input, const float w, const float h);
 private:
+  Engine& engine_;
+  size_t current_cam_;
+  size_t default_cam_;
 };

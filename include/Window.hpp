@@ -48,9 +48,6 @@ public:
 
   bool getImguiStatus();
 
-  void setCurrentCam(size_t cam);
-  size_t getCurrentCam();
-
   void resetViewport();
 
 
@@ -69,7 +66,5 @@ private:
 
   std::vector<unsigned> program_list_;
   Engine& engine_;
-
-
 };
 
