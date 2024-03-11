@@ -1,0 +1,75 @@
+\doxysection{input.\+hpp}
+\hypertarget{input_8hpp_source}{}\label{input_8hpp_source}\index{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/input.hpp@{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/input.hpp}}
+\mbox{\hyperlink{input_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}GLFW/glfw3.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_window}{Window}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_input}{Input}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_key}{Key}}\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_input}{Input}};}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00026\ \ \ \mbox{\hyperlink{class_key_a483cf4ac032e626cf7a85c9ad9a8e357}{\string~Key}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_key_ac4540b28d6ff63e259255d3d8b5a660d}{setState}}(InputState\ state);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00040\ \ \ InputState\ \mbox{\hyperlink{class_key_a375f8b203084e982c5abc83b7624db25}{getState}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_key_a53138c3f1bc8b9cc0b3c096e87aa23ea}{setKey}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_key_a75cf7ecc2bef7e45d4497c737c3d268c}{getKey}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{class_key}{Key}}();}
+\DoxyCodeLine{00062\ \ \ InputState\ state\_;\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{int}\ key\_;\ }
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_input}{Input}}\ \{}
+\DoxyCodeLine{00070\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{class_input_a00d09752dc3308af8c22b5cc0bf49c77}{Input}}(\mbox{\hyperlink{class_window}{Window}}\&\ w);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00085\ \ \ \mbox{\hyperlink{class_input_af2db35ba67c8a8ccd23bef6a482fc291}{\string~Input}}();}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_aebd61a28b07314b866e56ac4931c3661}{IsKeyDown}}(\textcolor{keywordtype}{char}\ key);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_affbc74812c8c5f3f5e9236d2f6c9c418}{IsKeyPressed}}(\textcolor{keywordtype}{char}\ key);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a2927c56366d6188682fa53c2872a2932}{IsKeyUp}}(\textcolor{keywordtype}{char}\ key);}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_a71e978e3628a1188ef07a12ebd05df31}{IsKeyDown}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_abd1025a27b7e444542fa35d9f2a1b9e3}{IsKeyPressed}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_input_acdb64de533496a446e52c9f06383e271}{IsKeyUp}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_a9834de596838b116837e980bbd9c6e79}{updateInputs}}();}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_a75944ef3d22efc8d77452071e5c320b0}{setScroll}}(\textcolor{keywordtype}{double}\ scroll\_x,\ \textcolor{keywordtype}{double}\ scroll\_y);}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_aac0a10156e9a919d14fd2ba086bcf11d}{getScroll}}(\textcolor{keywordtype}{double}\&\ scroll\_x,\ \textcolor{keywordtype}{double}\&\ scroll\_y);}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_input_a92958b00d8c33082ea1bfd3c32cc5b37}{getMousePos}}(\textcolor{keywordtype}{double}\ \&x,\ \textcolor{keywordtype}{double}\ \&y);}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00167\ \ \ GLFWwindow*\ windowHandle\_;\ }
+\DoxyCodeLine{00168\ \ \ \mbox{\hyperlink{class_key}{Key}}\ input\_[88];\ }
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scroll\_callback(GLFWwindow*\ window,\ \textcolor{keywordtype}{double}\ xoffset,\ \textcolor{keywordtype}{double}\ yoffset);}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ scroll\_x\_;\ }
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ scroll\_y\_;\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{double}\ mouse\_x\_;\ }
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{double}\ mouse\_y\_;\ }
+\DoxyCodeLine{00185\ \};}
+\DoxyCodeLine{00186\ }
+
+\end{DoxyCode}

@@ -36,6 +36,7 @@ void check_GL(const std::string& text, const char* file, int line) {
 
 #define CHECKGL(s) check_GL(s,__FILE__,__LINE__)
 
+//In this example we will see the different basic shaders that this engine has and the necessary steps to use them.
 int main(int, char**) {
 	Engine e;
 	auto& thread_manager = e.getThreadManager();
@@ -54,13 +55,32 @@ int main(int, char**) {
 
 	Renderer renderer(e, w);
 
+	//[1]. Create and Load the program variable, you can use your own or one of the basics that this engine already have.
+	
+	//These are some of the basic shaders present in the engine to make basic examples:
+
+	//Only a single texture
 	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
+
+	//A single texture but interact with lights (Max 5 light of each type)
 	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
+
+	//A single texture but interact with lights and recieves shadows of a directional light
 	auto texture_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLightShadow.vs", "../assets/BasicShader/Texture/TextureLightshadow.fs");
 
+	//Only a plane color
 	auto color_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/Color.vs", "../assets/BasicShader/BasicColor/Color.fs");
+
+	//A plane color but interact with lights (Max 5 light of each type)
 	auto color_light_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLight.vs", "../assets/BasicShader/BasicColor/ColorLight.fs");
+
+	//A plane color but interact with lights and recieves shadows of a directional light
 	auto color_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLightShadow.vs", "../assets/BasicShader/BasicColor/ColorLightshadow.fs");
+
+
+
+
+	//Depth texture is sent to shader as "uniform sampler2D u_depth_map" and Texture is sent to shader as "uniform sampler2D u_texture"
 
 	resourceM.LoadObj(e, "Cube", "../assets/obj_test.obj");
 	resourceM.WaitResources();
@@ -68,9 +88,15 @@ int main(int, char**) {
 
 	unsigned n_obj = 1000;
 
+	//[2]. (Skip this step if you dont use a texture in your shader) Load in the ResourceManager the texture that you are gona use in the shader.
+	//The name used in loadTexture will be used to refer to the texture loaded. (Maximum one texture per shader).
 	resourceM.loadTexture("Wall", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 		"../assets/wall.jpg");
 
+	//[3]. On any render component add in the program variable that you have just created
+	
+	//In the case of basic engine shaders, for  textures ones you have to add the texture name in the getTexture function inside the RenderComponent constructor, and in the case of plane colours you have to add the ColorComponent as variable on add_entity function
+	
 	//Cubes
 		//1
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-30.0f, 20.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)), 
@@ -105,7 +131,7 @@ int main(int, char**) {
 		ColorComponent(Vec4(0.5f, 0.5f, 0.75f, 1.0f)));
 
 	//Light
-	size_t light_entity[2];
+	size_t light_entity[2]; 
 
 		//Directional
 	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(10.0f, 0.0f, 80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),

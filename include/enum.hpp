@@ -1,66 +1,124 @@
 #pragma once
 
-//Render options
+/**
+ * @brief Options for specifying the front face culling direction.
+ */
 enum class FrontFace {
+  /**< Clock-wise winding order is considered the front face. */
   kClockWise,
+  /**< Counter-clockwise winding order is considered the front face. */
   kCounterClockWise
 };
 
+/**
+ * @brief Options for specifying which faces to cull in the rendering pipeline.
+ */
 enum class CullingMode {
+  /**< Cull only the back face (counter-clockwise winding order). */
   kFrontLeft,
+  /**< Cull only the front face (clockwise winding order). */
   kFrontRight,
+  /**< Cull only the back face (clockwise winding order). */
   kBackLeft,
+  /**< Cull only the front face (counter-clockwise winding order). */
   kBackRight,
+  /**< Cull only the front face. */
   kFront,
+  /**< Cull only the back face. */
   kBack,
+  /**< Cull only the left face. */
   kLeft,
+  /**< Cull only the right face. */
   kRight,
-  kFrontAndBack,
+  /**< Cull both the front and back faces. */
+  kFrontAndBack
 };
 
+/**
+ * @brief Options for specifying depth testing behavior in the fragment shader.
+ */
 enum class DepthTestMode {
+  /**< Never pass the depth test. */
   kNever,
+  /**< Pass the depth test if the fragment's depth is less than the current depth buffer value. */
   kLess,
+  /**< Pass the depth test if the fragment's depth is equal to the current depth buffer value. */
   kEqual,
-  kGreater,
+  /**< Pass the depth test if the fragment's depth is greater than the current depth buffer value. */
+  kGreater
 };
 
+/**
+ * @brief Options for specifying the projection mode for the camera.
+ */
 enum class ProjectionMode {
+  /**< Perspective projection, commonly used for 3D scenes. */
   kPerspective,
-  kOrthogonal,
+  /**< Orthographic projection, commonly used for 2D or UI elements. */
+  kOrthogonal
 };
 
-//Texture options
+/**
+ * @brief Options for specifying the target of a texture (1D, 2D, or 3D).
+ */
 enum class TextureTarget {
+  /**< Texture with one dimension (typically used for grayscale data). */
   kTexture_1D,
+  /**< Texture with two dimensions (most common texture type). */
   kTexture_2D,
-  kTexture_3D,
+  /**< Texture with three dimensions (used for volumetric data). */
+  kTexture_3D
 };
 
+/**
+ * @brief Options for specifying the internal format of a texture (data type).
+ */
 enum class TextureType {
+  /**< Unsigned byte (8-bit) data type for textures. */
   kUnsignedByte,
-  kFloat,
+  /**< Float data type (32-bit) for textures. */
+  kFloat
 };
 
+/**
+ * @brief Options for specifying the texture format (number of components and color space).
+ */
 enum class TextureFormat {
+  /**< Red, Green, and Blue color channels. */
   kRGB,
+  /**< Red, Green, Blue, and Alpha channels. */
   kRGBA,
-  kDepthComponent,
+  /**< Depth component only (used for depth maps). */
+  kDepthComponent
 };
 
+/**
+ * @brief Options for specifying texture filtering behavior for minification and magnification.
+ */
 enum class TextureFiltering {
+  /**< Nearest neighbor filtering (chooses the nearest texel). */
   kNearest,
-  kLinear,
+  /**< Linear filtering (interpolates between neighboring texels). */
+  kLinear
 };
 
-enum class TextureWrap{
+/**
+ * @brief Options for specifying texture wrapping behavior at the borders.
+ */
+enum class TextureWrap {
+  /**< Repeats the texture beyond its boundaries. */
   kRepeat,
+  /**< Mirrors the texture at the borders (creating a repeating mirrored effect). */
   kMirroredRepeat,
+  /**< Clamps the texture coordinates to the edge of the texture (no wrapping). */
   kClampToEdge,
-  kClampToBorder,
+  /**< Clamps the texture coordinates to the edge and uses a user-defined border color. */
+  kClampToBorder
 };
 
-//Light
+/**
+ * @brief Types of lights supported by the engine.
+ */
 enum class LightType {
   kAmbient = 0,
   kDirectional = 1,
@@ -68,7 +126,9 @@ enum class LightType {
   kSpot = 3,
 };
 
-//Input
+/**
+ * @brief Enumeration of all supported keyboard keys.
+ */
 enum KeyEnum {
   kKey_LeftClick = 0,
   kKey_RightClick,
@@ -161,26 +221,33 @@ enum KeyEnum {
   kKey_Menu,
 };
 
-enum InputState {
-  kInactive,
-  kDown,
-  kPressed,
-  kUp,
+/**
+ * @brief Enumeration of possible input states for a key or mouse button.
+ */
+enum class InputState {
+  kInactive,  // Key or button is not pressed or released
+  kDown,      // Key or button is currently pressed
+  kPressed,   // Key or button was just pressed this frame
+  kUp,        // Key or button was just released this frame
 };
 
-//OpenGL API
-enum Target {
-  kTarget_VertexData,
-  kTarget_Elements,
+/**
+ * @brief Enumeration of OpenGL buffer targets used for data binding.
+ */
+enum class Target {
+  kTarget_VertexData,  // Target for vertex data (e.g., VBO)
+  kTarget_Elements    // Target for element data (e.g., EBO)
 };
 
-//Basic Shader enum
-enum ShaderType {
-  kCustom,
-  kTexture,
-  kTextureLight,
-  kTextureLightShadow,
-  kColor,
-  kColorLight,
-  kColorLightShadow,
+/**
+ * @brief Enumeration of predefined shader types offered by the engine.
+ */
+enum class ShaderType {
+  kCustom,             // Custom shader program from user-defined source code
+  kTexture,             // Shader for rendering with textures
+  kTextureLight,        // Shader for rendering with textures and lighting
+  kTextureLightShadow,  // Shader for rendering with textures, lighting, and shadows
+  kColor,               // Shader for rendering with basic color information
+  kColorLight,          // Shader for rendering with basic color and lighting
+  kColorLightShadow     // Shader for rendering with basic color, lighting, and shadows
 };

@@ -27,8 +27,13 @@
 #include "default_components.hpp"
 #include "resource_manager.hpp"
 
+//In this example we will se how to add an object to the engine
 int main(int, char**) {
+
+	//[1]. Init the engine
 	Engine e;
+
+	//[2]. Get component and resource and thread manager
 	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
@@ -45,25 +50,31 @@ int main(int, char**) {
 
 	Renderer renderer(e, w);
 
-	auto simpleProgram = CreateProgram(w, "../assets/laboon/laboon.vs", "../assets/laboon/laboon.fs");
-
+	//[3]. Load OBJ
 	resourceM.LoadObj(e, "LaboonObj", "../assets/laboon/laboon.obj");
 	resourceM.LoadObj(e, "CubeObj", "../assets/obj_test.obj");
 	resourceM.LoadObj(e, "SuzanneObj", "../assets/Suzanne.obj");
 
+	//[4]. Load obj textures if necesary
 	resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 																						 "../assets/laboon/laboon.png");
 
 	resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 																						"../assets/wall.jpg");
 
+	//[5]. Add a shader for the object 
+	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
+
+
+	//[6]. Wait for resourcess to load
 	resourceM.WaitResources();
 
-	Geometry* laboon_geo = resourceM.getGeometry("SuzanneObj");
-	resourceM.createBuffersWithGeometry(laboon_geo, "LaboonVertices", "LaboonIndices");
+	//[7]. Set a buffer to store your geometry
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("LaboonObj"), "LaboonVertices", "LaboonIndices");
 
+	//[8]. Add an entity of your geometry
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", simpleProgram, resourceM.getTexture("Laboon")));
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_light_shader, resourceM.getTexture("Laboon")));
 	
   //Light
 	size_t light_entity[4];
@@ -135,6 +146,7 @@ int main(int, char**) {
 		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(e, w);
 
+		//[9]. Render
 		renderer.render();
 
 		w.swap();

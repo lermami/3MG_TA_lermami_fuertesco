@@ -1,0 +1,185 @@
+.TH "CameraComponent" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+CameraComponent \- Struct representing a camera component attached to an entity\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <default_components\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBCameraComponent\fP ()"
+.br
+.RI "Default constructor that initializes the camera with common values\&. "
+.ti -1c
+.RI "void \fBsetProjectionMode\fP (ProjectionMode mode)"
+.br
+.RI "Sets the projection mode used by the camera (perspective or orthographic)\&. "
+.ti -1c
+.RI "ProjectionMode \fBgetProjectionMode\fP ()"
+.br
+.RI "Gets the current projection mode used by the camera\&. "
+.ti -1c
+.RI "glm::mat4 \fBgetPerspectiveMatrix\fP (float fov, float aspect, float near, float far)"
+.br
+.RI "Calculates and returns the perspective projection matrix\&. "
+.ti -1c
+.RI "glm::mat4 \fBgetOrthogonalMatrix\fP (float left, float right, float bottom, float top, float near, float far)"
+.br
+.RI "Calculates and returns the orthographic projection matrix\&. "
+.ti -1c
+.RI "glm::mat4 \fBgetViewMatrix\fP (\fBVec3\fP target, \fBVec3\fP up)"
+.br
+.RI "Calculates and returns the view matrix based on the camera's position and orientation\&. "
+.ti -1c
+.RI "void \fBdoRender\fP (\fBWindow\fP *w)"
+.br
+.RI "Sets up projection and view matrices for all shaders in a window\&. "
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBVec3\fP \fBpos_\fP"
+.br
+.RI "Position of the camera in 3D space\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBforward_\fP"
+.br
+.RI "Forward direction of the camera\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBup_\fP"
+.br
+.RI "Up direction of the camera (usually Y-axis)\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBright_\fP"
+.br
+.RI "Right direction of the camera (orthogonal to forward and up)\&. "
+.ti -1c
+.RI "float \fBspeed_\fP"
+.br
+.RI "Movement speed of the camera\&. "
+.ti -1c
+.RI "float \fBsensitivity_\fP"
+.br
+.RI "Mouse sensitivity for camera rotation\&. "
+.ti -1c
+.RI "ProjectionMode \fBprojectionMode_\fP"
+.br
+.RI "Current projection mode used by the camera\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a camera component attached to an entity\&. 
+
+This struct stores camera properties and provides methods for setting up projection and view matrices\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "void CameraComponent::doRender (\fBWindow\fP * w)\fR [inline]\fP"
+
+.PP
+Sets up projection and view matrices for all shaders in a window\&. This function iterates through all shaders in a provided window and sets their uniform variables for projection and view matrices based on the camera's current state\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIw\fP Pointer to the \fBWindow\fP object containing the shaders\&. 
+.RE
+.PP
+
+.SS "glm::mat4 CameraComponent::getOrthogonalMatrix (float left, float right, float bottom, float top, float near, float far)\fR [inline]\fP"
+
+.PP
+Calculates and returns the orthographic projection matrix\&. This function generates an orthographic projection matrix based on the provided left, right, bottom, top, near and far planes\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIleft\fP Left coordinate of the projection frustum\&. 
+.br
+\fIright\fP Right coordinate of the projection frustum\&. 
+.br
+\fIbottom\fP Bottom coordinate of the projection frustum\&. 
+.br
+\fItop\fP Top coordinate of the projection frustum\&. 
+.br
+\fInear\fP Distance to the near clipping plane\&. 
+.br
+\fIfar\fP Distance to the far clipping plane\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The orthographic projection matrix\&. 
+.RE
+.PP
+
+.SS "glm::mat4 CameraComponent::getPerspectiveMatrix (float fov, float aspect, float near, float far)\fR [inline]\fP"
+
+.PP
+Calculates and returns the perspective projection matrix\&. This function generates a perspective projection matrix based on the provided field of view, aspect ratio, near and far planes\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfov\fP Field of view of the camera in degrees\&. 
+.br
+\fIaspect\fP Aspect ratio of the viewport (width / height)\&. 
+.br
+\fInear\fP Distance to the near clipping plane\&. 
+.br
+\fIfar\fP Distance to the far clipping plane\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The perspective projection matrix\&. 
+.RE
+.PP
+
+.SS "ProjectionMode CameraComponent::getProjectionMode ()\fR [inline]\fP"
+
+.PP
+Gets the current projection mode used by the camera\&. 
+.PP
+\fBReturns\fP
+.RS 4
+The current projection mode\&. 
+.RE
+.PP
+
+.SS "glm::mat4 CameraComponent::getViewMatrix (\fBVec3\fP target, \fBVec3\fP up)\fR [inline]\fP"
+
+.PP
+Calculates and returns the view matrix based on the camera's position and orientation\&. This function generates a view matrix that transforms the world into the camera's eye space\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target point the camera is looking at\&. 
+.br
+\fIup\fP The up vector of the camera (usually Y-axis)\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The view matrix\&. 
+.RE
+.PP
+
+.SS "void CameraComponent::setProjectionMode (ProjectionMode mode)\fR [inline]\fP"
+
+.PP
+Sets the projection mode used by the camera (perspective or orthographic)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImode\fP The new projection mode to use\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

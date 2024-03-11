@@ -15,6 +15,8 @@
 
 #include "sound/soundbuffer.h"
 
+
+//In this example we will see how to introduce and use sounds/songs
 int main(int, char**) {
   Engine e;
   auto& component_manager = e.getComponentManager();
@@ -26,6 +28,7 @@ int main(int, char**) {
   auto& w = maybe_w.value();
   w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
 
+  //[1]. Init Sound context in the window you are gonna use
   w.initSoundContext();
 
   Renderer renderer(e, w);
@@ -40,11 +43,16 @@ int main(int, char**) {
 
   triangleGeo.indices_= { 0, 1, 2 };
 
-  auto simpleProgram = CreateProgram(w, "../assets/raw_shader/raw.vs", "../assets/raw_shader/raw.fs");
+  auto simpleProgram = CreateProgram(w, "../assets/BasicShader/BasicColor/VertexColor.vs", "../assets/BasicShader/BasicColor/VertexColor.fs");
   resourceM.createBuffersWithGeometry(&triangleGeo, "TriangleVertices", "TriangleIndices");
 
+  //[2]. Create the sound buffer for your .wav file (it has to be a mono .wav file) 
   SoundBuffer testBuffer = SoundBuffer::MakeBuffer("../assets/test.wav").value();
+
+  //Sound pos
   ALfloat pos[3] = { 0,0,0 };
+
+  //Sound velocity
   ALfloat vel[3] = { 0,0,0 };
 
   size_t triangle = component_manager.add_entity(TransformComponent(Vec3(-0.5f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
@@ -67,6 +75,7 @@ int main(int, char**) {
     input_map.updateInputs();
     w.updateImGui();
 
+    //[3]. (Imgui funcion made to control the sound off the example), for more information go to "SoundSource.h".
     basic_sound_system(*component_manager.get_component_list<AudioComponent>());
 
     // Draw triangle

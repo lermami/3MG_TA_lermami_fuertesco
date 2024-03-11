@@ -1,0 +1,61 @@
+\doxysection{soundsource.\+h}
+\hypertarget{soundsource_8h_source}{}\label{soundsource_8h_source}\index{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/sound/soundsource.h@{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/sound/soundsource.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//Author:\ Simone\ Cannone\ \ }}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}AL/al.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}AL/alc.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_sound_buffer}{SoundBuffer}};}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_sound_source}{SoundSource}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00012\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}();}
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}(std::string\ name,ALfloat\ pos[3],\ ALfloat\ speed[3],\textcolor{keywordtype}{float}\ gain\ =\ 1.0f,\ \textcolor{keywordtype}{float}\ pitch\ =\ 1.0f);}
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{\string~SoundSource}}();}
+\DoxyCodeLine{00015\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_sound_source}{SoundSource}}\&\ other);}
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}(\mbox{\hyperlink{class_sound_source}{SoundSource}}\&\ other);}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}(\mbox{\hyperlink{class_sound_source}{SoundSource}}\&\&\ other);}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{class_sound_source}{SoundSource}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_sound_source}{SoundSource}}\&\ o);\ \ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ setLoop(\textcolor{keywordtype}{bool}\ state);\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ setPos(ALfloat\ pos[3]);}
+\DoxyCodeLine{00022\ \ \ \ \ ALfloat*\ getPos();}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ setVelocity(ALfloat\ speed[3]);}
+\DoxyCodeLine{00024\ \ \ \ \ ALfloat*\ getVelocity();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ updatePos(ALfloat\ pos[3]);}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ updateGain(\textcolor{keywordtype}{float}\ gain);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ updatePitch(\textcolor{keywordtype}{float}\ pitch);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ setGain(\textcolor{keywordtype}{float}\ gain);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ setPitch(\textcolor{keywordtype}{float}\ pitch);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{float}\ Gain();}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{float}\ Pitch();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ Loop();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ addSound(\mbox{\hyperlink{class_sound_buffer}{SoundBuffer}}*\ b);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ unbindSound();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{bool}\ isPlaying();}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ Play();}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ Stop();}
+\DoxyCodeLine{00039\ \ \ \ \ std::string\ Name();}
+\DoxyCodeLine{00040\ \ \ \ \ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ destructible\_;}
+\DoxyCodeLine{00043\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00044\ \ \ \ \ std::string\ name\_;}
+\DoxyCodeLine{00045\ \ \ \ \ ALfloat\ pos\_[3];}
+\DoxyCodeLine{00046\ \ \ \ \ ALfloat\ speed\_[3];}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{float}\ gain\_;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{float}\ pitch\_;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ loop\_;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ ALuint\ src\_;}
+\DoxyCodeLine{00052\ \ \ \ \ ALuint\ buffer\_;}
+\DoxyCodeLine{00053\ \ \ \ \ }
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \};}
+
+\end{DoxyCode}

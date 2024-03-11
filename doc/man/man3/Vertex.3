@@ -1,0 +1,66 @@
+.TH "Vertex" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Vertex \- Struct representing a vertex in 3D space\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <default_components\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBVertex\fP &o) const"
+.br
+.RI "Compares two vertices for equality\&. "
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBVec3\fP \fBpos\fP"
+.br
+.RI "Position of the vertex in 3D space\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBnormal\fP"
+.br
+.RI "Normal vector of the vertex, used for lighting calculations\&. "
+.ti -1c
+.RI "\fBVec2\fP \fBuv\fP"
+.br
+.RI "UV coordinates for texture mapping\&. "
+.ti -1c
+.RI "\fBVec4\fP \fBcolor\fP"
+.br
+.RI "Color of the vertex\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a vertex in 3D space\&. 
+
+A vertex typically represents a single point in 3D space and holds various attributes used for rendering\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Vertex::operator== (const \fBVertex\fP & o) const\fR [inline]\fP"
+
+.PP
+Compares two vertices for equality\&. This operator compares the position, normal, and UV coordinates of two vertices for equality\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIo\fP The other vertex to compare with\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if all components (position, normal, UV) are equal, false otherwise\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.
