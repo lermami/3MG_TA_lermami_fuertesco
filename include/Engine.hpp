@@ -15,6 +15,7 @@
 struct ComponentManager;
 class ResourceManager;
 class ThreadManager;
+class CameraManager;
 
 /**
  * @brief Main class representing the game engine, managing core subsystems.
@@ -49,6 +50,7 @@ public:
    * @return Reference to the ThreadManager.
    */
   ThreadManager& getThreadManager();
+  CameraManager& getCameraManager();
 
 private:
 
@@ -66,4 +68,5 @@ private:
    * @brief Manages threading for multithreaded tasks.
    */
   std::unique_ptr<ThreadManager> threadM_;
+  std::unique_ptr<CameraManager> cameraM_;
 };

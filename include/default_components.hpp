@@ -184,7 +184,7 @@ struct TransformComponent {
 	 * @param rot The initial rotation of the entity.
 	 * @param size The initial scale of the entity.
 	 */
-	TransformComponent(Vec3 pos, Vec3 rot, Vec3 size) {
+	TransformComponent(Vec3 pos, Vec3 rot = Vec3(0.0f, 0.0f, 0.0f), Vec3 size = Vec3(1.0f, 1.0f, 1.0f)) {
 		pos_ = pos;
 		rot_ = rot;
 		size_ = size;
@@ -371,6 +371,9 @@ struct RenderComponent {
  * This struct stores camera properties and provides methods for setting up projection and view matrices.
  */
 struct CameraComponent {
+  
+	std::string name_;
+  
 	/**
 	 * @brief Position of the camera in 3D space.
 	 */
@@ -406,11 +409,13 @@ struct CameraComponent {
 	 */
 	ProjectionMode projectionMode_;
 
+	float last_alpha;
+	float last_omega;
+  
 	/**
 	 * @brief Default constructor that initializes the camera with common values.
 	 */
 	CameraComponent() {
-		pos_ = Vec3(0.0f, 0.0f, 0.0f);
 		right_ = Vec3(0.0f, 0.0f, 0.0f);
 		up_ = Vec3(0.0f, 1.0f, 0.0f);
 		forward_ = Vec3(0.0f, 0.0f, -1.0f);
@@ -419,110 +424,24 @@ struct CameraComponent {
 		sensitivity_ = 1.0f;
 
 		projectionMode_ = ProjectionMode::kPerspective;
-	}
 
-	/**
-	 * @brief Sets the projection mode used by the camera (perspective or orthographic).
-	 *
-	 * @param mode The new projection mode to use.
-	 */
-	void setProjectionMode(ProjectionMode mode) {
+		last_alpha = -1.57f;
+		last_omega = 0.0f;
+	};
+
+	CameraComponent(std::string name, float speed, float sensitivity, ProjectionMode mode = ProjectionMode::kPerspective) {
+		name_ = name;
+    
+    right_ = Vec3(0.0f, 0.0f, 0.0f);
+		up_ = Vec3(0.0f, 1.0f, 0.0f);
+		forward_ = Vec3(0.0f, 0.0f, -1.0f);
+
+		speed_ = speed;
+		sensitivity_ = sensitivity;
+
 		projectionMode_ = mode;
-	}
-
-	/**
-	 * @brief Gets the current projection mode used by the camera.
-	 *
-	 * @return The current projection mode.
-	 */
-	ProjectionMode getProjectionMode() {
-		return projectionMode_;
-	}
-
-	/**
-	 * @brief Calculates and returns the perspective projection matrix.
-	 *
-	 * This function generates a perspective projection matrix based on the provided field of view, aspect ratio, near and far planes.
-	 *
-	 * @param fov Field of view of the camera in degrees.
-	 * @param aspect Aspect ratio of the viewport (width / height).
-	 * @param near Distance to the near clipping plane.
-	 * @param far Distance to the far clipping plane.
-	 *
-	 * @return The perspective projection matrix.
-	 */
-	glm::mat4 getPerspectiveMatrix(float fov, float aspect, float near, float far) {
-		return glm::perspective(glm::radians(fov), aspect, near, far);
-	}
-
-	/**
-	 * @brief Calculates and returns the orthographic projection matrix.
-	 *
-	 * This function generates an orthographic projection matrix based on the provided left, right, bottom, top, near and far planes.
-	 *
-	 * @param left Left coordinate of the projection frustum.
-	 * @param right Right coordinate of the projection frustum.
-	 * @param bottom Bottom coordinate of the projection frustum.
-	 * @param top Top coordinate of the projection frustum.
-	 * @param near Distance to the near clipping plane.
-	 * @param far Distance to the far clipping plane.
-	 *
-	 * @return The orthographic projection matrix.
-	 */
-	glm::mat4 getOrthogonalMatrix(float left, float right, float bottom, float top, float near, float far) {
-		return glm::ortho(left, right, bottom, top, near, far);
-	}
-
-	/**
-	 * @brief Calculates and returns the view matrix based on the camera's position and orientation.
-	 *
-	 * This function generates a view matrix that transforms the world into the camera's eye space.
-	 *
-	 * @param target The target point the camera is looking at.
-	 * @param up The up vector of the camera (usually Y-axis).
-	 *
-	 * @return The view matrix.
-	 */
-	glm::mat4 getViewMatrix(Vec3 target, Vec3 up) {
-		glm::vec3 c = { pos_.x, pos_.y, pos_.z };
-		glm::vec3 t = { target.x, target.y, target.z };
-		glm::vec3 u = { up.x, up.y, up.z };
-
-		return glm::lookAt(c, t, u);
-	}
-
-	/**
-	* @brief Sets up projection and view matrices for all shaders in a window.
-	*
-	* This function iterates through all shaders in a provided window and sets their uniform variables for projection and view matrices based on the camera's current state.
-	*
-	* @param w Pointer to the Window object containing the shaders.
-	*/
-	void doRender(Window* w) {
-		for (int i = 0; i < w->getProgramListSize(); i++) {
-			unsigned program = w->getProgram(i);
-			glUseProgram(program);
-
-			switch (projectionMode_) {
-			case ProjectionMode::kPerspective:
-				glm::mat4 perspective = getPerspectiveMatrix(60.0f, 1024.0f / 768.0f, 0.01f, 100000.0f);
-
-				glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(perspective));
-				break;
-			case ProjectionMode::kOrthogonal:
-				glm::mat4 ortographic = getOrthogonalMatrix(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100000.0f);
-
-				glUniformMatrix4fv(glGetUniformLocation(program, "u_p_matrix"), 1, GL_FALSE, glm::value_ptr(ortographic));
-				break;
-			}
-			//View
-			glm::mat4 view = getViewMatrix(pos_ + forward_, up_);
-			GLint viewMatrixLoc = glGetUniformLocation(program, "u_v_matrix");
-			glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-			//Camera position
-			GLint camPosLoc = glGetUniformLocation(program, "u_camera_pos");
-			glUniform3f(camPosLoc, pos_.x, pos_.y, pos_.z);
-		}
+    
+    last_alpha = -1.57f;
+		last_omega = 0.0f;
 	}
 };

@@ -202,23 +202,6 @@ public:
    */
   bool getImguiStatus();
 
-  /**
-  * Sets the current camera to be used for rendering.
-  *
-  * @param cam Entity of the camera to set as current.
-  */
-  void setCurrentCam(size_t cam);
-
-  /**
-  * Gets the index of the currently active camera.
-  *
-  * @return The enitity of the current camera.
-  */
-  size_t getCurrentCam();
-
-  /**
-  * Resets the viewport to the entire window size.
-  */
   void resetViewport();
 
 
@@ -251,7 +234,5 @@ private:
 
   std::vector<unsigned> program_list_;
   Engine& engine_;
-
-
 };
 

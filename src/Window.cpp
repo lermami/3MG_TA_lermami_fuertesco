@@ -3,6 +3,7 @@
 #include "enum.hpp"
 #include "shader_management.hpp"
 #include "component_manager.hpp"
+#include "camera.hpp"
 #include "texture.hpp"
 
 #include <time.h>
@@ -44,6 +45,9 @@ Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_
 	currentTime_ = 0;
 	lastTime_ = 0;
 	deltaTime_ = 0;
+
+	current_cam_ = e.getComponentManager().add_entity(TransformComponent(), CameraComponent("DefaultCamera", 1.0f, 1.0f));
+	e.getCameraManager().setCurrentCam(current_cam_);
 }
 
 Window::~Window() {
@@ -72,6 +76,7 @@ Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
 	w.imguiInit_ = false;
 
 	program_list_ = w.program_list_;
+	current_cam_ = w.current_cam_;
 }
 
 Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }  {
@@ -90,6 +95,7 @@ Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }
 	w.imguiInit_ = false;
 
 	program_list_ = w.program_list_;
+	current_cam_ = w.current_cam_;
 }
 
 void Window::initSoundContext() {
@@ -230,14 +236,6 @@ unsigned Window::getProgram(int n) {
 
 int Window::getProgramListSize() {
   return (int)program_list_.size();
-}
-
-void Window::setCurrentCam(size_t cam) {
-	current_cam_ = cam;
-}
-
-size_t Window::getCurrentCam() {
-	return current_cam_;
 }
 
 bool Window::getImguiStatus() {
