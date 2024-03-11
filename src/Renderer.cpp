@@ -199,8 +199,6 @@ void Renderer::CalculateShadowsMatrix() {
 			auto& light = l->value();
 			auto& transform = t->value();
 
-			char name[64];
-
 			//Directional
 			if (light.type_ == LightType::kDirectional) {
 

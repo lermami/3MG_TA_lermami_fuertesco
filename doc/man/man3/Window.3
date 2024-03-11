@@ -1,0 +1,324 @@
+.TH "Window" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Window \- This class represents a window for the application\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <Window\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB~Window\fP ()"
+.br
+.ti -1c
+.RI "\fBWindow\fP (\fBWindow\fP &w)"
+.br
+.ti -1c
+.RI "\fBWindow\fP (\fBWindow\fP &&w) noexcept"
+.br
+.ti -1c
+.RI "\fBWindow\fP (const \fBWindow\fP &)=delete"
+.br
+.ti -1c
+.RI "bool \fBis_done\fP () const"
+.br
+.ti -1c
+.RI "void \fBswap\fP ()"
+.br
+.ti -1c
+.RI "void \fBclearColor\fP (float r, float g, float b, float a) const"
+.br
+.ti -1c
+.RI "void \fBupdateImGui\fP ()"
+.br
+.ti -1c
+.RI "void \fBinitSoundContext\fP ()"
+.br
+.ti -1c
+.RI "float \fBgetDeltaTime\fP ()"
+.br
+.ti -1c
+.RI "void \fBcalculateCurrentTime\fP ()"
+.br
+.ti -1c
+.RI "void \fBcalculateLastTime\fP ()"
+.br
+.ti -1c
+.RI "void \fBenableCulling\fP (bool enable)"
+.br
+.ti -1c
+.RI "void \fBsetCullingMode\fP (CullingMode culling, FrontFace frontface)"
+.br
+.ti -1c
+.RI "void \fBenableDepthTest\fP (bool enable)"
+.br
+.ti -1c
+.RI "void \fBsetDepthTestMode\fP (DepthTestMode mode)"
+.br
+.ti -1c
+.RI "void \fBgetWindowSize\fP (unsigned int &w, unsigned int &h)"
+.br
+.ti -1c
+.RI "void \fBsetwindowsize\fP (unsigned int w, unsigned int h)"
+.br
+.ti -1c
+.RI "void \fBaddProgram\fP (unsigned new_program)"
+.br
+.ti -1c
+.RI "unsigned \fBgetProgram\fP (int n)"
+.br
+.ti -1c
+.RI "int \fBgetProgramListSize\fP ()"
+.br
+.ti -1c
+.RI "bool \fBgetImguiStatus\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetCurrentCam\fP (size_t cam)"
+.br
+.ti -1c
+.RI "size_t \fBgetCurrentCam\fP ()"
+.br
+.ti -1c
+.RI "void \fBresetViewport\fP ()"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static std::optional< \fBWindow\fP > \fBcreate\fP (\fBEngine\fP &engine, int w, int h, const char *title='Window', bool imgui=false)"
+.br
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBInput\fP"
+.br
+.ti -1c
+.RI "class \fBCamera\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class represents a window for the application\&. 
+
+The \fBWindow\fP class provides functionality to create, manage, and render through a window used by the application\&. It exposes methods to handle window creation, destruction, swapping buffers, setting clear color, managing ImGui integration, handling sound context, managing time delta, camera management, culling and depth test configuration, retrieving window size, setting window size, program management, retrieving ImGui integration status, and resetting the viewport\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Window::~Window ()"
+Destructor for the \fBWindow\fP class\&. 
+.SS "Window::Window (\fBWindow\fP & w)"
+Copy constructor\&. 
+.SS "Window::Window (\fBWindow\fP && w)\fR [noexcept]\fP"
+Move constructor\&. 
+.SS "Window::Window (const \fBWindow\fP &)\fR [delete]\fP"
+Copy constructor (disabled)\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "void Window::addProgram (unsigned new_program)"
+Adds a new shader program to the window's internal list\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fInew_program\fP ID of the new program to add\&. 
+.RE
+.PP
+
+.SS "void Window::calculateCurrentTime ()"
+Updates the current time for calculating time delta\&. 
+.SS "void Window::calculateLastTime ()"
+Updates the last time for calculating time delta\&. 
+.SS "void Window::clearColor (float r, float g, float b, float a) const"
+Sets the clear color for the window\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIr\fP Red value (0\&.0f - 1\&.0f)\&. 
+.br
+\fIg\fP Green value (0\&.0f - 1\&.0f)\&. 
+.br
+\fIb\fP Blue value (0\&.0f - 1\&.0f)\&. 
+.br
+\fIa\fP Alpha value (0\&.0f - 1\&.0f)\&. 
+.RE
+.PP
+
+.SS "static std::optional< \fBWindow\fP > Window::create (\fBEngine\fP & engine, int w, int h, const char * title = \fR'Window'\fP, bool imgui = \fRfalse\fP)\fR [static]\fP"
+Static method to create a \fBWindow\fP instance\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIengine\fP Reference to the \fBEngine\fP object\&. 
+.br
+\fIw\fP Width of the window\&. 
+.br
+\fIh\fP Height of the window\&. 
+.br
+\fItitle\fP Title of the window (default: 'Window')\&. 
+.br
+\fIimgui\fP Flag to enable ImGui integration (default: false)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+An optional \fBWindow\fP object, empty if creation failed\&. 
+.RE
+.PP
+
+.SS "void Window::enableCulling (bool enable)"
+Enables or disables backface culling\&.
+.PP
+Backface culling is an optimization technique that discards geometric primitives that are facing away from the viewer\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIenable\fP True to enable backface culling, false to disable\&. 
+.RE
+.PP
+
+.SS "void Window::enableDepthTest (bool enable)"
+Enables or disables depth testing\&.
+.PP
+Depth testing is a technique used to determine which fragment is closer to the camera when rendering overlapping geometry\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIenable\fP True to enable depth testing, false to disable\&. 
+.RE
+.PP
+
+.SS "size_t Window::getCurrentCam ()"
+Gets the index of the currently active camera\&.
+.PP
+\fBReturns\fP
+.RS 4
+The enitity of the current camera\&. 
+.RE
+.PP
+
+.SS "float Window::getDeltaTime ()"
+Calculates the time delta since the last frame\&.
+.PP
+\fBReturns\fP
+.RS 4
+Time delta in seconds since the last frame\&. 
+.RE
+.PP
+
+.SS "bool Window::getImguiStatus ()"
+Checks if ImGui integration is enabled for this window\&.
+.PP
+\fBReturns\fP
+.RS 4
+True if ImGui is enabled, false otherwise\&. 
+.RE
+.PP
+
+.SS "unsigned Window::getProgram (int n)"
+Retrieves a shader program from the window's internal list\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIn\fP Index of the program to retrieve (0-based)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ID of the program at the specified index\&. 
+.RE
+.PP
+
+.SS "int Window::getProgramListSize ()"
+Gets the size of the window's shader program list\&.
+.PP
+\fBReturns\fP
+.RS 4
+The number of programs stored in the window's internal list\&. 
+.RE
+.PP
+
+.SS "void Window::getWindowSize (unsigned int & w, unsigned int & h)"
+Retrieves the current window width and height\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIw\fP Reference to store the window width\&. 
+.br
+\fIh\fP Reference to store the window height\&. 
+.RE
+.PP
+
+.SS "void Window::initSoundContext ()"
+Opens sound device and creates OpenAL context\&. 
+.SS "bool Window::is_done () const"
+Checks if the window should be closed\&.
+.PP
+\fBReturns\fP
+.RS 4
+True if the window should be closed, false otherwise\&. 
+.RE
+.PP
+
+.SS "void Window::resetViewport ()"
+Resets the viewport to the entire window size\&. 
+.SS "void Window::setCullingMode (CullingMode culling, FrontFace frontface)"
+Sets the culling mode (front face and backface)\&.
+.PP
+Specifies which faces to cull based on the winding order of their vertices\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIculling\fP The culling mode to use 
+.br
+\fIfrontface\fP The winding order that defines the front face 
+.RE
+.PP
+
+.SS "void Window::setCurrentCam (size_t cam)"
+Sets the current camera to be used for rendering\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIcam\fP Entity of the camera to set as current\&. 
+.RE
+.PP
+
+.SS "void Window::setDepthTestMode (DepthTestMode mode)"
+Sets the depth test mode\&.
+.PP
+Specifies how to compare the fragment's depth with the depth buffer value\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImode\fP The depth test mode to use \&. 
+.RE
+.PP
+
+.SS "void Window::setwindowsize (unsigned int w, unsigned int h)"
+Sets the window size\&.
+.PP
+Resizes the window to the specified width and height\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIw\fP New width of the window\&. 
+.br
+\fIh\fP New height of the window\&. 
+.RE
+.PP
+
+.SS "void Window::swap ()"
+Swaps the front and back buffers of the window\&. 
+.SS "void Window::updateImGui ()"
+Updates ImGui frame\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

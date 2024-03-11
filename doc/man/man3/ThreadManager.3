@@ -1,0 +1,123 @@
+.TH "ThreadManager" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ThreadManager \- This class manages a pool of threads that can be used to execute tasks concurrently\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <thread_manager\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBThreadManager\fP ()"
+.br
+.ti -1c
+.RI "\fB~ThreadManager\fP ()"
+.br
+.ti -1c
+.RI "void \fBsetStop\fP (bool stop)"
+.br
+.ti -1c
+.RI "template<typename T > std::future< T > \fBadd\fP (const std::function< T()> &f)"
+.br
+.ti -1c
+.RI "template<typename T > bool \fBcheckFuture\fP (const std::future< T > &f)"
+.br
+.ti -1c
+.RI "template<typename T > void \fBwaitFuture\fP (const std::future< T > &f)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This class manages a pool of threads that can be used to execute tasks concurrently\&. 
+
+The \fBThreadManager\fP class provides functionality to add tasks to a queue, spawn worker threads, and manage their execution\&. It allows adding functions as tasks, checking the status of futures, and waiting for them to complete\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "ThreadManager::ThreadManager ()"
+Constructor for the \fBThreadManager\fP class\&.
+.PP
+Creates a \fBThreadManager\fP object and start all the threads of the device\&. 
+.SS "ThreadManager::~ThreadManager ()"
+Destructor for the \fBThreadManager\fP class\&.
+.PP
+Waits for all worker threads to finish their tasks and releases resources\&. 
+.SH "Member Function Documentation"
+.PP 
+.SS "template<typename T > std::future< T > ThreadManager::add (const std::function< T()> & f)\fR [inline]\fP"
+Template method to add a task to the queue and return a future object\&.
+.PP
+This template method allows adding a function object to the task queue\&. It creates a std::packaged_task, associates it with the function, and returns a future object that represents the eventual result of the task\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The return type of the function object (task)\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIf\fP The function object to be executed as a task\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A std::future object representing the eventual result of the task\&. 
+.RE
+.PP
+
+.SS "template<typename T > bool ThreadManager::checkFuture (const std::future< T > & f)\fR [inline]\fP"
+Template method to check the status of a future object\&.
+.PP
+This template method checks the status of a std::future object using std::future_status\&. It returns true if the future is ready, false otherwise (deferred or timed out)\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of the value stored in the future\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIf\fP The future object to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the future is ready, false otherwise\&. 
+.RE
+.PP
+
+.SS "void ThreadManager::setStop (bool stop)"
+Signals the worker threads to stop processing new tasks\&.
+.PP
+This method sets an internal flag to stop processing new tasks, allowing existing tasks to finish before exiting\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIstop\fP Flag indicating whether to stop processing new tasks (true) or resume (false)\&. 
+.RE
+.PP
+
+.SS "template<typename T > void ThreadManager::waitFuture (const std::future< T > & f)\fR [inline]\fP"
+Template method to wait for a future object to complete\&.
+.PP
+This template method repeatedly calls std::future_status::wait_for on the provided future object until it reaches a ready state\&.
+.PP
+\fBTemplate Parameters\fP
+.RS 4
+\fIT\fP The type of the value stored in the future\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIf\fP The future object to wait for\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

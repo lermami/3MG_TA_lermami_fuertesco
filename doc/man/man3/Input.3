@@ -1,0 +1,220 @@
+.TH "Input" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Input \- Manages input for the application, including keyboard, mouse, and scroll events\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <input\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBInput\fP (\fBWindow\fP &w)"
+.br
+.RI "Constructor for \fBInput\fP class\&. Takes a reference to the GLFWwindow object to handle input events\&. "
+.ti -1c
+.RI "\fB~Input\fP ()"
+.br
+.RI "Destructor for \fBInput\fP class\&. Performs any necessary cleanup for the input system\&. "
+.ti -1c
+.RI "bool \fBIsKeyDown\fP (char key)"
+.br
+.RI "Checks if a character key is currently pressed down\&. "
+.ti -1c
+.RI "bool \fBIsKeyPressed\fP (char key)"
+.br
+.RI "Checks if a character key was just pressed in the current frame\&. "
+.ti -1c
+.RI "bool \fBIsKeyUp\fP (char key)"
+.br
+.RI "Checks if a character key is currently not pressed down\&. "
+.ti -1c
+.RI "bool \fBIsKeyDown\fP (int key)"
+.br
+.RI "Checks if an integer key code is currently pressed down\&. "
+.ti -1c
+.RI "bool \fBIsKeyPressed\fP (int key)"
+.br
+.RI "Checks if an integer key code was just pressed in the current frame\&. "
+.ti -1c
+.RI "bool \fBIsKeyUp\fP (int key)"
+.br
+.RI "Checks if an integer key code is currently not pressed down\&. "
+.ti -1c
+.RI "void \fBupdateInputs\fP ()"
+.br
+.RI "Updates the internal state of the input class\&. This function should be called every frame to ensure accurate input information\&. "
+.ti -1c
+.RI "void \fBsetScroll\fP (double scroll_x, double scroll_y)"
+.br
+.RI "Sets the scroll offset for the window\&. "
+.ti -1c
+.RI "void \fBgetScroll\fP (double &scroll_x, double &scroll_y)"
+.br
+.RI "Gets the current scroll offset for the window\&. "
+.ti -1c
+.RI "void \fBgetMousePos\fP (double &x, double &y)"
+.br
+.RI "Gets the current mouse position within the window\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Manages input for the application, including keyboard, mouse, and scroll events\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Input::Input (\fBWindow\fP & w)"
+
+.PP
+Constructor for \fBInput\fP class\&. Takes a reference to the GLFWwindow object to handle input events\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIw\fP Reference to the GLFWwindow object\&. 
+.RE
+.PP
+
+.SH "Member Function Documentation"
+.PP 
+.SS "void Input::getMousePos (double & x, double & y)"
+
+.PP
+Gets the current mouse position within the window\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIx\fP Reference to a double variable to store the X-coordinate of the mouse\&. 
+.br
+\fIy\fP Reference to a double variable to store the Y-coordinate of the mouse\&. 
+.RE
+.PP
+
+.SS "void Input::getScroll (double & scroll_x, double & scroll_y)"
+
+.PP
+Gets the current scroll offset for the window\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIscroll_x\fP Reference to a double variable to store the X-axis scroll offset\&. 
+.br
+\fIscroll_y\fP Reference to a double variable to store the Y-axis scroll offset\&. 
+.RE
+.PP
+
+.SS "bool Input::IsKeyDown (char key)"
+
+.PP
+Checks if a character key is currently pressed down\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The character key to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the key is down, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool Input::IsKeyDown (int key)"
+
+.PP
+Checks if an integer key code is currently pressed down\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The integer key code to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the key is down, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool Input::IsKeyPressed (char key)"
+
+.PP
+Checks if a character key was just pressed in the current frame\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The character key to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the key was pressed this frame, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool Input::IsKeyPressed (int key)"
+
+.PP
+Checks if an integer key code was just pressed in the current frame\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The integer key code to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the key was pressed this frame, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool Input::IsKeyUp (char key)"
+
+.PP
+Checks if a character key is currently not pressed down\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The character key to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the key is up this frame, false otherwise\&. 
+.RE
+.PP
+
+.SS "bool Input::IsKeyUp (int key)"
+
+.PP
+Checks if an integer key code is currently not pressed down\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIkey\fP The integer key code to check\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the key is up this frame, false otherwise\&. 
+.RE
+.PP
+
+.SS "void Input::setScroll (double scroll_x, double scroll_y)"
+
+.PP
+Sets the scroll offset for the window\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIscroll_x\fP The new scroll offset on the X-axis\&. 
+.br
+\fIscroll_y\fP The new scroll offset on the Y-axis\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

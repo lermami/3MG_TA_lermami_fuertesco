@@ -26,6 +26,9 @@
 #include "matrix_4.hpp"
 #include "default_components.hpp"
 
+//In this example we will see the basic box collision component that the engine has to make basic collisions.
+
+//(Each entity can only have a maximum of 1 box collider component).
 int main(int, char**) {
 	Engine e;
 	auto& thread_manager = e.getThreadManager();
@@ -53,6 +56,8 @@ int main(int, char**) {
 
 	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte);
 	unsigned laboon_handle = laboon.LoadTexture("../assets/laboon/laboon.png");
+
+	//[1]. Add the BoxColliderComponent to add_entity function (Maximum 1 BoxColliderComponent)
 
 	//Cube 1
 	size_t cube1 = component_manager.add_entity(TransformComponent(Vec3(-2.0f, 0.0f, -6.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
@@ -114,6 +119,7 @@ int main(int, char**) {
 			transform1->pos_.z += input_velocity;
 		}
 
+		//[2]. Use are_colliding_system function btween entities to know if they are colliding or not (You can't roll the entities in any direction if you want to detect collision properly)
 		if (are_colliding_system(e, cube1, cube2)) {
 			change_color_system(e, cube2, 1.0f, 0.2f, 0.2f, 1.0f);
 

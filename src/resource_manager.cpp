@@ -190,8 +190,8 @@ bool ResourceManager::createBuffersWithGeometry(Geometry* geo, std::string nameI
 	}
 
 
-	vertexBuffers_[nameIDVertex] = new VertexBuffer(&geo->vertex_[0].pos.x, geo->vertex_.size() * sizeof(Vertex));
-	indexBuffers_[nameIDIndex] = new IndexBuffer(&geo->indices_[0], geo->indices_.size() * sizeof(unsigned));
+	vertexBuffers_[nameIDVertex] = new VertexBuffer(&geo->vertex_[0].pos.x, ((unsigned int) geo->vertex_.size()) * sizeof(Vertex));
+	indexBuffers_[nameIDIndex] = new IndexBuffer(&geo->indices_[0], ((unsigned int) geo->indices_.size()) * sizeof(unsigned));
 
 	return true;
 }

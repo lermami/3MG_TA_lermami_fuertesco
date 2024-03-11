@@ -1,0 +1,69 @@
+.TH "TransformComponent" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TransformComponent \- Struct representing an entity's transform data\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <default_components\&.hpp>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBTransformComponent\fP ()=default"
+.br
+.RI "Default constructor that initializes all members to zero\&. "
+.ti -1c
+.RI "\fBTransformComponent\fP (\fBVec3\fP pos, \fBVec3\fP rot, \fBVec3\fP size)"
+.br
+.RI "Constructor that initializes the position, rotation, and scale of the entity\&. "
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBMat4\fP \fBmodel_matrix_\fP"
+.br
+.RI "Model matrix of the entity, used for transforming the entity in 3D space\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBpos_\fP"
+.br
+.RI "Position of the entity in 3D space\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBrot_\fP"
+.br
+.RI "Rotation of the entity, typically stored in Euler angles (degrees)\&. "
+.ti -1c
+.RI "\fBVec3\fP \fBsize_\fP"
+.br
+.RI "Scale of the entity, used to modify its size\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing an entity's transform data\&. 
+
+This struct stores information about an entity's position, rotation, scale, and its model matrix\&. 
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "TransformComponent::TransformComponent (\fBVec3\fP pos, \fBVec3\fP rot, \fBVec3\fP size)\fR [inline]\fP"
+
+.PP
+Constructor that initializes the position, rotation, and scale of the entity\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos\fP The initial position of the entity\&. 
+.br
+\fIrot\fP The initial rotation of the entity\&. 
+.br
+\fIsize\fP The initial scale of the entity\&. 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

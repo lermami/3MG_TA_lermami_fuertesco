@@ -29,8 +29,8 @@ std::optional<Window> Window::create(Engine& engine, int w, int h, const char* t
 Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_{ e } {
 	imguiInit_ = imgui;
 	if (imguiInit_) {
-		handle_ = glfwCreateWindow(w + w*0.3, h, title, NULL, NULL);
-		glViewport(w * 0.3f, 0, w, h);
+		handle_ = glfwCreateWindow(w + (int)((float) w * 0.3f), h, title, NULL, NULL);
+		glViewport((GLint)((float) w * 0.3f), 0, w, h);
 	}
 	else {
 		handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
@@ -244,7 +244,7 @@ bool Window::getImguiStatus() {
 
 void Window::resetViewport() {
 	if (imguiInit_) {
-		glViewport(width_ * 0.3f, 0, width_, height_);
+		glViewport((GLint) ((float) width_ * 0.3f), 0, width_, height_);
 	}
 	else {
 		glViewport(0, 0, width_, height_);

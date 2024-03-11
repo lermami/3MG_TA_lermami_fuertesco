@@ -1,0 +1,39 @@
+\doxysection{texture.\+hpp}
+\hypertarget{texture_8hpp_source}{}\label{texture_8hpp_source}\index{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/texture.hpp@{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/texture.hpp}}
+\mbox{\hyperlink{texture_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}enum.hpp"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_texture}{Texture}}\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \mbox{\hyperlink{class_texture_a8da1f5173c63dc75bbe4519f0bce0a78}{Texture}}(TextureTarget\ target,\ TextureFormat\ format,\ TextureType\ type);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00040\ \ \ \mbox{\hyperlink{class_texture_a09c4bcb7462f64c1d20fa69dba3cee8a}{\string~Texture}}();}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{class_texture_a9c40276c7a14a22729f2393da30185ae}{LoadTexture}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{unsigned}\ \mbox{\hyperlink{class_texture_a6f541f32ff495696b8f5f50c3bb6df77}{LoadTexture}}(\textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_texture_a760ae01ca8dd78787b713526dc561814}{set\_wrap\_s}}(TextureWrap\ param);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_texture_a0c32bcd9b21d2c2084cbfb610ef621d1}{set\_wrap\_t}}(TextureWrap\ param);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_texture_ab7193eb5b28bebebd37a87126827eeb5}{set\_min\_filter}}(TextureFiltering\ param);}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_texture_a3063742c00aad9be2d58a062712d71c7}{set\_mag\_filter}}(TextureFiltering\ param);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{unsigned}\ handle\_;}
+\DoxyCodeLine{00102\ \ \ TextureType\ type\_;}
+\DoxyCodeLine{00103\ \ \ TextureTarget\ target\_;}
+\DoxyCodeLine{00104\ \ \ TextureFormat\ format\_;}
+\DoxyCodeLine{00105\ \ \ TextureWrap\ wrap\_s\_format\_;}
+\DoxyCodeLine{00106\ \ \ TextureWrap\ wrap\_t\_format\_;}
+\DoxyCodeLine{00107\ \ \ TextureFiltering\ min\_filter\_format\_;}
+\DoxyCodeLine{00108\ \ \ TextureFiltering\ mag\_filter\_format\_;}
+\DoxyCodeLine{00109\ \};}
+
+\end{DoxyCode}

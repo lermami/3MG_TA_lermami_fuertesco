@@ -1,0 +1,289 @@
+\doxysection{vector\+\_\+3.\+hpp}
+\hypertarget{vector__3_8hpp_source}{}\label{vector__3_8hpp_source}\index{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/math\_library/vector\_3.hpp@{C:/Users/lermami/Documents/3MG\_TA\_lermami\_fuertesco/include/math\_library/vector\_3.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_vec3}{Vec3}}\ \{}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00008\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}();}
+\DoxyCodeLine{00009\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00010\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00011\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}(\textcolor{keywordtype}{float}*\ values\_array);}
+\DoxyCodeLine{00012\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ values\_array);}
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other);}
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{class_vec3}{\string~Vec3}}();}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ operator+(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other);}
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ operator+=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ operator-\/(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other);}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ operator-\/=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ operator=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ operator=(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ value);}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ operator*(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ operator*=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ operator/(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ operator/=(\textcolor{keywordtype}{float}\ value);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{float}\ Magnitude()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ Normalized()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ Normalize();}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{float}\ SqrMagnitude()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other);}
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ CapValues(\textcolor{keywordtype}{float}\ cap);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Lerp(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b,\ \textcolor{keywordtype}{float}\ t);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ LerpUnclamped(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b,\ \textcolor{keywordtype}{float}\ t);}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ DotProduct(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ Angle(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b);}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ CrossProduct(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ Distance(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b);}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Reflect(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ direction,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ normal);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ up;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ down;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ right;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ left;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ forward;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ back;}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ zero;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ unit;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{float}\ x;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{float}\ y;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{float}\ z;}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Vec3::Magnitude()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})sqrt((x*x)+(y*y)+(z*z));}
+\DoxyCodeLine{00065\ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Vec3::Normalize()\ \{}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{float}\ inverseMagnitude\ =\ 1.0f\ /\ Magnitude();}
+\DoxyCodeLine{00070\ \ \ \ \ *\textcolor{keyword}{this}\ *=\ inverseMagnitude;}
+\DoxyCodeLine{00071\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::Normalized()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ vec3;}
+\DoxyCodeLine{00076\ \ \ \ \ vec3.x=\ x/Magnitude();}
+\DoxyCodeLine{00077\ \ \ \ \ vec3.y=\ y/Magnitude();}
+\DoxyCodeLine{00078\ \ \ \ \ vec3.z=\ z/Magnitude();}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(vec3);}
+\DoxyCodeLine{00080\ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Vec3::DotProduct(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})\ (a.x*other.x)+(a.y*other.y)+(a.z*other.z);}
+\DoxyCodeLine{00084\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Vec3::Angle(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{float}\ d\ =\ DotProduct(a,other);}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{float}\ w\ =\ a.Magnitude()+other.Magnitude();}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})acos(d/w);}
+\DoxyCodeLine{00090\ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::CrossProduct(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00094\ \ \ \ \ x1=(a.y*other.z)-\/(a.z*other.y);}
+\DoxyCodeLine{00095\ \ \ \ \ y1=(a.z*other.x)-\/(a.x*other.z);}
+\DoxyCodeLine{00096\ \ \ \ \ z1=(a.x*other.y)-\/(a.y*other.x);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00099\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Vec3::SqrMagnitude()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ (x*x)+(y*y)+(z*z);}
+\DoxyCodeLine{00103\ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Vec3::Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ x\ *=\ other.x;}
+\DoxyCodeLine{00107\ \ \ \ \ y\ *=\ other.y;}
+\DoxyCodeLine{00108\ \ \ \ \ z\ *=\ other.z;}
+\DoxyCodeLine{00109\ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::CapValues(\textcolor{keywordtype}{float}\ cap)\{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{if}(x\ <\ cap)\ x\ =\ cap;}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{if}(y\ <\ cap)\ y\ =\ cap;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}(z\ <\ cap)\ z\ =\ cap;}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x,y,z);}
+\DoxyCodeLine{00117\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::Lerp(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b,\ \textcolor{keywordtype}{float}\ t)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}(t>1)\{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ t=1;}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{if}(t<0)\{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ t=0;}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(a.x\ +\ (b.x\ -\/\ a.x)\ *\ t,\ a.y\ +\ (b.y\ -\/\ a.y)\ *\ t,\ a.z\ +\ (b.z\ -\/\ a.z)\ *\ t);}
+\DoxyCodeLine{00127\ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::LerpUnclamped(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b,\ \textcolor{keywordtype}{float}\ t)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(a.x\ +\ (b.x\ -\/\ a.x)\ *\ t,\ a.y\ +\ (b.y\ -\/\ a.y)\ *\ t,\ a.z\ +\ (b.z\ -\/\ a.z)\ *\ t);}
+\DoxyCodeLine{00131\ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ Vec3::Distance(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ b)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00135\ \ \ \ \ x1=\ a.x-\/b.x;}
+\DoxyCodeLine{00136\ \ \ \ \ y1=\ a.y-\/b.y;}
+\DoxyCodeLine{00137\ \ \ \ \ z1=\ a.z-\/b.z;}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})\ sqrt((x1*x1)+(y1*y1)+(z1*z1));}
+\DoxyCodeLine{00139\ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::Reflect(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ direction,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ normal)\ \{}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ aux;}
+\DoxyCodeLine{00144\ \ \ \ \ \mbox{\hyperlink{class_vec3}{Vec3}}\ n\ =\ normal.Normalized();}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ aux\ =\ (2.0f\ *\ DotProduct(direction,n));}
+\DoxyCodeLine{00147\ \ \ \ \ aux.x\ *=\ n.x;}
+\DoxyCodeLine{00148\ \ \ \ \ aux.y\ *=\ n.y;}
+\DoxyCodeLine{00149\ \ \ \ \ aux.z\ *=\ n.z;}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ aux\ =\ direction\ -\/\ aux;}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(aux);}
+\DoxyCodeLine{00153\ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \ \ x1\ =\ x\ +other.x;}
+\DoxyCodeLine{00159\ \ \ \ \ y1\ =\ y\ +other.y;}
+\DoxyCodeLine{00160\ \ \ \ \ z1\ =\ z\ +other.z;}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00163\ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::operator+(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00167\ \ \ \ \ x1\ =\ x\ +value;}
+\DoxyCodeLine{00168\ \ \ \ \ y1\ =\ y\ +value;}
+\DoxyCodeLine{00169\ \ \ \ \ z1\ =\ z\ +value;}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00172\ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ Vec3::operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \{}
+\DoxyCodeLine{00175\ \ \ x\ +=\ other.x;}
+\DoxyCodeLine{00176\ \ \ \ \ y\ +=\ other.y;}
+\DoxyCodeLine{00177\ \ \ \ \ z\ +=\ other.z;}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00179\ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ Vec3::operator+=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ x\ +=\ value;}
+\DoxyCodeLine{00183\ \ \ \ \ y\ +=\ value;}
+\DoxyCodeLine{00184\ \ \ \ \ z\ +=\ value;}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00186\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ x1\ =\ x\ -\/other.x;}
+\DoxyCodeLine{00192\ \ \ \ \ y1\ =\ y\ -\/other.y;}
+\DoxyCodeLine{00193\ \ \ \ \ z1\ =\ z\ -\/other.z;}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00195\ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::operator-\/(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00198\ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00199\ x1\ =\ x\ -\/value;}
+\DoxyCodeLine{00200\ y1\ =\ y\ -\/value;}
+\DoxyCodeLine{00201\ z1\ =\ z\ -\/value;}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ Vec3::operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ x\ -\/=\ other.x;}
+\DoxyCodeLine{00208\ \ \ \ \ y\ -\/=\ other.y;}
+\DoxyCodeLine{00209\ \ \ \ \ z\ -\/=\ other.z;}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00211\ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ Vec3::operator-\/=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ x\ -\/=\ value;}
+\DoxyCodeLine{00215\ \ \ \ \ y\ -\/=\ value;}
+\DoxyCodeLine{00216\ \ \ \ \ z\ -\/=\ value;}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00218\ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Vec3::operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{if}(x==other.x\ \&\&\ y\ ==\ other.y\ \&\&\ z\ ==\ other.z)\{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00225\ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Vec3::operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{if}(x!=other.x\ \&\&\ y\ !=\ other.y\ \&\&\ z\ !=\ other.z)\{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00230\ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00232\ \}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Vec3::operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ other)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ x\ =\ other.x;}
+\DoxyCodeLine{00236\ \ \ \ \ y\ =\ other.y;}
+\DoxyCodeLine{00237\ \ \ \ \ z\ =\ other.z;}
+\DoxyCodeLine{00238\ \}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Vec3::operator=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ x\ =\ value;}
+\DoxyCodeLine{00242\ \ \ \ \ y\ =\ value;}
+\DoxyCodeLine{00243\ \ \ \ \ z\ =\ value;}
+\DoxyCodeLine{00244\ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Vec3::operator=(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ value)\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ x\ =\ value[0];}
+\DoxyCodeLine{00248\ \ \ \ \ y\ =\ value[1];}
+\DoxyCodeLine{00249\ \ \ \ \ z\ =\ value[2];}
+\DoxyCodeLine{00250\ \}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::operator*(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00255\ \ \ \ \ x1\ =\ x\ *value;}
+\DoxyCodeLine{00256\ \ \ \ \ y1\ =\ y\ *value;}
+\DoxyCodeLine{00257\ \ \ \ \ z1\ =\ z\ *value;}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00260\ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ Vec3::operator*=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ x\ *=\ value;}
+\DoxyCodeLine{00264\ \ \ \ \ y\ *=\ value;}
+\DoxyCodeLine{00265\ \ \ \ \ z\ *=\ value;}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00267\ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\ Vec3::operator/(\textcolor{keywordtype}{float}\ value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordtype}{float}\ x1,y1,z1;}
+\DoxyCodeLine{00271\ \ \ \ \ x1\ =\ x\ /value;}
+\DoxyCodeLine{00272\ \ \ \ \ y1\ =\ y\ /value;}
+\DoxyCodeLine{00273\ \ \ \ \ z1\ =\ z\ /value;}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_vec3}{Vec3}}(x1,y1,z1);}
+\DoxyCodeLine{00276\ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_vec3}{Vec3}}\&\ Vec3::operator/=(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ x\ /=\ value;}
+\DoxyCodeLine{00280\ \ \ \ \ y\ /=\ value;}
+\DoxyCodeLine{00281\ \ \ \ \ z\ /=\ value;}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00283\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,88 @@
+\doxysection{Sound\+Source Class Reference}
+\hypertarget{class_sound_source}{}\label{class_sound_source}\index{SoundSource@{SoundSource}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_sound_source_a505f344bee04437a586f603503485e07}\label{class_sound_source_a505f344bee04437a586f603503485e07} 
+{\bfseries Sound\+Source} (std\+::string name, ALfloat pos\mbox{[}3\mbox{]}, ALfloat speed\mbox{[}3\mbox{]}, float gain=1.\+0f, float pitch=1.\+0f)
+\item 
+\Hypertarget{class_sound_source_a650f702d3c0c3cf631fa6f507d970339}\label{class_sound_source_a650f702d3c0c3cf631fa6f507d970339} 
+{\bfseries Sound\+Source} (const \mbox{\hyperlink{class_sound_source}{Sound\+Source}} \&other)
+\item 
+\Hypertarget{class_sound_source_aff2cb2c7ada9a6182a0a7c9a8df8da10}\label{class_sound_source_aff2cb2c7ada9a6182a0a7c9a8df8da10} 
+{\bfseries Sound\+Source} (\mbox{\hyperlink{class_sound_source}{Sound\+Source}} \&other)
+\item 
+\Hypertarget{class_sound_source_a72b15d3d9d8ea5c25572fc95c650fe77}\label{class_sound_source_a72b15d3d9d8ea5c25572fc95c650fe77} 
+{\bfseries Sound\+Source} (\mbox{\hyperlink{class_sound_source}{Sound\+Source}} \&\&other)
+\item 
+\Hypertarget{class_sound_source_ace1b53dbc0bf43943c5eadb1cc60789c}\label{class_sound_source_ace1b53dbc0bf43943c5eadb1cc60789c} 
+\mbox{\hyperlink{class_sound_source}{Sound\+Source}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_sound_source}{Sound\+Source}} \&o)
+\item 
+\Hypertarget{class_sound_source_a5cc8dbc275cb28f0ad395cfb6185dd98}\label{class_sound_source_a5cc8dbc275cb28f0ad395cfb6185dd98} 
+void {\bfseries set\+Loop} (bool state)
+\item 
+\Hypertarget{class_sound_source_a9cf9461640b083f15e30d273466ae23f}\label{class_sound_source_a9cf9461640b083f15e30d273466ae23f} 
+void {\bfseries set\+Pos} (ALfloat pos\mbox{[}3\mbox{]})
+\item 
+\Hypertarget{class_sound_source_a9fc3d644d2de65246dac86bb6f00f14b}\label{class_sound_source_a9fc3d644d2de65246dac86bb6f00f14b} 
+ALfloat \texorpdfstring{$\ast$}{*} {\bfseries get\+Pos} ()
+\item 
+\Hypertarget{class_sound_source_af0980a8a9ac4a5a81a56e5af3c1a7d55}\label{class_sound_source_af0980a8a9ac4a5a81a56e5af3c1a7d55} 
+void {\bfseries set\+Velocity} (ALfloat speed\mbox{[}3\mbox{]})
+\item 
+\Hypertarget{class_sound_source_ad3e76e0e3fb3a6c339056fa89b902729}\label{class_sound_source_ad3e76e0e3fb3a6c339056fa89b902729} 
+ALfloat \texorpdfstring{$\ast$}{*} {\bfseries get\+Velocity} ()
+\item 
+\Hypertarget{class_sound_source_a2aa97ebc2f1527c53de4cf368e557193}\label{class_sound_source_a2aa97ebc2f1527c53de4cf368e557193} 
+void {\bfseries update\+Pos} (ALfloat pos\mbox{[}3\mbox{]})
+\item 
+\Hypertarget{class_sound_source_a7636d692c593a033e0abda07f0410a2f}\label{class_sound_source_a7636d692c593a033e0abda07f0410a2f} 
+void {\bfseries update\+Gain} (float gain)
+\item 
+\Hypertarget{class_sound_source_a691a3eb1b00bb9e0162c72ce9a4b9f99}\label{class_sound_source_a691a3eb1b00bb9e0162c72ce9a4b9f99} 
+void {\bfseries update\+Pitch} (float pitch)
+\item 
+\Hypertarget{class_sound_source_a3dff9d76326e9d197896d7fbd62ba03b}\label{class_sound_source_a3dff9d76326e9d197896d7fbd62ba03b} 
+void {\bfseries set\+Gain} (float gain)
+\item 
+\Hypertarget{class_sound_source_a848223125f8e86da732c73b166225b02}\label{class_sound_source_a848223125f8e86da732c73b166225b02} 
+void {\bfseries set\+Pitch} (float pitch)
+\item 
+\Hypertarget{class_sound_source_a5076768708f22b568a92e1fdcb6b692f}\label{class_sound_source_a5076768708f22b568a92e1fdcb6b692f} 
+float {\bfseries Gain} ()
+\item 
+\Hypertarget{class_sound_source_a2c8cfecc5626d07da451bd0e3419f1e6}\label{class_sound_source_a2c8cfecc5626d07da451bd0e3419f1e6} 
+float {\bfseries Pitch} ()
+\item 
+\Hypertarget{class_sound_source_abc9b05b00f199c260ad627bf4c6f20ea}\label{class_sound_source_abc9b05b00f199c260ad627bf4c6f20ea} 
+bool {\bfseries Loop} ()
+\item 
+\Hypertarget{class_sound_source_a273b89ae9b74a7edebd66f32e1c5d621}\label{class_sound_source_a273b89ae9b74a7edebd66f32e1c5d621} 
+bool {\bfseries add\+Sound} (\mbox{\hyperlink{class_sound_buffer}{Sound\+Buffer}} \texorpdfstring{$\ast$}{*}b)
+\item 
+\Hypertarget{class_sound_source_ac29a473f5bbe81dd90f55b6d81df59f6}\label{class_sound_source_ac29a473f5bbe81dd90f55b6d81df59f6} 
+void {\bfseries unbind\+Sound} ()
+\item 
+\Hypertarget{class_sound_source_a8902602d1c0fd8984f78d8493e872393}\label{class_sound_source_a8902602d1c0fd8984f78d8493e872393} 
+bool {\bfseries is\+Playing} ()
+\item 
+\Hypertarget{class_sound_source_a6dcd45f9805b3b37d98bf3f675aee52d}\label{class_sound_source_a6dcd45f9805b3b37d98bf3f675aee52d} 
+void {\bfseries Play} ()
+\item 
+\Hypertarget{class_sound_source_a863aefbe24c84e2c58d93d47762c65b6}\label{class_sound_source_a863aefbe24c84e2c58d93d47762c65b6} 
+void {\bfseries Stop} ()
+\item 
+\Hypertarget{class_sound_source_a564f5d8dcd52d0b43e8941535b16253b}\label{class_sound_source_a564f5d8dcd52d0b43e8941535b16253b} 
+std\+::string {\bfseries Name} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_sound_source_a830b482062ec4ab84bd4b14437c6e942}\label{class_sound_source_a830b482062ec4ab84bd4b14437c6e942} 
+bool {\bfseries destructible\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/lermami/\+Documents/3\+MG\+\_\+\+TA\+\_\+lermami\+\_\+fuertesco/include/sound/soundsource.\+h\end{DoxyCompactItemize}

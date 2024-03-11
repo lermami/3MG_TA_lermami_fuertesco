@@ -1,0 +1,130 @@
+.TH "Vec4" 3 "Aguados Engine" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Vec4
+.SH SYNOPSIS
+.br
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBVec4\fP (float nx, float ny, float nz, float nw)"
+.br
+.ti -1c
+.RI "\fBVec4\fP (\fBVec3\fP a, float nw)"
+.br
+.ti -1c
+.RI "\fBVec4\fP (float a)"
+.br
+.ti -1c
+.RI "\fBVec4\fP (float *values_array)"
+.br
+.ti -1c
+.RI "\fBVec4\fP (const \fBVec4\fP &other)"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBoperator+\fP (const \fBVec4\fP &other) const"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBoperator+\fP (float value) const"
+.br
+.ti -1c
+.RI "void \fBoperator+=\fP (const \fBVec4\fP &other)"
+.br
+.ti -1c
+.RI "void \fBoperator+=\fP (float value)"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBoperator\-\fP (const \fBVec4\fP &other) const"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBoperator\-\fP (float value) const"
+.br
+.ti -1c
+.RI "void \fBoperator\-=\fP (const \fBVec4\fP &other)"
+.br
+.ti -1c
+.RI "void \fBoperator\-=\fP (float value)"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBoperator*\fP (float value) const"
+.br
+.ti -1c
+.RI "void \fBoperator*=\fP (float value)"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBoperator/\fP (float value) const"
+.br
+.ti -1c
+.RI "void \fBoperator/=\fP (float value)"
+.br
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBVec4\fP &other)"
+.br
+.ti -1c
+.RI "bool \fBoperator!=\fP (const \fBVec4\fP &other)"
+.br
+.ti -1c
+.RI "void \fBoperator=\fP (const \fBVec4\fP &other)"
+.br
+.ti -1c
+.RI "float \fBMagnitude\fP () const"
+.br
+.ti -1c
+.RI "void \fBNormalize\fP ()"
+.br
+.ti -1c
+.RI "\fBVec4\fP \fBNormalized\fP () const"
+.br
+.ti -1c
+.RI "void \fBScale\fP (\fBVec4\fP scale)"
+.br
+.ti -1c
+.RI "float \fBSqrMagnitude\fP () const"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static float \fBDistance\fP (const \fBVec4\fP &a, const \fBVec4\fP &b)"
+.br
+.ti -1c
+.RI "static float \fBDotProduct\fP (\fBVec4\fP a, \fBVec4\fP b)"
+.br
+.ti -1c
+.RI "static \fBVec4\fP \fBLerp\fP (const \fBVec4\fP &a, const \fBVec4\fP &b, float index)"
+.br
+.in -1c
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "float \fBx\fP"
+.br
+.ti -1c
+.RI "float \fBy\fP"
+.br
+.ti -1c
+.RI "float \fBz\fP"
+.br
+.ti -1c
+.RI "float \fBw\fP"
+.br
+.in -1c
+.SS "Static Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "static const \fBVec4\fP \fBone\fP"
+.br
+.ti -1c
+.RI "static const \fBVec4\fP \fBzero\fP"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Aguados Engine from the source code\&.

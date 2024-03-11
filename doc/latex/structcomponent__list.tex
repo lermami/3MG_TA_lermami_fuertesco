@@ -1,0 +1,170 @@
+\doxysection{component\+\_\+list\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structcomponent__list}{}\label{structcomponent__list}\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+
+
+Template class that manages a list of components of type T.  
+
+
+
+
+{\ttfamily \#include $<$default\+\_\+components.\+hpp$>$}
+
+Inheritance diagram for component\+\_\+list\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structcomponent__list}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{structcomponent__list_abe4a355b19f4bb0afe80f871f3f9fd0d}{add\+\_\+component}} () override
+\begin{DoxyCompactList}\small\item\em Adds a new empty component of type T to the list. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{structcomponent__list_aae9a8e4d0b8118987c9f12a9ca3a06e0}{add\+\_\+component}} (int position) override
+\begin{DoxyCompactList}\small\item\em Adds a new component of type T at a specific position in the list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structcomponent__list_a7b0f7cc326ea9c8500a28e315533a2fb}{add\+\_\+component\+\_\+at}} (int position, T \&component)
+\begin{DoxyCompactList}\small\item\em Adds a component of type T at a specific position in the list. \end{DoxyCompactList}\item 
+virtual size\+\_\+t \mbox{\hyperlink{structcomponent__list_ae4e9157e9244015949ca3cc1d7c9a7ae}{size}} () override
+\begin{DoxyCompactList}\small\item\em Gets the number of components currently stored in the list. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{structcomponent__list_af6bf4d3ac6cb8d3deed85c27e4772856}{delete\+\_\+component}} (size\+\_\+t id) override
+\begin{DoxyCompactList}\small\item\em Removes a component from the list by its ID (0-\/based indexing). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::optional$<$ T $>$ $>$ \mbox{\hyperlink{structcomponent__list_ac7166815622f1dad168aaf1cc32bee2b}{components\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct component\+\_\+list$<$ T $>$}
+Template class that manages a list of components of type T. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of component to store in the list. \\
+\hline
+\end{DoxyTemplParams}
+Inherits from \doxylink{structcomponent__base}{component\+\_\+base} and provides functionality for adding, removing, and accessing components. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structcomponent__list_abe4a355b19f4bb0afe80f871f3f9fd0d}\label{structcomponent__list_abe4a355b19f4bb0afe80f871f3f9fd0d} 
+\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}!add\_component@{add\_component}}
+\index{add\_component@{add\_component}!component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_component()}{add\_component()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual void \mbox{\hyperlink{structcomponent__list}{component\+\_\+list}}$<$ T $>$\+::add\+\_\+component (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Adds a new empty component of type T to the list. 
+
+This function creates a new {\ttfamily std\+::optional\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} object with a null value and adds it to the end of the {\ttfamily components\+\_\+} list. 
+
+Implements \mbox{\hyperlink{structcomponent__base}{component\+\_\+base}}.
+
+\Hypertarget{structcomponent__list_aae9a8e4d0b8118987c9f12a9ca3a06e0}\label{structcomponent__list_aae9a8e4d0b8118987c9f12a9ca3a06e0} 
+\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}!add\_component@{add\_component}}
+\index{add\_component@{add\_component}!component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_component()}{add\_component()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual void \mbox{\hyperlink{structcomponent__list}{component\+\_\+list}}$<$ T $>$\+::add\+\_\+component (\begin{DoxyParamCaption}\item[{int}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Adds a new component of type T at a specific position in the list. 
+
+This function creates a new instance of type T and assigns it to the specified position (1-\/based indexing) in the {\ttfamily components\+\_\+} list.
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & If the specified position is out of bounds.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The position argument is 1-\/based because entities typically start with ID 1. This function internally adjusts the index to 0-\/based for the {\ttfamily components\+\_\+} vector. 
+\end{DoxyNote}
+
+
+Implements \mbox{\hyperlink{structcomponent__base}{component\+\_\+base}}.
+
+\Hypertarget{structcomponent__list_a7b0f7cc326ea9c8500a28e315533a2fb}\label{structcomponent__list_a7b0f7cc326ea9c8500a28e315533a2fb} 
+\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}!add\_component\_at@{add\_component\_at}}
+\index{add\_component\_at@{add\_component\_at}!component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{add\_component\_at()}{add\_component\_at()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{structcomponent__list}{component\+\_\+list}}$<$ T $>$\+::add\+\_\+component\+\_\+at (\begin{DoxyParamCaption}\item[{int}]{position,  }\item[{T \&}]{component }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a component of type T at a specific position in the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The position where to add the component (1-\/based indexing). \\
+\hline
+{\em component} & The component to add. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{structcomponent__list_af6bf4d3ac6cb8d3deed85c27e4772856}\label{structcomponent__list_af6bf4d3ac6cb8d3deed85c27e4772856} 
+\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}!delete\_component@{delete\_component}}
+\index{delete\_component@{delete\_component}!component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{delete\_component()}{delete\_component()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual void \mbox{\hyperlink{structcomponent__list}{component\+\_\+list}}$<$ T $>$\+::delete\+\_\+component (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Removes a component from the list by its ID (0-\/based indexing). 
+
+This function removes the component at the specified ID from the {\ttfamily components\+\_\+} list. It asserts that the ID is not 0 (trying to remove the first element, which might be special) and then resets the corresponding {\ttfamily std\+::optional\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} object to null, effectively removing the component.
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & If the specified ID is out of bounds.\\
+\hline
+\end{DoxyExceptions}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the component to remove. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{structcomponent__base}{component\+\_\+base}}.
+
+\Hypertarget{structcomponent__list_ae4e9157e9244015949ca3cc1d7c9a7ae}\label{structcomponent__list_ae4e9157e9244015949ca3cc1d7c9a7ae} 
+\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}!size@{size}}
+\index{size@{size}!component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual size\+\_\+t \mbox{\hyperlink{structcomponent__list}{component\+\_\+list}}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Gets the number of components currently stored in the list. 
+
+This function returns the size of the {\ttfamily components\+\_\+} vector, which represents the number of components attached to the entity.
+
+\begin{DoxyReturn}{Returns}
+The number of components in the list. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{structcomponent__base}{component\+\_\+base}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structcomponent__list_ac7166815622f1dad168aaf1cc32bee2b}\label{structcomponent__list_ac7166815622f1dad168aaf1cc32bee2b} 
+\index{component\_list$<$ T $>$@{component\_list$<$ T $>$}!components\_@{components\_}}
+\index{components\_@{components\_}!component\_list$<$ T $>$@{component\_list$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{components\_}{components\_}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$ std\+::optional$<$T$>$ $>$ \mbox{\hyperlink{structcomponent__list}{component\+\_\+list}}$<$ T $>$\+::components\+\_\+}
+
+List of components of type T. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/lermami/\+Documents/3\+MG\+\_\+\+TA\+\_\+lermami\+\_\+fuertesco/include/default\+\_\+components.\+hpp\end{DoxyCompactItemize}
