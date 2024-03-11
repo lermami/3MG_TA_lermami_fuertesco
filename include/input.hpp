@@ -1,3 +1,10 @@
+/**
+ * @file input.hpp
+ * @brief Header file for the Key and Input class.
+ *
+ * @defgroup Input Input class
+ * @brief This file defines the Input class and Key, managing the input events.
+ */
 #pragma once
 
 #include "GLFW/glfw3.h"
@@ -23,14 +30,14 @@ public:
      *
      * @param state The new state of the key.
      */
-  void setState(unsigned int state);
+  void setState(InputState state);
 
   /**
      * @brief Gets the current state of the key.
      *
      * @return The current state of the key.
      */
-  unsigned int getState() const;
+  InputState getState() const;
 
   /**
      * @brief Sets the key code for this Key object.
@@ -52,7 +59,7 @@ private:
      * Used exclusively by the Input class.
      */
   Key();
-  unsigned int state_; /**< The current state of the key. */
+  InputState state_; /**< The current state of the key. */
   int key_; /**< The key code. */
 };
 

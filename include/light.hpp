@@ -1,3 +1,10 @@
+/**
+ * @file light.hpp
+ * @brief Header file for the LightComponent class.
+ *
+ * @defgroup LightComponent LightComponent class
+ * @brief This file defines the LightComponent class, which adds information to render lights.
+ */
 #pragma once
 
 #include "vector_3.hpp"

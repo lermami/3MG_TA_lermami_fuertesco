@@ -6,11 +6,11 @@ Key::Key() {
   state_ = InputState::kInactive;
 }
 
-void Key::setState(unsigned int state) {
+void Key::setState(InputState state) {
   state_ = state;
 }
 
-unsigned int Key::getState() const {
+InputState Key::getState() const {
   return state_;
 }
 
@@ -209,7 +209,7 @@ bool Input::IsKeyUp(int key) {
 void Input::updateInputs() {
   for (int i = 0; i < 88; i++) {
       //Get input's state of last frame
-      int last_state = input_[i].getState();
+      InputState last_state = input_[i].getState();
       int current_state = 0;
 
       //Get if input is pressed or not on this frame
