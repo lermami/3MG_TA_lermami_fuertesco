@@ -68,17 +68,17 @@ int main(int, char**) {
 
 	//[8]. Add entites of your geometries
 	for (unsigned i = 0; i < n_obj / 3; i++) {
-		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 150) - 75, (rand() % 150) - 75, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((float) ((rand() % 150) - 75), (float) ((rand() % 150) - 75), -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
 			RenderComponent("Suzanne", "SuzanneVertices", "SuzanneIndices", simpleProgram, 0));
 	}
 
 	for (unsigned i = n_obj / 3; i < 2 * n_obj / 3; i++) {
-		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 28) - 14, (rand() % 28) - 14, -20.0f), Vec3(0.0f,  0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((float) ((rand() % 28) - 14), (float) ((rand() % 28) - 14), -20.0f), Vec3(0.0f,  0.0f, 0.0f), Vec3(2.0f, 2.0f, 2.0f)),
 			RenderComponent("Wolf", "WolfVertices", "WolfIndices", texture_shader, resourceM.getTexture("WolfTex")));
 	}
 
 	for (unsigned i = 2 * n_obj / 3; i < n_obj; i++) {
-		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((rand() % 100) - 50, (rand() % 100) - 50, -60.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(5.0f, 5.0f, 5.0f)),
+		size_t new_e = component_manager.add_entity(TransformComponent(Vec3((float) ((rand() % 100) - 50), (float) ((rand() % 100) - 50), -60.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(5.0f, 5.0f, 5.0f)),
 			RenderComponent("Tank", "TankVertices", "TankIndices", simpleProgram, 0));
 	}
 

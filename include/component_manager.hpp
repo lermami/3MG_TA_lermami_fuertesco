@@ -64,7 +64,7 @@ struct ComponentManager {
 	* @param position Index at which to insert the component in the entity's component list (optional).
 	* @param component Reference to the component data to create.
 	*/
-	template<typename T> void create_component(int position, T& component);
+	template<typename T> void create_component(size_t position, T& component);
 
 	/**
 	 * Template method to retrieve a component of a specific type for an entity.
@@ -130,7 +130,7 @@ template<typename T> T* ComponentManager::get_component(size_t e) {
 	return &component_opt.value();
 }
 
-template<typename T> void ComponentManager::create_component(int position, T& component) {
+template<typename T> void ComponentManager::create_component(size_t position, T& component) {
 	//Cast to the specific component list and add the components
 	component_list<T>* list = dynamic_cast<component_list<T>*>(component_classes_[typeid(T).hash_code()].get());
 	list->add_component_at(position, component);
@@ -145,7 +145,7 @@ template<typename T> std::vector < std::optional<T>>* ComponentManager::get_comp
 }
 
 template<class ... T> size_t ComponentManager::add_entity(T... components){
-	if (deleted_components_.size() > 0) {
+	if ((int)(deleted_components_.size()) > 0) {
 		size_t id = deleted_components_.back();
 		deleted_components_.pop_back();
 
@@ -154,9 +154,9 @@ template<class ... T> size_t ComponentManager::add_entity(T... components){
 		}
 		return id;
 	}
-
+	
 	size_t size = 0;
-
+	
 	//Add nullopt to components that not matches with the parameters
 	for (auto& [key, value] : component_classes_) {
 		value->add_component();
@@ -165,7 +165,7 @@ template<class ... T> size_t ComponentManager::add_entity(T... components){
 
 	//Fold expression to iterate in parameters pack (components)
 	(create_component(size, components), ...);
-
+	
 	//Return entity value
 	return size;
 }

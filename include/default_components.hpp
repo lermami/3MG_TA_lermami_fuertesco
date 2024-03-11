@@ -72,10 +72,10 @@ struct component_list : component_base {
 	 * @param position The position where to add the component (1-based indexing).
 	 * @param component The component to add.
 	 */
-	void add_component_at(int position, T& component) {
-		assert(components_[(size_t)position - 1] == std::nullopt);
+	void add_component_at(size_t position, T& component) {
+		assert(components_[position - 1] == std::nullopt);
 
-		components_[(size_t)position - 1] = component;
+		components_[position - 1] = component;
 
 	}
 
@@ -212,7 +212,9 @@ struct ColorComponent {
 	 *
 	 * @param color The RGBA color of the entity.
 	 */
-	ColorComponent(Vec4 color);
+	ColorComponent(Vec4 color) {
+		color_ = color;
+	}
 };
 
 /**
@@ -286,7 +288,10 @@ struct BoxColliderComponent {
 	 * @param extent Half-extents of the box collider along each axis (X, Y, Z).
 	 * @param center_offset Offset of the bounding box from the entity's center. Defaults to (0, 0, 0).
 	 */
-	BoxColliderComponent(Vec3 extent, Vec3 center_offset = Vec3(0.0f, 0.0f, 0.0f));
+	BoxColliderComponent(Vec3 extent, Vec3 center_offset = Vec3(0.0f, 0.0f, 0.0f)) {
+		extent_ = extent;
+		center_offset_ = center_offset;
+	}
 };
 
 /**

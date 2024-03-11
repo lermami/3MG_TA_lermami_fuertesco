@@ -70,7 +70,7 @@ int main(int, char**) {
 	resourceM.WaitResources();
 
 	//[7]. Set a buffer to store your geometry
-	resourceM.createBuffersWithGeometry(resourceM.getGeometry("SuzanneObj"), "LaboonVertices", "LaboonIndices");
+	resourceM.createBuffersWithGeometry(resourceM.getGeometry("LaboonObj"), "LaboonVertices", "LaboonIndices");
 
 	//[8]. Add an entity of your geometry
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),

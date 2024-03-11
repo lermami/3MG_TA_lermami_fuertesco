@@ -289,7 +289,7 @@ void imgui_transform_system(Engine& e, Window& w) {
 		//Init table
 		unsigned w_width, w_height;
 		w.getWindowSize(w_width, w_height);
-		ImGui::SetNextWindowSize(ImVec2(w_width * 0.3f, w_height));
+		ImGui::SetNextWindowSize(ImVec2((float) w_width * 0.3f, (float) w_height));
 		ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 		ImGui::Begin("ImGui", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
