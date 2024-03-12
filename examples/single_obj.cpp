@@ -66,9 +66,8 @@ int main(int, char**) {
   resourceM.loadTexture("BonClay", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 		"../assets/BonClay.png");
   
-	//[5]. Add a shader for the object 
-	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
-
+	//[5]. Add a shader for the object (This is a basic shader already present on the engine)
+	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
 
 	//[6]. Wait for resourcess to load
 	resourceM.WaitResources();
@@ -78,27 +77,7 @@ int main(int, char**) {
 
 	//[8]. Add an entity of your geometry
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -50.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_light_shader, resourceM.getTexture("Laboon")));
-	
-  //Light
-	size_t light_entity[4];
-
-		//Ambient Light
-	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                             LightComponent(Vec3(0.33f, 0.33f, 0.33f)));
-	
-		//Directional Light
-	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -120.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																								LightComponent(Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f)));
-
-		//Point Light
-	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 25.0f, -100.0f), Vec3(0.0f, 60.0f, 75.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.007f, 0.0002f));
-
-		//Spot Light
-	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(50.0f, 0.0f, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																								LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.75f));
-
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_shader, resourceM.getTexture("Laboon")));
 
   //Camera
 	size_t camera = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f)), CameraComponent("Camera", 1.0f, 1.0f));
