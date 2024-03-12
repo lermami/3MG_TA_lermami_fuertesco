@@ -27,11 +27,15 @@
 #include "default_components.hpp"
 #include "resource_manager.hpp"
 
+
+//In this example we will see  how to add and use multiple cameras to the engine
 int main(int, char**) {
 	Engine e;
 	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
+
+	//[1]. Get Camera manager
 	auto& cameraM = e.getCameraManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
@@ -46,7 +50,7 @@ int main(int, char**) {
 
 	Renderer renderer(e, w);
 
-	auto texture_light_shader = CreateProgram(w, "../assets/BasicShader/Texture/TextureLight.vs", "../assets/BasicShader/Texture/TextureLight.fs");
+	auto texture = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
 
 	resourceM.LoadObj(e, "LaboonObj", "../assets/laboon/laboon.obj");
 	resourceM.LoadObj(e, "CubeObj", "../assets/obj_test.obj");
@@ -67,29 +71,10 @@ int main(int, char**) {
 	resourceM.createBuffersWithGeometry(laboon_geo, "LaboonVertices", "LaboonIndices");
 
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -50.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_light_shader, resourceM.getTexture("Laboon")));
-	
-  //Light
-	size_t light_entity[4];
-
-		//Ambient Light
-	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -200.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                             LightComponent(Vec3(0.33f, 0.33f, 0.33f)));
-	
-		//Directional Light
-	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, -75.0f, -120.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																								LightComponent(Vec3(-1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f)));
-
-		//Point Light
-	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 25.0f, -100.0f), Vec3(0.0f, 60.0f, 75.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																							 	 LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f), 1.0f, 0.007f, 0.0002f));
-
-		//Spot Light
-	light_entity[3] = component_manager.add_entity(TransformComponent(Vec3(50.0f, 0.0f, -100.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-																								LightComponent(Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), Vec3(0.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.75f));
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture, resourceM.getTexture("Laboon")));
 
 
-  //Camera
+	//[2]. You can add as many cameras as you want as components of any entity but alwas a dafault cam will be created in the engine initialization.
 	size_t camera = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f)), CameraComponent("Camera", 1.0f, 1.0f));
 
 	//Input Declaration
@@ -134,6 +119,7 @@ int main(int, char**) {
 			input.y = input_velocity;
 		}
 
+		//Use Set setCurrentCam to Change Between cameras (setCurrentCam(0) refers always to default camera) 
 		if (input_map.IsKeyPressed('1')) {
 			cameraM.setCurrentCam(0);
 		}
@@ -142,6 +128,7 @@ int main(int, char**) {
 			cameraM.setCurrentCam(camera);
 		}
 
+		//(To move camera you can use input and camera movement funtions)
 		cameraM.mouseRotate(input_map, 1024, 768);
 		cameraM.move(input);
 		imgui_transform_system(e, w);
