@@ -13,36 +13,6 @@
 #include "enum.hpp"
 #include <vector>
 
-void init_render_component_system(RenderComponent& render, const char* name, std::string vertexBuffer, std::string orderBuffer, unsigned int program, unsigned int texture) {
-	render.name_ = name;
-	render.elements_buffer_ = vertexBuffer;
-	render.order_buffer_ = orderBuffer;
-	render.program_ = program;
-	render.texture_ = texture;
-}
-
-void init_transform_system(TransformComponent& transform, Vec3& pos, Vec3& rot, Vec3& size) {
-	transform.pos_ = pos;
-	transform.size_ = size;
-	transform.rot_ = rot;
-}
-
-void init_audio_system(AudioComponent& audio, SoundBuffer& buff, const char* label, ALfloat pos[3], ALfloat vel[3], float gain, float pitch, bool playing) {
-	audio.sound_source_ = SoundSource(label, pos, vel, gain, pitch);
-
-	audio.sound_source_.addSound(&buff);
-
-	if(playing)
-		audio.sound_source_.Play();
-}
-
-void init_color_system(ColorComponent& color, float r, float g, float b, float a) {
-	color.color_.x = r;
-	color.color_.y = g;
-	color.color_.z = b;
-	color.color_.w = a;
-}
-
 void change_color_system(Engine& e, size_t entity, float r, float g, float b, float a) {
 	auto& component_manager = e.getComponentManager();
 
@@ -53,62 +23,6 @@ void change_color_system(Engine& e, size_t entity, float r, float g, float b, fl
 	color->color_.y = g;
 	color->color_.z = b;
 	color->color_.w = a;
-}
-
-void init_ambient_light_system(LightComponent& light, Vec3 color) {
-	light.direction_ = Vec3{ 0,0,0 };
-	light.color_ = color;
-	light.spec_color_ = Vec3{ 0,0,0 };
-	light.constant_ = 0.0f;
-	light.linear_ = 0.0f;
-	light.quadratic_ = 0.0f;
-	light.cutoff_angle_ = 0.0f;
-
-	light.type_ = LightType::kAmbient;
-}
-
-void init_directional_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular) {
-	light.direction_ = direction;
-	light.color_ = color;
-	light.spec_color_ = specular;
-	light.constant_ = 0.0f;
-	light.linear_ = 0.0f;
-	light.quadratic_ = 0.0f;
-	light.cutoff_angle_ = 0.0f;
-	light.min_shadow_render_distance_ = 0.01f;
-	light.max_shadow_render_distance_ = 1000.0f;
-
-	light.type_ = LightType::kDirectional;
-}
-
-void init_point_light_system(LightComponent& light, Vec3 color, Vec3 specular, float constant, float linear, float quadratic) {
-	light.direction_ = Vec3{ 0,0,0 };
-	light.color_ = color;
-	light.spec_color_ = specular;
-	light.constant_ = constant;
-	light.linear_ = linear;
-	light.quadratic_ = quadratic;
-	light.cutoff_angle_ = 0.0f;
-
-	light.type_ = LightType::kPoint;
-}
-
-void init_spot_light_system(LightComponent& light, Vec3 direction, Vec3 color, Vec3 specular, float constant, float linear, float quadratic, float cutoff_angle) {
-	light.direction_ = direction;
-	light.color_ = color;
-	light.spec_color_ = specular;
-	light.constant_ = constant;
-	light.linear_ = linear;
-	light.quadratic_ = quadratic;
-	light.cutoff_angle_ = cutoff_angle;
-
-	light.type_ = LightType::kSpot;
-}
-
-void init_camera_system(CameraComponent& cameraComp, Vec3 pos, float speed, float sensitivity) {
-	cameraComp.pos_ = pos;
-	cameraComp.speed_ = speed;
-	cameraComp.sensitivity_ = sensitivity;
 }
 
 void move_system(std::vector<std::optional<TransformComponent>>& transforms, Vec3 mov) {
@@ -175,55 +89,6 @@ void set_position_system(TransformComponent& transform, Vec3 pos) {
 	pos.y = ((pos.y / 768 * 2) - 1) * -1;
 
 	transform.pos_ = pos;
-}
-
-void move_camera_system(CameraComponent& cam, Vec3 input) {
-
-	if (input.z < 0) {
-		cam.pos_ -= cam.forward_ * cam.speed_;
-	}
-
-	if (input.z > 0) {
-		cam.pos_ += cam.forward_ * cam.speed_;
-	}
-
-	if (input.x > 0) {
-		cam.pos_ += Vec3::CrossProduct(cam.forward_, cam.up_).Normalized();
-	}
-
-	if (input.x < 0) {
-		cam.pos_ -= Vec3::CrossProduct(cam.forward_, cam.up_).Normalized();
-	}
-
-}
-
-void rotate_camera_system(CameraComponent& cam, Input& input, const float w, const float h) {
-	static float alpha = -1.57f;
-	static float omega = 0;
-	static float last_alpha = -1.57f;
-	static float last_omega = 0;
-	static Vec2 first_pos(0.0f, 0.0f);
-
-	double mouse_x, mouse_y;
-	input.getMousePos(mouse_x, mouse_y);
-
-	if (input.IsKeyDown(kKey_RightClick)) {
-		first_pos = Vec2((float)mouse_x, (float)mouse_y);
-	}
-
-	if (input.IsKeyPressed(kKey_RightClick)) {
-		alpha = last_alpha + ((float)mouse_x - first_pos.x) / w * cam.sensitivity_;
-		omega = last_omega + ((float)mouse_y - first_pos.y) / h * -1;
-	}
-
-	if (input.IsKeyUp(kKey_RightClick)) {
-		last_alpha = alpha;
-		last_omega = omega;
-	}
-
-	cam.forward_.x = cos(omega) * cos(alpha);
-	cam.forward_.y = sin(omega);
-	cam.forward_.z = cos(omega) * sin(alpha);
 }
 
 void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) {
@@ -418,11 +283,6 @@ void imgui_transform_system(Engine& e, Window& w) {
 		ImGui::End();
 	}
 
-}
-
-void init_box_collider_system(BoxColliderComponent& component, Vec3 extent, Vec3 center_offset) {
-	component.extent_ = extent;
-	component.center_offset_ = center_offset;
 }
 
 bool are_colliding_system(Engine& e, size_t entity1, size_t entity2) {

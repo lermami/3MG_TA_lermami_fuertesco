@@ -1,9 +1,9 @@
 /**
- * @file defaul_components.hpp
+ * @file default_components.hpp
  * @brief Header file for the components.
  *
- * @defgroup defaul_components defaul_components
- * @brief This file defines the defaul components of entities.
+ * @defgroup Default Components Default Components
+ * @brief This file defines the default components of entities.
  */
 #pragma once
 
