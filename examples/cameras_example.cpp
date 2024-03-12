@@ -28,7 +28,7 @@
 #include "resource_manager.hpp"
 
 
-//In this example we will see  how to add and use multiple cameras to the engine
+//In this example we will see how to add and use multiple cameras to the engine
 int main(int, char**) {
 	Engine e;
 	auto& thread_manager = e.getThreadManager();
