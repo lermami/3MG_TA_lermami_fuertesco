@@ -31,9 +31,10 @@ int main(int, char**) {
 	Engine e;
 
 	//[2]. Get component and resource manager
-	ThreadManager thread_manager;
+	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
+	auto& cameraM = e.getCameraManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", false);
 	if (!maybe_w) return -1;
@@ -43,11 +44,6 @@ int main(int, char**) {
 
 	Renderer renderer(e, w);
 
-	//Camera
-	size_t main_camera = component_manager.add_entity(CameraComponent());
-	w.setCurrentCam(main_camera);
-
-	
 	//Create n triangles in random position
 	int n_triangles = 10000;
 

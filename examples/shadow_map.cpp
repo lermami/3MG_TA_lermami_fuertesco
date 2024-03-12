@@ -42,6 +42,7 @@ int main(int, char**) {
 	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
+	auto& cameraM = e.getCameraManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
@@ -102,10 +103,6 @@ int main(int, char**) {
 	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		LightComponent(Vec3(0.5f, 0.5f, 0.5f)));
   
-  //Camera
-	size_t main_camera = component_manager.add_entity(CameraComponent());
-	w.setCurrentCam(main_camera);
-	
 	//Input Declaration
 	Input input_map(w);
 	double mouse_x = 0, mouse_y = 0;
@@ -148,8 +145,8 @@ int main(int, char**) {
 			input.y = input_velocity;
 		}
 		
-		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
-		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
+		cameraM.mouseRotate(input_map, 1024, 768);
+		cameraM.move(input);
 
 		imgui_transform_system(e, w);
 		

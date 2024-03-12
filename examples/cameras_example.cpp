@@ -142,11 +142,6 @@ int main(int, char**) {
 			cameraM.setCurrentCam(camera);
 		}
 
-
-
-
-		//move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
-		//rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		cameraM.mouseRotate(input_map, 1024, 768);
 		cameraM.move(input);
 		imgui_transform_system(e, w);

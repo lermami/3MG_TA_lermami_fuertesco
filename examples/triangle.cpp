@@ -53,10 +53,6 @@ int main(int, char**) {
   size_t triangle = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 0.0f)),
     RenderComponent("Triangle", "TriangleVertices", "TriangleIndices", simpleProgram, 0));
 
-  //Camera
-  size_t main_camera = component_manager.add_entity(CameraComponent());
-  w.setCurrentCam(main_camera);
-
   Input input_map(w);
 
   while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {

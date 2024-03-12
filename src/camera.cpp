@@ -50,11 +50,11 @@ void CameraManager::move(Vec3 vel) {
   CameraComponent& cam_comp_ = *engine_.getComponentManager().get_component<CameraComponent>(current_cam_);
 
   if (vel.z < 0) {
-    cam_comp_.pos_ += cam_comp_.forward_ * cam_comp_.speed_;
+    cam_comp_.pos_ -= cam_comp_.forward_ * cam_comp_.speed_;
   }
 
   if (vel.z > 0) {
-    cam_comp_.pos_ -= cam_comp_.forward_ * cam_comp_.speed_;
+    cam_comp_.pos_ += cam_comp_.forward_ * cam_comp_.speed_;
   }
 
   if (vel.x > 0) {

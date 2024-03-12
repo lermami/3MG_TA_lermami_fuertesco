@@ -34,6 +34,7 @@ int main(int, char**) {
 	auto& thread_manager = e.getThreadManager();
 	auto& component_manager = e.getComponentManager();
 	auto& resourceM = e.getResourceManager();
+	auto& cameraM = e.getCameraManager();
 
 	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
 	if (!maybe_w) return -1;
@@ -70,10 +71,6 @@ int main(int, char**) {
 		 RenderComponent("Cube 2", "CubeVertices", "CubeIndices", color_shader, laboon_handle),
 		 ColorComponent(Vec4(0.8f, 0.8f, 0.8f, 1.0f)),
 		 BoxColliderComponent(Vec3(1.0f, 1.0f, 1.0f)));
-
-  //Camera
-	size_t main_camera = component_manager.add_entity(CameraComponent());
-	w.setCurrentCam(main_camera);
 
 	//Input Declaration
 	Input input_map(w);
@@ -143,8 +140,6 @@ int main(int, char**) {
 			change_color_system(e, cube2, 0.8f, 0.8f, 0.8f, 1.0f);
 		}
 		
-		move_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input);
-		rotate_camera_system(*component_manager.get_component<CameraComponent>(main_camera), input_map, 1024, 768);
 		imgui_transform_system(e, w);
 
 		renderer.render();

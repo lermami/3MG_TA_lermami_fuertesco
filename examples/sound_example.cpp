@@ -64,9 +64,6 @@ int main(int, char**) {
     RenderComponent("Triangle 2", "TriangleVertices", "TriangleIndices", simpleProgram, 0),
     AudioComponent(testBuffer2, "Test2", pos, vel, 1.0f, 1.0f, false));
 
-  //Camera
-  size_t main_camera = component_manager.add_entity(CameraComponent());
-  w.setCurrentCam(main_camera);
 
   Input input_map(w);
 
