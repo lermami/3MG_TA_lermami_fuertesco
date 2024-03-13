@@ -88,12 +88,8 @@ int main(int, char**) {
 
 
     //(Detect scroll input example)
-    if (y_scroll > 0) {
-      rotate = -input_velocity * 2.0f;
-    }
-
-    if (y_scroll < 0) {
-      rotate = input_velocity * 2.0f;
+    if (y_scroll != 0) {
+      rotate += y_scroll * input_velocity * 2.0f;
     }
 
     // Draw triangle
