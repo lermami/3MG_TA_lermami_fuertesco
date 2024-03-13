@@ -165,11 +165,6 @@ void Window::getWindowSize(unsigned int& w, unsigned int& h) {
   h = height_;
 }
 
-void Window::setwindowsize(unsigned int w, unsigned int h) {
-  width_ = w;
-  height_ = h;
-}
-
 void Window::enableCulling(bool enable) {
   enable ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 }

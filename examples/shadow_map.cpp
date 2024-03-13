@@ -148,7 +148,7 @@ int main(int, char**) {
 		cameraM.mouseRotate(input_map, 1024, 768);
 		cameraM.move(input);
 
-		imgui_transform_system(e, w);
+		imgui_interface_system(e, w);
 		
 		renderer.render();
 

@@ -76,7 +76,7 @@ int main(int, char**) {
     basic_sound_system(*component_manager.get_component_list<AudioComponent>());
 
     // Draw triangle
-    imgui_transform_system(e, w);
+    imgui_interface_system(e, w);
 
     renderer.render();
     w.swap();

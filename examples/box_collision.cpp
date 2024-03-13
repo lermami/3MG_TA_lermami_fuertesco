@@ -140,7 +140,7 @@ int main(int, char**) {
 			change_color_system(e, cube2, 0.8f, 0.8f, 0.8f, 1.0f);
 		}
 		
-		imgui_transform_system(e, w);
+		imgui_interface_system(e, w);
 
 		renderer.render();
 

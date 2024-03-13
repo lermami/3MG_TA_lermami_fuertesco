@@ -164,17 +164,8 @@ public:
   void getWindowSize(unsigned int& w, unsigned int& h);
 
   /**
-   * Sets the window size.
-   *
-   * Resizes the window to the specified width and height.
-   *
-   * @param w New width of the window.
-   * @param h New height of the window.
-   */
-  void setwindowsize(unsigned int w, unsigned int h);
-
-  /**
    * Adds a new shader program to the window's internal list.
+   * This function is used automatically when a new shader is created.
    *
    * @param new_program ID of the new program to add.
    */
@@ -202,6 +193,9 @@ public:
    */
   bool getImguiStatus();
 
+  /**
+   * Resets the framebuffer's viewport to the original size of the Window.
+   */
   void resetViewport();
 
 

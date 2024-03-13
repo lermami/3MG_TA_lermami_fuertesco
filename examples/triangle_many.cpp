@@ -134,7 +134,7 @@ int main(int, char**) {
 		move_system(*component_manager.get_component_list<TransformComponent>(), Vec3(input_x, input_y, 0));
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
 
-		imgui_transform_system(e, w);
+		imgui_interface_system(e, w);
 
 		//[8]. Render geometries
 		renderer.render();

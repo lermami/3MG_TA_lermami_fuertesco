@@ -92,4 +92,4 @@ bool are_colliding_system(Engine& e, size_t entity1, size_t entity2);
  * @param e Reference to the Engine object.
  * @param w Reference to the Window object representing the engine window.
  */
-void imgui_transform_system(Engine& e, Window& w);
+void imgui_interface_system(Engine& e, Window& w);

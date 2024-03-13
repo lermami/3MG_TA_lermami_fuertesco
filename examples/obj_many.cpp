@@ -148,7 +148,7 @@ int main(int, char**) {
 		cameraM.mouseRotate(input_map, 1024, 768);
 		cameraM.move(input);
 		rotate_system(*component_manager.get_component_list<TransformComponent>(), Vec3(0.0f, rotate, 0.0f));
-		imgui_transform_system(e, w);
+		imgui_interface_system(e, w);
 
 		//[9]. Render
 		renderer.render();

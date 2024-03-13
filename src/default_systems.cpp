@@ -132,7 +132,7 @@ void basic_sound_system(std::vector<std::optional<AudioComponent>>& audio_list) 
 	ImGui::End();
 }
 
-void imgui_transform_system(Engine& e, Window& w) {
+void imgui_interface_system(Engine& e, Window& w) {
 	if (w.getImguiStatus()) {
 		auto& compM = e.getComponentManager();
 
