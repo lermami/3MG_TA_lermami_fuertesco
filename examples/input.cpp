@@ -20,6 +20,8 @@ int main(int, char**) {
   auto& component_manager = e.getComponentManager();
   auto& resourceM = e.getResourceManager();
 
+  auto& cameraM = e.getCameraManager();
+
   auto maybe_w = Window::create(e, 1024, 768, "Test Window");
   if (!maybe_w) return -1;
 
@@ -48,7 +50,6 @@ int main(int, char**) {
   Input input_map(w);
 
   size_t main_camera = component_manager.add_entity(CameraComponent());
-  w.setCurrentCam(main_camera);
 
   //(Special keys always need enum like "kKey_Escape")
   while (!w.is_done() && !input_map.IsKeyDown(kKey_Escape)) {
@@ -63,7 +64,7 @@ int main(int, char**) {
     float input_velocity = 1.0f * w.getDeltaTime();
 
     double mouse_x = 0, mouse_y = 0;
-    double x_scroll, y_scroll;
+    double x_scroll = 0, y_scroll = 0;
 
     //(To get Special inputs like mouse inputs it is necessary to use auxiliar variables)
     input_map.getMousePos(mouse_x, mouse_y);
