@@ -107,3 +107,4 @@ private:
   TextureFiltering min_filter_format_;
   TextureFiltering mag_filter_format_;
 };
+

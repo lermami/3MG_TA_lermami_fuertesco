@@ -44,7 +44,7 @@ int main(int, char**) {
 	auto& resourceM = e.getResourceManager();
 	auto& cameraM = e.getCameraManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", false);
 	if (!maybe_w) return -1;
 	
 	auto& w = maybe_w.value();
@@ -66,8 +66,6 @@ int main(int, char**) {
 	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Square"), "SquareVertices", "SquareIndices");
 	resourceM.createBuffersWithGeometry(resourceM.getGeometry("Cube"), "CubeVertices", "CubeIndices");
 
-
-	unsigned n_obj = 1000;
 	
 	Texture laboon(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte);
 	unsigned wall_texture = laboon.LoadTexture("../assets/wall.jpg");

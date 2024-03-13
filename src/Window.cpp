@@ -16,29 +16,20 @@
 #include "AL/alc.h"
 
 std::optional<Window> Window::create(Engine& engine, int w, int h, const char* title, bool imgui) {
-  Window window(engine, w, h, title, imgui);
+	auto maybe_window = WindowResource::create(w, h, title, imgui);
 
-  if (!window.is_done()) {
-    return window;
-  }
-  else {
-    return std::nullopt;
-  }
+	if (!maybe_window.has_value()) {
+		return std::nullopt;
+	}
+
+	WindowResource window{ std::move(*maybe_window) };
+
+  Window a{ engine, std::move(window) ,  w, h, imgui };
+	return std::move(a);
 }
 
-Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_{ e } {
+Window::Window(Engine& e, WindowResource&& window_resource, int w, int h, bool imgui) : engine_{ e }, window_resource_{std::move(window_resource)}{
 	imguiInit_ = imgui;
-	if (imguiInit_) {
-		handle_ = glfwCreateWindow(w + (int)((float) w * 0.3f), h, title, NULL, NULL);
-		glViewport((GLint)((float) w * 0.3f), 0, w, h);
-	}
-	else {
-		handle_ = glfwCreateWindow(w, h, title, NULL, NULL);
-	}
-	glfwMakeContextCurrent(handle_);
-
-	GLenum initstate = glewInit();
-	assert(initstate == GLEW_OK);
 
 	width_ = w;
 	height_ = h;
@@ -51,8 +42,6 @@ Window::Window(Engine& e, int w, int h, const char* title, bool imgui) : engine_
 }
 
 Window::~Window() {
-	handle_ = NULL;
-
 	if (imguiInit_) {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -60,43 +49,24 @@ Window::~Window() {
 	}
 }
 
-Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
-	w.handle_ = NULL;
-
-	width_ = w.width_;
-	height_ = w.height_;
-	currentTime_ = w.currentTime_;
-	lastTime_ = w.lastTime_;
-	deltaTime_ = w.deltaTime_;
-
-	imguiInit_ = w.imguiInit_;
-	if (imguiInit_) {
-		initImGui();
-	}
-	w.imguiInit_ = false;
-
-	program_list_ = w.program_list_;
-	current_cam_ = w.current_cam_;
-}
-
-Window::Window(Window&& w) noexcept : handle_{ w.handle_ }, engine_{ w.engine_ }  {
-	w.handle_ = NULL;
-
-	width_ = w.width_;
-	height_ = w.height_;
-	currentTime_ = w.currentTime_;
-	lastTime_ = w.lastTime_;
-	deltaTime_ = w.deltaTime_;
-
-	imguiInit_ = w.imguiInit_;
-	if (imguiInit_) {
-		initImGui();
-	}
-	w.imguiInit_ = false;
-
-	program_list_ = w.program_list_;
-	current_cam_ = w.current_cam_;
-}
+//Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
+//	w.handle_ = NULL;
+//
+//	width_ = w.width_;
+//	height_ = w.height_;
+//	currentTime_ = w.currentTime_;
+//	lastTime_ = w.lastTime_;
+//	deltaTime_ = w.deltaTime_;
+//
+//	imguiInit_ = w.imguiInit_;
+//	if (imguiInit_) {
+//		initImGui();
+//	}
+//	w.imguiInit_ = false;
+//
+//	program_list_ = w.program_list_;
+//	current_cam_ = w.current_cam_;
+//}
 
 void Window::initSoundContext() {
   ALCdevice* device = alcOpenDevice(NULL);
@@ -112,7 +82,7 @@ void Window::initImGui() {
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
   // Setup Platform/Renderer bindings
 
-  ImGui_ImplGlfw_InitForOpenGL(handle_, true);
+  ImGui_ImplGlfw_InitForOpenGL(window_resource_.handle_, true);
   ImGui_ImplOpenGL3_Init("#version 130");
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
@@ -129,8 +99,7 @@ void Window::updateImGui() {
 }
 
 bool Window::is_done() const {
-  if (NULL == handle_) return true;
-  if (glfwWindowShouldClose(handle_)) return true;
+  if (glfwWindowShouldClose(window_resource_.handle_)) return true;
 
   return false;
 }
@@ -139,7 +108,7 @@ void Window::swap() {
   deltaTime_ = (float)(currentTime_ - lastTime_);
 
   glfwPollEvents();
-  glfwSwapBuffers(handle_);
+  glfwSwapBuffers(window_resource_.handle_);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -245,4 +214,62 @@ void Window::resetViewport() {
 		glViewport(0, 0, width_, height_);
 	}
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+
+GLFResource::GLFResource() {
+	glfwInit();
+}
+
+GLFResource::~GLFResource() {
+	if (destroy_) {
+		glfwTerminate();
+	}
+}
+
+GLFResource::GLFResource(GLFResource&& other) : destroy_ {other.destroy_} {
+	other.destroy_ = false;
+}
+
+GLFResource& GLFResource::operator=(GLFResource&& other) {
+	destroy_ = other.destroy_;
+	other.destroy_ = false;
+
+	return *this;
+}
+
+std::optional<WindowResource> WindowResource::create(int w, int h, const char* title, bool imgui) {
+	GLFResource glfw;
+
+	auto handle = glfwCreateWindow(w + (int)((float)w * 0.3f), h, title, NULL, NULL);
+	if (NULL == handle) return std::nullopt;
+
+	glfwMakeContextCurrent(handle);
+
+	glViewport((GLint)((float)w * 0.3f), 0, w, h);
+
+	GLenum initstate = glewInit();
+
+	if (initstate != GLEW_OK) {
+		return std::nullopt;
+	}
+
+	return WindowResource(std::move(glfw), handle);
+}
+
+WindowResource::WindowResource(GLFResource glfw_resource, GLFWwindow* handle) : handle_{ handle }, glfw_resource_ { std::move(glfw_resource) }{
+}
+
+WindowResource::~WindowResource() {
+
+}
+
+WindowResource::WindowResource(WindowResource&& other) : handle_{ other.handle_ }, glfw_resource_ {std::move(other.glfw_resource_)} {
+}
+
+WindowResource& WindowResource::operator=(WindowResource&& other) {
+	handle_ = other.handle_;
+	glfw_resource_ = std::move(other.glfw_resource_);
+
+	return *this;
 }

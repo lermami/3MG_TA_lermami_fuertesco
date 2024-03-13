@@ -16,6 +16,40 @@
 #include "glm/glm.hpp"
 
 class Engine;
+struct GLFResource {
+  GLFResource();
+  ~GLFResource();
+
+  GLFResource(const GLFResource&) = delete;
+  GLFResource& operator=(const GLFResource&) = delete;
+
+  GLFResource(GLFResource&&);
+  GLFResource& operator=(GLFResource&&);
+
+private:
+
+  bool destroy_ = true;
+
+};
+
+class WindowResource {
+public:
+  static std::optional<WindowResource> create(int w, int h, const char* title, bool imgui);
+  ~WindowResource();
+
+  WindowResource(const WindowResource&) = delete;
+  WindowResource& operator=(const WindowResource&) = delete;
+
+  WindowResource(WindowResource&&);
+  WindowResource& operator=(WindowResource&&);
+
+
+  GLFWwindow* handle_;
+private:
+  WindowResource(GLFResource glfw_resource, GLFWwindow* handle);
+
+  GLFResource glfw_resource_;
+};
 
 /**
  * @class Window
@@ -40,15 +74,15 @@ public:
    */
   ~Window();
 
-  /**
-   * Copy constructor.
-   */
-  Window(Window& w);
+  ///**
+  // * Copy constructor.
+  // */
+  //Window(Window& w);
 
   /**
   * Move constructor.
   */
-  Window(Window&& w) noexcept;
+  Window(Window&& w) = default;
 
   /**
    * Copy constructor (disabled).
@@ -209,14 +243,13 @@ private:
    * @param title Title of the window.
    * @param imgui Flag to enable ImGui integration.
    */
-  Window(Engine& e, int w, int h, const char* title, bool imgui);
+  Window(Engine& e, WindowResource&& window_resource, int w, int h, bool imgui);
 
   /**
    * Initializes ImGui for the window (if enabled during creation).
    */
   void initImGui();
 
-  GLFWwindow* handle_;
   clock_t  currentTime_;
   clock_t  lastTime_;
   unsigned int width_;
@@ -228,5 +261,6 @@ private:
 
   std::vector<unsigned> program_list_;
   Engine& engine_;
+  WindowResource window_resource_;
 };
 

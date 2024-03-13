@@ -23,7 +23,7 @@ int Key::getKey() const {
 }
 
 Input::Input(Window& w) {
-  windowHandle_ = w.handle_;
+  windowHandle_ = w.window_resource_.handle_;
 
   scroll_x_ = 0;
   scroll_y_ = 0;
