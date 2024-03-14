@@ -131,7 +131,7 @@ int main(int, char**) {
 		//(To move camera you can use input and camera movement funtions)
 		cameraM.mouseRotate(input_map, 1024, 768);
 		cameraM.move(input);
-		imgui_transform_system(e, w);
+		imgui_interface_system(e, w);
 
 		renderer.render();
 
