@@ -15,7 +15,6 @@ out VS_OUT {
 uniform mat4 u_m_matrix;
 uniform mat4 u_v_matrix;
 
-uniform mat4 u_o_matrix;
 uniform mat4 u_p_matrix;
 
 uniform mat4 u_light_space_matrix;

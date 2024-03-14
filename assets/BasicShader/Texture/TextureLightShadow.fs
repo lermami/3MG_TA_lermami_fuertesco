@@ -59,8 +59,8 @@ in vec3 world_position;
 in vec3 world_normal;
 in vec3 cam_dir;
 
-uniform sampler2D u_texture;
-uniform sampler2D u_depth_map;
+uniform sampler2D u_texture;    //Texture
+uniform sampler2D u_depth_map;  //DepthMap Texture
 
 //Lights
 uniform AmbientLight u_ambient_light[5];

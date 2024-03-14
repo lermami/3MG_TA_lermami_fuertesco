@@ -12,15 +12,14 @@ out VS_OUT {
     vec4 FragPosLightSpace;
 } vs_out;
 
-uniform mat4 u_m_matrix;
-uniform mat4 u_v_matrix;
+uniform mat4 u_m_matrix;          //Model Matrix
+uniform mat4 u_v_matrix;          //View Matrix
 
-uniform mat4 u_o_matrix;
-uniform mat4 u_p_matrix;
+uniform mat4 u_p_matrix;          //Projection Matrix
 
-uniform mat4 u_light_space_matrix;
+uniform mat4 u_light_space_matrix;//Light space Matrix
 
-uniform vec3 u_camera_pos;
+uniform vec3 u_camera_pos;        //Camera position
 
 out vec4 color;
 out vec3 pos;

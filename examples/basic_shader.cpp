@@ -79,8 +79,6 @@ int main(int, char**) {
 	auto color_light_shadow_shader = CreateProgram(w, "../assets/BasicShader/BasicColor/ColorLightShadow.vs", "../assets/BasicShader/BasicColor/ColorLightshadow.fs");
 
 
-
-
 	//Depth texture is sent to shader as "uniform sampler2D u_depth_map" and Texture is sent to shader as "uniform sampler2D u_texture"
 
 	resourceM.LoadObj(e, "Cube", "../assets/obj_test.obj");
@@ -100,8 +98,12 @@ int main(int, char**) {
 	
 	//Cubes
 		//1
-	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(-30.0f, 20.0f, -80.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)), 
-		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", texture_shader, resourceM.getTexture("Wall")));
+	size_t new_e = component_manager.add_entity(
+		TransformComponent(Vec3(-30.0f, 20.0f, -80.0f), 
+											 Vec3(0.0f, 1.57f, 0.0f), 
+											 Vec3(10.0f, 10.0f, 10.0f)), 
+		RenderComponent("Cube 1", "CubeVertices", "CubeIndices", 
+										texture_shader, resourceM.getTexture("Wall")));
 
 		//2
 	new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, 20.0f, -80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(10.0f, 10.0f, 10.0f)),

@@ -58,7 +58,7 @@ in vec3 cam_dir;
 
 out vec4 frag_colour;
 
-uniform vec4 u_color;
+uniform vec4 u_color; //Color
 
 
 uniform sampler2D u_texture;
