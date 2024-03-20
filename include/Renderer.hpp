@@ -12,6 +12,7 @@
 class Engine;
 class Window;
 class Vec3;
+struct DotShadowMatrix;
 
 /**
  * @brief Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry.
@@ -44,7 +45,7 @@ public:
      * @brief Calculates the shadow matrices for all lights with shadows enabled.
      * This function involves using the light position and direction to calculate the projection and view matrices for shadow mapping.
      */
-  void CalculateShadowsMatrix();
+  void CalculateShadowsMatrix(unsigned int point_program);
 
   /**
      * @brief Renders the entire scene.
@@ -57,7 +58,7 @@ public:
      *
      * @param program The shader program to use for rendering the shadow map.
      */
-  void renderShadowMap(unsigned int program);
+  void renderShadowMap(unsigned int dir_program, unsigned int point_program);
 
   /**
      * @brief Configures the shadow matrix based on near and far planes, light position, and direction.
@@ -68,7 +69,9 @@ public:
      * @param direction The direction of the light.
      * @return The calculated shadow matrix.
      */
-  glm::mat4 ConfigureShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
+  glm::mat4 ConfigureDirShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
+
+  DotShadowMatrix ConfigurePointShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
 
 private:
 
@@ -79,10 +82,15 @@ private:
 
   Engine& engine_; /**< Reference to the Engine object. */
   Window& window_; /**< Reference to the Window object. */
-
   bool renderShadows_; /**< Flag indicating whether to render shadows. */
   unsigned int shadow_resolution_; /**< Resolution of the shadow map texture in both direction W & H. */
-  unsigned depthmap_; /**< Handle to the depth map texture. */
-  unsigned depthmapFBO_; /**< Handle to the framebuffer object used for shadow mapping. */
-  unsigned shadowProgram_; /**< Handle to the shader program used for shadow rendering. */
+
+  unsigned dir_depthmap_; /**< Handle to the depth map texture of the directional lights. */
+  unsigned point_depthmap_; /**< Handle to the depth map texture of the point lights. */
+
+  unsigned dir_depthmapFBO_; /**< Handle to the framebuffer object used for dir light shadow mapping. */
+  unsigned point_depthmapFBO_; /**< Handle to the framebuffer object used for point light shadow mapping. */
+
+  unsigned dir_shadowProgram_; /**< Handle to the shader program used for directional light shadow rendering. */
+  unsigned point_shadowProgram_; /**< Handle to the shader program used for dot light shadow rendering. */
 };

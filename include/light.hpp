@@ -10,6 +10,12 @@
 #include "vector_3.hpp"
 #include "enum.hpp"
 
+#include "glm/glm.hpp"
+
+struct DotShadowMatrix {
+  glm::mat4 m[6];
+};
+
 struct LightComponent{
 public:
 
