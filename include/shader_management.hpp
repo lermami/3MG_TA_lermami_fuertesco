@@ -7,9 +7,42 @@
  */
 #pragma once
 #include <string>
+#include <optional>
 #include "vector_3.hpp"
 
 class Window;
+
+class Program {
+public:
+  /**
+ * @brief Creates a shader program by linking a vertex shader and a fragment shader.
+ *
+ * This function links a vertex shader and a fragment shader to create a complete shader program.
+ *  The program is stored in a internal list of the specified window.
+ *
+ * @param w Reference to the Window object.
+ * @param vs The vertex shader source code as a C-style string.
+ * @param fs The fragment shader source code as a C-style string.
+ * @return The ID of the created shader program, or 0 if linking failed.
+ */
+  static std::optional<Program> create(Window& w, const char* vs, const char* fs);
+
+  Program();
+  ~Program();
+
+  Program(const Program&) = delete;
+  Program& operator=(const Program&) = delete;
+
+  Program(Program&& o);
+  Program& operator=(Program&& o);
+
+  unsigned get();
+
+private:
+  bool destroy_;
+  Program(unsigned handle);
+  unsigned handle_;
+};
 
 /**
  * @brief Creates a shader object of the specified type.
@@ -30,19 +63,6 @@ unsigned int CreateShader(int type);
  * @param src The shader source code as a string.
  */
 void CompileShader(unsigned int id, const char* src);
-
-/**
- * @brief Creates a shader program by linking a vertex shader and a fragment shader.
- *
- * This function links a vertex shader and a fragment shader to create a complete shader program.
- *  The program is stored in a internal list of the specified window.
- *
- * @param w Reference to the Window object.
- * @param vs The vertex shader source code as a C-style string.
- * @param fs The fragment shader source code as a C-style string.
- * @return The ID of the created shader program, or 0 if linking failed.
- */
-unsigned int CreateProgram(Window& w, const char* vs, const char* fs);
 
 /**
  * @brief Reads the contents of a file into a string.

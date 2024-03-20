@@ -73,7 +73,7 @@ public:
    * @param tex An existing Texture object to load the texture data into.
    * @param path The path to the texture file to load.
    */
-  void loadTexture(const char* name, Texture tex, const char* path);
+  void loadTexture(const char* name, TextureInfo texInfo, const char* path);
 
   /**
    * Retrieves a previously loaded texture by name.
@@ -144,7 +144,7 @@ private:
    */
   Geometry LoadObj(const char* name, const char* path);
 
-  std::unordered_map<std::string, unsigned> textures_;
+  std::unordered_map<std::string, Texture> textures_;
 
   std::unordered_map<std::string, std::future<Geometry>> geometryFutures_;
   std::unordered_map<std::string, Geometry> geometries_;

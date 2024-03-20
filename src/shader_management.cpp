@@ -33,7 +33,7 @@ void CompileShader(unsigned int id, const char* src) {
 
 }
 
-unsigned int CreateProgram(Window& w, const char* v, const char* f) {
+std::optional<Program> Program::create(Window& w, const char* v, const char* f) {
   //Read shaders
   std::string vs = ReadFiles(v);
   std::string fs = ReadFiles(f);
@@ -57,17 +57,19 @@ unsigned int CreateProgram(Window& w, const char* v, const char* f) {
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
     printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n");
-    return 0;
+    return std::nullopt;
   }
   else {
     w.addProgram(shaderProgram);
   }
 
   //Clean shaders
+  glDetachShader(shaderProgram, vertexShader);
+  glDetachShader(shaderProgram, fragmentShader);
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
 
-  return shaderProgram;
+  return Program(shaderProgram);
 }
 
 std::string ReadFiles(const std::string& file) {
@@ -92,4 +94,32 @@ std::string ReadFiles(const std::string& file) {
 void SetVector3(unsigned int program, char* name, Vec3 vector) {
   GLuint id = glGetUniformLocation(program, name);
   glUniform3f(id, vector.x, vector.y, vector.z);
+}
+
+Program::Program(){
+  handle_ = 0;
+  destroy_ = true;
+}
+
+Program::Program(unsigned handle) : handle_{handle}{
+  destroy_ = true;
+}
+
+Program::~Program(){
+  if(destroy_)
+    glDeleteProgram(handle_);
+}
+
+Program::Program(Program&& o) : handle_{o.handle_} {
+  o.destroy_ = false;
+}
+
+Program& Program::operator=(Program&& o) {
+  handle_ = o.handle_;
+  o.destroy_ = false;
+  return *this;
+}
+
+unsigned Program::get() {
+  return handle_;
 }

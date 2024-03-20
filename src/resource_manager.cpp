@@ -4,6 +4,7 @@
 #include "buffer.hpp"
 
 #include "Engine.hpp"
+#include "texture.hpp"
 #include "thread_manager.hpp"
 
 ResourceManager::ResourceManager() {
@@ -17,8 +18,8 @@ ResourceManager::~ResourceManager() {
 	}
 }
 
-void ResourceManager::loadTexture(const char* name, Texture tex, const char* path) {
-	textures_[name] = tex.LoadTexture(path);
+void ResourceManager::loadTexture(const char* name, TextureInfo texInfo, const char* path) {
+	textures_[name] = Texture::LoadTexture(texInfo, path);
 }
 
 void ResourceManager::LoadObj(Engine& e, const char* name, const char* path) {

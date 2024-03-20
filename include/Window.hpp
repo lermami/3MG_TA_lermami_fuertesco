@@ -27,7 +27,6 @@ struct GLFResource {
   GLFResource& operator=(GLFResource&&);
 
 private:
-
   bool destroy_ = true;
 
 };
@@ -42,7 +41,6 @@ public:
 
   WindowResource(WindowResource&&);
   WindowResource& operator=(WindowResource&&);
-
 
   GLFWwindow* handle_;
 private:
@@ -149,45 +147,6 @@ public:
    * Updates the last time for calculating time delta.
    */
   void calculateLastTime();
-
-  /**
-   * Enables or disables backface culling.
-   *
-   * Backface culling is an optimization technique that discards geometric primitives
-   *  that are facing away from the viewer.
-   *
-   * @param enable True to enable backface culling, false to disable.
-   */
-  void enableCulling(bool enable);
-
-  /**
-   * Sets the culling mode (front face and backface).
-   *
-   * Specifies which faces to cull based on the winding order of their vertices.
-   *
-   * @param culling The culling mode to use 
-   * @param frontface The winding order that defines the front face 
-   */
-  void setCullingMode(CullingMode culling, FrontFace frontface);
-
-  /**
-   * Enables or disables depth testing.
-   *
-   * Depth testing is a technique used to determine which fragment is closer to the camera
-   *  when rendering overlapping geometry.
-   *
-   * @param enable True to enable depth testing, false to disable.
-   */
-  void enableDepthTest(bool enable);
-
-  /**
-   * Sets the depth test mode.
-   *
-   * Specifies how to compare the fragment's depth with the depth buffer value.
-   *
-   * @param mode The depth test mode to use .
-   */
-  void setDepthTestMode(DepthTestMode mode);
 
   /**
    * Retrieves the current window width and height.

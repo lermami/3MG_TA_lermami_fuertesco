@@ -24,7 +24,7 @@ std::optional<Window> Window::create(Engine& engine, int w, int h, const char* t
 
 	WindowResource window{ std::move(*maybe_window) };
 
-  Window a{ engine, std::move(window) ,  w, h, imgui };
+  Window a{ engine, std::move(window), w, h, imgui };
 	return std::move(a);
 }
 
@@ -134,52 +134,6 @@ void Window::getWindowSize(unsigned int& w, unsigned int& h) {
   h = height_;
 }
 
-void Window::enableCulling(bool enable) {
-  enable ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-}
-
-void Window::enableDepthTest(bool enable) {
-  enable ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-}
-
-void Window::setCullingMode(CullingMode culling, FrontFace frontface) {
-	GLenum glculling = GL_NONE;
-
-	switch (culling) {
-		case CullingMode::kBack: glculling = GL_BACK; break;
-		case CullingMode::kBackLeft: glculling = GL_BACK_LEFT; break;
-		case CullingMode::kBackRight: glculling = GL_BACK_RIGHT; break;
-		case CullingMode::kFront: glculling = GL_FRONT; break;
-		case CullingMode::kFrontAndBack: glculling = GL_FRONT_AND_BACK; break;
-		case CullingMode::kFrontLeft: glculling = GL_FRONT_LEFT; break;
-		case CullingMode::kFrontRight: glculling = GL_FRONT_RIGHT; break;
-		case CullingMode::kLeft: glculling = GL_LEFT; break;
-		case CullingMode::kRight: glculling = GL_RIGHT; break;
-	}
-
-	GLenum glfrontface = GL_NONE;
-	switch (frontface) {
-		case FrontFace::kClockWise: glfrontface = GL_CW; break;
-		case FrontFace::kCounterClockWise: glfrontface = GL_CCW; break;
-	}
-
-  glCullFace(glculling);
-  glFrontFace(glfrontface);
-}
-
-void Window::setDepthTestMode(DepthTestMode mode) {
-	GLenum glmode = GL_NONE;
-
-	switch (mode) {
-		case DepthTestMode::kEqual: glmode = GL_EQUAL; break;
-		case DepthTestMode::kGreater: glmode = GL_GREATER; break;
-		case DepthTestMode::kLess: glmode = GL_LESS; break;
-		case DepthTestMode::kNever: glmode = GL_NEVER; break;
-	}
-
-  glDepthFunc(glmode);
-}
-
 void Window::addProgram(unsigned new_program) {
   bool is_new = true;
 
@@ -241,12 +195,12 @@ GLFResource& GLFResource::operator=(GLFResource&& other) {
 std::optional<WindowResource> WindowResource::create(int w, int h, const char* title, bool imgui) {
 	GLFResource glfw;
 
-	auto handle = glfwCreateWindow(w + (int)((float)w * 0.3f), h, title, NULL, NULL);
+	auto handle = glfwCreateWindow(w, h, title, NULL, NULL);
 	if (NULL == handle) return std::nullopt;
 
 	glfwMakeContextCurrent(handle);
 
-	glViewport((GLint)((float)w * 0.3f), 0, w, h);
+	glViewport(0, 0, w, h);
 
 	GLenum initstate = glewInit();
 

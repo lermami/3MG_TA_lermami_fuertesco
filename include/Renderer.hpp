@@ -9,6 +9,9 @@
 
 #include "glm/glm.hpp"
 
+//TODO: delete this
+#include "shader_management.hpp"
+
 class Engine;
 class Window;
 class Vec3;
@@ -82,7 +85,7 @@ private:
 
   bool renderShadows_; /**< Flag indicating whether to render shadows. */
   unsigned int shadow_resolution_; /**< Resolution of the shadow map texture in both direction W & H. */
-  unsigned depthmap_; /**< Handle to the depth map texture. */
+  Texture depthmap_; /**< Handle to the depth map texture. */
   unsigned depthmapFBO_; /**< Handle to the framebuffer object used for shadow mapping. */
-  unsigned shadowProgram_; /**< Handle to the shader program used for shadow rendering. */
+  Program shadowProgram_; /**< Handle to the shader program used for shadow rendering. */
 };

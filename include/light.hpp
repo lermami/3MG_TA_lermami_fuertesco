@@ -10,6 +10,11 @@
 #include "vector_3.hpp"
 #include "enum.hpp"
 
+ /**
+  * @brief Struct representing a light component.
+  *
+  * This struct stores light properties of a light that can be a Ambient, Directional, Spot or Point.
+  */
 struct LightComponent{
 public:
 

@@ -17,6 +17,11 @@ class ResourceManager;
 class ThreadManager;
 class CameraManager;
 
+struct GlewResource {
+  GlewResource();
+  ~GlewResource();
+};
+
 /**
  * @brief Main class representing the game engine, managing core subsystems.
  */
@@ -69,4 +74,6 @@ private:
    */
   std::unique_ptr<ThreadManager> threadM_;
   std::unique_ptr<CameraManager> cameraM_;
+
+  GlewResource glew_resource_;
 };

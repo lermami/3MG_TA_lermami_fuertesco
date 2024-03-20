@@ -6,18 +6,15 @@
 
 #include "GLFW/glfw3.h"
 
-
 #include <time.h>
 
 Engine::Engine() : componentM_{ std::make_unique<ComponentManager>() }, resourceM_{ std::make_unique<ResourceManager>() }, 
 		threadM_{ std::make_unique<ThreadManager>() }, cameraM_{ std::make_unique<CameraManager>(*this) } {
-  glfwInit();
 
 	srand((unsigned int)time(NULL));
 }
 
 Engine::~Engine(){
-  glfwTerminate();
 }
 
 ComponentManager& Engine::getComponentManager() {
@@ -34,4 +31,14 @@ ThreadManager& Engine::getThreadManager() {
 
 CameraManager& Engine::getCameraManager() {
 	return *cameraM_;
+}
+
+GlewResource::GlewResource()
+{
+	glfwInit();
+}
+
+GlewResource::~GlewResource()
+{
+	glfwTerminate();
 }

@@ -17,6 +17,14 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 	//Add flags
 	renderShadows_ = true;
 
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
+
+	glDepthFunc(GL_LESS);
+
 	if (renderShadows_) {
 		//Shadow	 
 		//Create depth map buffer
@@ -24,17 +32,14 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 
 		//Create 2D Texture as the framebuffer's depth buffer
 
-		Texture depthMapTex(TextureTarget::kTexture_2D, TextureFormat::kDepthComponent, TextureType::kFloat);
-		depthMapTex.set_min_filter(TextureFiltering::kNearest);
-		depthMapTex.set_mag_filter(TextureFiltering::kNearest);
-		depthMapTex.set_wrap_s(TextureWrap::kClampToBorder);
-		depthMapTex.set_wrap_t(TextureWrap::kClampToBorder);
+
+
 		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-		
 
 		shadow_resolution_ = 2048;
-		depthmap_ = depthMapTex.LoadTexture(shadow_resolution_, shadow_resolution_);
+		depthmap_ = Texture::LoadTexture(TextureInfo{ TextureTarget::kTexture_2D, TextureFormat::kDepthComponent, TextureType::kFloat ,
+			TextureWrap::kClampToBorder,TextureWrap::kClampToBorder, TextureFiltering::kNearest ,TextureFiltering::kNearest }, shadow_resolution_, shadow_resolution_);
 
 		//Attach the framebuffer's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
@@ -43,7 +48,11 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		shadowProgram_ = CreateProgram(window_, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
+		//TODO: Move this
+		//auto program = Program::create(window_, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
+
+		//if (program.has_value())
+		//	shadowProgram_ = std::move(program.value());
 	}
 }
 
@@ -246,7 +255,7 @@ void Renderer::render()
 
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CCW);
-		renderShadowMap(shadowProgram_);
+		renderShadowMap(shadowProgram_.get());
 		glFrontFace(GL_CW);
 		glCullFace(GL_FRONT);
 

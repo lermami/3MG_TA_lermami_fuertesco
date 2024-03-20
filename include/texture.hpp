@@ -8,6 +8,21 @@
 #pragma once
 
 #include "enum.hpp"
+#include <optional>
+
+struct TextureInfo {
+  TextureInfo(TextureTarget target, TextureFormat format, TextureType type,
+    TextureWrap wrap_s = TextureWrap::kRepeat, TextureWrap wrap_t = TextureWrap::kRepeat,
+    TextureFiltering min_filter = TextureFiltering::kLinear, TextureFiltering mag_filter = TextureFiltering::kLinear);
+
+  TextureType type_;
+  TextureTarget target_;
+  TextureFormat format_;
+  TextureWrap wrap_s_format_;
+  TextureWrap wrap_t_format_;
+  TextureFiltering min_filter_format_;
+  TextureFiltering mag_filter_format_;
+};
 
 /**
 * @class Texture
@@ -21,17 +36,6 @@
 */
 class Texture {
 public:
-  /**
-   * Constructor for the Texture class.
-   *
-   * Initializes a Texture object with the specified target, format, and type.
-   *
-   * @param target The target of the texture.
-   * @param format The format of the texture data.
-   * @param type The type of the texture data.
-   */
-  Texture(TextureTarget target, TextureFormat format, TextureType type);
-
   /**
   * Destructor for the Texture class.
   *
@@ -47,7 +51,7 @@ public:
   * @param path The path to the image file.
   * @return The ID of the loaded texture, or 0 if loading failed.
   */
-  unsigned LoadTexture(const char* path);
+  static Texture LoadTexture(TextureInfo info, const char* path);
 
   /**
    * Loads a texture in memory.
@@ -59,52 +63,29 @@ public:
    * @param h Height of the texture in pixels.
    * @return The ID of the loaded texture, or 0 if creation failed.
    */
-  unsigned LoadTexture(int w, int h);
+  static Texture LoadTexture(TextureInfo info, int w, int h);
 
-  /**
-   * Sets the wrap mode for the S coordinate of the texture.
-   *
-   * The wrap mode determines how texture coordinates outside the [0, 1] range are handled.
-   *
-   * @param param The wrap mode to use.
-   */
-  void set_wrap_s(TextureWrap param);
+  Texture(const Texture&) = delete;
+  Texture& operator=(const Texture&) = delete;
 
-  /**
-   * Sets the wrap mode for the T coordinate of the texture.
-   *
-   * The wrap mode determines how texture coordinates outside the [0, 1] range are handled.
-   *
-   * @param param The wrap mode to use.
-   */
-  void set_wrap_t(TextureWrap param);
+  Texture(Texture&& o);
+  Texture& operator=(Texture&& o);
 
-  /**
-  * Sets the minification filter for the texture.
-  *
-  * The minification filter determines how the texture is sampled when it's being shrunk.
-  *
-  * @param param The minification filter to use.
-  */
-  void set_min_filter(TextureFiltering param);
-
-  /**
-  * Sets the magnification filter for the texture.
-  *
-  * The magnification filter determines how the texture is sampled when it's being magnified.
-  *
-  * @param param The magnification filter to use.
-  */
-  void set_mag_filter(TextureFiltering param);
+  unsigned get();
 
 private:
+  /**
+  * Constructor for the Texture class.
+  *
+  * Initializes a Texture object with the specified target, format, and type.
+  *
+  * @param target The target of the texture.
+  * @param format The format of the texture data.
+  * @param type The type of the texture data.
+  */
+  Texture(unsigned handle);
+
   unsigned handle_;
-  TextureType type_;
-  TextureTarget target_;
-  TextureFormat format_;
-  TextureWrap wrap_s_format_;
-  TextureWrap wrap_t_format_;
-  TextureFiltering min_filter_format_;
-  TextureFiltering mag_filter_format_;
+  bool destroy_;
 };
 
