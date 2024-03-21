@@ -35,7 +35,7 @@ void main() {
   gl_Position = u_p_matrix * u_v_matrix * u_m_matrix * vec4(vp, 1.0);
   
   vs_out.FragPos = vec3(u_m_matrix * vec4(vp, 1.0));
-  vs_out.Normal = world_normal;//transpose(inverse(mat3(u_m_matrix))) * a_normal;
+  vs_out.Normal = transpose(inverse(mat3(u_m_matrix))) * a_normal;
   vs_out.TexCoords = a_uv;
   vs_out.FragPosLightSpace = u_light_space_matrix * vec4(vs_out.FragPos, 1.0);
   

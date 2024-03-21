@@ -13,6 +13,8 @@ struct DirectionalLight
   vec3 spec_color_;
 
   vec3 direction_;
+
+  float far_;
 };
 
 struct PointLight
@@ -24,6 +26,8 @@ struct PointLight
   float constant_;
   float linear_;
   float quadratic_;
+
+  float far_;
 };
 
 struct SpotLight
@@ -39,6 +43,8 @@ struct SpotLight
   float quadratic_;
 
   float cutoff_angle_;
+
+  float far_;
 };
 
 in VS_OUT {
@@ -60,7 +66,8 @@ in vec3 world_normal;
 in vec3 cam_dir;
 
 uniform sampler2D u_texture;    //Texture
-uniform sampler2D u_depth_map;  //DepthMap Texture
+uniform sampler2D u_directional_depth_map;  //DepthMap Texture for directional lights
+uniform samplerCube u_point_depth_map;  //DepthMap Texture for point lights
 
 //Lights
 uniform AmbientLight u_ambient_light[5];
@@ -184,7 +191,7 @@ vec3 AmbientProcess(){
   return result;
 }
 
-float ShadowProcess(vec4 fragPosLightSpace){
+float DirectionalShadowProcess(vec4 fragPosLightSpace){
 
   // perform perspective divide
   vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -193,7 +200,7 @@ float ShadowProcess(vec4 fragPosLightSpace){
   projCoords = projCoords * 0.5 + 0.5;
 
   // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-  float closestDepth = texture(u_depth_map, projCoords.xy).r; 
+  float closestDepth = texture(u_directional_depth_map, projCoords.xy).r; 
 
   // get depth of current fragment from light's perspective
   float currentDepth = projCoords.z;
@@ -206,12 +213,12 @@ float ShadowProcess(vec4 fragPosLightSpace){
   // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
   // PCF
   float shadow = 0.0;
-  vec2 texelSize = 1.0 / textureSize(u_depth_map, 0);
+  vec2 texelSize = 1.0 / textureSize(u_directional_depth_map, 0);
   for(int y = -1; y <= 1; ++y)
   {
       for(int x = -1; x <= 1; ++x)
       {
-          float pcfDepth = texture(u_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
+          float pcfDepth = texture(u_directional_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
           shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
       }    
   }
@@ -225,12 +232,34 @@ float ShadowProcess(vec4 fragPosLightSpace){
   return shadow;
 }
 
+float PointShadowProcess(vec3 fragPos, PointLight light)
+{
+  // get vector between fragment position and light position
+  vec3 fragToLight = fragPos - light.pos_;
+
+  // use the light to fragment vector to sample from the depth map    
+  float closestDepth = texture(u_point_depth_map, fragToLight).r;
+  
+  // it is currently in linear range between [0,1]. Re-transform back to original value
+  closestDepth *= light.far_;
+  
+  // now get current linear depth as the length between the fragment and light position
+  float currentDepth = length(fragToLight);
+
+  // now test for shadows
+  float bias = 0.005; 
+  float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
+  
+  return shadow;
+}
 
 void main() {
   vec3 light = LightProcess();
   vec3 ambient = AmbientProcess();
  
-  float shadow = ShadowProcess(fs_in.FragPosLightSpace);
+  //float shadow = DirectionalShadowProcess(fs_in.FragPosLightSpace);
+  float shadow = PointShadowProcess(fs_in.FragPos, u_point_light[0]);
+
 
   vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;
 

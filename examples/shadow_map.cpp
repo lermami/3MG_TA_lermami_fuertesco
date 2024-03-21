@@ -93,15 +93,19 @@ int main(int, char**) {
 
 	//[3]. Add Lights to scene that add shadows, (At this moment only the directional light makes shadow and max 1)
   //Light
-	size_t light_entity[2];
+	size_t light_entity[3];
 		
 		//Directional
 	light_entity[0] = component_manager.add_entity(TransformComponent(Vec3(-20.0f, 0.0f, 80.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		LightComponent(Vec3(0.1f, 0.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f), Vec3(1.0f, 1.0f, 1.0f)));
 
 		//Ambient
-	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+	light_entity[1] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
 		LightComponent(Vec3(0.5f, 0.5f, 0.5f)));
+
+		//Point
+	light_entity[2] = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, -175.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
+		LightComponent(Vec3(1.0f, 1.0f, 0.0f), Vec3(1.0f, 1.0f, 0.0f), 1.0f, 0.007f, 0.0002f));
   
 	//Input Declaration
 	Input input_map(w);

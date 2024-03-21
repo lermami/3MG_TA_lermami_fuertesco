@@ -7,11 +7,22 @@
 unsigned int CreateShader(int type) {
   unsigned int shader = 0;
 
-  if (type == 0) {
+  switch (type) {
+  case 0:
     shader = glCreateShader(GL_VERTEX_SHADER);
-  }
-  else if (type == 1) {
+    break;
+
+  case 1:
     shader = glCreateShader(GL_FRAGMENT_SHADER);
+    break;
+
+  case 2:
+    shader = glCreateShader(GL_GEOMETRY_SHADER);
+    break;
+
+  default:
+
+    break;
   }
 
   return shader;
@@ -33,21 +44,38 @@ void CompileShader(unsigned int id, const char* src) {
 
 }
 
-unsigned int CreateProgram(Window& w, const char* v, const char* f) {
+unsigned int CreateProgram(Window& w, const char* v, const char* f, const char* g) {
   //Read shaders
   std::string vs = ReadFiles(v);
   std::string fs = ReadFiles(f);
+  std::string gs;
 
   //Create opengl shaders
+    //Vertex Shader
   auto vertexShader = CreateShader(0);
   CompileShader(vertexShader, vs.c_str());
+
+    //Fragment Shader
   auto fragmentShader = CreateShader(1);
   CompileShader(fragmentShader, fs.c_str());
+
+    //Geometry Shader
+  unsigned int geometryShader = 0;
+  if (g != (const char*)'0') {
+    gs = ReadFiles(g);
+
+    geometryShader = CreateShader(2);
+    CompileShader(geometryShader, gs.c_str());
+  }
+
 
   //Attach and link shaders to program
   unsigned int shaderProgram = glCreateProgram();
   glAttachShader(shaderProgram, vertexShader);
   glAttachShader(shaderProgram, fragmentShader);
+  if (g != (const char*)'0') {
+    glAttachShader(shaderProgram, geometryShader);
+  }
   glLinkProgram(shaderProgram);
 
   //Check for linking errors

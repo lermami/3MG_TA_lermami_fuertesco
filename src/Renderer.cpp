@@ -45,7 +45,7 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		dir_shadowProgram_ = CreateProgram(window_, "../assets/Shader/ShadowMap/dirlight.vs", "../assets/Shader/ShadowMap/dirlight.fs");
-		point_shadowProgram_ = CreateProgram(window_, "../assets/Shader/ShadowMap/pointlight.vs", "../assets/Shader/ShadowMap/pointlight.fs");
+		point_shadowProgram_ = CreateProgram(window_, "../assets/Shader/ShadowMap/pointlight.vs", "../assets/Shader/ShadowMap/pointlight.fs", "../assets/Shader/ShadowMap/pointlight.gs");
 		
 		//Point Light
 		glGenFramebuffers(1, &point_depthmapFBO_);
@@ -130,10 +130,12 @@ void Renderer::renderLights() {
 				if (renderShadows_) {
 					glActiveTexture(GL_TEXTURE1);
 					glBindTexture(GL_TEXTURE_2D, dir_depthmap_);
-					GLuint shadow_loc = glGetUniformLocation(program, "u_depth_map");
+					GLuint shadow_loc = glGetUniformLocation(program, "u_directional_depth_map");
 					glUniform1i(shadow_loc, 1);
 
-					glBindTexture(GL_TEXTURE_CUBE_MAP, point_depthmap_);
+					sprintf_s(name, "u_directional_light[%d].far_", point_iterator);
+					GLuint light_far = glGetUniformLocation(program, name);
+					glUniform1f(light_far, light.max_shadow_render_distance_);
 				}
 
 				directional_iterator++;
@@ -161,6 +163,19 @@ void Renderer::renderLights() {
 				sprintf_s(name, "u_point_light[%d].quadratic_", point_iterator);
 				GLuint light_quadractic = glGetUniformLocation(program, name);
 				glUniform1f(light_quadractic, light.quadratic_);
+
+				if (renderShadows_) {
+					glActiveTexture(GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_CUBE_MAP, point_depthmap_);
+					GLuint shadow_loc = glGetUniformLocation(program, "u_point_depth_map");
+					glUniform1i(shadow_loc, 1);
+
+					sprintf_s(name, "u_point_light[%d].far_", point_iterator);
+					GLuint light_far = glGetUniformLocation(program, name);
+					glUniform1f(light_far, light.max_shadow_render_distance_);
+
+					
+				}
 
 				point_iterator++;
 			}
@@ -194,6 +209,10 @@ void Renderer::renderLights() {
 				sprintf_s(name, "u_spot_light[%d].cutoff_angle_", spot_iterator);
 				GLuint light_cutoff = glGetUniformLocation(program, name);
 				glUniform1f(light_cutoff, light.cutoff_angle_);
+
+				sprintf_s(name, "u_spot_light[%d].far_", point_iterator);
+				GLuint light_far = glGetUniformLocation(program, name);
+				glUniform1f(light_far, light.max_shadow_render_distance_);
 
 				spot_iterator++;
 			}
@@ -240,13 +259,33 @@ void Renderer::CalculateShadowsMatrix(unsigned int point_program) {
 				for (int i = 0; i < 6; i++) {
 					char name[64];
 
-					sprintf_s(name, "u_dot_light_matrix[%d]", i);
+					sprintf_s(name, "u_point_light_matrix[%d]", i);
 					GLuint shadow = glGetUniformLocation(program, name);
 					glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(dot_shadow_mat.m[i]));
 
 				}
 
 				//Shadow Matrix ----------------------> Fix Only last point light avaible
+				glUseProgram(point_program);
+				char name[64];
+
+				sprintf_s(name, "u_light_pos");
+				GLuint shadow_pos = glGetUniformLocation(point_program, name);
+				SetVector3(point_program, name, transform.pos_);
+
+				GLuint shadow_far = glGetUniformLocation(point_program, "u_far_plane");
+				glUniform1f(shadow_far, light.max_shadow_render_distance_);
+
+				for (int i = 0; i < 6; i++) {
+					char u_name[64];
+
+					sprintf_s(u_name, "u_point_light_matrix[%d]", i);
+					GLuint shadow = glGetUniformLocation(point_program, u_name);
+					glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(dot_shadow_mat.m[i]));
+
+				}				
+
+				glUseProgram(program);
 
 			}
 
@@ -277,19 +316,7 @@ void Renderer::render()
 	cameraM.doRender(&window_);
 
 	if (renderShadows_) {
-		glViewport(0, 0, shadow_resolution_, shadow_resolution_);
-		glBindFramebuffer(GL_FRAMEBUFFER, dir_depthmapFBO_);
-		glClear(GL_DEPTH_BUFFER_BIT);
-
-		glCullFace(GL_BACK);
-		glFrontFace(GL_CCW);
 		renderShadowMap(dir_shadowProgram_, point_shadowProgram_);
-		glFrontFace(GL_CW);
-		glCullFace(GL_FRONT);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		window_.resetViewport();
 	}
 
 	renderLights();
@@ -353,6 +380,15 @@ void Renderer::render()
 
 void Renderer::renderShadowMap(unsigned int dir_program, unsigned int point_program)
 {
+	//Prepare Directional Light ShadowMap
+	glViewport(0, 0, shadow_resolution_, shadow_resolution_);
+	glBindFramebuffer(GL_FRAMEBUFFER, dir_depthmapFBO_);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+	//
+
 	auto& componentM = engine_.getComponentManager();
 	auto& resourceM = engine_.getResourceManager();
 
@@ -402,6 +438,22 @@ void Renderer::renderShadowMap(unsigned int dir_program, unsigned int point_prog
 			glDrawElements(GL_TRIANGLES, indexBuffer->getCount(), GL_UNSIGNED_INT, 0);
 		}
 	}
+
+	//End directional Light shadowMap
+	glFrontFace(GL_CW);
+	glCullFace(GL_FRONT);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//
+
+	//Prepare Point Light ShadowMap
+	glViewport(0, 0, shadow_resolution_, shadow_resolution_);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, point_depthmap_);
+
+	window_.resetViewport();
 
 	glUseProgram(point_program);
 
