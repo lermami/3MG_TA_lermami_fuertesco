@@ -68,14 +68,14 @@ void Renderer::renderLights() {
 
 
 	for (int i = 0; i < window_.getProgramListSize(); i++) {
-		unsigned program = window_.getProgram(i);
+		Shader* program = window_.getProgram(i);
 
 		unsigned int ambient_iterator = 0;
 		unsigned int directional_iterator = 0;
 		unsigned int point_iterator = 0;
 		unsigned int spot_iterator = 0;
 
-		glUseProgram(program);
+		glUseProgram(program->get());
 
 		auto l = lights->begin();
 		auto t = transforms->begin();
@@ -91,10 +91,10 @@ void Renderer::renderLights() {
 			//Ambient
 			if (light.type_ == LightType::kAmbient) {
 				sprintf_s(name, "u_ambient_light[%d].pos_", point_iterator);
-				SetVector3(program, name, transform.pos_);
+				program->SetVector3(name, transform.pos_);
 
 				sprintf_s(name, "u_ambient_light[%d].color_", ambient_iterator);
-				SetVector3(program, name, light.color_);
+				program->SetVector3(name, light.color_);
 
 				ambient_iterator++;
 			}
@@ -102,21 +102,21 @@ void Renderer::renderLights() {
 			//Directional
 			if (light.type_ == LightType::kDirectional) {
 				sprintf_s(name, "u_directional_light[%d].pos_", point_iterator);
-				SetVector3(program, name, transform.pos_);
+				program->SetVector3(name, transform.pos_);
 
 				sprintf_s(name, "u_directional_light[%d].color_", directional_iterator);
-				SetVector3(program, name, light.color_);
+				program->SetVector3(name, light.color_);
 
 				sprintf_s(name, "u_directional_light[%d].spec_color_", directional_iterator);
-				SetVector3(program, name, light.spec_color_);
+				program->SetVector3(name, light.spec_color_);
 
 				sprintf_s(name, "u_directional_light[%d].direction_", directional_iterator);
-				SetVector3(program, name, light.direction_);
+				program->SetVector3(name, light.direction_);
 
 				if (renderShadows_) {
 					glActiveTexture(GL_TEXTURE1);
 					glBindTexture(GL_TEXTURE_2D, depthmap_.get());
-					GLuint shadow_loc = glGetUniformLocation(program, "u_depth_map");
+					GLuint shadow_loc = glGetUniformLocation(program->get(), "u_depth_map");
 					glUniform1i(shadow_loc, 1);
 				}
 
@@ -126,24 +126,24 @@ void Renderer::renderLights() {
 			//Point
 			if (light.type_ == LightType::kPoint) {
 				sprintf_s(name, "u_point_light[%d].pos_", point_iterator);
-				SetVector3(program, name, transform.pos_);
+				program->SetVector3(name, transform.pos_);
 
 				sprintf_s(name, "u_point_light[%d].color_", point_iterator);
-				SetVector3(program, name, light.color_);
+				program->SetVector3(name, light.color_);
 
 				sprintf_s(name, "u_point_light[%d].spec_color_", point_iterator);
-				SetVector3(program, name, light.spec_color_);
+				program->SetVector3(name, light.spec_color_);
 
 				sprintf_s(name, "u_point_light[%d].constant_", point_iterator);
-				GLuint light_const = glGetUniformLocation(program, name);
+				GLuint light_const = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_const, light.constant_);
 
 				sprintf_s(name, "u_point_light[%d].linear_", point_iterator);
-				GLuint light_linear = glGetUniformLocation(program, name);
+				GLuint light_linear = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_linear, light.linear_);
 
 				sprintf_s(name, "u_point_light[%d].quadratic_", point_iterator);
-				GLuint light_quadractic = glGetUniformLocation(program, name);
+				GLuint light_quadractic = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_quadractic, light.quadratic_);
 
 				point_iterator++;
@@ -152,31 +152,31 @@ void Renderer::renderLights() {
 			//Spot
 			if (light.type_ == LightType::kSpot) {
 				sprintf_s(name, "u_spot_light[%d].pos_", spot_iterator);
-				SetVector3(program, name, transform.pos_);
+				program->SetVector3(name, transform.pos_);
 
 				sprintf_s(name, "u_spot_light[%d].color_", spot_iterator);
-				SetVector3(program, name, light.color_);
+				program->SetVector3(name, light.color_);
 
 				sprintf_s(name, "u_spot_light[%d].spec_color_", spot_iterator);
-				SetVector3(program, name, light.spec_color_);
+				program->SetVector3(name, light.spec_color_);
 
 				sprintf_s(name, "u_spot_light[%d].direction_", spot_iterator);
-				SetVector3(program, name, light.direction_);
+				program->SetVector3(name, light.direction_);
 
 				sprintf_s(name, "u_spot_light[%d].constant_", spot_iterator);
-				GLuint light_const = glGetUniformLocation(program, name);
+				GLuint light_const = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_const, light.constant_);
 
 				sprintf_s(name, "u_spot_light[%d].linear_", spot_iterator);
-				GLuint light_linear = glGetUniformLocation(program, name);
+				GLuint light_linear = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_linear, light.linear_);
 
 				sprintf_s(name, "u_spot_light[%d].quadratic_", spot_iterator);
-				GLuint light_quadractic = glGetUniformLocation(program, name);
+				GLuint light_quadractic = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_quadractic, light.quadratic_);
 
 				sprintf_s(name, "u_spot_light[%d].cutoff_angle_", spot_iterator);
-				GLuint light_cutoff = glGetUniformLocation(program, name);
+				GLuint light_cutoff = glGetUniformLocation(program->get(), name);
 				glUniform1f(light_cutoff, light.cutoff_angle_);
 
 				spot_iterator++;
@@ -193,11 +193,11 @@ void Renderer::CalculateShadowsMatrix() {
 
 
 	for (int i = 0; i < window_.getProgramListSize(); i++) {
-		unsigned program = window_.getProgram(i);
+		Shader* program = window_.getProgram(i);
 
 		unsigned int shadow_iterator = 0;
 
-		glUseProgram(program);
+		glUseProgram(program->get());
 
 		auto l = lights->begin();
 		auto t = transforms->begin();
@@ -213,7 +213,7 @@ void Renderer::CalculateShadowsMatrix() {
 
 				glm::mat4 shadow_mat = ConfigureShadowMatrix(light.min_shadow_render_distance_, light.max_shadow_render_distance_, transform.pos_, light.direction_);
 
-				GLuint shadow = glGetUniformLocation(program, "u_light_space_matrix");
+				GLuint shadow = glGetUniformLocation(program->get(), "u_light_space_matrix");
 				glUniformMatrix4fv(shadow, 1, GL_FALSE, glm::value_ptr(shadow_mat));
 			}
 

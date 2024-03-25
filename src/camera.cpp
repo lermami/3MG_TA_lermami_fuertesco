@@ -4,6 +4,7 @@
 #include "Engine.hpp"
 #include "default_components.hpp"
 #include "component_manager.hpp"
+#include "shader_management.hpp"
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -112,7 +113,8 @@ void CameraManager::doRender(Window* w) {
   CameraComponent& cam_comp_ = *engine_.getComponentManager().get_component<CameraComponent>(current_cam_);
 
   for (int i = 0; i < w->getProgramListSize(); i++) {
-    unsigned program = w->getProgram(i);
+    Shader* program_ref = w->getProgram(i);
+    unsigned program = program_ref->get();
     glUseProgram(program);
     switch (cam_comp_.projectionMode_) {
       case ProjectionMode::kPerspective:

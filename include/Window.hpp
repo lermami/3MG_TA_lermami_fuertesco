@@ -16,6 +16,8 @@
 #include "glm/glm.hpp"
 
 class Engine;
+class Shader;
+
 struct GLFResource {
   GLFResource();
   ~GLFResource();
@@ -162,7 +164,7 @@ public:
    *
    * @param new_program ID of the new program to add.
    */
-  void addProgram(unsigned new_program);
+  void addProgram(Shader new_program);
 
   /**
    * Retrieves a shader program from the window's internal list.
@@ -170,7 +172,7 @@ public:
    * @param n Index of the program to retrieve (0-based).
    * @return ID of the program at the specified index.
    */
-  unsigned getProgram(int n);
+  Shader* getProgram(int n);
 
   /**
    * Gets the size of the window's shader program list.
@@ -218,7 +220,7 @@ private:
 
   size_t current_cam_;
 
-  std::vector<unsigned> program_list_;
+  std::vector<Shader> program_list_;
   Engine& engine_;
   WindowResource window_resource_;
 };

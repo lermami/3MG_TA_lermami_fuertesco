@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <fstream>
 
-unsigned int CreateShader(int type) {
+unsigned int Shader::CreateShader(int type) {
   unsigned int shader = 0;
 
   if (type == 0) {
@@ -17,7 +17,7 @@ unsigned int CreateShader(int type) {
   return shader;
 }
 
-void CompileShader(unsigned int id, const char* src) {
+void Shader::CompileShader(unsigned int id, const char* src) {
   glShaderSource(id, 1, &src, NULL);
   glCompileShader(id);
 
@@ -33,7 +33,7 @@ void CompileShader(unsigned int id, const char* src) {
 
 }
 
-std::optional<Program> Program::create(Window& w, const char* v, const char* f) {
+std::optional<Shader> Shader::create(Window& w, const char* v, const char* f) {
   //Read shaders
   std::string vs = ReadFiles(v);
   std::string fs = ReadFiles(f);
@@ -60,19 +60,20 @@ std::optional<Program> Program::create(Window& w, const char* v, const char* f) 
     return std::nullopt;
   }
   else {
-    w.addProgram(shaderProgram);
+    //Clean shaders
+    glDetachShader(shaderProgram, vertexShader);
+    glDetachShader(shaderProgram, fragmentShader);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    Shader result(shaderProgram);
+    w.addProgram(std::move(result));
+    return result;
   }
 
-  //Clean shaders
-  glDetachShader(shaderProgram, vertexShader);
-  glDetachShader(shaderProgram, fragmentShader);
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
-
-  return Program(shaderProgram);
 }
 
-std::string ReadFiles(const std::string& file) {
+std::string Shader::ReadFiles(const std::string& file) {
   std::string final;
   std::ifstream fileStream(file, std::ios::in);
 
@@ -91,35 +92,37 @@ std::string ReadFiles(const std::string& file) {
   return final;
 }
 
-void SetVector3(unsigned int program, char* name, Vec3 vector) {
-  GLuint id = glGetUniformLocation(program, name);
+void Shader::SetVector3(char* name, Vec3 vector) {
+  GLuint id = glGetUniformLocation(handle_, name);
   glUniform3f(id, vector.x, vector.y, vector.z);
 }
 
-Program::Program(){
+Shader::Shader(){
   handle_ = 0;
   destroy_ = true;
 }
 
-Program::Program(unsigned handle) : handle_{handle}{
+Shader::Shader(unsigned handle) : handle_{handle}{
   destroy_ = true;
 }
 
-Program::~Program(){
-  if(destroy_)
+Shader::~Shader(){
+  if (destroy_) {
     glDeleteProgram(handle_);
+  }
 }
 
-Program::Program(Program&& o) : handle_{o.handle_} {
+Shader::Shader(Shader&& o) : handle_{ o.handle_ }, destroy_{ o.destroy_ } {
   o.destroy_ = false;
 }
 
-Program& Program::operator=(Program&& o) {
+Shader& Shader::operator=(Shader&& o) {
   handle_ = o.handle_;
+  destroy_ = o.destroy_;
   o.destroy_ = false;
   return *this;
 }
 
-unsigned Program::get() {
+unsigned Shader::get() {
   return handle_;
 }

@@ -88,5 +88,5 @@ private:
   unsigned int shadow_resolution_; /**< Resolution of the shadow map texture in both direction W & H. */
   Texture depthmap_; /**< Handle to the depth map texture. */
   unsigned depthmapFBO_; /**< Handle to the framebuffer object used for shadow mapping. */
-  Program shadowProgram_; /**< Handle to the shader program used for shadow rendering. */
+  Shader shadowProgram_; /**< Handle to the shader program used for shadow rendering. */
 };

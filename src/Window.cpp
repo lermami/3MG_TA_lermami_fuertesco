@@ -5,6 +5,7 @@
 #include "component_manager.hpp"
 #include "camera.hpp"
 #include "texture.hpp"
+#include "shader_management.hpp"
 
 #include <time.h>
 #include <cassert>
@@ -134,22 +135,22 @@ void Window::getWindowSize(unsigned int& w, unsigned int& h) {
   h = height_;
 }
 
-void Window::addProgram(unsigned new_program) {
+void Window::addProgram(Shader new_program) {
   bool is_new = true;
 
   for (auto& program : program_list_) {
-    if (program == new_program) {
+    if (program.get() == new_program.get()) {
       is_new = false;
     }
   }
 
   if (is_new) {
-    program_list_.push_back(new_program);
+    program_list_.push_back(std::move(new_program));
   }
 }
 
-unsigned Window::getProgram(int n) {
-  return program_list_.at(n);
+Shader* Window::getProgram(int n) {
+  return &program_list_.at(n);
 }
 
 int Window::getProgramListSize() {

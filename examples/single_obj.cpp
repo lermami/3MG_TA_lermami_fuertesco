@@ -63,7 +63,7 @@ int main(int, char**) {
 		"../assets/BonClay.png");
   
 	//[5]. Add a shader for the object (This is a basic shader already present on the engine)
-	auto texture_shader = Program::create(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs").value();
+	auto texture_shader = Shader::create(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs").value();
 
 	//[6]. Wait for resourcess to load
 	resourceM.WaitResources();
