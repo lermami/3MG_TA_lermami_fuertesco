@@ -27,8 +27,6 @@ int main(int, char**) {
 
     //[5].Swap buffer to update window info
     w.swap();
-
-    w.calculateCurrentTime();
   }
 
   return 0;

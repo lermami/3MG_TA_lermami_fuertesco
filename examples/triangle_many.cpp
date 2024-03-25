@@ -140,8 +140,6 @@ int main(int, char**) {
 		renderer.render();
 
 		w.swap();
-
-		w.calculateCurrentTime();
 	}
 
 	return 0;
