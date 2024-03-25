@@ -65,6 +65,9 @@ in vec3 world_position;
 in vec3 world_normal;
 in vec3 cam_dir;
 
+uniform vec3 u_camera_pos;        //Camera position
+
+
 uniform sampler2D u_texture;    //Texture
 uniform sampler2D u_directional_depth_map;  //DepthMap Texture for directional lights
 uniform samplerCube u_point_depth_map;  //DepthMap Texture for point lights
@@ -232,6 +235,7 @@ float DirectionalShadowProcess(vec4 fragPosLightSpace){
   return shadow;
 }
 
+
 float PointShadowProcess(vec3 fragPos, PointLight light)
 {
   // get vector between fragment position and light position
@@ -258,7 +262,7 @@ void main() {
   vec3 ambient = AmbientProcess();
  
   //float shadow = DirectionalShadowProcess(fs_in.FragPosLightSpace);
-  float shadow = PointShadowProcess(fs_in.FragPos, u_point_light[0]);
+  float shadow = PointShadowProcess(fs_in.FragPos, u_point_light[0]); 
 
 
   vec3 result = (ambient + (1.0 - shadow) * light) * texture(u_texture, uv).rgb;

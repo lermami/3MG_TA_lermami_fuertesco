@@ -61,7 +61,7 @@ unsigned int CreateProgram(Window& w, const char* v, const char* f, const char* 
 
     //Geometry Shader
   unsigned int geometryShader = 0;
-  if (g != (const char*)'0') {
+  if (g != "0") {
     gs = ReadFiles(g);
 
     geometryShader = CreateShader(2);
@@ -73,7 +73,7 @@ unsigned int CreateProgram(Window& w, const char* v, const char* f, const char* 
   unsigned int shaderProgram = glCreateProgram();
   glAttachShader(shaderProgram, vertexShader);
   glAttachShader(shaderProgram, fragmentShader);
-  if (g != (const char*)'0') {
+  if (g != "0") {
     glAttachShader(shaderProgram, geometryShader);
   }
   glLinkProgram(shaderProgram);

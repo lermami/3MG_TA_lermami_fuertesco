@@ -42,7 +42,7 @@ void CompileShader(unsigned int id, const char* src);
  * @param fs The fragment shader source code as a C-style string.
  * @return The ID of the created shader program, or 0 if linking failed.
  */
-unsigned int CreateProgram(Window& w, const char* v, const char* f, const char* g = (const char*)'0');
+unsigned int CreateProgram(Window& w, const char* v, const char* f, const char* g = "0");
 
 /**
  * @brief Reads the contents of a file into a string.
