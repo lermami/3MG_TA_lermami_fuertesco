@@ -39,15 +39,11 @@ int main(int, char**) {
 	auto& resourceM = e.getResourceManager();
 	auto& cameraM = e.getCameraManager();
 
-	auto maybe_w = Window::create(e, 1024, 768, "Test Window", true);
+	auto maybe_w = Window::create(e, 1024, 768, "Test Window", false);
 	if (!maybe_w) return -1;
 	
 	auto& w = maybe_w.value();
 	w.clearColor(0.4f, 0.4f, 0.4f, 1.0f);
-	w.enableCulling(true);
-	w.enableDepthTest(true);
-	w.setDepthTestMode(DepthTestMode::kLess);
-	w.setCullingMode(CullingMode::kFront, FrontFace::kClockWise);
 
 	Renderer renderer(e, w);
 
@@ -57,17 +53,17 @@ int main(int, char**) {
 	resourceM.LoadObj(e, "BonClayObj", "../assets/BonClay.obj");
 
 	//[4]. Load obj textures if necesary
-	resourceM.loadTexture("Laboon", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
+	resourceM.loadTexture("Laboon", TextureInfo(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 																						 "../assets/laboon/laboon.png");
 
-	resourceM.loadTexture("Bricks", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
+	resourceM.loadTexture("Bricks", TextureInfo(TextureTarget::kTexture_2D, TextureFormat::kRGB, TextureType::kUnsignedByte),
 																						"../assets/wall.jpg");
 
-  resourceM.loadTexture("BonClay", Texture(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
+  resourceM.loadTexture("BonClay", TextureInfo(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
 		"../assets/BonClay.png");
   
 	//[5]. Add a shader for the object (This is a basic shader already present on the engine)
-	auto texture_shader = CreateProgram(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs");
+	auto texture_shader = Program::create(w, "../assets/BasicShader/Texture/Texture.vs", "../assets/BasicShader/Texture/Texture.fs").value();
 
 	//[6]. Wait for resourcess to load
 	resourceM.WaitResources();
@@ -77,7 +73,7 @@ int main(int, char**) {
 
 	//[8]. Add an entity of your geometry
 	size_t new_e = component_manager.add_entity(TransformComponent(Vec3(0.0f, -50.0f, -200.0f), Vec3(0.0f, 1.57f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)),
-		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_shader, resourceM.getTexture("Laboon")));
+		                                          RenderComponent("Laboon", "LaboonVertices", "LaboonIndices", texture_shader.get(), resourceM.getTexture("Laboon")));
 
   //Camera
 	size_t camera = component_manager.add_entity(TransformComponent(Vec3(0.0f, 0.0f, 0.0f)), CameraComponent("Camera", 1.0f, 1.0f));

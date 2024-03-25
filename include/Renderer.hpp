@@ -8,6 +8,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include "texture.hpp"
 
 //TODO: delete this
 #include "shader_management.hpp"

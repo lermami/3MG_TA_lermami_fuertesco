@@ -65,6 +65,8 @@ public:
    */
   static Texture LoadTexture(TextureInfo info, int w, int h);
 
+  Texture() = default;
+
   Texture(const Texture&) = delete;
   Texture& operator=(const Texture&) = delete;
 

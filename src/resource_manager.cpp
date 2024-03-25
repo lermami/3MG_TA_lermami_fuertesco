@@ -135,7 +135,7 @@ unsigned ResourceManager::getTexture(const char* name) {
 		return 0;
 	}
 
-	return textures_.at(name);
+	return textures_.at(name).get();
 }
 
 bool ResourceManager::createVertexBuffer(std::string nameID, float* vertices, unsigned size)

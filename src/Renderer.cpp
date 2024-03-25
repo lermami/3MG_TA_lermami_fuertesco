@@ -43,7 +43,7 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 
 		//Attach the framebuffer's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthmapFBO_);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthmap_, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthmap_.get(), 0);
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -115,7 +115,7 @@ void Renderer::renderLights() {
 
 				if (renderShadows_) {
 					glActiveTexture(GL_TEXTURE1);
-					glBindTexture(GL_TEXTURE_2D, depthmap_);
+					glBindTexture(GL_TEXTURE_2D, depthmap_.get());
 					GLuint shadow_loc = glGetUniformLocation(program, "u_depth_map");
 					glUniform1i(shadow_loc, 1);
 				}

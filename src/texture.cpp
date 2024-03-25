@@ -3,7 +3,7 @@
 
 #include <GL/glew.h>
 
-Texture::Texture(unsigned handle) : handle_ { handle }{
+Texture::Texture(unsigned handle) : handle_{ handle }, destroy_{ true }{
 }
 
 Texture::~Texture() {
@@ -12,11 +12,13 @@ Texture::~Texture() {
 	}
 }
 
-Texture::Texture(Texture&& o) : handle_ { o.handle_ }{
+Texture::Texture(Texture&& o) : handle_{ o.handle_ }, destroy_{o.destroy_}{
 	o.destroy_ = false;
 }
 
-Texture& Texture::operator=(Texture&& o) : handle_{ o.handle_ } {
+Texture& Texture::operator=(Texture&& o){
+	handle_ = o.handle_;
+	destroy_ = o.destroy_;
 	o.destroy_ = false;
 	return *this;
 }
