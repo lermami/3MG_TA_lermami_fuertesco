@@ -5,6 +5,7 @@
 #include "camera.hpp"
 #include "texture.hpp"
 #include "shader_management.hpp"
+#include "resource_manager.hpp"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"

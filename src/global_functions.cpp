@@ -1,11 +1,6 @@
-#include "Engine.hpp"
 #include "component_manager.hpp"
 
-void change_entity_color(Engine& e, size_t entity, float r, float g, float b, float a) {
-	auto& component_manager = e.getComponentManager();
-
-	ColorComponent* color = component_manager.get_component<ColorComponent>(entity);
-
+void change_entity_color(ColorComponent* color, float r, float g, float b, float a) {
 	if (color) {
 		color->color_.x = r;
 		color->color_.y = g;
@@ -14,11 +9,7 @@ void change_entity_color(Engine& e, size_t entity, float r, float g, float b, fl
 	}
 }
 
-void set_entity_transform(Engine& e, size_t entity, Vec3 position, Vec3 rotation, Vec3 size) {
-	auto& component_manager = e.getComponentManager();
-
-	TransformComponent* transform = component_manager.get_component<TransformComponent>(entity);
-
+void set_entity_transform(TransformComponent* transform, Vec3 position, Vec3 rotation, Vec3 size) {
 	if (transform) {
 		transform->pos_ = position;
 		transform->rot_ = rotation;
@@ -26,26 +17,25 @@ void set_entity_transform(Engine& e, size_t entity, Vec3 position, Vec3 rotation
 	}
 }
 
-void set_entity_position(TransformComponent& transform, Vec3 pos) {
-	pos.x = (pos.x / 1024 * 2) - 1;
-	pos.y = ((pos.y / 768 * 2) - 1) * -1;
-
-	transform.pos_ = pos;
+void set_entity_position(TransformComponent* transform, Vec3 pos) {
+	if (transform) {
+		transform->pos_ = pos;
+	}
 }
 
-bool entities_are_colliding(Engine& e, size_t entity1, size_t entity2) {
-	auto& component_manager = e.getComponentManager();
+bool entities_are_colliding(ComponentManager& componentM, size_t entity1, size_t entity2) {
 
 	//Colliders
-	auto collider1 = component_manager.get_component<BoxColliderComponent>(entity1);
-	auto collider2 = component_manager.get_component<BoxColliderComponent>(entity2);
+	auto collider1 = componentM.get_component<BoxColliderComponent>(entity1);
+	auto collider2 = componentM.get_component<BoxColliderComponent>(entity2);
 
 	//Transform
-	auto transform1 = component_manager.get_component<TransformComponent>(entity1);
-	auto transform2 = component_manager.get_component<TransformComponent>(entity2);
+	auto transform1 = componentM.get_component<TransformComponent>(entity1);
+	auto transform2 = componentM.get_component<TransformComponent>(entity2);
 
 	if (collider1 == nullptr || collider2 == nullptr ||
 		 transform1 == nullptr || transform2 == nullptr){
+		printf("ERROR. Entities not valid.");
 		return false;
 	};
 

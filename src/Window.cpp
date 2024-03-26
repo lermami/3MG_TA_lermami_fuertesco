@@ -50,25 +50,6 @@ Window::~Window() {
 	}
 }
 
-//Window::Window(Window& w) : handle_{ w.handle_ }, engine_{ w.engine_ }{
-//	w.handle_ = NULL;
-//
-//	width_ = w.width_;
-//	height_ = w.height_;
-//	currentTime_ = w.currentTime_;
-//	lastTime_ = w.lastTime_;
-//	deltaTime_ = w.deltaTime_;
-//
-//	imguiInit_ = w.imguiInit_;
-//	if (imguiInit_) {
-//		initImGui();
-//	}
-//	w.imguiInit_ = false;
-//
-//	program_list_ = w.program_list_;
-//	current_cam_ = w.current_cam_;
-//}
-
 void Window::initSoundContext() {
   ALCdevice* device = alcOpenDevice(NULL);
   ALCcontext* ctx = alcCreateContext(device, NULL);
@@ -171,7 +152,6 @@ void Window::resetViewport() {
 	}
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-
 
 GLFResource::GLFResource() {
 	glfwInit();

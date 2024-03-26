@@ -56,7 +56,7 @@ public:
    * @param name The name to associate with the loaded geometry.
    * @param path The path to the OBJ file to load.
    */
-  void LoadObj(Engine& e, const char* name, const char* path);
+  void LoadObj(ThreadManager& threadM, const char* name, const char* path);
 
   /**
    * Retrieves a previously loaded geometry by name.

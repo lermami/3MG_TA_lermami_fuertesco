@@ -6,11 +6,7 @@
  * @brief This file defines the Engine class, which manage all engine main process.
  */
 #pragma once
-#include<vector>
 #include<memory>
-
-#include "enum.hpp"
-#include "resource_manager.hpp"
 
 struct ComponentManager;
 class ResourceManager;

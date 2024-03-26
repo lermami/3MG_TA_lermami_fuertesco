@@ -74,11 +74,6 @@ public:
    */
   ~Window();
 
-  ///**
-  // * Copy constructor.
-  // */
-  //Window(Window& w);
-
   /**
   * Move constructor.
   */

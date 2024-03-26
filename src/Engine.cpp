@@ -1,8 +1,9 @@
 #include "Engine.hpp"
+
 #include "component_manager.hpp"
-#include "default_components.hpp"
 #include "camera.hpp"
 #include "thread_manager.hpp"
+#include "resource_manager.hpp"
 
 #include "GLFW/glfw3.h"
 

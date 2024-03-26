@@ -3,7 +3,6 @@
 #include "default_components.hpp"
 #include "buffer.hpp"
 
-#include "Engine.hpp"
 #include "texture.hpp"
 #include "thread_manager.hpp"
 
@@ -22,9 +21,7 @@ void ResourceManager::loadTexture(const char* name, TextureInfo texInfo, const c
 	textures_[name] = Texture::LoadTexture(texInfo, path);
 }
 
-void ResourceManager::LoadObj(Engine& e, const char* name, const char* path) {
-	auto& threadM = e.getThreadManager();
-
+void ResourceManager::LoadObj(ThreadManager& threadM, const char* name, const char* path) {
 	std::function<Geometry()> mycall_vertex = [this, name, path]() { return LoadObj(name, path); };
 	std::future<Geometry> future = std::move(threadM.add(mycall_vertex));
 	geometryFutures_[name] = std::move(future);
