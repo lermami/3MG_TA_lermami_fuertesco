@@ -12,7 +12,7 @@
 
 #include "glm/glm.hpp"
 
-struct DotShadowMatrix {
+struct PointShadowMatrix {
   glm::mat4 m[6];
 };
 

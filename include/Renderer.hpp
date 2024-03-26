@@ -12,7 +12,7 @@
 class Engine;
 class Window;
 class Vec3;
-struct DotShadowMatrix;
+struct PointShadowMatrix;
 
 /**
  * @brief Manages the rendering pipeline for the engine, including lights, shadows, and scene geometry.
@@ -71,7 +71,7 @@ public:
      */
   glm::mat4 ConfigureDirShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
 
-  DotShadowMatrix ConfigurePointShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
+  PointShadowMatrix ConfigurePointShadowMatrix(float near, float far, Vec3 pos, Vec3 direction);
 
 private:
 

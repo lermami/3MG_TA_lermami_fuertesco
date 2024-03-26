@@ -48,9 +48,6 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 		point_shadowProgram_ = CreateProgram(window_, "../assets/Shader/ShadowMap/pointlight.vs", "../assets/Shader/ShadowMap/pointlight.fs", "../assets/Shader/ShadowMap/pointlight.gs");
 		
 		//Point Light
-		glGenFramebuffers(1, &point_depthmapFBO_);
-
-
 		glGenTextures(1, &point_depthmap_);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, point_depthmap_);
 		for (unsigned int i = 0; i < 6; ++i) {
@@ -61,6 +58,8 @@ Renderer::Renderer(Engine& e, Window& w) : engine_{ e }, window_{ w }
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		glGenFramebuffers(1, &point_depthmapFBO_);
 
 		// attach depth texture as FBO's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, point_depthmapFBO_);
@@ -255,7 +254,7 @@ void Renderer::CalculateShadowsMatrix(unsigned int point_program) {
 
 			//Point
 			if (light.type_ == LightType::kPoint) {
-				DotShadowMatrix dot_shadow_mat = ConfigurePointShadowMatrix(light.min_shadow_render_distance_, light.max_shadow_render_distance_, transform.pos_, light.direction_);
+				PointShadowMatrix dot_shadow_mat = ConfigurePointShadowMatrix(light.min_shadow_render_distance_, light.max_shadow_render_distance_, transform.pos_, light.direction_);
 
 				for (int i = 0; i < 6; i++) {
 					char name[64];
@@ -388,7 +387,7 @@ void Renderer::renderShadowMap(unsigned int dir_program, unsigned int point_prog
 	//Prepare Directional Light ShadowMap
 	glViewport(0, 0, shadow_resolution_, shadow_resolution_);
 	glBindFramebuffer(GL_FRAMEBUFFER, dir_depthmapFBO_);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
@@ -457,14 +456,17 @@ void Renderer::renderShadowMap(unsigned int dir_program, unsigned int point_prog
 	//Prepare Point Light ShadowMap
 	glViewport(0, 0, shadow_resolution_, shadow_resolution_);
 	glBindFramebuffer(GL_FRAMEBUFFER, point_depthmapFBO_);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	//
 
-	
+	r = renders->begin();
+	t = transforms->begin();
+
+	CalculateShadowsMatrix(point_program);
 
 	glUseProgram(point_program);
 
@@ -538,7 +540,7 @@ glm::mat4 Renderer::ConfigureDirShadowMatrix(float near, float far, Vec3 pos, Ve
 	return lightSpaceMatrix;
 }
 
-DotShadowMatrix Renderer::ConfigurePointShadowMatrix(float near, float far, Vec3 pos, Vec3 direction)
+PointShadowMatrix Renderer::ConfigurePointShadowMatrix(float near, float far, Vec3 pos, Vec3 direction)
 {
 
 	unsigned int window_w = 0, window_h = 0;
@@ -549,7 +551,7 @@ DotShadowMatrix Renderer::ConfigurePointShadowMatrix(float near, float far, Vec3
 
 	glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)shadow_resolution_ / (float)shadow_resolution_, near, far);
 
-	DotShadowMatrix shadowTransforms;
+	PointShadowMatrix shadowTransforms;
 	shadowTransforms.m[0] = glm::mat4(shadowProj * glm::lookAt(glm::vec3(pos.x, pos.y, pos.z), glm::vec3(pos.x, pos.y, pos.z) + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 	shadowTransforms.m[1] = glm::mat4(shadowProj * glm::lookAt(glm::vec3(pos.x, pos.y, pos.z), glm::vec3(pos.x, pos.y, pos.z) + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 	shadowTransforms.m[2] = glm::mat4(shadowProj * glm::lookAt(glm::vec3(pos.x, pos.y, pos.z), glm::vec3(pos.x, pos.y, pos.z) + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));

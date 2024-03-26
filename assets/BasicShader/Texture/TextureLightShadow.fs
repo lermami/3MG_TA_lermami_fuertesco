@@ -251,7 +251,7 @@ float PointShadowProcess(vec3 fragPos, PointLight light)
   float currentDepth = length(fragToLight);
 
   // now test for shadows
-  float bias = 0.005; 
+  float bias = 1; 
   float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
   
   return shadow;
@@ -261,7 +261,7 @@ void main() {
   vec3 light = LightProcess();
   vec3 ambient = AmbientProcess();
  
-  //float shadow = DirectionalShadowProcess(fs_in.FragPosLightSpace);
+  //float shadow2 = DirectionalShadowProcess(fs_in.FragPosLightSpace);
   float shadow = PointShadowProcess(fs_in.FragPos, u_point_light[0]); 
 
 
