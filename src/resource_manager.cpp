@@ -25,6 +25,7 @@ void ResourceManager::LoadObj(ThreadManager& threadM, const char* name, const ch
 	std::function<Geometry()> mycall_vertex = [this, name, path]() { return LoadObj(name, path); };
 	std::future<Geometry> future = std::move(threadM.add(mycall_vertex));
 	geometryFutures_[name] = std::move(future);
+	//LoadObj(name, path);
 }
 
 void ResourceManager::WaitResources() {
@@ -43,7 +44,7 @@ Geometry ResourceManager::LoadObj(const char* name, const char* path) {
 	std::string warning, error;
 
 	bool err = tinyobj::LoadObj(&attrib, &shapes, nullptr, &warning, &error, path);
-	int id = 0;
+	//int id = 0;
 
 	if (!err) {
 		if (!error.empty()) {
@@ -55,7 +56,11 @@ Geometry ResourceManager::LoadObj(const char* name, const char* path) {
 		std::cout << "Warning loading obj: " << warning.c_str();
 	}*/
 
-	std::map<int, Vertex> map;
+	//std::map<int, Vertex> map;
+	std::vector<Vertex> map;
+	map.reserve(500000);
+	int new_id = 0;
+	Vertex vertex;
 
 	for (size_t s = 0; s < shapes.size(); s++) {
 		// Loop over faces(polygon)
@@ -65,25 +70,24 @@ Geometry ResourceManager::LoadObj(const char* name, const char* path) {
 
 			// Loop over vertices in the face.
 			for (size_t v = 0; v < fv; v++) {
-				Vertex vertex;
 				// access to vertex
 				tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-				vertex.pos.x = attrib.vertices[3 * size_t(idx.vertex_index) + 0];
-				vertex.pos.y = attrib.vertices[3 * size_t(idx.vertex_index) + 1];
-				vertex.pos.z = attrib.vertices[3 * size_t(idx.vertex_index) + 2];
+				vertex.pos.x = attrib.vertices[3 * idx.vertex_index + 0];
+				vertex.pos.y = attrib.vertices[3 * idx.vertex_index + 1];
+				vertex.pos.z = attrib.vertices[3 * idx.vertex_index + 2];
 
 				// Check if `normal_index` is zero or positive. negative = no normal data
-				if (idx.normal_index >= 0) {
-					vertex.normal.x = attrib.normals[3 * size_t(idx.normal_index) + 0];
-					vertex.normal.y = attrib.normals[3 * size_t(idx.normal_index) + 1];
-					vertex.normal.z = attrib.normals[3 * size_t(idx.normal_index) + 2];
-				}
+				//if (idx.normal_index >= 0) {
+					vertex.normal.x = attrib.normals[3 * idx.normal_index + 0];
+					vertex.normal.y = attrib.normals[3 * idx.normal_index + 1];
+					vertex.normal.z = attrib.normals[3 * idx.normal_index + 2];
+				//}
 
 				// Check if `texcoord_index` is zero or positive. negative = no texcoord data
-				if (idx.texcoord_index >= 0) {
-					vertex.uv.x = attrib.texcoords[2 * size_t(idx.texcoord_index) + 0];
-					vertex.uv.y = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
-				}
+				//if (idx.texcoord_index >= 0) {
+					vertex.uv.x = attrib.texcoords[2 * idx.texcoord_index + 0];
+					vertex.uv.y = attrib.texcoords[2 * idx.texcoord_index + 1];
+				//}
 
 				// Optional: vertex colors
 				// vertex.red   = attrib.colors[3*size_t(idx.vertex_index)+0];
@@ -92,18 +96,25 @@ Geometry ResourceManager::LoadObj(const char* name, const char* path) {
 
 				bool found = false;
 
+				/*
 				for (auto it = map.begin(); it != map.end() && !found; it++) {
 					if (vertex == it->second) {
 						geometry.indices_.push_back(it->first);
 						found = true;
 					}
 				}
+				*/
+
+				for (int i = 0; i < map.size() && vertex == map[i]; i++) {
+						geometry.indices_.push_back(i);
+						found = true;
+				}
 
 				if (!found) {
-					map.emplace(id, vertex);
+					map.emplace_back(vertex);
 					geometry.vertex_.push_back(vertex);
-					geometry.indices_.push_back(id);
-					id++;
+					geometry.indices_.push_back(new_id);
+					new_id++;
 				}
 			}
 			index_offset += fv;

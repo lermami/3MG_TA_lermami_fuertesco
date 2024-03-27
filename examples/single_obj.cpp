@@ -48,9 +48,9 @@ int main(int, char**) {
 	Renderer renderer(e, w);
 
 	//[3]. Load OBJ
-	resourceM.LoadObj(thread_manager, "LaboonObj", "../assets/laboon/laboon.obj");
-	resourceM.LoadObj(thread_manager, "CubeObj", "../assets/obj_test.obj");
-	resourceM.LoadObj(thread_manager, "BonClayObj", "../assets/BonClay.obj");
+	resourceM.LoadObj(thread_manager, "LaboonObj", "../assets/sponza.obj");
+	//resourceM.LoadObj(thread_manager, "CubeObj", "../assets/obj_test.obj");
+	//resourceM.LoadObj(thread_manager, "BonClayObj", "../assets/BonClay.obj");
 
 	//[4]. Load obj textures if necesary
 	resourceM.loadTexture("Laboon", TextureInfo(TextureTarget::kTexture_2D, TextureFormat::kRGBA, TextureType::kUnsignedByte),
